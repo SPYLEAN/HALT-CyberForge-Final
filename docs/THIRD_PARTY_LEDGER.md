@@ -2,6 +2,29 @@
 
 Nothing below is installed yet. Exact versions are pinned at install time (Phase 0) from the then-current stable releases, recorded in lockfiles (`package-lock.json`, `uv.lock` or `requirements*.txt`), and this table is updated with the resolved versions. Licences listed are those published by each project; re-verify on install.
 
+## Resolved versions
+
+Phase 0 (2026-10-27). Lockfile: `package-lock.json`. Python is not lock-filed yet; versions below are from `pip list`.
+
+| Package | Version |
+|---|---|
+| next / eslint-config-next | 16.4.3 |
+| react, react-dom | 19.3.1 |
+| typescript | 5.9.3 (7.x skipped: Next tooling compatibility unverified) |
+| tailwindcss, @tailwindcss/postcss | 4.3.3 |
+| eslint | 9.x (10.x skipped: plugin compatibility) |
+| vitest | 5.0.5 |
+| Python | 3.12 |
+| fastapi | 0.162.0 |
+| uvicorn | 0.54.0 |
+| pydantic / pydantic-settings | 2.14.1 / 2.16.1 |
+| sqlalchemy | 2.1.6 |
+| psycopg (binary) | 3.3.6 |
+| structlog | 26.1.0 |
+| pytest / ruff / mypy | 9.1.1 / 0.17.3 / 2.4.0 |
+
+npm 11 blocked the `unrs-resolver` postinstall script (used by ESLint import resolution). Lint passes without it. Approve it with `npm approve-scripts unrs-resolver` only if import-resolution errors appear.
+
 ## Supplied (in-house) assets
 
 | Item | Origin | Licence / rights | Notes |
