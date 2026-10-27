@@ -1,0 +1,15 @@
+<!-- @dsCard group="Status" height=300 subtitle="Loading text, block and a forecast-style graph placeholder" -->
+<!doctype html>
+<html>
+<head><meta charset="utf-8"><title>Skeleton — preview</title></head>
+<body>
+<div id="root"></div>
+<script>
+var H = window.HALT, h = React.createElement;
+ReactDOM.createRoot(document.getElementById('root')).render(h('div', {className:'halt-row', style:{alignItems:'flex-start'}},
+  h('div', {style:{width:260}}, h('div', {className:'label', style:{marginBottom:8}}, 'Evidence loading'), h(H.Skeleton, {lines:4})),
+  h('div', {style:{width:200}}, h('div', {className:'label', style:{marginBottom:8}}, 'Metric'), h(H.Skeleton, {variant:'block', height:96})),
+  h('div', null, h('div', {className:'label', style:{marginBottom:8}}, 'Graph computing'), h(H.Skeleton, {variant:'graph', width:360, height:160}))));
+</script>
+</body>
+</html>

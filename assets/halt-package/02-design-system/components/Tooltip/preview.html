@@ -1,0 +1,14 @@
+<!-- @dsCard group="Overlays" height=150 subtitle="Appears on hover and focus, never carries essential text" -->
+<!doctype html>
+<html>
+<head><meta charset="utf-8"><title>Tooltip — preview</title></head>
+<body>
+<div id="root"></div>
+<script>
+var H = window.HALT, h = React.createElement;
+ReactDOM.createRoot(document.getElementById('root')).render(h('div', {className:'halt-row', style:{paddingTop:72}},
+  h(H.Tooltip, {open:true, title:'Likelihood', content:'4,912 of 6,000 simulated rollouts reached fin-ledger-db within 10 minutes.'}, h(H.StatusChip, {kind:'forecast'}, 'FORECAST · 82%')),
+  h(H.Tooltip, {title:'Evidence', content:'EV-03 · Token replay for S-1 · 09:47:03Z'}, h(H.Button, {variant:'ghost'}, 'EV-03'))));
+</script>
+</body>
+</html>

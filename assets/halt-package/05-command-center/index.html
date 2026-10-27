@@ -1,0 +1,1144 @@
+<title>HALT Command Center</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@100..125,400..800&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+:root{--bg:#0E1214;--surface:#151B1E;--raised:#1C2428;--line:#232B30;--border:#707D84;--text:#F1F0EA;--text2:#9AA3A8;--dis:#59656B;
+--ember:#D4572F;--ember-t:#EC7B56;--ember-s:rgba(212,87,47,.15);--verd:#3E9C86;--verd-t:#52B8A1;--verd-s:rgba(62,156,134,.15);--neu:#707D84;
+--fd:"Archivo",ui-sans-serif,system-ui,sans-serif;--fm:"IBM Plex Mono",ui-monospace,Menlo,monospace;color-scheme:dark}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--bg);color:var(--text);font-family:var(--fd);font-size:14px;line-height:1.45;-webkit-font-smoothing:antialiased}
+body{overflow:auto}
+button{font:inherit;color:inherit;cursor:pointer}
+:focus-visible{outline:none;box-shadow:0 0 0 2px var(--bg),0 0 0 4px var(--text)}
+h1,h2,h3,h4,p,ul,ol,dl,dd{margin:0}
+.mono{font-family:var(--fm)}
+.k{font-family:var(--fm);font-size:10.5px;letter-spacing:.09em;text-transform:uppercase;color:var(--text2);line-height:14px}
+#app{display:grid;grid-template-columns:216px minmax(0,1fr) 344px;grid-template-rows:68px minmax(0,1fr) 132px;grid-template-areas:"nav rib rib" "nav ws rail" "nav tl rail";height:100vh;min-height:720px;min-width:1180px}
+#nav{grid-area:nav;background:var(--surface);border-right:1px solid var(--line);display:flex;flex-direction:column;padding:16px 0}
+#rib{grid-area:rib;overflow:hidden;border-bottom:1px solid var(--line);display:flex;align-items:center;gap:0;padding:0 20px;background:var(--bg);min-width:0}
+#ws{grid-area:ws;overflow:auto;position:relative;min-width:0}
+#rail{grid-area:rail;background:var(--surface);border-left:1px solid var(--line);overflow:auto}
+#tl{grid-area:tl;border-top:1px solid var(--line);background:var(--surface);padding:8px 20px 8px;min-width:0}
+/* nav */
+.brand{display:flex;align-items:center;gap:10px;padding:0 20px 14px;font-weight:800;font-stretch:125%;letter-spacing:.14em;font-size:18px}
+.brand svg{height:26px;width:auto}
+.incchip{margin:0 14px 14px;padding:10px 12px;border:1px solid var(--line);border-radius:4px;background:var(--bg)}
+.incchip b{display:block;font-size:13px;font-weight:600;margin-top:2px}
+.navi{display:flex;align-items:center;gap:12px;min-height:44px;padding:0 20px;background:none;border:0;border-left:2px solid transparent;width:100%;text-align:left;color:var(--text2);font-size:14px}
+.navi:hover{background:var(--raised);color:var(--text)}
+.navi[aria-current=page]{background:var(--raised);color:var(--text);font-weight:600;border-left-color:var(--text)}
+.navi svg{flex:none}.navi .bd{margin-left:auto;font-family:var(--fm);font-size:10.5px;color:var(--text2)}
+.navfoot{margin-top:auto;padding:14px 20px 0;border-top:1px solid var(--line);display:flex;flex-direction:column;gap:8px}
+/* ribbon */
+.rf{display:flex;flex-direction:column;gap:3px;padding:0 14px;flex:none;border-left:1px solid var(--line);min-width:0;white-space:nowrap}
+.rf:first-child{padding-left:0;border-left:0}
+.rf .v{font-size:14px;font-weight:600;display:flex;align-items:center;gap:8px}
+.rsp{flex:1}
+.pill{display:inline-flex;align-items:center;gap:8px;min-height:24px;padding:0 10px;border:1px solid var(--text);border-radius:2px;font-family:var(--fm);font-size:11px;letter-spacing:.06em;text-transform:uppercase;font-weight:500}
+.pill i{width:8px;height:8px;background:var(--ember)}.pill.ok i{background:var(--verd)}.pill.n i{background:var(--neu)}
+.pill.ok{border-color:var(--verd)}
+.btn{min-height:36px;display:inline-flex;align-items:center;gap:10px;padding:0 14px;border:1px solid var(--text);border-radius:4px;background:transparent;font-family:var(--fm);font-size:11.5px;letter-spacing:.06em;text-transform:uppercase;white-space:nowrap}
+.btn:hover:not(:disabled){background:var(--text);color:var(--bg)}
+.btn.pri{background:var(--text);color:var(--bg);font-weight:500}.btn.pri:hover:not(:disabled){background:#fff}
+.btn.q{border-color:var(--border)}
+.btn:disabled{border-color:#3A454B;color:var(--dis);cursor:not-allowed;background:transparent}
+.btn.sm{min-height:28px;padding:0 10px;font-size:10.5px}
+.seg{display:inline-flex;border:1px solid var(--border);border-radius:4px;overflow:hidden}
+.seg button{min-height:32px;padding:0 12px;border:0;background:none;font-family:var(--fm);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--text2)}
+.seg button[aria-pressed=true]{background:var(--text);color:var(--bg);font-weight:500}
+.score{display:inline-flex;align-items:baseline;gap:6px;background:none;border:0;border-bottom:1px dotted var(--text2);padding:0;font-family:var(--fm);font-size:14px;font-weight:500;color:var(--text)}
+.score small{font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--text2)}
+.score:hover{border-bottom-color:var(--text)}
+/* tags */
+.tag{display:inline-flex;align-items:center;gap:6px;min-height:20px;padding:0 7px;border:1px solid var(--border);border-radius:2px;font-family:var(--fm);font-size:10px;letter-spacing:.08em;text-transform:uppercase;white-space:nowrap;color:var(--text)}
+.tag:before{content:"";width:7px;height:7px;background:currentColor;flex:none}
+.t-obs{border-color:var(--ember);background:var(--ember-s);color:var(--ember-t)}
+.t-inf{border-style:dashed;color:var(--text)}.t-inf:before{background:none;border:1.5px dashed currentColor}
+.t-fc{border-style:dashed;border-color:var(--ember);color:var(--ember-t)}.t-fc:before{background:none;border:1.5px dotted currentColor}
+.t-sim{border-style:dotted;color:var(--text2);background-image:repeating-linear-gradient(135deg,rgba(241,240,234,.07) 0 4px,transparent 4px 8px)}.t-sim:before{background:none;border:1.5px dotted currentColor}
+.t-ok{border-color:var(--verd);background:var(--verd-s);color:var(--verd-t)}
+.t-n{color:var(--text2)}.t-n:before{display:none}
+.simbox{border:1px dotted var(--border);border-radius:4px;background-image:repeating-linear-gradient(135deg,rgba(241,240,234,.035) 0 6px,transparent 6px 12px)}
+/* workspace */
+.wsbar{position:sticky;top:0;z-index:5;background:var(--bg);border-bottom:1px solid var(--line);padding:12px 24px;display:flex;align-items:center;gap:16px}
+.wsbar.rep{background:var(--raised)}
+.wsbar .m{flex:1;min-width:0}.wsbar .m b{font-weight:600}
+.wsbar .m p{color:var(--text2);font-size:13px;margin-top:1px}
+.pg{padding:22px 24px 40px}
+.ph{display:flex;align-items:flex-end;justify-content:space-between;gap:20px;margin-bottom:18px}
+.ph h2{font-size:26px;font-weight:700;font-stretch:108%;line-height:1.1}
+.ph p{color:var(--text2);margin-top:4px;max-width:70ch}
+.sec{border-top:1px solid var(--line);padding:16px 0}
+.sec>header{display:flex;align-items:center;gap:10px;margin-bottom:8px}
+.sec h3{font-size:15px;font-weight:700;font-stretch:105%}
+.sec p{max-width:68ch}.sec p+p{margin-top:8px}.muted{color:var(--text2)}
+.ov{display:grid;grid-template-columns:minmax(0,1fr) 400px;gap:32px}
+.ovr{position:sticky;top:76px;align-self:start;display:flex;flex-direction:column;gap:12px}
+.canvas{background:#0B0F11;border:1px solid var(--line);border-radius:4px;position:relative;overflow:hidden}
+.canvas svg{display:block;width:100%;height:auto}
+.cvtool{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:10px}
+.lay{display:inline-flex;align-items:center;gap:8px;min-height:32px;padding:0 10px;border:1px solid var(--border);border-radius:4px;background:none;font-size:12.5px}
+.lay[aria-pressed=true]{background:var(--raised);border-color:var(--text)}.lay[aria-pressed=false]{color:var(--dis)}
+.lay svg{flex:none}
+.chips{display:flex;gap:6px;flex-wrap:wrap}
+.chip{min-height:28px;padding:0 10px;border:1px solid var(--line);border-radius:2px;background:none;font-family:var(--fm);font-size:11px}
+.chip[aria-pressed=true]{border-color:var(--text);background:var(--raised)}
+.tbl{width:100%;border-collapse:collapse;font-size:13px}
+.tbl th{font-family:var(--fm);font-weight:400;font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--text2);text-align:left;padding:8px 10px 8px 0;border-bottom:1px solid var(--border)}
+.tbl td{padding:9px 10px 9px 0;border-bottom:1px solid var(--line);vertical-align:top}
+.tbl tr.row{cursor:pointer}.tbl tr.row:hover td{background:var(--surface)}
+.tbl td.n{font-family:var(--fm);font-variant-numeric:tabular-nums;white-space:nowrap}
+.stages{display:flex;gap:0;margin:8px 0}
+.stg{flex:1;padding:8px 8px 8px 0;border-top:3px solid var(--line);font-size:12px;color:var(--text2)}
+.stg.done{border-top-color:var(--ember);color:var(--text)}.stg.cur{border-top-color:var(--ember);color:var(--text);font-weight:600}
+.stg.next{border-top:3px dotted var(--ember);color:var(--ember-t)}
+.stg small{display:block;font-family:var(--fm);font-size:9.5px;letter-spacing:.08em;text-transform:uppercase}
+details{border-top:1px solid var(--line)}
+details>summary{list-style:none;cursor:pointer;min-height:36px;display:flex;align-items:center;gap:8px;padding:6px 0;font-weight:600;font-size:13px}
+details>summary::-webkit-details-marker{display:none}
+details>summary:before{content:"+";font-family:var(--fm);width:14px;color:var(--text2)}
+details[open]>summary:before{content:"−"}
+details .dd{padding:0 0 12px 22px;color:var(--text2);font-size:13px}
+.bar2{display:flex;align-items:center;gap:10px;margin:6px 0;font-size:12.5px}
+.bar2 .l{width:200px;flex:none}.bar2 .t{flex:1;height:10px;background:var(--line);position:relative}.bar2 .f{position:absolute;inset:0 auto 0 0}
+.bar2 .vv{width:150px;flex:none;font-family:var(--fm);font-size:12px}
+.fgrid{display:grid;grid-template-columns:150px repeat(3,minmax(0,1fr));border:1px solid var(--border);border-radius:4px;overflow:hidden}
+.fgrid>div{padding:12px 14px;border-top:1px solid var(--line);font-size:13px}
+.fgrid>div:not(.l){border-left:1px solid var(--line)}
+.fgrid .l{font-family:var(--fm);font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--text2)}
+.fgrid .top{border-top:0}.fgrid .win{background:var(--raised)}
+.fgrid .v{font-family:var(--fm);font-size:15px;font-weight:500;display:block}
+.fgrid svg{width:100%;height:auto;display:block}
+.act{display:grid;grid-template-columns:40px minmax(0,1fr) auto;gap:12px;padding:14px 0;border-top:1px solid var(--line);align-items:start}
+.act .id{font-family:var(--fm);font-weight:500}.act h4{font-size:15px;font-weight:700}
+.tri{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-top:8px;font-size:12.5px}
+.tri span{display:block;font-family:var(--fm);font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--text2)}
+.callout{border:1px solid var(--border);border-radius:4px;padding:14px 16px;background:var(--surface)}
+.callout.cf{border-color:var(--ember)}
+.callout h4{font-size:15px;font-weight:700;margin-bottom:6px}
+.callout ul{margin:6px 0 0;padding-left:18px;color:var(--text2)}
+.prog{height:6px;background:var(--line);margin-top:6px}.prog i{display:block;height:100%;background:var(--text)}
+.claim{display:grid;grid-template-columns:28px minmax(0,1fr) 200px;gap:14px;padding:14px 0;border-top:1px solid var(--line);align-items:start}
+.sig{width:20px;height:20px;margin-top:2px}
+.claim h4{font-size:15px;font-weight:700}
+.claim .res{text-align:right;display:flex;flex-direction:column;gap:6px;align-items:flex-end;font-family:var(--fm);font-size:13px}
+.hist{display:flex;align-items:flex-end;gap:3px;height:80px;margin-top:8px}.hist i{flex:1;background:var(--ember);opacity:.75;min-height:1px}
+/* rail */
+.rl{padding:16px 18px 40px}
+.rl h3{font-size:19px;font-weight:700;font-stretch:106%;line-height:1.2;margin:8px 0 6px}
+.rl .kv{display:grid;grid-template-columns:96px 1fr;gap:0}
+.rl .kv dt,.rl .kv dd{padding:8px 0;border-top:1px solid var(--line);margin:0;font-size:13px}
+.rl .kv dt{font-family:var(--fm);font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--text2);padding-top:11px}
+.lk{background:none;border:0;padding:0;color:var(--text);text-decoration:underline;text-decoration-color:var(--border);text-underline-offset:3px;text-align:left}
+.lk:hover{text-decoration-color:var(--text)}
+.cb{display:flex;align-items:center;gap:10px}.cb .t{flex:1;height:6px;background:var(--line)}.cb .f{height:100%;background:var(--text)}
+/* timeline */
+.tlh{display:flex;align-items:center;gap:10px;margin-bottom:6px}
+.tlh .rd{font-family:var(--fm);font-size:12px;margin-left:8px;white-space:nowrap;display:inline-flex;gap:8px;align-items:center}.tlh>*{flex:none}.tlh>.k{flex:1 1 0;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.trk{position:relative;height:64px;margin:0 6px}
+.trk .ln{position:absolute;left:0;top:22px;height:0;border-top:3px solid var(--ember)}
+.trk .fz{position:absolute;top:10px;height:26px;border:1px dotted var(--ember);background-image:repeating-linear-gradient(135deg,rgba(212,87,47,.12) 0 4px,transparent 4px 8px)}
+.trk .fz span{position:absolute;left:8px;top:5px;font-family:var(--fm);font-size:9.5px;letter-spacing:.08em;color:var(--ember-t);text-transform:uppercase}
+.trk .ev{position:absolute;top:17px;width:11px;height:11px;margin-left:-5px;background:var(--text);box-shadow:0 0 0 3px var(--surface)}
+.trk .ev.off{background:var(--dis)}
+.trk .el{position:absolute;top:36px;transform:translateX(-50%);font-family:var(--fm);font-size:9.5px;color:var(--text2);white-space:nowrap;text-align:center;line-height:1.25}
+.trk .now{position:absolute;top:8px;bottom:14px;border-left:1px dashed var(--text2)}
+.trk .nl{position:absolute;top:-4px;transform:translateX(-50%);font-family:var(--fm);font-size:9px;letter-spacing:.08em;color:var(--text2)}
+.trk input{position:absolute;left:-6px;right:-6px;top:6px;width:calc(100% + 12px);height:32px;margin:0;background:none;-webkit-appearance:none;appearance:none}
+.trk input::-webkit-slider-runnable-track{height:32px;background:none}
+.trk input::-webkit-slider-thumb{-webkit-appearance:none;width:4px;height:32px;background:var(--text);border:0;border-radius:0;box-shadow:0 0 0 2px var(--surface)}
+.trk input::-moz-range-track{height:32px;background:none}.trk input::-moz-range-thumb{width:4px;height:32px;background:var(--text);border:0;border-radius:0}
+/* drawer */
+#scrim{position:fixed;inset:0;background:rgba(5,8,9,.6);z-index:40;display:none}
+#drawer{position:fixed;top:0;right:0;bottom:0;width:560px;max-width:100vw;background:var(--surface);border-left:1px solid var(--border);z-index:41;display:none;flex-direction:column}
+#drawer.on,#scrim.on{display:flex}#scrim.on{display:block}
+#drawer .dh{padding:18px 22px;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;gap:12px;align-items:flex-start}
+#drawer .db{padding:6px 22px 22px;overflow:auto;flex:1}
+#drawer h2{font-size:20px;font-weight:700;font-stretch:106%}
+.hold{position:relative;overflow:hidden;min-height:48px;width:100%;border:1px solid var(--text);border-radius:4px;background:transparent;font-family:var(--fm);font-size:12px;letter-spacing:.07em;text-transform:uppercase;font-weight:500;user-select:none;touch-action:none}
+.hold i{position:absolute;inset:0 auto 0 0;width:0;background:var(--text);opacity:.25}
+.hold span{position:relative}
+.hold:disabled{border-color:#3A454B;color:var(--dis);cursor:not-allowed}
+.ap{border:1px solid var(--border);border-radius:4px;padding:12px 14px;margin-top:10px}.ap.ok{border-color:var(--verd)}
+.ap .r{display:flex;justify-content:space-between;gap:10px;align-items:center}
+#spec{position:fixed;inset:0;background:var(--bg);z-index:60;display:none;overflow:auto}
+#spec.on{display:block}
+.sp{max-width:1040px;margin:0 auto;padding:32px 32px 80px}
+.sp h1{font-size:32px;font-weight:700;font-stretch:110%}.sp h2{font-size:20px;font-weight:700;margin:36px 0 10px;border-top:1px solid var(--border);padding-top:16px}
+.sp h3{font-size:16px;margin:0}.sp code,.sp pre{font-family:var(--fm);font-size:12px}
+.sp pre{background:var(--surface);border:1px solid var(--line);border-radius:4px;padding:12px;overflow:auto;white-space:pre-wrap}
+.spc{border-top:1px solid var(--line);padding:14px 0;display:grid;grid-template-columns:200px 1fr;gap:20px}
+.spc dl{display:grid;grid-template-columns:90px 1fr;gap:4px 12px;font-size:12.5px}.spc dt{font-family:var(--fm);font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--text2);padding-top:2px}.spc dd{margin:0}
+#toast{position:fixed;left:236px;bottom:150px;z-index:70;background:var(--text);color:var(--bg);padding:10px 14px;border-radius:4px;font-size:13px;display:none;max-width:420px}
+.gl{font:500 11px var(--fm);fill:#F1F0EA;paint-order:stroke;stroke:#0B0F11;stroke-width:3px;stroke-linejoin:round}
+.gl.d{fill:#9AA3A8}.gl.e{fill:#EC7B56}.gl.v{fill:#52B8A1}
+.gn{cursor:pointer}.gn:hover .hl{opacity:.6}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+</style>
+<div id="app">
+<aside id="nav" aria-label="HALT systems"></aside>
+<header id="rib"></header>
+<main id="ws" tabindex="-1"></main>
+<aside id="rail" aria-label="Evidence rail"></aside>
+<footer id="tl"></footer>
+</div>
+<div id="scrim"></div><div id="drawer" role="dialog" aria-modal="true" aria-label="Approval"></div>
+<div id="spec" role="dialog" aria-modal="true" aria-label="Component specifications"></div>
+<div id="toast" role="status" aria-live="polite"></div>
+<style>
+.wf{display:flex;align-items:stretch;margin:0 0 18px;border:1px solid var(--line);border-radius:4px;overflow:hidden;background:var(--surface)}
+.wf button{flex:1;display:flex;flex-direction:column;gap:2px;align-items:flex-start;text-align:left;padding:10px 14px;border:0;border-left:1px solid var(--line);background:none;min-width:0;border-top:3px solid transparent}
+.wf button:first-child{border-left:0}
+.wf button[aria-current=step]{background:var(--raised);border-top-color:var(--text)}
+.wf b{font-size:13px;font-weight:600}.wf small{font-family:var(--fm);font-size:10px;letter-spacing:.07em;text-transform:uppercase;color:var(--text2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}
+.wf button:hover{background:var(--raised)}
+.xsplit{display:grid;grid-template-columns:minmax(0,1fr) 300px;gap:24px;margin-top:16px}
+.srch{display:flex;gap:8px;align-items:center}
+.srch input{min-height:32px;background:var(--bg);border:1px solid var(--border);border-radius:4px;color:var(--text);padding:0 10px;font:inherit;font-size:13px;width:220px}
+.step{display:grid;grid-template-columns:26px 1fr;gap:10px;padding:8px 0;border-top:1px solid var(--line);font-size:13px}
+.step .nn{font-family:var(--fm);font-size:11px;color:var(--text2);padding-top:2px}
+.futs{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:0;border:1px solid var(--border);border-radius:4px;overflow:hidden}
+.fut{padding:12px 14px;border-left:1px solid var(--line);min-width:0}.fut:first-child{border-left:0}.fut.win{background:var(--raised)}
+.fut h4{font-size:15px;font-weight:700;margin:4px 0 8px}
+.strip{margin-top:8px}.strip svg{display:block;width:100%;height:auto}
+.mtab{width:100%;border-collapse:collapse;font-size:13px;margin-top:6px}
+.mtab td,.mtab th{padding:9px 12px;border-top:1px solid var(--line);text-align:left;vertical-align:top}
+.mtab th{font-family:var(--fm);font-weight:400;font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--text2)}
+.mtab td.l{font-family:var(--fm);font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--text2);width:150px}
+.mtab .v{font-family:var(--fm);font-size:14px;font-weight:500;display:block}
+.mtab td.win{background:var(--raised)}
+.ech{display:flex;align-items:center;gap:12px;margin:12px 0}
+.ech input[type=range]{flex:1;accent-color:#F1F0EA}
+.prov{border:1px solid var(--border);border-radius:4px;padding:14px 16px;background:var(--surface);display:grid;grid-template-columns:1fr 1fr;gap:18px}
+.prov h4{font-size:14px;margin-bottom:4px}
+.ok{color:var(--verd-t)}
+.cst td:nth-child(3){font-family:var(--fm);font-size:12.5px}
+.pk{display:grid;grid-template-columns:28px minmax(0,1fr) auto;gap:14px;padding:14px 0;border-top:1px solid var(--line);align-items:start}
+.pk h4{font-size:15px;font-weight:700}.pk .r{text-align:right;font-family:var(--fm);font-size:13px;display:flex;flex-direction:column;gap:6px;align-items:flex-end}
+.xmode{display:flex;gap:14px;align-items:center;flex-wrap:wrap}
+.exec{font-size:17px;line-height:1.55;max-width:60ch}.exec p{margin-bottom:12px}
+.kvt{display:grid;grid-template-columns:200px 1fr;border:1px solid var(--line);border-radius:4px}
+.kvt dt,.kvt dd{margin:0;padding:8px 12px;border-top:1px solid var(--line);font-size:13px}.kvt dt:first-of-type,.kvt dd:first-of-type{border-top:0}
+.kvt dt{font-family:var(--fm);font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--text2);padding-top:11px}
+.xg .gl{font-size:15px;stroke-width:4px}.xm .gl{font-size:22px}
+</style>
+<script>
+'use strict';
+const $=(s,r)=>(r||document).querySelector(s), $$=(s,r)=>Array.from((r||document).querySelectorAll(s));
+const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
+const toS=t=>{const p=t.split(':').map(Number);return p[0]*3600+p[1]*60+(p[2]||0)};
+const fmt=s=>{s=Math.round(s);const h=Math.floor(s/3600),m=Math.floor(s%3600/60),x=s%60;return [h,m,x].map(n=>String(n).padStart(2,'0')).join(':')};
+const dur=s=>{s=Math.max(0,Math.round(s));return 'T+'+String(Math.floor(s/60)).padStart(2,'0')+':'+String(s%60).padStart(2,'0')};
+const T0=toS('09:41:12'),TE=toS('09:52:18'),HOR=600,DET=toS('09:52:30');
+const EV=[
+ {n:1,t:'09:41:12',title:'OAuth consent phishing',src:'Mail gateway · message trace MT-88241',conf:.97,att:'T1566.002 · Phishing: Spearphishing Link',d:'A message with a consent link reaches M. Verma, Finance Ops.'},
+ {n:2,t:'09:42:36',title:'Suspicious authentication',src:'Entra sign-in logs · SL-4471',conf:.93,att:'T1078.004 · Valid Accounts: Cloud Accounts',d:'Sign-in from a new ASN (AS64500) with a user agent never seen for this account.'},
+ {n:3,t:'09:43:21',title:'MFA modification',src:'Entra audit log · AU-9120',conf:.96,att:'T1556.006 · Modify Authentication Process: MFA',d:'A second authenticator is added within a minute of the sign-in.'},
+ {n:4,t:'09:43:50',title:'Malicious OAuth grant',src:'Entra audit log · AU-9124',conf:.94,att:'T1528 · Steal Application Access Token',d:'DocuSync Pro is granted Mail.Read, Files.ReadWrite.All and offline_access.'},
+ {n:5,t:'09:47:03',title:'Session-token replay',src:'Entra sign-in logs · SL-4502',conf:.91,att:'T1550.004 · Use Alternate Authentication Material: Web Session Cookie',d:'Sessions S-1 and S-2 are replayed from AS64500; S-2 on the finance portal.'},
+ {n:6,t:'09:52:18',title:'Finance-resource discovery',src:'Graph activity log · GA-30918',conf:.89,att:'T1213.002 · Data from Information Repositories: SharePoint',d:'The Finance-Close library is enumerated: 214 requests in four minutes.'}
+];
+EV.forEach(e=>e.s=toS(e.t));
+const NODES={
+ phish:{x:60,y:90,k:'att',l:'Phishing sender',st:1},asn:{x:60,y:200,k:'att',l:'ASN AS64500',st:2},
+ user:{x:200,y:150,k:'user',l:'M. Verma',st:1},grant:{x:360,y:70,k:'att',l:'DocuSync Pro',st:4},
+ s1:{x:360,y:160,k:'ses',l:'Session S-1',st:5},s2:{x:360,y:250,k:'ses',l:'Session S-2',st:5},s3:{x:360,y:340,k:'ses',l:'S-3 (forecast)',fc:1},
+ fapi:{x:570,y:90,k:'api',l:'Finance API',biz:1},payroll:{x:690,y:185,k:'proc',l:'Payroll',biz:1},pay:{x:690,y:275,k:'proc',l:'Payment processing',biz:1},
+ recon:{x:690,y:365,k:'proc',l:'Reconciliation',biz:1},supp:{x:520,y:215,k:'proc',l:'Customer support',biz:1},
+ db:{x:890,y:225,k:'db',l:'Finance database',biz:1},staff:{x:60,y:380,k:'user',l:'Finance staff',biz:1}
+};
+// kinds: obs, inf, fc ; cut = action id
+const EDGES=[
+ {id:'e_ph_u',a:'phish',b:'user',k:'obs',st:1,ev:'EV-01',bl:0},
+ {id:'e_asn_u',a:'asn',b:'user',k:'obs',st:2,ev:'EV-02',bl:0},
+ {id:'i_ph_asn',a:'phish',b:'asn',k:'inf',st:2,bl:-24,lk:.74,why:'Sender infrastructure and sign-in ASN share a hosting provider.'},
+ {id:'e_u_g',a:'user',b:'grant',k:'obs',st:4,ev:'EV-04',bl:0},
+ {id:'e_u_s1',a:'user',b:'s1',k:'obs',st:5,ev:'EV-05',bl:10},
+ {id:'e_u_s2',a:'user',b:'s2',k:'obs',st:5,ev:'EV-05',bl:-10},
+ {id:'i_g_s1',a:'grant',b:'s1',k:'inf',st:5,bl:-22,lk:.78,why:'Token claims match the grant scope. The minting itself is not logged.'},
+ {id:'i_g_s2',a:'grant',b:'s2',k:'inf',st:5,bl:-34,lk:.78,why:'Token claims match the grant scope. The minting itself is not logged.'},
+ {id:'e_s1_fapi',a:'s1',b:'fapi',k:'obs',st:6,ev:'EV-06',bl:0,cut:'A2'},
+ {id:'e_s2_pay',a:'s2',b:'pay',k:'obs',st:6,ev:'EV-06',bl:0,cut:'A2'},
+ {id:'f_g_fapi',a:'grant',b:'fapi',k:'fc',lk:.74,bl:14,cut:'A1'},
+ {id:'f_fapi_db',a:'fapi',b:'db',k:'fc',lk:.82,bl:18},
+ {id:'f_pay_db',a:'pay',b:'db',k:'fc',lk:.41,bl:14},
+ {id:'f_g_recon',a:'grant',b:'recon',k:'fc',lk:.33,bl:-40,cut:'A1'},
+ {id:'f_recon_db',a:'recon',b:'db',k:'fc',lk:.33,bl:14},
+ {id:'f_g_payroll',a:'grant',b:'payroll',k:'fc',lk:.21,bl:-10,cut:'A3'},
+ {id:'f_payroll_db',a:'payroll',b:'db',k:'fc',lk:.21,bl:12},
+ {id:'f_u_s3',a:'user',b:'s3',k:'fc',lk:.38,bl:-26},
+ {id:'f_s3_pay',a:'s3',b:'pay',k:'fc',lk:.38,bl:-12,cut:'A3'}
+];
+const DEPS=[['fapi','pay'],['fapi','payroll'],['fapi','recon'],['supp','fapi'],['pay','db',-14],['payroll','db',-12],['recon','db',-14]];
+const SPINE=[['staff','recon',-30],['recon','db',-30]];
+const PATHS=[
+ {id:'P1',n:'Phishing sender → M. Verma → DocuSync Pro → Finance API → database',e:['e_ph_u','e_u_g','f_g_fapi','f_fapi_db'],a:'A1',fc:1},
+ {id:'P2',n:'DocuSync Pro → Reconciliation → database',e:['e_u_g','f_g_recon','f_recon_db'],a:'A1',fc:1},
+ {id:'P3',n:'New session S-3 → Payment processing → database',e:['f_u_s3','f_s3_pay','f_pay_db'],a:'A3',fc:1},
+ {id:'P4',n:'Session S-1 → Finance API → database',e:['e_u_s1','e_s1_fapi','f_fapi_db'],a:'A2'},
+ {id:'P5',n:'Session S-2 → Payment processing → database',e:['e_u_s2','e_s2_pay','f_pay_db'],a:'A2'},
+ {id:'P6',n:'DocuSync Pro → Payroll → database',e:['e_u_g','f_g_payroll','f_payroll_db'],a:'A3',fc:1}
+];
+const ACTS=[
+ {id:'A1',t:'Revoke malicious OAuth grant',imp:'1 user: M. Verma',rb:'RB-1 · about 30 s',pol:'IR-OAUTH-02',who:'Tier-2 analyst or SOC lead',scope:'Entra: DelegatedPermissionGrant.ReadWrite.All',ent:'grant',blocks:'P1, P2'},
+ {id:'A2',t:'Kill two compromised sessions',imp:'1 user signs in again',rb:'RB-2 · about 1 min',pol:'IR-SESS-01',who:'Tier-2 analyst',scope:'Entra: User.RevokeSessions.All',ent:'s1',blocks:'P4, P5'},
+ {id:'A3',t:'Apply step-up authentication',imp:'2 finance approvers, one prompt',rb:'RB-3 · about 20 s',pol:'IR-CA-05',who:'Tier-2 analyst + Finance Ops owner (S. Iyer)',scope:'Entra: Policy.ReadWrite.ConditionalAccess',ent:'s3',blocks:'P3, P6'}
+];
+const STAGES=['Initial access','Credential & persistence','Token abuse','Discovery','Collection','Exfiltration'];
+const BIZ=[
+ ['Payroll','640 employees','18:00 run','Pay run missed; paid by hand after hours'],
+ ['Payment processing','≈ 85 users','16:00 supplier run','Supplier payments and refunds queue'],
+ ['Reconciliation','22 users','17:00 daily','Close slips by the length of the outage'],
+ ['Customer support','38 agents','Continuous','Invoice and refund lookups wait'],
+ ['Finance API','≈ 310 users','Continuous','All four processes lose their data source']
+];
+const ENT={
+ phish:{t:'Attacker-controlled sender',ty:'Attacker infrastructure',c:'obs',ev:[1],src:'Mail gateway · MT-88241',ts:'09:41:12Z',cf:.97,why:[['Message trace shows a consent link sent to M. Verma','Strong'],['Sender domain registered 6 days earlier','Strong'],['Shares hosting with the ASN in EV-02','Moderate · inferred']],lo:'An allow-list entry for this sender would lower it.',att:'T1566.002 · Phishing: Spearphishing Link',biz:'None directly. This is where the chain starts.',act:null},
+ asn:{t:'Unfamiliar ASN · AS64500',ty:'Attacker infrastructure',c:'obs',ev:[2,5],src:'Entra sign-in logs · SL-4471, SL-4502',ts:'09:42:36Z',cf:.92,why:[['First sign-in from this ASN for any finance user','Strong'],['User agent never seen for this account','Strong'],['Not on a corporate VPN or travel list','Moderate']],lo:'A confirmed travel or VPN record would lower it.',att:'T1078.004 · Valid Accounts: Cloud Accounts',biz:'None directly. Blocking it at the edge is not in the minimum plan.',act:null},
+ user:{t:'M. Verma · Finance Ops',ty:'User account',c:'obs',ev:[1,2,3,4,5],src:'Entra sign-in and audit logs',ts:'09:41:12Z – 09:47:03Z',cf:.99,why:[['Identity confirmed by directory','Strong'],['Five of six events touch this account','Strong']],lo:'Not applicable. This is a fact, not an estimate.',att:'T1556.006 · Modify Authentication Process: MFA',biz:'Re-sign-in only. One user, no service interrupted.',act:'A2'},
+ grant:{t:'DocuSync Pro · OAuth grant',ty:'Third-party application',c:'obs',ev:[4],src:'Entra audit log · AU-9124',ts:'09:43:50Z',cf:.94,why:[['Consent event recorded with the scopes granted','Strong'],['Publisher unverified; registered 6 days earlier','Strong'],['Granted 29 s after the MFA change','Moderate']],lo:'A change ticket approving this app would lower it.',att:'T1528 · Steal Application Access Token',biz:'Holds Mail.Read and Files.ReadWrite.All. Revoking it affects 1 user.',act:'A1'},
+ s1:{t:'Session S-1 · replayed',ty:'Session',c:'obs',ev:[5,6],src:'Entra sign-in logs · SL-4502',ts:'09:47:03Z',cf:.91,why:[['Token reused from AS64500 after issue to another device','Strong'],['Calls the Finance API at 09:52','Strong']],lo:'A matching device record would lower it.',att:'T1550.004 · Web Session Cookie',biz:'Killing it signs M. Verma in again. No service interrupted.',act:'A2'},
+ s2:{t:'Session S-2 · replayed',ty:'Session',c:'obs',ev:[5,6],src:'Entra sign-in logs · SL-4502',ts:'09:47:03Z',cf:.91,why:[['Token reused from AS64500','Strong'],['Opens the finance portal','Strong']],lo:'A matching device record would lower it.',att:'T1550.004 · Web Session Cookie',biz:'Killing it signs M. Verma in again. No service interrupted.',act:'A2'},
+ s3:{t:'Session S-3 · forecast',ty:'Session (does not exist yet)',c:'fc',ev:[],src:'EchoLab forecast · seed 2417',ts:'Within 10 min',lk:.38,lkn:'2,280 of 6,000 simulated rollouts mint a new session',att:'T1550.004 · Web Session Cookie',biz:'Would reach Payment processing, a 16:00 dependency.',act:'A3'},
+ fapi:{t:'Finance API',ty:'Business service',c:'biz',ev:[6],src:'Graph activity log · GA-30918; dependency map v14',ts:'09:52:18Z',cf:.89,why:[['Library enumeration came through this API','Strong']],lo:'',att:'T1213.002 · Data from Information Repositories',biz:'Four processes depend on it, about 310 users. Isolating it stops Payroll, Payment processing and Reconciliation.',act:'A2'},
+ payroll:{t:'Payroll',ty:'Business service',c:'biz',ev:[],src:'Dependency map v14',ts:'Static',cf:null,att:'None observed',biz:'640 employees. The 18:00 pay run needs Payment processing and the finance database.',act:'A3'},
+ pay:{t:'Payment processing',ty:'Business service',c:'biz',ev:[6],src:'Dependency map v14; GA-30918',ts:'09:52:18Z',cf:null,att:'T1550.004 · session S-2 reaches it',biz:'About 85 users. The 16:00 supplier run and refunds.',act:'A2'},
+ recon:{t:'Reconciliation',ty:'Business service',c:'biz',ev:[],src:'Dependency map v14',ts:'Static',cf:null,att:'None observed',biz:'22 users. The 17:00 daily reconciliation.',act:'A1'},
+ supp:{t:'Customer support',ty:'Business service',c:'biz',ev:[],src:'Dependency map v14',ts:'Static',cf:null,att:'None observed',biz:'38 agents. Reads the Finance API. No attack path touches it.',act:null},
+ staff:{t:'Finance staff',ty:'User group',c:'biz',ev:[],src:'Directory',ts:'Static',cf:null,att:'None observed',biz:'The people running close and payroll. The business-critical path HALT keeps open.',act:null},
+ db:{t:'Finance database',ty:'Primary asset at risk',c:'fc',ev:[6],src:'EchoLab forecast · seed 2417',ts:'Within 10 min',lk:.82,lkn:'4,912 of 6,000 simulated rollouts reach it',att:'T1213 · Data from Information Repositories',biz:'All five finance processes need it. Isolating it ends the attack and every process below it.',act:'A1'}
+};
+const SC={
+ inc:{t:'Incident confidence',parts:[['Six observed events in a coherent order','EV-01 – EV-06','Strong'],['The OAuth grant and the session replay share one ASN','EV-02, EV-05','Strong'],['No benign explanation found (travel, new device policy)','Sign-in logs','Moderate'],['Two links are inferred, not logged','I-01, I-02','Limits']],lo:'Confirmation that M. Verma approved DocuSync Pro would lower this. Evidence of a second foothold would raise it.'},
+ rc:{t:'Root-cause confidence',parts:[['Consent link, MFA change and grant occur within 2.5 min','EV-01, EV-03, EV-04','Strong'],['Credential stuffing rejected: no failed-login burst','SL-4471','Moderate'],['Token minting by the grant is inferred','I-02','Limits']],lo:'A log of the grant minting tokens would raise it.'},
+ fc:{t:'Forecast likelihood',sim:1,parts:[['4,912 of 6,000 simulated rollouts reach the finance database within 10 min','EchoLab · seed 2417','Simulated'],['Model uses observed paths P4 and P5 plus four forecast paths','ThreadGraph v14','Simulated'],['Not a measured probability','','Limits']],lo:'Changing the horizon or the attacker model changes this number.'}
+};
+const STATES=[
+ {k:'new',n:'New incident',status:'New',tone:'n',stage:0,conf:.52,since:8,max:2,fc:0,sim:0,plan:0,appr:'No plan yet',
+  b:{h:'New incident',p:'Two events are ingested. Nothing has been correlated, so there are no links, forecasts or recommendations yet.',go:['Start correlation','correlating']}},
+ {k:'correlating',n:'Correlating evidence',status:'Correlating',tone:'n',stage:2,conf:.71,since:41,max:2,fc:0,sim:0,plan:0,appr:'No plan yet',auto:1,
+  b:{h:'Correlating evidence',p:'Linking events to accounts, grants and sessions. Inferred links appear dashed until confirmed.'}},
+ {k:'forecast',n:'Forecast ready',status:'Forecast ready',tone:'n',stage:3,conf:.87,since:190,max:6,fc:1,sim:0,plan:0,appr:'No plan yet',
+  b:{h:'Forecast ready',p:'Six paths are forecast to reach the finance database. These are forecasts, not observed events.',go:['Run EchoLab simulation','simulating']}},
+ {k:'simulating',n:'Simulation running',status:'Simulating',tone:'n',stage:3,conf:.87,since:300,max:6,fc:1,sim:1,plan:0,appr:'No plan yet',auto:1,
+  b:{h:'Simulation running',p:'Replaying the incident under three responses. Results are simulated and will be labelled that way.'}},
+ {k:'plan',n:'Plan available',status:'Plan available',tone:'n',stage:3,conf:.87,since:450,max:6,fc:1,sim:2,plan:1,appr:'Ready for review',
+  b:{h:'Plan available',p:'SafeCut found a minimum-safe response of three reversible actions. Nothing has been executed.',go:['Review and approve','approval']}},
+ {k:'approval',n:'Approval pending',status:'Active containment',tone:'e',stage:3,conf:.87,since:882,max:6,fc:1,sim:2,plan:1,appr:'Awaiting analyst approval',
+  b:{h:'Approval pending',p:'Two approvals are required before anything runs. Execution needs a deliberate hold.',go:['Open approval','drawer']}},
+ {k:'executing',n:'Action executing',status:'Executing',tone:'e',stage:3,conf:.87,since:930,max:6,fc:1,sim:2,plan:1,appr:'Approved · executing',auto:1,
+  b:{h:'Action executing',p:'Applying actions one at a time. Rollback stays armed throughout.'}},
+ {k:'contained',n:'Contained',status:'Contained',tone:'ok',stage:3,conf:.87,since:960,max:6,fc:1,sim:2,plan:1,appr:'Approved · executed',
+  b:{h:'Contained',p:'Observed after execution: 0 of 6 paths reachable, 0 critical services interrupted, 3 users affected.',go:['Review rollback','rollback']}},
+ {k:'rollback',n:'Rollback available',status:'Contained',tone:'ok',stage:3,conf:.87,since:1210,max:6,fc:1,sim:2,plan:1,appr:'Executed · rollback armed',
+  b:{h:'Rollback available',p:'All three actions can be reversed in about two minutes. The window is open until 10:36Z or until new telemetry arrives.'}},
+ {k:'conflict',n:'Policy conflict',status:'Blocked by policy',tone:'e',stage:3,conf:.87,since:900,max:6,fc:1,sim:2,plan:2,appr:'Blocked by policy',
+  b:{h:'Policy conflict',p:'A3 needs a Finance Ops co-approval that cannot be given. HALT will not run a partial plan without an analyst decision.',go:['See policy conflict','policies']}},
+ {k:'nofeasible',n:'No feasible safe plan',status:'No safe plan',tone:'e',stage:3,conf:.87,since:900,max:6,fc:1,sim:2,plan:3,appr:'No plan to approve',
+  b:{h:'No feasible safe plan',p:'No combination of actions blocks all six paths while keeping every critical service running. HALT shows the closest options and what each breaks.',go:['See closest options','safecut']}}
+];
+const POLS=[
+ ['IR-OAUTH-02','Revoke third-party OAuth grants','Tier-2 analyst or SOC lead','A1','Grants can be revoked without breaking a business service when the app has a single user.'],
+ ['IR-SESS-01','Terminate user sessions','Tier-2 analyst','A2','Sessions of a user flagged by HALT may be terminated; the user signs in again.'],
+ ['IR-CA-05','Conditional-access change for finance users','Analyst + Finance Ops owner co-approval','A3','Any change that prompts finance users needs the Finance Ops owner or a named delegate.'],
+ ['IR-CHG-03','Finance close change freeze, 09:00–11:00','Exception from Finance Ops owner','A3','No access-policy change for finance users during close without an exception.'],
+ ['IR-DATA-07','Preserve evidence before containment','Automatic · ProofSeal required','All','Events, graph snapshot and solver certificate are sealed before any action runs.'],
+ ['IR-BRK-01','Irreversible actions (account deletion, mailbox purge)','CISO break-glass, two people','None','Never proposed by HALT unless nothing reversible works. Not part of this plan.']
+];
+const OPS={n:'A. Rahman',r:'Tier-2 analyst',perm:['Revoke OAuth grants (IR-OAUTH-02)','Terminate sessions (IR-SESS-01)','Propose conditional-access changes (IR-CA-05)'],no:'Cannot approve IR-CA-05 alone: needs the Finance Ops owner.'};
+
+function mkq(a,b,bl){const mx=(a.x+b.x)/2,my=(a.y+b.y)/2,dx=b.x-a.x,dy=b.y-a.y,L=Math.hypot(dx,dy)||1;return{a:{x:a.x,y:a.y},c:{x:mx-dy/L*bl,y:my+dx/L*bl},b:{x:b.x,y:b.y}}}
+const lp=(p,q,t)=>({x:p.x+(q.x-p.x)*t,y:p.y+(q.y-p.y)*t});
+function qsplit(q,t){const ab=lp(q.a,q.c,t),bc=lp(q.c,q.b,t),m=lp(ab,bc,t);return[{a:q.a,c:ab,b:m},{a:m,c:bc,b:q.b}]}
+function qsub(q,t0,t1){const r=qsplit(q,t1)[0];return t0<=0?r:qsplit(r,t0/t1)[1]}
+function qpt(q,t){const ab=lp(q.a,q.c,t),bc=lp(q.c,q.b,t);return lp(ab,bc,t)}
+const qd=q=>`M${q.a.x.toFixed(1)} ${q.a.y.toFixed(1)}Q${q.c.x.toFixed(1)} ${q.c.y.toFixed(1)} ${q.b.x.toFixed(1)} ${q.b.y.toFixed(1)}`;
+function glyph(n,x,y,o){
+ const s=o.off?'#707D84':'#F1F0EA',f='#0B0F11',w=2.8,bar=o.off?'#707D84':'#3E9C86';
+ let g='';
+ if(n.k==='user')g=`<circle r="11" fill="${f}" stroke="${s}" stroke-width="${w}"/>`;
+ else if(n.k==='ses')g=`<rect x="-15" y="-7" width="30" height="14" rx="7" fill="${f}" stroke="${s}" stroke-width="${w}"${n.fc?' stroke-dasharray="2 4"':''}/>`;
+ else if(n.k==='api')g=`<polygon points="-14,-9 5,-9 15,0 5,9 -14,9" fill="${f}" stroke="${s}" stroke-width="${w}" stroke-linejoin="round"/>`;
+ else if(n.k==='proc')g=`<rect x="-15" y="-10" width="30" height="20" rx="2" fill="${f}" stroke="${s}" stroke-width="${w}"/><rect x="-15" y="5" width="30" height="5" fill="${bar}"/>`;
+ else if(n.k==='db')g=`<path d="M-12 -8a12 4.5 0 0 1 24 0v16a12 4.5 0 0 1 -24 0z" fill="${f}" stroke="${s}" stroke-width="${w}"/><path d="M-12 -8a12 4.5 0 0 0 24 0" fill="none" stroke="${s}" stroke-width="${w}"/>`;
+ else g=`<polygon points="-13,-10 13,-10 0,13" fill="#D4572F" stroke="#D4572F" stroke-width="2" stroke-linejoin="round"/>`;
+ let ev='';
+ if(o.ev)ev=`<rect x="9" y="-18" width="8" height="8" fill="#F1F0EA" stroke="#0B0F11" stroke-width="2"/>`;
+ return `<g transform="translate(${x} ${y})">${g}${ev}</g>`;
+}
+// opts: step, layers{obs,inf,fc,biz,plan}, applied (#actions applied), proposed(bool show plan), conflict(bool), path, sel, mini, off, fcAll, noLabels
+function gSVG(o){
+ const L=o.layers||{obs:1,inf:1,fc:1,biz:1,plan:1},step=o.step==null?6:o.step,ap=o.applied||0,plan=o.proposed||ap>0;
+ const mini=o.mini,pset=o.path&&o.path!=='all'?PATHS.find(p=>p.id===o.path).e:null;
+ const isCut=e=>e.cut&&((plan||ap>0)&&L.plan!==0&&(!o.conflict||e.cut!=='A3')||(o.conflict&&e.cut==='A3'&&plan));
+ const done=e=>{const i=+e.cut[1];return ap>=i};
+ const showFc=o.fcAll||(step>=6&&L.fc);
+ let out='',lab='',rings='';
+ // dependencies
+ if(L.biz!==0){
+  DEPS.forEach(d=>{const a=NODES[d[0]],b=NODES[d[1]],q=qsub(mkq(a,b,d[2]||0),.12,.88);const off=o.off&&!['supp'].includes(d[0]);
+   out+=`<path d="${qd(q)}" fill="none" stroke="${off?'#707D84':'#3E9C86'}" stroke-width="2" ${off?'stroke-dasharray="3 5" opacity=".6"':''}/>`});
+  SPINE.forEach(d=>{const a=NODES[d[0]],b=NODES[d[1]],q=qsub(mkq(a,b,d[2]),.1,.9);const off=o.off&&d[0]!=='staff';
+   out+=`<path d="${qd(q)}" fill="none" stroke="${off?'#707D84':'#3E9C86'}" stroke-width="${off?3:7}" ${off?'stroke-dasharray="3 6"':'stroke-opacity=".9"'} stroke-linecap="butt"/>`});
+ }
+ EDGES.forEach(e=>{
+  if(e.k==='obs'&&(!L.obs||e.st>step))return;
+  if(e.k==='inf'&&(!L.inf||e.st>step))return;
+  if(e.k==='fc'&&!showFc)return;
+  const a=NODES[e.a],b=NODES[e.b],full=mkq(a,b,e.bl),q=qsub(full,.07,.93);
+  const dim=pset&&pset.indexOf(e.id)<0;const op=dim?.12:1;
+  const sty=e.k==='obs'?'stroke="#D4572F" stroke-width="3"':e.k==='fc'?'stroke="#D4572F" stroke-width="2" stroke-dasharray="2 6" stroke-linecap="round"':'stroke="#9AA3A8" stroke-width="2" stroke-dasharray="6 4"';
+  let body;
+  if(isCut(e)&&(e.cut&&(done(e)||o.conflict&&e.cut==='A3'&&false))){
+   const [p1,p2]=qsplit(q,.5);
+   body=`<path d="${qd(p1)}" fill="none" ${sty}/><path d="${qd(p2)}" fill="none" ${sty.replace(/stroke="#D4572F"/,'stroke="#D4572F" stroke-opacity=".3"')}/>`;
+   const m=qpt(q,.5);rings+=`<g transform="translate(${m.x.toFixed(1)} ${m.y.toFixed(1)})"><circle r="8" fill="#0B0F11" stroke="#F1F0EA" stroke-width="2.6"/><circle r="2.8" fill="#3E9C86"/></g>`;
+  }else{
+   body=`<path d="${qd(q)}" fill="none" ${sty}/>`;
+   if(isCut(e)&&(plan||ap>0)&&L.plan!==0&&!mini){const m=qpt(q,.5);const bad=o.conflict&&e.cut==='A3';
+    rings+=`<g transform="translate(${m.x.toFixed(1)} ${m.y.toFixed(1)})"><circle r="8" fill="#0B0F11" stroke="#F1F0EA" stroke-width="2" stroke-dasharray="3 3"/>${bad?'<path d="M-3.5 -3.5L3.5 3.5M3.5 -3.5L-3.5 3.5" stroke="#F1F0EA" stroke-width="2"/>':''}</g>`}
+   else if(isCut(e)&&mini){const m=qpt(q,.5);rings+=`<g transform="translate(${m.x.toFixed(1)} ${m.y.toFixed(1)})"><circle r="6" fill="#0B0F11" stroke="#F1F0EA" stroke-width="2.4"/><circle r="2.2" fill="#3E9C86"/></g>`}
+  }
+  if(e.k==='obs'){const m=qpt(q,.5);body+=`<rect x="${(m.x-4).toFixed(1)}" y="${(m.y-4).toFixed(1)}" width="8" height="8" fill="#F1F0EA" stroke="#0B0F11" stroke-width="2"/>`}
+  out+=`<g data-ent="e:${e.id}" class="gn" opacity="${op}"><path d="${qd(q)}" fill="none" stroke="transparent" stroke-width="16"/>${body}</g>`;
+ });
+ out+=rings;
+ // nodes
+ Object.keys(NODES).forEach(k=>{
+  const n=NODES[k];
+  if(n.st&&n.st>step)return;
+  if(n.fc&&!showFc)return;
+  if(!L.obs&&n.k!=='api'&&!n.biz&&!n.fc)return;
+  if(n.biz&&!L.biz&&!['fapi','db','pay','payroll','recon'].includes(k))return;
+  const off=o.off&&n.biz&&k!=='staff'&&k!=='supp'?1:0;
+  const ev=(['user','s1','s2','grant'].includes(k)&&step>=(n.st||1))?1:0;
+  const sel=o.sel===k;
+  const dim=pset&&!EDGES.some(e=>pset.indexOf(e.id)>-1&&(e.a===k||e.b===k))?.2:1;
+  let g=glyph(n,n.x,n.y,{off,ev:ev&&!mini});
+  if(sel)g=`<circle cx="${n.x}" cy="${n.y}" r="${mini?22:24}" fill="none" stroke="#F1F0EA" stroke-width="1.5" stroke-dasharray="3 3"/>`+g;
+  const hit=`<circle cx="${n.x}" cy="${n.y}" r="24" fill="transparent"/>`;
+  let label='';
+  if(!mini||['fapi','db','grant'].includes(k)&&o.noLabels!==1){
+   const cls=n.k==='att'?'gl e':n.fc?'gl e':off?'gl d':n.biz?'gl':'gl';
+   label=`<text class="${cls}" x="${n.x}" y="${n.y+(n.k==='db'?30:28)}" text-anchor="middle">${n.l}</text>`;
+  }
+  out+=`<g data-ent="n:${k}" class="gn" opacity="${dim}" tabindex="${mini?-1:0}" role="button" aria-label="${n.l}">${hit}${g}${label}</g>`;
+ });
+ if(!mini){
+  if(showFc)out+=`<text class="gl e" x="940" y="26" text-anchor="end">FORECAST LAYER · NOT OBSERVED</text>`;
+  if(o.off)out+=`<text class="gl d" x="690" y="418" text-anchor="middle">OFFLINE · SIMULATED</text>`;
+ }
+ return `<svg viewBox="0 0 960 440" role="img" aria-label="ThreadGraph" xmlns="http://www.w3.org/2000/svg">${out}</svg>`;
+}
+const legendHTML=`<div class="chips" style="gap:16px;font-size:11.5px;color:var(--text2);font-family:var(--fm);letter-spacing:.05em;text-transform:uppercase">
+<span><svg width="30" height="12"><path d="M1 6H29" stroke="#D4572F" stroke-width="3"/><rect x="11" y="2" width="8" height="8" fill="#F1F0EA"/></svg> Observed</span>
+<span><svg width="30" height="12"><path d="M1 6H29" stroke="#9AA3A8" stroke-width="2" stroke-dasharray="6 4"/></svg> Inferred</span>
+<span><svg width="30" height="12"><path d="M1 6H29" stroke="#D4572F" stroke-width="2" stroke-dasharray="2 6" stroke-linecap="round"/></svg> Forecast</span>
+<span><svg width="30" height="12"><path d="M1 6H29" stroke="#3E9C86" stroke-width="2"/></svg> Business</span>
+<span><svg width="20" height="14"><circle cx="10" cy="7" r="5.5" fill="#0B0F11" stroke="#F1F0EA" stroke-width="2.2"/><circle cx="10" cy="7" r="2" fill="#3E9C86"/></svg> Cut applied</span>
+<span><svg width="20" height="14"><circle cx="10" cy="7" r="5.5" fill="none" stroke="#F1F0EA" stroke-width="1.6" stroke-dasharray="3 3"/></svg> Proposed</span></div>`;
+
+const ST={state:'approval',view:'overview',sel:{t:'n',id:'grant'},cur:TE,mode:'live',layers:{obs:1,inf:1,fc:1,biz:1,plan:1},path:'all',playing:false,speed:1,a1:false,a2:false,ack:false,prog:0,applied:0,base:882,t0:Date.now(),log:[],rolled:false};
+const S=()=>STATES.find(s=>s.k===ST.state);
+const tag=(k,t)=>`<span class="tag t-${k}">${t}</span>`;
+const pct=v=>Math.round(v*100)+'%';
+let timers=[];
+function toast(m){const t=$('#toast');t.textContent=m;t.style.display='block';clearTimeout(toast.h);toast.h=setTimeout(()=>t.style.display='none',3200)}
+function addLog(w,m,k){ST.log.unshift({t:fmt(toS('10:07:12')+Math.round((Date.now()-ST.t0)/1000)),w,m,k:k||'obs'})}
+// seed audit log
+ST.log=[{t:'10:06:40',w:'HALT',m:'ProofSeal PS-2417-01 sealed: 6 events, graph snapshot, solver certificate',k:'sim'},{t:'10:05:02',w:'HALT',m:'SafeCut selected 3 actions from 4,096 combinations',k:'sim'},{t:'10:01:30',w:'HALT',m:'EchoLab finished 3 × 6,000 rollouts',k:'sim'},{t:'09:55:10',w:'HALT',m:'Incident HLT-2047 opened from alert AL-5521',k:'obs'}];
+function liveT(){const s=S();return s.max>=6?TE:EV[s.max-1].s}
+function maxT(){const s=S();return s.fc?TE+HOR:liveT()}
+function curT(){return ST.mode==='live'?liveT():clamp(ST.cur,T0,maxT())}
+function stepNow(){const s=S(),t=curT();let n=0;EV.forEach(e=>{if(e.s<=t)n++});return Math.min(n,effMax())}
+function effMax(){const s=S();return s.k==='correlating'?Math.min(6,2+Math.floor(ST.prog/25)):s.max}
+function fcOn(){return S().fc&&curT()>=TE}
+function pathsOpen(){return ST.applied>=3?0:6}
+function setState(k,quiet){
+ closeDrawer();
+ timers.forEach(clearInterval);timers=[];ST.playing=false;ST.state=k;ST.prog=0;ST.mode='live';ST.cur=TE;
+ const s=S();ST.base=s.since;ST.t0=Date.now();
+ if(['new','correlating','forecast','simulating','plan','conflict','nofeasible','approval'].includes(k)){ST.applied=0}
+ if(['plan','approval','conflict','nofeasible','forecast','simulating','new','correlating'].includes(k)){ST.a1=false;ST.a2=false;ST.ack=false}
+ if(['contained','rollback'].includes(k)){ST.applied=3;ST.a1=ST.a2=true}
+ if(k==='executing'){ST.applied=0;ST.a1=ST.a2=true}
+ if(s.auto)timers.push(setInterval(()=>{ST.prog+=k==='executing'?34:(k==='correlating'?5:4);
+   if(k==='executing'){ST.applied=Math.min(3,Math.floor(ST.prog/33.4));if(ST.applied>=1&&ST.prog-34<33.4)addLog(OPS.n,'Executed A'+ST.applied,'obs')}
+   if(ST.prog>=100){clearInterval(timers[0]);const nx={correlating:'forecast',simulating:'plan',executing:'contained'}[k];if(k==='executing'){ST.applied=3;addLog('HALT','Containment verified: 0 of 6 paths reachable (observed)','obs')}setState(nx);return}
+   renderAll(true)},k==='executing'?1100:240));
+ if(k==='contained')ST.rolled=false;
+ renderAll();
+}
+const IC={
+ overview:'<rect x="2" y="2" width="12" height="12" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M2 6h12" stroke="currentColor" stroke-width="1.6"/>',
+ graph:'<circle cx="3.5" cy="8" r="2.2" fill="none" stroke="currentColor" stroke-width="1.5"/><circle cx="12.5" cy="3.5" r="2.2" fill="none" stroke="currentColor" stroke-width="1.5"/><circle cx="12.5" cy="12.5" r="2.2" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M5.5 7l5-2.5M5.5 9l5 2.5" stroke="currentColor" stroke-width="1.5"/>',
+ echolab:'<path d="M2 12l4-4 3 2 5-6" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M2 14h12" stroke="currentColor" stroke-width="1.6" stroke-dasharray="2 2"/>',
+ safecut:'<path d="M2 8h4M10 8h4" stroke="currentColor" stroke-width="2"/><circle cx="8" cy="8" r="2.2" fill="none" stroke="currentColor" stroke-width="1.5"/>',
+ proofseal:'<circle cx="8" cy="8" r="5.5" fill="none" stroke="currentColor" stroke-width="1.8"/><circle cx="8" cy="8" r="1.8" fill="currentColor"/>',
+ timeline:'<path d="M2 8h12" stroke="currentColor" stroke-width="1.6"/><rect x="3" y="5.5" width="3" height="5" fill="currentColor"/><rect x="10" y="5.5" width="3" height="5" fill="currentColor"/>',
+ policies:'<path d="M3 3h10M3 8h10M3 13h6" stroke="currentColor" stroke-width="1.6"/>'
+};
+const VIEWS=[['overview','Incident Overview'],['graph','ThreadGraph'],['echolab','EchoLab'],['safecut','SafeCut'],['proofseal','ProofSeal'],['timeline','Timeline'],['policies','Policies']];
+function badge(v){const s=S();
+ if(v==='graph')return pathsOpen()+' open';
+ if(v==='safecut')return s.plan===1||s.plan===2?'3':s.plan===3?'0':'';
+ if(v==='proofseal')return s.plan===1?(ST.applied>=3?'6/6':'sim'):'';
+ if(v==='policies')return s.k==='conflict'?'1 conflict':'';
+ return''}
+function renderNav(){
+ $('#nav').innerHTML=`<div class="brand"><svg viewBox="16 6 64 84" aria-hidden="true"><path fill="currentColor" fill-rule="evenodd" d="M64 6h16v84h-16zM28.0 42.0h36.0v12h-36.0zM16 18L24 10H32V36.5H16zM16 59.5h16v26.5h-16zM16.0 48a8 8 0 1 1 16 0a8 8 0 1 1 -16 0zM21.0 48a3 3 0 1 0 6 0a3 3 0 1 0 -6 0z"/></svg>HALT</div>
+ <div class="incchip"><span class="k">Incident</span><b>HLT-2047</b><span class="muted" style="font-size:12px">OAuth Consent Compromise</span></div>
+ <nav aria-label="Systems">${VIEWS.map(v=>`<button class="navi" data-view="${v[0]}" ${ST.view===v[0]?'aria-current="page"':''}><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true">${IC[v[0]]}</svg>${v[1]}<span class="bd">${badge(v[0])}</span></button>`).join('')}</nav>
+ <div class="navfoot"><div><div class="k">Signed in</div><div style="font-weight:600">${OPS.n}</div><div class="muted" style="font-size:12px">${OPS.r}</div></div><span class="tag t-sim">Simulated demo data</span></div>`;
+}
+function approvalText(){const s=S();if(s.k==='approval')return ST.a1?(ST.a2?'Ready to execute':'Awaiting Finance Ops co-approval'):'Awaiting analyst approval';return s.appr}
+function sinceText(){const live=ST.base+Math.round((Date.now()-ST.t0)/1000);
+ if(ST.mode==='replay'){return `<span class="tag t-n" style="padding:0">Replay ${fmt(curT())}Z</span>`}
+ return dur(live)}
+function renderRib(){const s=S(),c=s.conf;
+ const stg=ST.mode==='replay'&&stepNow()<4?STAGES[Math.max(0,[0,0,1,2,2,3,3][stepNow()]|0)]:STAGES[s.stage];
+ $('#rib').innerHTML=`<div class="rf"><span class="k">Incident</span><span class="v">HLT-2047</span></div>
+ <div class="rf"><span class="k">Status</span><span class="v"><span class="pill ${s.tone}"><i></i>${s.status}</span></span></div>
+ <div class="rf"><span class="k">Confidence</span><span class="v"><button class="score" data-score="inc" title="Show the evidence behind this score">${pct(c)}<small>evidence</small></button></span></div>
+ <div class="rf"><span class="k">Attack stage</span><span class="v" style="font-size:13px">${stg}</span></div>
+ <div class="rf"><span class="k">Since detect</span><span class="v mono" id="since" style="font-size:13px">${sinceText()}</span></div>
+ <div class="rf"><span class="k">Approval</span><span class="v"><button class="btn sm ${s.k==='approval'?'pri':'q'}" data-act="drawer" ${s.plan!==1?'disabled':''}>${approvalText()}</button></span></div>
+ <span class="rsp"></span>
+ <div style="display:flex;gap:10px;align-items:center"><div class="seg" role="group" aria-label="Mode"><button data-mode="live" aria-pressed="${ST.mode==='live'}">Live</button><button data-mode="replay" aria-pressed="${ST.mode==='replay'}">Replay</button></div>
+ <button class="btn sm q" data-act="statemenu" aria-haspopup="true">${s.n} ▾</button><button class="btn sm q" data-act="spec">Specs</button></div>`;
+}
+function renderBanner(){const s=S(),b=s.b;let extra='';
+ if(ST.mode==='replay')return `<div class="wsbar rep"><div class="m"><b>Replay · ${fmt(curT())}Z</b><p>You are viewing the past. Live state is unchanged: ${S().status}.</p></div><button class="btn sm" data-mode="live">Return to live</button></div>`;
+ if(s.k==='correlating')extra=`<div class="prog"><i style="width:${ST.prog}%"></i></div>`;
+ if(s.k==='simulating')extra=`<div class="prog"><i style="width:${ST.prog}%"></i></div><p class="mono" style="font-size:11px;color:var(--text2)">${(ST.prog*60).toLocaleString()} / 6,000 rollouts · simulated</p>`;
+ if(s.k==='executing')extra=`<div class="prog"><i style="width:${Math.min(100,ST.prog)}%"></i></div><p class="mono" style="font-size:11px;color:var(--text2)">${ST.applied} of 3 actions applied</p>`;
+ const go=b.go?`<button class="btn sm pri" data-go="${b.go[1]}">${b.go[0]}</button>`:'';
+ return `<div class="wsbar"><div class="m"><b>${b.h}</b><p>${b.p}</p>${extra}</div>${go}</div>`;
+}
+function renderAll(light){renderNav();renderRib();if(!light)renderWS();else{const bar=$('.wsbar');if(bar)bar.outerHTML=renderBanner();refreshGraphs()}renderRail();renderTL()}
+function gOpts(extra){const s=S(),o={step:stepNow(),layers:ST.layers,applied:ST.applied,proposed:s.plan>=1&&s.plan<=2,conflict:s.k==='conflict',path:ST.path,sel:ST.sel.t==='n'?ST.sel.id:null,fcAll:false};
+ if(!fcOn())o.layers=Object.assign({},ST.layers,{fc:0});
+ if(s.k==='correlating')o.step=effMax();
+ return Object.assign(o,extra||{})}
+function refreshGraphs(){$$('[data-graph]').forEach(el=>{const m=el.dataset.graph;el.innerHTML=gSVG(gOpts(m==='mini'?{mini:true,noLabels:0}:{}))})}
+
+function actStatus(id){const s=S();if(!id)return'';if(s.plan===0)return'Not yet proposed';if(s.plan===3)return'No feasible plan';
+ const i=+id[1];if(s.k==='conflict'&&id==='A3')return'Blocked by policy IR-CA-05';
+ if(ST.applied>=i)return s.k==='rollback'?'Executed · rollback armed':'Executed · reversible';
+ if(s.k==='executing')return'Queued';return'Proposed · awaiting approval'}
+function entInfo(){
+ const sel=ST.sel;
+ if(sel.t==='sc'){const c=SC[sel.id];return{score:c}}
+ if(sel.t==='e'){const e=allEdges().find(x=>x.id===sel.id),a=nodeLabel(e.a),b=nodeLabel(e.b);
+  const base={t:a+' → '+b,ty:e.k==='obs'?'Observed link':e.k==='inf'?'Inferred link':e.k==='rel'?'Relationship':'Forecast link',c:e.k==='rel'?'biz':e.k,src:e.k==='obs'?'Event '+e.ev:e.k==='inf'?'HALT correlation':'EchoLab forecast · seed 2417',ts:e.k==='fc'?'Within 10 min':e.st?fmt(EV[Math.min(e.st,6)-1].s)+'Z':'',att:e.k==='fc'?'Predicted from '+(e.a==='grant'?'T1528':'T1550.004'):'',biz:'',act:e.cut||null,ev:e.ev?[+e.ev.slice(3)]:[]};
+  if(e.k==='inf'){base.cf=e.lk;base.why=[[e.why,'Moderate'],['Not directly logged','Limits']];base.lo='A log line showing the minting would turn this into an observed link.';base.biz='Not an observed fact: HALT does not act on this link alone.'}
+  if(e.k==='fc'){base.lk=e.lk;base.lkn=Math.round(e.lk*6000).toLocaleString()+' of 6,000 simulated rollouts use this link within 10 min';base.biz='If used, it brings the attacker closer to '+nodeLabel(e.b)+'.'}
+  if(e.k==='obs'){base.cf=EV[(e.st||1)-1].conf;base.why=[['Recorded in '+EV[(e.st||1)-1].src,'Strong']];base.lo='Observed facts do not have a model score; this is source reliability.';base.biz='Evidence for the path; see affected services.'}
+  return{ent:base,edge:e}}
+ return{ent:ENT[sel.id]}}
+function scoreBlock(en){
+ if(en.lk!=null)return `<div class="cb"><span class="t"><span class="f" style="width:${en.lk*100}%;display:block;background:repeating-linear-gradient(135deg,#F1F0EA 0 3px,#59656B 3px 6px)"></span></span><b class="mono">${pct(en.lk)}</b></div><p class="muted" style="font-size:12px;margin-top:4px">${en.lkn}. A simulated likelihood, not a measured probability.</p>`;
+ if(en.cf==null)return '<span class="muted">No score. This is a static dependency.</span>';
+ return `<div class="cb"><span class="t"><span class="f" style="width:${en.cf*100}%;display:block"></span></span><b class="mono">${pct(en.cf)}</b></div>
+ <details style="border-top:0"><summary>Why this score</summary><div class="dd">${(en.why||[]).map(w=>`<div style="display:flex;justify-content:space-between;gap:10px;padding:4px 0;border-top:1px solid var(--line)"><span style="color:var(--text)">${w[0]}</span><span class="mono" style="font-size:11px;white-space:nowrap">${w[1]}</span></div>`).join('')}<p style="margin-top:8px">${en.lo||''}</p></div></details>`}
+function renderRail(){
+ const r=$('#rail'),i=entInfo();
+ if(i.score){const c=i.score;r.innerHTML=`<div class="rl"><div style="display:flex;gap:8px">${c.sim?tag('sim','Simulated'):tag('n','Score')}</div><h3>${c.t}</h3>
+ <p class="muted" style="margin-bottom:10px">Every score shows what it is built from. Strength is a judgement of the evidence, not a number added up.</p>
+ ${c.parts.map(p=>`<div style="padding:10px 0;border-top:1px solid var(--line)"><div style="font-size:13px">${p[0]}</div><div style="display:flex;justify-content:space-between;margin-top:3px"><span class="mono muted" style="font-size:11px">${p[1]}</span><span class="mono" style="font-size:11px">${p[2]}</span></div></div>`).join('')}
+ <p class="muted" style="margin-top:12px;font-size:13px"><b style="color:var(--text)">What would change it.</b> ${c.lo}</p><button class="btn sm q" style="margin-top:14px" data-sel="n:grant">Back to entity</button></div>`;return}
+ const en=i.ent,k=en.c==='obs'?tag('obs','Observed'):en.c==='inf'?tag('inf','Inferred'):en.c==='fc'?tag('fc','Forecast'):tag('ok','Business');
+ const evs=(en.ev||[]).map(n=>EV[n-1]);
+ r.innerHTML=`<div class="rl"><span class="k">Selected entity</span><div style="display:flex;gap:6px;margin-top:6px">${k}${en.c==='fc'?tag('sim','Simulated'):''}</div>
+ <h3>${en.t}</h3><p class="muted" style="font-size:12.5px">${en.ty}</p>
+ <dl class="kv" style="margin-top:12px">
+ <dt>Supporting events</dt><dd>${evs.length?evs.map(e=>`<div><button class="lk" data-ev="${e.n}">EV-0${e.n}</button> <span class="muted">${e.title}</span></div>`).join(''):'<span class="muted">None. '+(en.c==='fc'?'It has not happened.':'Static record.')+'</span>'}</dd>
+ <dt>Evidence source</dt><dd>${en.src}</dd>
+ <dt>Timestamp</dt><dd class="mono" style="font-size:12px">${en.ts}</dd>
+ <dt>${en.lk!=null?'Likelihood':'Confidence'}</dt><dd>${scoreBlock(en)}</dd>
+ <dt>ATT&amp;CK</dt><dd class="mono" style="font-size:12px">${en.att||'—'}</dd>
+ <dt>Business consequence</dt><dd>${en.biz||'—'}</dd>
+ <dt>Related action</dt><dd>${en.act?`<button class="lk" data-view="safecut">${en.act} · ${ACTS.find(a=>a.id===en.act).t}</button><div class="muted" style="font-size:12px">${actStatus(en.act)}</div>`:'<span class="muted">None in the minimum-safe plan</span>'}</dd></dl>
+ <button class="btn sm q" style="margin-top:14px" data-score="${en.c==='fc'?'fc':'inc'}">Incident confidence evidence</button></div>`;
+}
+function renderTL(){
+ const s=S(),end=T0+(TE-T0)+HOR,tot=end-T0,P=t=>((t-T0)/tot*100);
+ const mx=effMax(),lt=liveT(),ct=curT();
+ const live=ST.mode==='live';
+ $('#tl').innerHTML=`<div class="tlh"><button class="btn sm q" data-tl="prev" aria-label="Previous event">◀ Event</button><button class="btn sm" data-tl="play" aria-pressed="${ST.playing}">${ST.playing?'Pause':'Play'}</button><button class="btn sm q" data-tl="next" aria-label="Next event">Event ▶</button>
+ <div class="seg" role="group" aria-label="Replay speed">${[1,2,4].map(x=>`<button data-tl="sp${x}" aria-pressed="${ST.speed===x}">${x}×</button>`).join('')}</div>
+ <span class="rd">${fmt(ct)}Z ${ct>=TE&&s.fc?tag('fc','Forecast'):''} ${live?tag('n','Live'):tag('inf','Replay')}</span><span class="k">Scrub to watch ThreadGraph change · ${stepNow()} of 6 events shown</span></div>
+ <div class="trk"><div class="ln" style="width:${P(TE)}%"></div>
+ ${s.fc?`<div class="fz" style="left:${P(TE)}%;right:0"><span>Forecast · +10 min · not observed</span></div>`:''}
+ ${EV.map((e,i)=>`<div class="ev ${i<mx?'':'off'}" style="left:${P(e.s)}%"></div><div class="el" style="left:${P(e.s)}%;top:${[34,46,58][i%3]}px">EV-0${e.n} ${e.t.slice(3)}</div>`).join('')}
+ <div class="now" style="left:${P(lt)}%"></div><div class="nl" style="left:${P(lt)}%">NOW</div>
+ <input type="range" id="scrub" min="0" max="1000" step="1" value="${Math.round((ct-T0)/tot*1000)}" aria-label="Incident time" aria-valuetext="${fmt(ct)} UTC" ${''}></div>`;
+}
+function openDrawer(html){$('#drawer').innerHTML=html;$('#drawer').classList.add('on');$('#scrim').classList.add('on');const f=$('#drawer button');if(f)f.focus()}
+function closeDrawer(){$('#drawer').classList.remove('on');$('#scrim').classList.remove('on')}
+function holdHTML(id,label,dis){return `<button class="hold" data-hold="${id}" ${dis?'disabled':''} aria-describedby="${id}h"><i></i><span>${label}</span></button><p class="muted" id="${id}h" style="font-size:12px;margin-top:6px">Press and hold for 1.2 seconds. Keyboard: hold Space or Enter.</p>`}
+function approvalHTML(){
+ const s=S(),ready=ST.a1&&ST.a2&&ST.ack;
+ return `<div class="dh"><div><span class="k">Action Gate · HLT-2047</span><h2>${s.k==='contained'||s.k==='rollback'?'Rollback plan':'Review and approve'}</h2></div><button class="btn sm q" data-act="close" aria-label="Close">Close</button></div>
+ <div class="db">
+ <div class="sec"><header><h3>Operator</h3></header><div class="ap" style="margin:0"><b>${OPS.n}</b> · ${OPS.r}<div class="muted" style="font-size:12.5px;margin-top:4px">Permissions: ${OPS.perm.join('; ')}.</div><div class="muted" style="font-size:12.5px;margin-top:4px">${OPS.no}</div></div></div>
+ <div class="sec"><header><h3>Actions</h3>${tag('sim','Impact simulated')}</header>
+ ${ACTS.map(a=>`<div class="act" style="grid-template-columns:34px 1fr"><span class="id">${a.id}</span><div><h4>${a.t}</h4><div class="tri"><div><span>Impact</span>${a.imp}</div><div><span>Reversibility</span>${a.rb}</div><div><span>Authorisation</span>${a.pol} · ${a.who}</div></div>
+ <details><summary>Scope and blocked paths</summary><div class="dd">Permission used: ${a.scope}. Blocks ${a.blocks}. Status: ${actStatus(a.id)}.</div></details></div></div>`).join('')}</div>
+ <div class="sec"><header><h3>Rollback plan</h3>${tag('sim','Dry run · simulated')}</header><p class="muted">Restore all three in about two minutes: re-grant the app consent, let sessions re-issue, remove the step-up rule. Each step was dry-run against a copy of the graph snapshot. Window open until 10:36Z or until new telemetry arrives.</p></div>
+ ${s.k==='contained'||s.k==='rollback'?`<div class="sec"><header><h3>Roll back</h3></header><p class="muted" style="margin-bottom:10px">Rolling back re-opens all six paths. The incident returns to “Plan available”.</p>${holdHTML('rb','Hold to roll back all 3 actions',false)}</div>`:`
+ <div class="sec"><header><h3>Approvals</h3></header>
+ <div class="ap ${ST.a1?'ok':''}"><div class="r"><div><b>${OPS.n} · ${OPS.r}</b><div class="muted" style="font-size:12.5px">Approves A1, A2 and A3 as responder</div></div><button class="btn sm" data-act="a1" ${ST.a1?'disabled':''}>${ST.a1?'Approved '+'10:07Z':'Approve'}</button></div></div>
+ <div class="ap ${ST.a2?'ok':''}"><div class="r"><div><b>S. Iyer · Finance Ops owner</b><div class="muted" style="font-size:12.5px">Co-approves A3 (IR-CA-05, close freeze exception)</div></div>${ST.a2?tag('ok','Approved 10:08Z'):tag('n','Requested 10:07Z')}</div>
+ ${ST.a2?'':`<button class="btn sm q" style="margin-top:8px" data-act="a2">Demo: simulate S. Iyer approving</button>`}</div></div>
+ <div class="sec"><label style="display:flex;gap:10px;align-items:flex-start;font-size:13px"><input type="checkbox" id="ack" ${ST.ack?'checked':''} ${ST.a1&&ST.a2?'':'disabled'} style="margin-top:3px"> I have reviewed the impact on 3 users and the rollback plan above.</label>
+ <div style="margin-top:12px">${holdHTML('ex','Hold to execute 3 actions',!ready)}</div></div>`}
+ </div>`}
+
+const ph=(t,p,r)=>`<div class="ph"><div><h2>${t}</h2><p>${p}</p></div>${r||''}</div>`;
+const empty=(h,p,go)=>`<div class="callout"><h4>${h}</h4><p class="muted">${p}</p>${go||''}</div>`;
+function vOverview(){
+ const s=S(),late=s.k!=='new'&&s.k!=='correlating',fc=s.fc,plan=s.plan;
+ const stg=STAGES.map((n,i)=>{const c=i<s.stage?'done':i===s.stage?'cur':(i===s.stage+1&&fc?'next':'');return `<div class="stg ${c}">${n}<small>${c==='done'?'Observed':c==='cur'?'Current · observed':c==='next'?'Forecast':''}</small></div>`}).join('');
+ const rec=plan===1||plan===2?ACTS.map(a=>`<div class="act" style="grid-template-columns:34px 1fr auto"><span class="id">${a.id}</span><div><b>${a.t}</b><div class="muted" style="font-size:12.5px">${a.imp} · ${a.rb} · ${a.pol}</div></div><span class="muted mono" style="font-size:11px">${actStatus(a.id)}</span></div>`).join(''):plan===3?'<p>HALT has no safe plan to recommend. See SafeCut for the closest options and what each breaks.</p>':'<p class="muted">No recommendation yet. SafeCut runs after EchoLab.</p>';
+ const sim=s.sim>=2;
+ return `${ph('Incident Overview','What is happening, what HALT thinks will happen next, and what it wants you to do.')}
+ <div class="ov"><div>
+ <section class="sec" style="border-top:0;padding-top:0"><header><h3>Summary</h3>${tag('obs','Observed')}</header><p>An attacker tricked M. Verma into approving a malicious app, DocuSync Pro. The app holds mail and file access, and two of M. Verma’s sessions were replayed from an unfamiliar network. The attacker has started listing finance files. No finance record has been confirmed as read.</p></section>
+ <section class="sec"><header><h3>Root-cause hypothesis</h3>${tag('inf','Hypothesis')}${late?`<button class="score" data-score="rc">84%<small>evidence</small></button>`:''}</header><p>Consent phishing produced a malicious OAuth grant that persisted after the MFA change. The grant, not the password, is what the attacker is using.</p><details><summary>Alternatives considered</summary><div class="dd">Credential stuffing: rejected, no failed-login burst (SL-4471). Insider activity: not supported, the ASN is new for the account. Both are open to change if new telemetry arrives.</div></details></section>
+ <section class="sec"><header><h3>Current attack stage</h3></header><div class="stages">${stg}</div></section>
+ <section class="sec"><header><h3>Most likely next target</h3>${fc?tag('fc','Forecast')+tag('sim','Simulated'):tag('n','Not available')}${fc?`<button class="score" data-score="fc">82%<small>evidence</small></button>`:''}</header>${fc?'<p><b>Finance database</b>, through the Finance API. 4,912 of 6,000 simulated rollouts reach it within ten minutes. This is a forecast, not something that has happened.</p>':'<p class="muted">A forecast needs correlated evidence. It is not available yet.</p>'}</section>
+ <section class="sec"><header><h3>Business services at risk</h3></header><table class="tbl"><thead><tr><th>Service</th><th>People</th><th>Deadline</th><th>If isolated</th></tr></thead><tbody>${BIZ.map(b=>`<tr><td><b>${b[0]}</b></td><td>${b[1]}</td><td class="n">${b[2]}</td><td class="muted">${b[3]}</td></tr>`).join('')}</tbody></table></section>
+ <section class="sec"><header><h3>Recommended response</h3>${plan===1||plan===2?tag('sim','Simulated plan'):''}</header>${rec}</section>
+ <section class="sec"><header><h3>Expected containment improvement</h3>${sim?tag('sim','Simulated'):''}</header>${sim?`
+  <div class="bar2"><span class="l">Now (observed)</span><span class="t"><span class="f" style="width:${ST.applied>=3?100:0}%;background:var(--verd)"></span></span><span class="vv">${ST.applied>=3?'6 of 6':'0 of 6'} paths blocked</span></div>
+  <div class="bar2"><span class="l">With the plan ${tag('sim','sim')}</span><span class="t simbox" style="height:12px"><span class="f" style="width:100%;background:repeating-linear-gradient(135deg,#3E9C86 0 4px,#2b6f5f 4px 8px)"></span></span><span class="vv">6 of 6 paths blocked</span></div>`:'<p class="muted">Needs an EchoLab run.</p>'}</section>
+ <section class="sec"><header><h3>Expected operational impact</h3>${sim?tag('sim','Simulated'):''}</header>${sim?'<p><b>3 users</b> see a prompt or sign in again. <b>0 services</b> and <b>0 minutes</b> of downtime. Across rollouts the affected users range from 3 to 4.</p>':'<p class="muted">Needs an EchoLab run.</p>'}</section>
+ <section class="sec"><header><h3>Approval requirement</h3></header><p>${plan===1?'Two approvals before anything runs: the analyst for all three actions, and the Finance Ops owner for A3. Execution needs a deliberate hold, and every action has a rollback.':plan===2?'Blocked: the Finance Ops co-approval for A3 cannot be given. See Policies.':'No approval is possible until a plan exists.'}</p>${plan===1?`<p style="margin-top:10px"><button class="btn sm pri" data-act="drawer">${ST.applied>=3?'Review rollback':'Open approval'}</button></p>`:''}</section>
+ </div>
+ <aside class="ovr"><div class="canvas" data-graph="mini">${gSVG(gOpts({mini:true}))}</div>${legendHTML}<button class="btn sm q" data-view="graph" style="align-self:flex-start">Open ThreadGraph</button></aside></div>`}
+function vGraphOld(){
+ const L=ST.layers,lb=(k,t,svg)=>`<button class="lay" data-layer="${k}" aria-pressed="${!!L[k]}"><svg width="26" height="12" aria-hidden="true">${svg}</svg>${t}</button>`;
+ return `${ph('ThreadGraph','Attack paths joined to the business they run through. Scrub the timeline below to watch it build.')}
+ <div class="cvtool">${lb('obs','Observed','<path d="M1 6H25" stroke="#D4572F" stroke-width="3"/>')}${lb('inf','Inferred','<path d="M1 6H25" stroke="#9AA3A8" stroke-width="2" stroke-dasharray="5 3"/>')}${lb('fc','Forecast','<path d="M1 6H25" stroke="#D4572F" stroke-width="2" stroke-dasharray="2 5" stroke-linecap="round"/>')}${lb('biz','Business','<path d="M1 6H25" stroke="#3E9C86" stroke-width="3"/>')}${lb('plan','Response','<circle cx="13" cy="6" r="5" fill="#0B0F11" stroke="#F1F0EA" stroke-width="2"/>')}</div>
+ <div class="canvas" data-graph="main" style="min-height:300px">${gSVG(gOpts())}</div>
+ <div style="margin-top:12px;display:flex;gap:10px;align-items:center;flex-wrap:wrap"><span class="k">Highlight path</span><div class="chips">${['all',...PATHS.map(p=>p.id)].map(p=>`<button class="chip" data-path="${p}" aria-pressed="${ST.path===p}">${p==='all'?'All':p}</button>`).join('')}</div></div>
+ <div style="margin-top:12px">${legendHTML}</div>
+ <table class="tbl" style="margin-top:16px"><thead><tr><th>Path</th><th>Route</th><th>Basis</th><th>Status</th></tr></thead><tbody>${PATHS.map(p=>{const cut=ST.applied>=+p.a[1];return `<tr class="row" data-path="${p.id}"><td class="n">${p.id}</td><td>${p.n}</td><td>${p.fc?tag('fc','Forecast'):tag('obs','Observed')}</td><td>${cut?tag('ok','Blocked'):tag(p.fc?'fc':'obs','Open')}</td></tr>`}).join('')}</tbody></table>`}
+function futs(){return[
+ {k:'A',n:'Aggressive isolation',o:{applied:3,off:1,fcAll:1},c:[['6 of 6 blocked','The attacker loses access.'],['412 users','Range 380–446. Finance, payroll and support locked out.'],['≈ 4 h 20 min','Close and the 18:00 pay run.'],['Partial','Manual restore, about 3 h.'],['3 processes lost','No known attacker access left.']]},
+ {k:'B',n:'Passive monitoring',o:{applied:0,fcAll:1},c:[['0 of 6 blocked','4,912 of 6,000 rollouts reach the ledger within 10 min.'],['0 users today','Nothing changes for anyone. Yet.'],['0 min','Finance keeps running; so does the attacker.'],['Not applicable','No action is taken.'],['6 paths open','P2, P3, P6 are forecast.']]},
+ {k:'C',n:'HALT minimum-safe response',w:1,o:{applied:3,fcAll:1},c:[['6 of 6 blocked','Grant revoked, two sessions killed, step-up applied.'],['3 users','Range 3–4. One re-sign-in, two prompts.'],['0 min','5 of 5 finance processes keep running.'],['Full','3 rollback plans, about 2 min.'],['0 of 6 reachable','A foothold outside the six events is not ruled out.']]}]}
+function vEchoOld(){
+ const s=S(),L=['Threat containment','Affected users','Service downtime','Reversibility','Residual risk'];
+ if(s.sim===0)return ph('EchoLab','Replays the incident under three responses before anything is touched.')+empty('EchoLab has not run','It needs a forecast first. Nothing here is simulated yet.',s.fc?'<p style="margin-top:10px"><button class="btn sm pri" data-go="simulating">Run EchoLab simulation</button></p>':'');
+ if(s.sim===1)return ph('EchoLab','Replays the incident under three responses before anything is touched.')+`<div class="callout"><h4>Simulating three futures</h4><p class="muted">${(ST.prog*60).toLocaleString()} of 6,000 rollouts per future · simulated</p><div class="prog"><i style="width:${ST.prog}%"></i></div></div>`;
+ const F=futs();
+ const hist=[2,5,9,14,22,31,40,48,44,36,24,14,8,4].map(v=>`<i style="height:${v*1.6}px" title="${v}"></i>`).join('');
+ return `${ph('EchoLab','Same incident, same graph, three responses. Every number below is a simulated result, hatched so it cannot be mistaken for an observation.',tag('sim','Simulated · 6,000 rollouts per future · seed 2417'))}
+ <div class="fgrid simbox"><div class="l top"></div>${F.map(f=>`<div class="top ${f.w?'win':''}"><span class="k">Future ${f.k}</span><h4 style="font-size:16px;margin:4px 0 8px">${f.n}</h4><div class="canvas">${gSVG(Object.assign({mini:true,noLabels:1,step:6,layers:{obs:1,inf:0,fc:1,biz:1,plan:1}},f.o,{proposed:true}))}</div></div>`).join('')}
+ ${L.map((l,i)=>`<div class="l">${l}</div>${F.map(f=>`<div class="${f.w?'win':''}"><span class="v">${f.c[i][0]}</span><span class="muted" style="font-size:12.5px">${f.c[i][1]}</span></div>`).join('')}`).join('')}</div>
+ <section class="sec" style="margin-top:20px"><header><h3>Future B · minutes until first access to the ledger</h3>${tag('sim','Simulated')}${tag('fc','Forecast')}</header><div class="hist simbox" style="padding:8px">${hist}</div><div style="display:flex;justify-content:space-between" class="mono muted"><span style="font-size:11px">0 min</span><span style="font-size:11px">median 6.4 min</span><span style="font-size:11px">10 min</span></div><p class="muted" style="margin-top:6px">The remaining 1,088 rollouts do not reach it within the horizon. Shares of rollouts are not measured probabilities.</p></section>
+ <details><summary>How to read these results</summary><div class="dd">Each rollout replays the observed events, then samples attacker moves from the forecast model. Ranges show the spread across rollouts. EchoLab cannot see attacker foothold outside the six observed events, which is why residual risk is never zero.</div></details>`}
+function vSafeOld(){
+ const s=S();
+ if(s.plan===0)return ph('SafeCut','Chooses the smallest set of reversible actions that blocks every dangerous path and keeps every critical service running.')+empty('No plan yet','SafeCut runs after EchoLab. It never proposes an action before the futures are simulated.',s.sim===2?'':'');
+ const g=`<div class="canvas" data-graph="main">${gSVG(gOpts())}</div>`;
+ if(s.plan===3)return `${ph('SafeCut','No plan satisfies both hard constraints.',tag('fc','No feasible safe plan'))}${g}
+ <div class="callout cf" style="margin-top:14px"><h4>Why there is no recommendation</h4><p>SafeCut checked 4,096 combinations of 12 candidate actions. None blocks all six paths and keeps all five finance processes running. HALT will not recommend a plan that breaks a hard constraint.</p></div>
+ <section class="sec"><header><h3>Closest options</h3>${tag('sim','Simulated')}</header><table class="tbl"><thead><tr><th>Option</th><th>Paths blocked</th><th>Breaks</th><th>Reversible</th></tr></thead><tbody>
+ <tr><td><b>Isolate Finance API</b></td><td class="n">6 of 6</td><td>Payroll, Payment processing and Reconciliation offline; 18:00 pay run missed</td><td>Yes, about 3 h</td></tr>
+ <tr><td><b>Revoke grant + kill sessions</b></td><td class="n">4 of 6</td><td>Constraint “all paths blocked”: P3 and P6 stay open (forecast)</td><td>Yes, about 90 s</td></tr>
+ <tr><td><b>Monitor with step-up on finance users</b></td><td class="n">2 of 6</td><td>Constraint “all paths blocked”; needs an exception during close</td><td>Yes</td></tr></tbody></table></section>
+ <section class="sec"><header><h3>Analyst decision</h3></header><p class="muted" style="margin-bottom:10px">These are options for a person to weigh. None can be executed from here.</p><div style="display:flex;gap:10px;flex-wrap:wrap"><button class="btn sm" data-log="Escalated HLT-2047 to the IR lead">Escalate to IR lead</button><button class="btn sm q" data-log="Requested a break-glass review for a wider isolation">Request break-glass review</button></div></section>`;
+ return `${ph('SafeCut',plan2()?'A3 cannot be authorised, so the plan as a whole cannot run.':'Three actions block all six paths. No smaller set does.',plan2()?tag('fc','Policy conflict'):tag('sim','Simulated plan'))}${g}
+ <section class="sec"><header><h3>Selected actions</h3><span class="muted">3 of 12 candidates · 4,096 combinations checked</span></header>
+ ${ACTS.map(a=>`<div class="act"><span class="id">${a.id}</span><div><h4>${a.t}</h4><div class="tri"><div><span>Impact</span>${a.imp}</div><div><span>Reversibility</span>${a.rb}</div><div><span>Authorisation</span>${a.pol}</div></div></div><div style="text-align:right"><div class="mono" style="font-size:11px">${actStatus(a.id)}</div><div class="muted" style="font-size:12px">blocks ${a.blocks}</div></div></div>`).join('')}</section>
+ <section class="sec"><header><h3>Paths</h3></header><table class="tbl"><tbody>${PATHS.map(p=>{const cut=ST.applied>=+p.a[1];return `<tr class="row" data-path="${p.id}" data-view="graph"><td class="n">${p.id}</td><td>${p.n}</td><td class="n">${p.a}</td><td>${cut?tag('ok','Blocked'):tag(p.fc?'fc':'obs','Open')}</td></tr>`}).join('')}</tbody></table></section>
+ <section class="sec"><header><h3>Not selectable</h3></header><div class="callout"><b>Purge M. Verma’s mailbox</b> · irreversible<p class="muted" style="margin-top:4px">Not part of any plan. It needs CISO break-glass with two people (IR-BRK-01), and HALT does not offer it as a button.</p></div></section>
+ <p style="margin-top:6px">${s.plan===1?`<button class="btn pri" data-act="drawer">${ST.applied>=3?'Review rollback':'Review and approve'}</button>`:`<button class="btn" data-view="policies">See policy conflict</button>`}</p>`}
+function plan2(){return S().plan===2}
+
+const CLAIMS=[
+ ['Six of six dangerous paths blocked','Reachability recomputed on the post-action snapshot.','0 of 6 open','0 of 6 reachable'],
+ ['Finance remains operational','Each of five finance processes keeps every dependency.','5 of 5 running','5 of 5 running'],
+ ['Three users affected','M. Verma signs in again; two approvers see one prompt.','3 users','3 users'],
+ ['Response is reversible','Each rollback plan dry-run against a snapshot copy.','3 of 3 plans','Armed until 10:36Z'],
+ ['Evidence is preserved','Six events, graph snapshot and solver certificate sealed.','6 events sealed','Hash match'],
+ ['Authorization policy satisfied','IR-OAUTH-02, IR-SESS-01, IR-CA-05 name a human approver.','3 of 3 policies','Approvals recorded']];
+function sigSVG(st){const ring=st==='ok'?'#F1F0EA':st==='bad'?'#D4572F':'#59656B';return `<svg class="sig" viewBox="0 0 22 22" aria-hidden="true"><circle cx="11" cy="11" r="9" fill="none" stroke="${ring}" stroke-width="2.5" ${st==='pend'?'stroke-dasharray="3 3"':''}/>${st==='ok'?'<circle cx="11" cy="11" r="3.2" fill="#3E9C86"/>':st==='bad'?'<path d="M7.5 7.5l7 7M14.5 7.5l-7 7" stroke="#D4572F" stroke-width="2"/>':''}</svg>`}
+function vProofOld(){
+ const s=S(),post=ST.applied>=3;
+ if(s.plan===0)return ph('ProofSeal','Verifies a response against the evidence before anyone is asked to approve it.')+empty('Nothing to verify','ProofSeal checks a plan. There is no plan yet.');
+ if(s.plan===3)return ph('ProofSeal','No plan, so there is nothing to seal.')+empty('Claims blocked','ProofSeal does not issue a seal for a response that fails a hard constraint. Evidence is sealed (IR-DATA-07); response claims are not applicable.');
+ const conflict=s.plan===2;
+ return `${ph('ProofSeal','A recommendation is a claim. Each claim below can be opened and checked.',tag('sim','Predicted results are simulated'))}
+ <div class="callout" style="margin-bottom:8px;border-style:dotted"><span class="muted">Hashes and the signing key are placeholders. ${post?'The right-hand column is <b style="color:var(--text)">observed after execution</b>.':'Nothing has been executed, so there is no observed result yet.'}</span></div>
+ <div style="display:grid;grid-template-columns:28px 1fr 200px 200px;gap:14px" class="k"><span></span><span>Claim</span><span style="text-align:right">Predicted · simulated</span><span style="text-align:right">After execution · observed</span></div>
+ ${CLAIMS.map((c,i)=>{const bad=conflict&&i===5;return `<div class="claim" style="grid-template-columns:28px minmax(0,1fr) 200px 200px">${sigSVG(bad?'bad':'ok')}<div><h4>${c[0]}</h4><p class="muted" style="font-size:13px;max-width:56ch">${c[1]}</p><details><summary>Evidence</summary><div class="dd">Check: ${c[1]} Snapshot sha256 9f3a…c41e. Seal PS-2417-01. Evidence IDs EV-01 – EV-06.</div></details></div>
+ <div class="res"><span>${bad?'Not satisfied':c[2]}</span>${bad?tag('fc','Failed · IR-CA-05'):tag('sim','Simulated')}</div>
+ <div class="res">${post?`<span>${c[3]}</span>${tag('obs','Observed')}`:'<span class="muted">Not run</span>'}</div></div>`}).join('')}
+ <div class="mono muted" style="font-size:11px;margin-top:14px">Seal PS-2417-01 · Valid until 10:36Z or new telemetry · Signer: demo key, not production</div>
+ <section class="sec" style="margin-top:16px"><header><h3>What this proof does not claim</h3></header><ul class="muted" style="margin:0;padding-left:18px"><li>That the attacker has no foothold outside the six observed events.</li><li>That forecast paths P2, P3 and P6 would have happened. They are blocked as a precaution.</li></ul></section>`}
+function vTime(){
+ const rows=[];EV.forEach((e,i)=>{rows.push(`<tr class="row" data-ev="${e.n}"><td class="n">${e.t}Z</td><td>${tag('obs','Observed')}</td><td><b>EV-0${e.n} · ${e.title}</b><div class="muted">${e.d}</div></td><td>${e.src}</td><td class="mono" style="font-size:11.5px">${e.att.split(' · ')[0]}</td><td class="n">${pct(e.conf)}</td></tr>`);
+  if(i===0)rows.push(`<tr><td></td><td>${tag('inf','Inferred')}</td><td><b>I-01</b><div class="muted">Sender and sign-in ASN share hosting.</div></td><td>HALT correlation</td><td></td><td class="n">74%</td></tr>`);
+  if(i===3)rows.push(`<tr><td></td><td>${tag('inf','Inferred')}</td><td><b>I-02</b><div class="muted">Replayed tokens were probably minted by the grant.</div></td><td>HALT correlation</td><td></td><td class="n">78%</td></tr>`)});
+ return `${ph('Timeline','The observed sequence, the links HALT infers between events, and everything done in response.')}
+ <table class="tbl"><thead><tr><th>Time</th><th>Basis</th><th>Event</th><th>Source</th><th>ATT&amp;CK</th><th>Confidence</th></tr></thead><tbody>${rows.join('')}</tbody></table>
+ <section class="sec" style="margin-top:20px"><header><h3>Response audit</h3></header><table class="tbl"><tbody>${ST.log.map(l=>`<tr><td class="n">${l.t}Z</td><td>${l.k==='sim'?tag('sim','Simulated'):tag('n','Record')}</td><td><b>${l.w}</b></td><td>${l.m}</td></tr>`).join('')}</tbody></table></section>`}
+function polStatus(p){const s=S();const cf=s.k==='conflict';
+ if(p[0]==='IR-BRK-01')return['Not used','n'];
+ if(p[0]==='IR-DATA-07')return s.plan?['Satisfied · sealed','ok']:['Pending','n'];
+ if(!s.plan||s.plan===3)return['Not applicable','n'];
+ if(cf&&(p[0]==='IR-CA-05'||p[0]==='IR-CHG-03'))return['Conflict','fc'];
+ const need=p[0]==='IR-CA-05'||p[0]==='IR-CHG-03'?ST.a2:ST.a1;
+ return ST.applied>=3||need?['Satisfied','ok']:['Awaiting approval','n']}
+function vPol(){
+ const cf=S().k==='conflict';
+ return `${ph('Policies','The rules that decide who may do what. A plan that fails any of them cannot run.')}
+ <table class="tbl"><thead><tr><th>Policy</th><th>Rule</th><th>Approver</th><th>Governs</th><th>Status</th></tr></thead><tbody>${POLS.map(p=>{const st=polStatus(p);return `<tr><td class="n">${p[0]}</td><td><b>${p[1]}</b><details><summary>Rule text</summary><div class="dd">${p[4]}</div></details></td><td>${p[2]}</td><td class="n">${p[3]}</td><td>${tag(st[1],st[0])}</td></tr>`}).join('')}</tbody></table>
+ ${cf?`<section class="sec" style="margin-top:18px"><div class="callout cf"><h4>Conflict: A3 cannot be authorised</h4><p>IR-CA-05 needs a co-approval from the Finance Ops owner. S. Iyer is out of office until 28 Oct and no delegate is named. IR-CHG-03 also forbids access-policy changes for finance users during close without that owner’s exception.</p><ul><li>Name a delegate (needs the CISO). About ten minutes.</li><li>Run A1 and A2 only: blocks 4 of 6 paths and leaves P3 and P6 open as forecast (simulated 38% of rollouts reach the database through them).</li></ul><div style="display:flex;gap:10px;margin-top:12px;flex-wrap:wrap"><button class="btn sm" data-log="Asked the CISO to name a Finance Ops delegate">Ask CISO to name a delegate</button><button class="btn sm q" data-log="Opened a reduced-plan review (A1 + A2) for the analyst">Review reduced plan</button></div></div></section>`:''}`}
+function renderWS(){
+ const ws=$('#ws'),top=ws.scrollTop;
+ const v={overview:vOverview,graph:vGraph,echolab:vEcho,safecut:vSafe,proofseal:vProof,timeline:vTime,policies:vPol}[ST.view]();
+ ws.innerHTML=renderBanner()+`<div class="pg">${v}</div>`;ws.scrollTop=top;
+}
+
+// ---- extended dual-layer model (same incident, richer entities)
+const XN={
+ phish:{x:70,y:70,k:'att',l:'Phishing sender',t:'Attacker sender',st:1},
+ adev:{x:70,y:175,k:'adev',l:'Unknown device',t:'Device',st:2},
+ asn:{x:70,y:275,k:'att',l:'ASN AS64500',t:'Network',st:2},
+ dev1:{x:240,y:40,k:'dev',l:'M. Verma laptop',t:'Device'},
+ user:{x:240,y:130,k:'user',l:'M. Verma',t:'User',st:1},
+ appr:{x:240,y:265,k:'user',l:'Finance approvers ×2',t:'Users'},
+ grant:{x:410,y:60,k:'att',l:'DocuSync Pro',t:'OAuth application',st:4},
+ tokR:{x:410,y:165,k:'tok',l:'Refresh token',t:'Token',st:5},
+ s1:{x:570,y:110,k:'ses',l:'Session S-1',t:'Session',st:5},
+ s2:{x:570,y:200,k:'ses',l:'Session S-2',t:'Session',st:5},
+ s3:{x:570,y:290,k:'ses',l:'S-3 (forecast)',t:'Session',fc:1},
+ fapi:{x:730,y:70,k:'api',l:'Finance API',t:'API'},
+ supp:{x:730,y:235,k:'svc',l:'Customer support',t:'Service'},
+ payroll:{x:870,y:50,k:'svc',l:'Payroll',t:'Service'},
+ pay:{x:870,y:150,k:'svc',l:'Payment processing',t:'Service'},
+ recon:{x:870,y:250,k:'svc',l:'Reconciliation',t:'Service'},
+ db:{x:1030,y:150,k:'db',l:'Finance database',t:'Database'},
+ refunds:{x:600,y:455,k:'proc',l:'Refund handling',t:'Business process',biz:1},
+ close:{x:760,y:455,k:'proc',l:'Month-end close',t:'Business process',biz:1},
+ supplier:{x:910,y:455,k:'proc',l:'Supplier payments',t:'Business process',biz:1},
+ payrun:{x:1040,y:455,k:'proc',l:'Payroll run',t:'Business process',biz:1}
+};
+const XE=[
+ {id:'x_ph_u',a:'phish',b:'user',k:'obs',st:1,ev:'EV-01',bl:0},
+ {id:'x_asn_adev',a:'asn',b:'adev',k:'obs',st:2,ev:'EV-02',bl:-18},
+ {id:'x_adev_u',a:'adev',b:'user',k:'obs',st:2,ev:'EV-02',bl:0},
+ {id:'x_ph_asn',a:'phish',b:'asn',k:'inf',st:2,bl:-36,lk:.74,why:'Sender infrastructure and sign-in ASN share a hosting provider.'},
+ {id:'x_u_dev',a:'user',b:'dev1',k:'rel',st:1,bl:0},
+ {id:'x_u_g',a:'user',b:'grant',k:'obs',st:4,ev:'EV-04',bl:0},
+ {id:'x_g_tok',a:'grant',b:'tokR',k:'inf',st:5,bl:14,lk:.78,why:'Token claims match the grant scope. The minting itself is not logged.'},
+ {id:'x_tok_s1',a:'tokR',b:'s1',k:'inf',st:5,bl:0,lk:.78,why:'Session tokens carry the refresh token ID.'},
+ {id:'x_tok_s2',a:'tokR',b:'s2',k:'inf',st:5,bl:0,lk:.78,why:'Session tokens carry the refresh token ID.'},
+ {id:'x_adev_s1',a:'adev',b:'s1',k:'obs',st:5,ev:'EV-05',bl:-30},
+ {id:'x_adev_s2',a:'adev',b:'s2',k:'obs',st:5,ev:'EV-05',bl:-18},
+ {id:'x_s1_fapi',a:'s1',b:'fapi',k:'obs',st:6,ev:'EV-06',bl:0,cut:'A2'},
+ {id:'x_s2_pay',a:'s2',b:'pay',k:'obs',st:6,ev:'EV-06',bl:0,cut:'A2'},
+ {id:'x_g_fapi',a:'grant',b:'fapi',k:'fc',bl:-14,lk:.74,cut:'A1',arr:1.0,up:[]},
+ {id:'x_fapi_db',a:'fapi',b:'db',k:'fc',bl:20,lk:.82,arr:4.8,up:['x_g_fapi','x_s1_fapi']},
+ {id:'x_pay_db',a:'pay',b:'db',k:'fc',bl:14,lk:.41,arr:6.1,up:['x_s2_pay','x_s3_pay']},
+ {id:'x_g_recon',a:'grant',b:'recon',k:'fc',bl:-60,lk:.33,cut:'A1',arr:2.5,up:[]},
+ {id:'x_recon_db',a:'recon',b:'db',k:'fc',bl:14,lk:.33,arr:6.4,up:['x_g_recon']},
+ {id:'x_g_payroll',a:'grant',b:'payroll',k:'fc',bl:-24,lk:.21,cut:'A3',arr:3.0,up:[]},
+ {id:'x_payroll_db',a:'payroll',b:'db',k:'fc',bl:14,lk:.21,arr:7.9,up:['x_g_payroll']},
+ {id:'x_u_s3',a:'user',b:'s3',k:'fc',bl:-40,lk:.38,arr:1.8,up:[]},
+ {id:'x_s3_pay',a:'s3',b:'pay',k:'fc',bl:-10,lk:.38,cut:'A3',arr:3.4,up:['x_u_s3']}
+];
+// business dependencies (service -> process), "keep" = operating path preserved by the plan
+const XD=[['recon','close',0],['db','close',-8],['pay','supplier',0],['pay','refunds',0],['supp','refunds',0],['payroll','payrun',0],['db','payrun',-8]];
+const XP=[
+ {id:'P1',crit:1,e:['x_ph_u','x_u_g','x_g_fapi','x_fapi_db'],a:'A1',steps:[['obs','A phishing message reaches M. Verma (EV-01)'],['obs','M. Verma consents to DocuSync Pro (EV-04)'],['fc','The app’s token calls the Finance API'],['fc','The Finance API reads the finance database']],why:'The grant is the attacker’s durable key. It survives password and MFA changes.'},
+ {id:'P2',crit:0,e:['x_u_g','x_g_recon','x_recon_db'],a:'A1',steps:[['obs','DocuSync Pro holds Files.ReadWrite.All (EV-04)'],['fc','The grant reaches Reconciliation'],['fc','Reconciliation reads the finance database']],why:'Lower likelihood (33%), but it uses the same grant as P1.'},
+ {id:'P3',crit:1,e:['x_u_s3','x_s3_pay','x_pay_db'],a:'A3',steps:[['fc','The attacker mints a new session S-3 for M. Verma'],['fc','S-3 calls Payment processing'],['fc','Payment processing writes to the finance database']],why:'A session that does not exist yet. Step-up authentication stops it being created silently.'},
+ {id:'P4',crit:1,e:['x_adev_s1','x_s1_fapi','x_fapi_db'],a:'A2',steps:[['obs','Session S-1 is replayed from an unknown device (EV-05)'],['obs','S-1 enumerates the Finance API (EV-06)'],['fc','The Finance API reads the finance database']],why:'Already in progress. Killing the session ends it in seconds.'},
+ {id:'P5',crit:1,e:['x_adev_s2','x_s2_pay','x_pay_db'],a:'A2',steps:[['obs','Session S-2 is replayed from an unknown device (EV-05)'],['obs','S-2 opens Payment processing (EV-06)'],['fc','Payment processing writes to the finance database']],why:'Already in progress, on the finance portal.'},
+ {id:'P6',crit:0,e:['x_u_g','x_g_payroll','x_payroll_db'],a:'A3',steps:[['obs','DocuSync Pro is granted (EV-04)'],['fc','Its tokens call Payroll'],['fc','Payroll reads the finance database']],why:'Lowest likelihood (21%). Step-up authentication blocks the token exchange for Payroll.'}
+];
+const XPK={obs:'Observed',inf:'Inferred',fc:'Forecast'};
+// entity evidence for new nodes
+Object.assign(ENT,{
+ adev:{t:'Unknown device',ty:'Device (attacker)',c:'obs',ev:[2,5],src:'Entra sign-in logs · SL-4471, SL-4502',ts:'09:42:36Z',cf:.9,why:[['Device ID never registered in the tenant','Strong'],['Replays both sessions','Strong']],lo:'A device-registration record would lower it.',att:'T1078.004 · Valid Accounts: Cloud Accounts',biz:'None directly. Blocking it is not in the minimum plan.',act:'A2'},
+ dev1:{t:'M. Verma laptop',ty:'Device (managed)',c:'biz',ev:[],src:'MDM inventory',ts:'Static',cf:null,att:'None observed',biz:'Not compromised. No action touches it.',act:null},
+ tokR:{t:'Refresh token (grant)',ty:'Token',c:'inf',ev:[4,5],src:'HALT correlation · I-02',ts:'09:47:03Z',cf:.78,why:[['Claims match the grant scope','Moderate'],['The minting is not logged','Limits']],lo:'A log of the token being minted would turn this into an observed fact.',att:'T1528 · Steal Application Access Token',biz:'Revoking the grant invalidates it.',act:'A1'},
+ appr:{t:'Finance approvers ×2',ty:'Users',c:'biz',ev:[],src:'Directory · Finance Approvers group',ts:'Static',cf:null,att:'None observed',biz:'They see one step-up prompt when A3 applies. Counted in the 3 affected users.',act:'A3'},
+ refunds:{t:'Refund handling',ty:'Business process',c:'biz',ev:[],src:'Dependency map v14',ts:'Static',cf:null,att:'None observed',biz:'Customer refunds. Needs Payment processing and Customer support.',act:null},
+ close:{t:'Month-end close',ty:'Business process',c:'biz',ev:[],src:'Dependency map v14',ts:'Static',cf:null,att:'None observed',biz:'Needs Reconciliation and the finance database. Due 17:00.',act:'A1'},
+ supplier:{t:'Supplier payments',ty:'Business process',c:'biz',ev:[],src:'Dependency map v14',ts:'Static',cf:null,att:'None observed',biz:'The 16:00 run. Needs Payment processing.',act:'A2'},
+ payrun:{t:'Payroll run',ty:'Business process',c:'biz',ev:[],src:'Dependency map v14',ts:'Static',cf:null,att:'None observed',biz:'640 employees paid at 18:00. Needs Payroll and the finance database.',act:'A3'}
+});
+const nodeLabel=id=>(XN[id]||NODES[id]||{l:id}).l;
+const allEdges=()=>EDGES.concat(XE);
+function xglyph(n,x,y,o){
+ const s=o.off?'#707D84':(n.k==='att'||n.k==='adev')?'#D4572F':'#F1F0EA',f='#0B0F11',w=2.8;let g='';
+ if(n.k==='user')g=`<circle r="11" fill="${f}" stroke="${s}" stroke-width="${w}"/>${n.l.includes('×')?'<circle cx="9" cy="-6" r="6" fill="'+f+'" stroke="'+s+'" stroke-width="2"/>':''}`;
+ else if(n.k==='ses')g=`<rect x="-15" y="-7" width="30" height="14" rx="7" fill="${f}" stroke="${s}" stroke-width="${w}"${n.fc?' stroke-dasharray="2 4"':''}/>`;
+ else if(n.k==='api')g=`<polygon points="-14,-9 5,-9 15,0 5,9 -14,9" fill="${f}" stroke="${s}" stroke-width="${w}" stroke-linejoin="round"/>`;
+ else if(n.k==='svc')g=`<rect x="-15" y="-10" width="30" height="20" rx="2" fill="${f}" stroke="${s}" stroke-width="${w}"/><rect x="-15" y="5" width="30" height="5" fill="${o.off?'#707D84':'#3E9C86'}"/>`;
+ else if(n.k==='db')g=`<path d="M-12 -8a12 4.5 0 0 1 24 0v16a12 4.5 0 0 1 -24 0z" fill="${f}" stroke="${s}" stroke-width="${w}"/><path d="M-12 -8a12 4.5 0 0 0 24 0" fill="none" stroke="${s}" stroke-width="${w}"/>`;
+ else if(n.k==='dev'||n.k==='adev')g=`<rect x="-14" y="-10" width="28" height="17" rx="2" fill="${f}" stroke="${s}" stroke-width="${w}"/><path d="M-19 11H19" stroke="${s}" stroke-width="3"/>`;
+ else if(n.k==='tok')g=`<polygon points="0,-12 12,0 0,12 -12,0" fill="${f}" stroke="${s}" stroke-width="${w}" ${n.id==='x'?'':''}/><circle r="2.5" fill="${s}"/>`;
+ else if(n.k==='proc')g=`<polygon points="-18,0 -9,-12 9,-12 18,0 9,12 -9,12" fill="${f}" stroke="${o.off?'#707D84':'#3E9C86'}" stroke-width="3"/><rect x="-9" y="3" width="18" height="4" fill="${o.off?'#707D84':'#3E9C86'}"/>`;
+ else g=`<polygon points="-13,-10 13,-10 0,13" fill="#D4572F" stroke="#D4572F" stroke-width="2" stroke-linejoin="round"/>`;
+ const ev=o.ev?`<rect x="9" y="-19" width="8" height="8" fill="#F1F0EA" stroke="#0B0F11" stroke-width="2"/>`:'';
+ const hit=o.hit?`<circle r="${o.hit}" fill="none" stroke="#EC7B56" stroke-width="2"/>`:'';
+ return `<g transform="translate(${x} ${y})">${hit}${g}${ev}</g>`;
+}
+// opts: step, mode(tech|biz|both), pf(all|obs|fc|crit), path, sel, q, applied, proposed, conflict, mini, spread{F,tau}, off
+function xSVG(o){
+ const step=o.step==null?6:o.step,mode=o.mode||'both',pf=o.pf||'all',ap=o.applied||0,plan=o.proposed||ap>0,mini=o.mini;
+ const pset=o.path&&o.path!=='all'?XP.find(p=>p.id===o.path).e:null;
+ const critSet=new Set(XP.filter(p=>p.crit).flatMap(p=>p.e)),obsSet=new Set(XE.filter(e=>e.k==='obs').map(e=>e.id));
+ const showTech=mode!=='biz',showBiz=mode!=='tech';
+ const q=(o.q||'').trim().toLowerCase();
+ const fcShown=o.spread||o.fcAll||(step>=6&&o.fcOn!==false);
+ let out='',rings='',lab='';
+ const cutDone=e=>e.cut&&ap>=+e.cut[1];
+ const sp=o.spread;
+ function live(id,F,tau){const e=XE.find(x=>x.id===id);if(!e)return false;const ct=SPCUT[F][e.cut]; if(e.cut&&ct!==undefined&&(e.k==='obs'||ct<=e.arr))return false;
+  if(e.up&&e.up.length&&!e.up.some(u=>live(u,F,tau)))return false;return true}
+ if(!mini){
+  out+=`<text class="gl d" x="14" y="22">TECHNICAL LAYER</text><text class="gl d" x="14" y="392">BUSINESS LAYER</text><path d="M0 365H1100" stroke="#232B30" stroke-dasharray="4 6"/>`;
+ }
+ // business dependencies
+ if(showBiz||showTech){XD.forEach(d=>{
+  const a=XN[d[0]],b=XN[d[1]];
+  if(!showBiz)return; if(mode==='biz'&&false)return;
+  const qq=qsub(mkq(a,b,d[2]),.12,.88),keep=['payroll','pay','recon'].includes(d[0])&&(plan);
+  const off=o.off;
+  out+=`<path d="${qd(qq)}" fill="none" stroke="${off?'#707D84':'#3E9C86'}" stroke-width="${keep&&!mini?6:2}" ${off?'stroke-dasharray="3 5" opacity=".6"':keep?'stroke-opacity=".85"':''}/>`;
+ })}
+ XE.forEach(e=>{
+  const A=XN[e.a],B=XN[e.b];
+  if(!showTech)return;
+  if(e.st&&e.st>step)return;
+  if(e.k==='fc'&&!fcShown)return;
+  const full=mkq(A,B,e.bl),qq=qsub(full,.08,.92);
+  let op=1;
+  if(pset&&pset.indexOf(e.id)<0)op=.1;
+  if(pf==='obs'&&e.k!=='obs')op=Math.min(op,.12);
+  if(pf==='fc'&&e.k!=='fc')op=Math.min(op,.12);
+  if(pf==='crit'&&!critSet.has(e.id))op=Math.min(op,.1);
+  let sty=e.k==='obs'?'stroke="#D4572F" stroke-width="3"':e.k==='fc'?'stroke="#D4572F" stroke-width="2" stroke-dasharray="2 6" stroke-linecap="round"':e.k==='inf'?'stroke="#9AA3A8" stroke-width="2" stroke-dasharray="6 4"':'stroke="#707D84" stroke-width="1.5"';
+  let body='';
+  if(sp){ // threat-spread animation
+   if(e.k==='fc'){const L=live(e.id,sp.F,sp.tau)&&e.arr<=sp.tau;
+    const blocked=!live(e.id,sp.F,0);
+    sty=L?'stroke="#D4572F" stroke-width="3.5"':'stroke="#D4572F" stroke-width="2" stroke-dasharray="2 6" stroke-linecap="round" stroke-opacity="'+(blocked?.25:.7)+'"';
+    if(e.cut&&SPCUT[sp.F][e.cut]!==undefined&&SPCUT[sp.F][e.cut]<=sp.tau){const m=qpt(qq,.5);rings+=`<g transform="translate(${m.x.toFixed(1)} ${m.y.toFixed(1)})"><circle r="${mini?9:8}" fill="#0B0F11" stroke="#F1F0EA" stroke-width="3"/><circle r="3" fill="#3E9C86"/></g>`}
+   }else if(e.k==='obs'&&e.cut&&SPCUT[sp.F][e.cut]!==undefined&&SPCUT[sp.F][e.cut]<=sp.tau){
+    const [p1,p2]=qsplit(qq,.5);body=`<path d="${qd(p1)}" fill="none" ${sty}/><path d="${qd(p2)}" fill="none" ${sty} stroke-opacity=".3"/>`;const m=qpt(qq,.5);rings+=`<g transform="translate(${m.x.toFixed(1)} ${m.y.toFixed(1)})"><circle r="9" fill="#0B0F11" stroke="#F1F0EA" stroke-width="3"/><circle r="3" fill="#3E9C86"/></g>`}
+  }else if(e.cut&&(plan||ap>0)){
+   if(cutDone(e)&&!(o.conflict&&e.cut==='A3')){const [p1,p2]=qsplit(qq,.5);body=`<path d="${qd(p1)}" fill="none" ${sty}/><path d="${qd(p2)}" fill="none" ${sty} stroke-opacity=".3"/>`;const m=qpt(qq,.5);rings+=`<g transform="translate(${m.x.toFixed(1)} ${m.y.toFixed(1)})"><circle r="8" fill="#0B0F11" stroke="#F1F0EA" stroke-width="2.6"/><circle r="2.8" fill="#3E9C86"/></g>`}
+   else if(!mini){const m=qpt(qq,.5);rings+=`<g transform="translate(${m.x.toFixed(1)} ${m.y.toFixed(1)})"><circle r="8" fill="#0B0F11" stroke="#F1F0EA" stroke-width="2" stroke-dasharray="3 3"/>${o.conflict&&e.cut==='A3'?'<path d="M-3.5 -3.5L3.5 3.5M3.5 -3.5L-3.5 3.5" stroke="#F1F0EA" stroke-width="2"/>':''}</g>`}
+  }
+  if(!body)body=`<path d="${qd(qq)}" fill="none" ${sty}/>`;
+  if(e.k==='obs'&&!sp){const m=qpt(qq,.5);body+=`<rect x="${(m.x-4).toFixed(1)}" y="${(m.y-4).toFixed(1)}" width="8" height="8" fill="#F1F0EA" stroke="#0B0F11" stroke-width="2"/>`}
+  const selE=o.sel==='e:'+e.id;
+  out+=`<g data-ent="e:${e.id}" class="gn" opacity="${op}"><path d="${qd(qq)}" fill="none" stroke="transparent" stroke-width="16"/>${selE?`<path d="${qd(qq)}" fill="none" stroke="#F1F0EA" stroke-width="8" stroke-opacity=".18"/>`:''}${body}</g>`;
+ });
+ out+=rings;
+ const matchSet=new Set();
+ Object.keys(XN).forEach(k=>{const n=XN[k];if(q&&(n.l+' '+n.t).toLowerCase().indexOf(q)>-1)matchSet.add(k)});
+ Object.keys(XN).forEach(k=>{
+  const n=XN[k];
+  if(n.biz&&!showBiz)return;
+  if(!n.biz&&!showTech&&!['payroll','pay','recon','supp','db','fapi'].includes(k))return;
+  if(n.st&&n.st>step)return; if(n.fc&&!fcShown)return;
+  const off=o.off&&(n.k==='svc'||n.k==='db'||n.k==='api'||n.k==='proc')&&k!=='supp'?1:0;
+  const ev=!mini&&['user','s1','s2','grant'].includes(k)&&step>=(n.st||1);
+  let hit=0;if(sp&&sp.F!=='C'&&k==='db'&&live('x_fapi_db',sp.F,sp.tau)&&sp.tau>=4.8)hit=22;
+  if(sp&&sp.F==='B'&&k==='db'&&sp.tau>=4.8)hit=22;
+  let g=xglyph(Object.assign({},n,{id:k}),n.x,n.y,{off,ev,hit});
+  if(o.sel==='n:'+k)g=`<circle cx="${n.x}" cy="${n.y}" r="26" fill="none" stroke="#F1F0EA" stroke-width="1.5" stroke-dasharray="3 3"/>`+g;
+  if(q&&matchSet.has(k))g=`<circle cx="${n.x}" cy="${n.y}" r="30" fill="none" stroke="#F1F0EA" stroke-width="2.5"/>`+g;
+  let op=1;if(q&&!matchSet.has(k))op=.3;
+  if(pset&&!XE.some(e=>pset.indexOf(e.id)>-1&&(e.a===k||e.b===k))&&!n.biz)op=Math.min(op,.2);
+  if(mode==='biz'&&!n.biz&&['phish','adev','asn','user','dev1','appr','grant','tokR','s1','s2','s3'].includes(k))return;
+  const showL=!mini||['db'].includes(k);
+  const cls=(n.k==='att'||n.k==='adev'||n.fc)?'gl e':n.biz?'gl v':off?'gl d':'gl';
+  const label=showL?`<text class="${cls}" x="${n.x}" y="${n.y+(n.k==='db'?32:30)}" text-anchor="middle">${n.l}</text>`:'';
+  out+=`<g data-ent="n:${k}" class="gn" opacity="${op}" tabindex="${mini?-1:0}" role="button" aria-label="${n.l}"><circle cx="${n.x}" cy="${n.y}" r="26" fill="transparent"/>${g}${label}</g>`;
+ });
+ if(!mini&&fcShown&&showTech)out+=`<text class="gl e" x="1090" y="22" text-anchor="end">FORECAST LAYER · NOT OBSERVED</text>`;
+ return `<svg class="${mini?'xm':'xg'}" viewBox="0 0 1100 520" role="img" aria-label="Dual-layer ThreadGraph" xmlns="http://www.w3.org/2000/svg">${out}</svg>`;
+}
+const SPCUT={A:{A1:.3,A2:.3,A3:.3},B:{},C:{A1:.5,A2:.8,A3:1.1}};
+
+Object.assign(ST,{xmode:'both',pf:'all',q:'',et:0,eplay:false,pmode:'tech',sim:'SIM-2417-0A'});
+function wf(cur){const s=S();
+ const it=[['graph','ThreadGraph','Understand',pathsOpen()+' paths '+(ST.applied>=3?'blocked':'open')],['echolab','EchoLab','Compare',s.sim===2?'3 futures':s.sim===1?'running':'not run'],['safecut','SafeCut','Select',s.plan===1||s.plan===2?'3 actions':s.plan===3?'no plan':'not run'],['proofseal','ProofSeal','Prove',s.plan===1?'6 claims':'—'],['approval','Approval','Decide',approvalText()]];
+ return `<nav class="wf" aria-label="Decision workflow">${it.map((x,i)=>`<button data-wf="${x[0]}" ${cur===x[0]?'aria-current="step"':''}><span class="k">${i+1} · ${x[2]}</span><b>${x[1]}</b><small>${x[3]}</small></button>`).join('')}</nav>`}
+function xOpts(extra){const s=S();
+ const o={step:gOpts().step,mode:ST.xmode,pf:ST.pf,path:ST.path,sel:ST.sel.t==='n'?'n:'+ST.sel.id:ST.sel.t==='e'?'e:'+ST.sel.id:null,q:ST.q,applied:ST.applied,proposed:s.plan>=1&&s.plan<=2,conflict:s.k==='conflict',fcOn:fcOn()&&!!ST.layers.fc};
+ return Object.assign(o,extra||{})}
+const xlegend=`<div class="chips" style="gap:16px;font-size:11.5px;color:var(--text2);font-family:var(--fm);letter-spacing:.05em;text-transform:uppercase">
+<span><svg width="30" height="12"><path d="M1 6H29" stroke="#D4572F" stroke-width="3"/><rect x="11" y="2" width="8" height="8" fill="#F1F0EA"/></svg> Observed</span>
+<span><svg width="30" height="12"><path d="M1 6H29" stroke="#9AA3A8" stroke-width="2" stroke-dasharray="6 4"/></svg> Inferred</span>
+<span><svg width="30" height="12"><path d="M1 6H29" stroke="#D4572F" stroke-width="2" stroke-dasharray="2 6" stroke-linecap="round"/></svg> Forecast</span>
+<span><svg width="30" height="14"><path d="M1 7H12" stroke="#D4572F"stroke-width="3"/><circle cx="15" cy="7" r="5.5" fill="#0B0F11" stroke="#F1F0EA" stroke-width="2.2"/><circle cx="15" cy="7" r="2" fill="#3E9C86"/><path d="M20 7H29" stroke="#D4572F" stroke-opacity=".3" stroke-width="3"/></svg> Blocked</span>
+<span><svg width="30" height="12"><path d="M1 6H29" stroke="#3E9C86" stroke-width="6"/></svg> Preserved</span>
+<span><svg width="30" height="12"><path d="M1 6H29" stroke="#3E9C86" stroke-width="2"/></svg> Dependency</span></div>`;
+function pathStatus(p){const cut=ST.applied>=+p.a[1];return cut?tag('ok','Blocked · '+p.a):tag(p.e.some(id=>XE.find(e=>e.id===id).k==='fc')&&!p.e.every(id=>XE.find(e=>e.id===id).k==='obs')&&p.e[0].indexOf('x_u_s3')===0?'fc':'obs','Open')}
+function pathExplain(){
+ const pid=ST.path==='all'?null:ST.path,p=pid&&XP.find(x=>x.id===pid);
+ if(!p)return `<div class="callout"><h4>Path explanation</h4><p class="muted">Select a path (P1–P6) above or click a row in the table to see why it matters, which parts are observed and which are forecast, and what stops it.</p></div>`;
+ const act=ACTS.find(a=>a.id===p.a),cut=ST.applied>=+p.a[1];
+ return `<div class="callout"><h4>${p.id} · ${p.crit?'Critical path':'Path'}</h4><p class="muted" style="margin-bottom:6px">${p.why}</p>
+ ${p.steps.map((s,i)=>`<div class="step"><span class="nn">${i+1}</span><div>${tag(s[0],XPK[s[0]])} ${s[1]}</div></div>`).join('')}
+ <div class="step"><span class="nn">→</span><div><b>Stopped by ${p.a}</b>: ${act.t}. ${cut?tag('ok','Blocked'):tag('n','Not yet executed')}<div class="muted" style="font-size:12.5px;margin-top:2px">${act.imp} · ${act.rb}</div></div></div>
+ <p class="muted" style="font-size:12px;margin-top:6px">${p.crit?'Critical: already observed, or reaches the database in at least 40% of simulated rollouts.':'Not critical: below the 40% likelihood line and not yet observed beyond the grant.'}</p></div>`}
+function searchResults(){const q=ST.q.trim().toLowerCase();if(!q)return '<p class="muted" style="font-size:12.5px">Type to find users, devices, sessions, tokens, apps, APIs, services, databases or processes.</p>';
+ const r=Object.keys(XN).filter(k=>(XN[k].l+' '+XN[k].t).toLowerCase().indexOf(q)>-1);
+ return r.length?r.map(k=>`<div style="padding:5px 0;border-top:1px solid var(--line)"><button class="lk" data-ent="n:${k}">${XN[k].l}</button> <span class="muted" style="font-size:12px">${XN[k].t}</span></div>`).join(''):'<p class="muted">No entity matches “'+ST.q+'”.</p>'}
+function vGraph(){
+ const m=ST.xmode,pf=ST.pf;
+ const seg=(arr,key,val)=>`<div class="seg" role="group">${arr.map(a=>`<button data-${key}="${a[0]}" aria-pressed="${val===a[0]}">${a[1]}</button>`).join('')}</div>`;
+ return `${ph('ThreadGraph','The technical compromise and the business it runs through, in one graph. Scrub the timeline to replay it.')}${wf('graph')}
+ <div class="cvtool" style="justify-content:space-between"><div class="xmode"><span class="k">Layer</span>${seg([['tech','Technical'],['biz','Business'],['both','Combined']],'xmode',m)}<span class="k">Paths</span>${seg([['all','All'],['obs','Observed'],['fc','Forecast'],['crit','Critical']],'pf',pf)}</div>
+ <div class="srch"><label class="k" for="xq">Find entity</label><input id="xq" type="search" value="${ST.q}" placeholder="e.g. token, payroll" autocomplete="off"></div></div>
+ <div class="canvas" data-xgraph style="min-height:300px">${xSVG(xOpts())}</div>
+ <div style="margin-top:10px">${xlegend}</div>
+ <div class="xsplit"><div><div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:6px"><span class="k">Explain path</span><div class="chips">${['all',...XP.map(p=>p.id)].map(p=>`<button class="chip" data-xpath="${p}" aria-pressed="${ST.path===p}">${p==='all'?'None':p}</button>`).join('')}</div></div>
+ <table class="tbl"><thead><tr><th>Path</th><th>Route</th><th>Basis</th><th>Status</th></tr></thead><tbody>${XP.map(p=>`<tr class="row" data-xpath="${p.id}"><td class="n">${p.id}${p.crit?' ★':''}</td><td>${p.steps.map(s=>s[1].replace(/ \(EV-0\d\)/,'')).slice(0,2).join(' → ')} … database</td><td>${p.e.every(id=>XE.find(e=>e.id===id).k==='obs')?tag('obs','Observed'):p.e.some(id=>XE.find(e=>e.id===id).k==='obs')?tag('obs','Observed')+' '+tag('fc','Forecast'):tag('fc','Forecast')}</td><td>${ST.applied>=+p.a[1]?tag('ok','Blocked · '+p.a):tag('obs','Open')}</td></tr>`).join('')}</tbody></table>
+ <p class="muted" style="font-size:12px;margin-top:6px">★ critical path. Click a node or link, then read the rail for its evidence.</p></div>
+ <div><div id="pexp">${pathExplain()}</div><div style="margin-top:14px" id="sres">${searchResults()}</div></div></div>`}
+function refreshX(){$$('[data-xgraph]').forEach(el=>{el.innerHTML=xSVG(xOpts())});const p=$('#pexp');if(p)p.innerHTML=pathExplain()}
+// override the shared graph refresh so the new view and the old minis both stay live
+const _rg=refreshGraphs;refreshGraphs=function(){_rg();refreshX();refreshEcho&&refreshEcho()};
+
+const SERV=[['fapi','Finance API'],['payroll','Payroll'],['pay','Payment proc.'],['recon','Reconciliation'],['supp','Support']];
+const REACH={fapi:1.0,pay:3.4,payroll:3.0,recon:2.5,db:4.8};
+const FUT=[
+ {k:'A',n:'Aggressive isolation',tag:'High containment · high downtime · high user impact',off:1},
+ {k:'B',n:'Passive monitoring',tag:'Low disruption · dangerous residual paths'},
+ {k:'C',n:'HALT minimum-safe response',tag:'6 of 6 blocked · 3 users · finance preserved · reversible',win:1}];
+function availStrip(F,tau){
+ // 0..10 min, rows per service, up = Verdigris, down = hatched, threat reach = Ember square (forecast)
+ const W=300,H=124,x=t=>50+t/10*(W-58);let o='';
+ SERV.forEach((s,i)=>{const y=14+i*20;
+  o+=`<text x="0" y="${y+8}" class="gl d" style="font-size:9.5px;stroke-width:2px">${s[1].replace('Payment proc.','Payments').replace('Reconciliation','Recon.').slice(0,9)}</text>`;
+  const downAt=F==='A'?(s[0]==='supp'?0.9:0.5):null;
+  if(downAt==null)o+=`<rect x="${x(0)}" y="${y}" width="${x(10)-x(0)}" height="10" fill="#3E9C86"/>`;
+  else o+=`<rect x="${x(0)}" y="${y}" width="${x(downAt)-x(0)}" height="10" fill="#3E9C86"/><rect x="${x(downAt)}" y="${y}" width="${x(10)-x(downAt)}" height="10" fill="none" stroke="#707D84" stroke-dasharray="3 3"/><path d="M${x(downAt)+2} ${y+5}H${x(10)-4}" stroke="#707D84" stroke-dasharray="1 4"/>`;
+  if(F==='B'&&REACH[s[0]]!=null){o+=`<rect x="${x(REACH[s[0]])-4}" y="${y-2}" width="8" height="14" fill="${tau>=REACH[s[0]]?'#D4572F':'none'}" stroke="#D4572F" stroke-dasharray="${tau>=REACH[s[0]]?'':'2 2'}"/>`}
+ });
+ if(F==='B')o+=`<text x="${x(4.8)}" y="${H-4}" class="gl e" style="font-size:9.5px;stroke-width:2px" text-anchor="middle">DB reached</text>`;
+ if(F==='A')o+=`<text x="${x(10)}" y="${H-4}" class="gl d" style="font-size:9.5px;stroke-width:2px" text-anchor="end">offline ≈ 4 h 20 →</text>`;
+ o+=`<path d="M${x(tau)} 6V${H-14}" stroke="#F1F0EA" stroke-width="1.5"/>`;
+ for(let m=0;m<=10;m+=2)o+=`<text x="${x(m)}" y="${H-14+8}" class="gl d" style="font-size:8.5px;stroke-width:0" text-anchor="middle" fill="#9AA3A8">${m}m</text>`;
+ return `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Business availability, Future ${F}">${o}</svg>`}
+function echoMetrics(F){return {A:['6 of 6 blocked','412 users','≈ 4 h 20 min','Partial · manual, ≈ 3 h','No known access left; 3 processes lost'],B:['0 of 6 blocked','0 today','0 min today','Not applicable','4 paths open; 82% reach the database'],C:['6 of 6 blocked','3 users','0 min','Full · 3 plans, ≈ 2 min','0 of 6 reachable; outside foothold not ruled out']}[F]}
+function echoPanels(){const tau=ST.et;
+ return FUT.map(f=>`<div class="fut ${f.win?'win':''}"><span class="k">Future ${f.k}</span><h4>${f.n}</h4><p class="muted" style="font-size:12px;min-height:34px">${f.tag}</p>
+ <div class="canvas" data-echo="${f.k}">${xSVG({mini:true,mode:'tech',step:6,fcAll:1,spread:{F:f.k,tau},off:f.off&&tau>=.5})}</div>
+ <div class="strip" data-estrip="${f.k}">${availStrip(f.k,tau)}</div></div>`).join('')}
+function refreshEcho(){if(ST.view!=='echolab')return;$$('[data-echo]').forEach(el=>{const F=el.dataset.echo;el.innerHTML=xSVG({mini:true,mode:'tech',step:6,fcAll:1,spread:{F,tau:ST.et},off:F==='A'&&ST.et>=.5})});
+ $$('[data-estrip]').forEach(el=>{el.innerHTML=availStrip(el.dataset.estrip,ST.et)});
+ const r=$('#escrub');if(r&&document.activeElement!==r)r.value=ST.et;const t=$('#etxt');if(t)t.textContent=etxt();const pb=$('[data-eplay]');if(pb){pb.textContent=ST.eplay?'Pause':'Play'}}
+const etxt=()=>'T+'+String(Math.floor(ST.et)).padStart(2,'0')+':'+String(Math.round((ST.et%1)*60)).padStart(2,'0')+' into the horizon';
+function vEcho(){
+ const s=S();if(s.sim<2)return vEchoOld();
+ const M=['Threat containment','Affected users','Service downtime','Reversibility','Residual risk'];
+ return `${ph('EchoLab','Three futures from the same incident, run side by side before anything is touched. Everything here is simulated and hatched.',tag('sim','Simulated · 6,000 rollouts per future · seed 2417'))}${wf('echolab')}
+ <div class="ech"><button class="btn sm" data-eplay>${ST.eplay?'Pause':'Play'}</button><input id="escrub" type="range" min="0" max="10" step="0.05" value="${ST.et}" aria-label="Simulation time in minutes"><span class="mono" id="etxt" style="font-size:12px;min-width:200px">${etxt()}</span><button class="btn sm q" data-udr>Assumptions &amp; uncertainty</button></div>
+ <div class="futs simbox">${echoPanels()}</div>
+ <p class="muted" style="font-size:12.5px;margin-top:8px">Ember lines are threat spread in the simulation. Rings are cuts. Green bars are services available; hatched outline means offline. One scrubber drives all three futures.</p>
+ <section class="sec" style="margin-top:14px"><header><h3>Metric comparison</h3>${tag('sim','Simulated')}</header><table class="mtab simbox"><thead><tr><th></th>${FUT.map(f=>`<th>${f.n}</th>`).join('')}</tr></thead><tbody>${M.map((m,i)=>`<tr><td class="l">${m}</td>${FUT.map(f=>`<td class="${f.win?'win':''}"><span class="v">${echoMetrics(f.k)[i].split(' · ')[0].split(';')[0]}</span><span class="muted" style="font-size:12.5px">${(echoMetrics(f.k)[i].split(' · ')[1]||echoMetrics(f.k)[i].split(';')[1]||'')}</span></td>`).join('')}</tr>`).join('')}</tbody></table></section>
+ <p style="margin-top:14px"><button class="btn" data-wf="safecut">Continue to SafeCut</button></p>`}
+function uncertaintyHTML(){return `<div class="dh"><div><span class="k">EchoLab · simulated</span><h2>Assumptions and uncertainty</h2></div><button class="btn sm q" data-act="close">Close</button></div><div class="db">
+ <div class="sec"><header><h3>What the model assumes</h3></header><ul class="muted" style="margin:0;padding-left:18px"><li>Attacker replays tokens and mints at most two further sessions. No new malware.</li><li>Horizon 10 min, 6,000 rollouts per future, seed 2417.</li><li>Action delay: Future A 0.3 min. Future C 0.5 to 1.1 min after approval.</li><li>Downtime and user counts come from dependency map v14 and the directory, not from live tests.</li></ul></div>
+ <div class="sec"><header><h3>How sure are the numbers</h3></header><table class="tbl"><tbody>
+ <tr><td>Future B reaches the database</td><td class="n">82% (95% interval 81–83%)</td></tr>
+ <tr><td>Future A users locked out</td><td class="n">412 (range 380–446)</td></tr>
+ <tr><td>Future C users affected</td><td class="n">3 (range 3–4)</td></tr>
+ <tr><td>Future A downtime</td><td class="n">≈ 4 h 20 min (± 40 min)</td></tr></tbody></table></div>
+ <div class="sec"><header><h3>What it cannot see</h3></header><ul class="muted" style="margin:0;padding-left:18px"><li>A foothold outside the six observed events.</li><li>Human delays, such as an approver who is away.</li><li>Offline or out-of-band data theft.</li><li>Changes to the business after dependency map v14.</li></ul></div>
+ <p class="muted">Likelihoods are shares of simulated rollouts. They are not measured probabilities.</p></div>`}
+
+const CANDS=[
+ ['Revoke OAuth grant','P1, P2','1 user','0 min','Selected as A1','sel'],
+ ['Kill session S-1','P4','1 user signs in again','0 min','Selected, grouped into A2','sel'],
+ ['Kill session S-2','P5','1 user signs in again','0 min','Selected, grouped into A2','sel'],
+ ['Require step-up for finance users','P3, P6','2 approvers, one prompt','0 min','Selected as A3','sel'],
+ ['Isolate Finance API','P1, P4, P5 (+ downstream)','≈ 310 users','≈ 4 h','Rejected: breaks Payroll, Payment processing, Reconciliation','rej'],
+ ['Isolate finance database','All 6','All five processes','≈ 4 h 20 min','Rejected: downtime limit is 0 min','rej'],
+ ['Network-isolate finance subnet','All 6','≈ 412 users','≈ 3 h','Rejected: downtime limit and user-impact limit','rej'],
+ ['Disable M. Verma account','P1, P4, P5','1 user locked out','0 min','Rejected: dominated. Leaves the grant alive, so P2, P3, P6 stay open','rej'],
+ ['Block ASN AS64500 at the edge','P4, P5','0 users','0 min','Rejected: blocks 2 of 6; grant tokens still work from other networks','rej'],
+ ['Disable all OAuth consent','P1, P2, P6','212 users','0 min','Rejected: breaks 14 integrations, over the user-impact limit','rej'],
+ ['Force password reset','None','1 user','0 min','Rejected: tokens and grants survive a password change, blocks 0 of 6','rej'],
+ ['Quarantine mailbox','None','1 user','0 min','Rejected: blocks 0 of 6','rej']];
+const LOO=[['A1','P1, P2'],['A2','P4, P5'],['A3','P3, P6']];
+function constraints(){const cf=S().k==='conflict';
+ return [['All six dangerous paths blocked','= 6','6 of 6',1],['Critical-service downtime','≤ 0 min','0 min',1],['Users affected','≤ 5','3',1],['Every action reversible within 5 min','all','3 of 3 (max about 1 min)',1],['Authorisation available for every action','all',cf?'2 of 3 · A3 blocked by IR-CA-05':'3 of 3 (A3 needs co-approval)',!cf],['Evidence sealed before any action','yes','Yes · PS-2417-01',1]]}
+const DETAIL={
+ A1:{req:'Without A1, P1 and P2 stay open. Both run through the DocuSync Pro grant, and nothing else in the plan touches it.',aff:'Users: M. Verma (1). Services: none. The grant’s mail and file access ends.',time:'≈ 5 s to apply',perm:'Entra: DelegatedPermissionGrant.ReadWrite.All',ev:'Preserved. The grant record, consent event and token log are snapshotted first; revoking does not delete them.',rej:'Disable all OAuth consent (212 users), Disable M. Verma account (leaves grant alive)'},
+ A2:{req:'Without A2, P4 and P5 stay open. Both are live replays that the grant revocation does not end, because the tokens are already issued.',aff:'Users: M. Verma (1) signs in again. Services: none.',time:'≈ 10 s to apply',perm:'Entra: User.RevokeSessions.All',ev:'Preserved. Session records and their sign-in logs are kept; only the tokens expire.',rej:'Block ASN at the edge (2 of 6, tokens work from other networks), Force password reset (tokens survive)'},
+ A3:{req:'Without A3, P3 and P6 stay open. They need a new session or a fresh token exchange, which step-up authentication makes impossible without a prompt.',aff:'Users: two finance approvers see one prompt. Services: none interrupted.',time:'≈ 15 s to apply',perm:'Entra: Policy.ReadWrite.ConditionalAccess · co-approval IR-CA-05',ev:'Preserved, and adds a log source: every step-up challenge is recorded.',rej:'Isolate Finance API (≈ 310 users), Network-isolate finance subnet (≈ 3 h downtime)'}};
+function vSafe(){
+ const s=S();if(s.plan===0||s.plan===3)return vSafeOld();
+ const cf=s.k==='conflict',cs=constraints();
+ return `${ph('SafeCut',cf?'A3 cannot be authorised, so the plan as a whole cannot run.':'The smallest set of reversible actions that blocks every dangerous path and keeps every critical service running.',cf?tag('fc','Policy conflict'):tag('sim','Simulated plan'))}${wf('safecut')}
+ <div class="prov"><div><span class="k">Who calculated this</span><h4>An exact solver, not a language model</h4><p class="muted" style="font-size:13px">SafeCut solver v0.9 searched all 4,096 subsets of 12 candidate actions against the constraints below. The result is deterministic: same graph, same answer. Certificate sc-9f3a-2417.</p></div>
+ <div><span class="k">What the language model did</span><h4>Wrote the explanations. Nothing else.</h4><p class="muted" style="font-size:13px">Wording on this page is generated from the solver’s output. It cannot add, remove or reorder an action, and it is not used to check the result.</p></div></div>
+ <section class="sec"><header><h3>The problem SafeCut solved</h3></header><p><b>Minimise</b> 10 × users affected + 5 × downtime minutes + number of actions. <b>Subject to</b> every constraint below. The chosen set scores <span class="mono">33</span>; the best set that breaks any constraint scores lower but is not allowed.</p>
+ <table class="tbl cst" style="margin-top:8px"><thead><tr><th>Constraint</th><th>Limit</th><th>Plan</th><th></th></tr></thead><tbody>${cs.map(c=>`<tr><td>${c[0]}</td><td class="n">${c[1]}</td><td>${c[2]}</td><td>${c[3]?tag('ok','Satisfied'):tag('fc','Not satisfied')}</td></tr>`).join('')}</tbody></table></section>
+ <div class="canvas" data-xgraph>${xSVG(xOpts({mode:'both'}))}</div><div style="margin-top:8px">${xlegend}</div>
+ <section class="sec"><header><h3>Why each action is required</h3><span class="muted">Remove any one and paths reopen</span></header>
+ ${ACTS.map((a,i)=>{const d=DETAIL[a.id],l=LOO[i];return `<details ${i===0?'open':''}><summary><span class="mono">${a.id}</span> ${a.t} ${tag(ST.applied>=i+1?'ok':'n',actStatus(a.id).split(' · ')[0])}<span class="muted" style="margin-left:auto;font-weight:400">blocks ${a.blocks}</span></summary><div class="dd"><dl class="kvt">
+ <dt>Why required</dt><dd>${d.req}</dd><dt>Paths blocked</dt><dd>${a.blocks.split(', ').map(p=>`<button class="chip" data-xpath="${p}" data-view="graph">${p}</button>`).join(' ')}</dd>
+ <dt>Affects</dt><dd>${d.aff}</dd><dt>Execution time</dt><dd>${d.time}</dd><dt>Reversibility</dt><dd>${a.rb}. Dry run passed (simulated).</dd><dt>Permission</dt><dd>${d.perm}<br>${a.pol} · ${a.who}</dd><dt>Evidence</dt><dd>${d.ev}</dd><dt>Rejected instead</dt><dd>${d.rej}</dd></dl></div></details>`}).join('')}</section>
+ <section class="sec"><header><h3>Is it the smallest?</h3></header><p class="muted" style="margin-bottom:6px">Leave-one-out check on the solver’s result.</p><table class="tbl"><thead><tr><th>If you drop</th><th>Paths that reopen</th><th>Result</th></tr></thead><tbody>${LOO.map(l=>`<tr><td class="n">${l[0]}</td><td>${l[1]}</td><td>${tag('fc','Constraint broken')}</td></tr>`).join('')}</tbody></table></section>
+ <section class="sec"><header><h3>Alternatives considered</h3><span class="muted">12 candidates</span></header><table class="tbl"><thead><tr><th>Action</th><th>Blocks</th><th>Users</th><th>Downtime</th><th>Verdict</th></tr></thead><tbody>${CANDS.map(c=>`<tr><td><b>${c[0]}</b></td><td>${c[1]}</td><td>${c[2]}</td><td class="n">${c[3]}</td><td>${c[5]==='sel'?tag('ok',c[4]):'<span class="muted">'+c[4]+'</span>'}</td></tr>`).join('')}</tbody></table>
+ <div class="callout" style="margin-top:10px"><b>Purge M. Verma’s mailbox</b> · irreversible<p class="muted" style="margin-top:4px">Never offered by HALT as a button. Needs CISO break-glass with two people (IR-BRK-01).</p></div></section>
+ <p style="margin-top:6px;display:flex;gap:10px"><button class="btn pri" data-wf="proofseal">Continue to ProofSeal</button>${cf?`<button class="btn" data-view="policies">See policy conflict</button>`:''}</p>`}
+
+const VERS=[['HALT-R1','v0.9.3'],['ThreadGraph schema','v14'],['EchoLab model','v2.1'],['SafeCut solver','v0.9'],['Policy set','pol-2026.10.2'],['Dependency map','v14']];
+function pkgItems(){const s=S(),cf=s.k==='conflict',post=ST.applied>=3;
+ return [
+ ['Attack paths covered','6 of 6','All six paths are cut at least once. Reachability recomputed on the post-action snapshot.','Check: graph reachability, snapshot 9f3a…c41e','0 of 6 reachable',1],
+ ['Critical services preserved','5 of 5','Finance API, Payroll, Payment processing, Reconciliation and Customer support keep every dependency.','Check: dependency map v14 against the plan','5 of 5 running',1],
+ ['Downtime constraint satisfied','0 min ≤ 0 min','No critical service is interrupted for any action.','Check: SafeCut constraint C2','0 services interrupted',1],
+ ['User-impact limit satisfied','3 ≤ 5','M. Verma signs in again; two approvers see one prompt.','Check: SafeCut constraint C3; directory snapshot','3 users',1],
+ ['Authorization available',cf?'2 of 3':'3 of 3',cf?'A3 needs a co-approval that cannot be given (IR-CA-05, IR-CHG-03).':'IR-OAUTH-02, IR-SESS-01 and IR-CA-05 each name a human approver who is available.','Check: policy set pol-2026.10.2',ST.a1&&ST.a2||post?'Approvals recorded':'Not run',!cf],
+ ['Evidence preserved','6 events sealed','Events, graph snapshot and solver certificate sealed before any action runs (IR-DATA-07).','Check: sha256 over the sealed bundle','Hash match',1],
+ ['Rollback plan available','3 of 3 plans','RB-1, RB-2 and RB-3 each passed a dry run. About two minutes to restore all.','Check: dry run on a copy of the snapshot',post?'Armed until 10:36Z':'Not run',1]]}
+function pkgMeta(){const post=ST.applied>=3;
+ return [['Simulation identifier',ST.sim+' · seed 2417 · 3 × 6,000 rollouts'],['Model and policy versions',VERS.map(v=>v[0]+' '+v[1]).join(' · ')],['Sealed at','10:06:40Z · valid until 10:36Z or new telemetry'],['Analyst approval',ST.a1||post?OPS.n+' · '+OPS.r+' · approved 10:07Z':'Pending · '+OPS.n+', '+OPS.r],['Finance Ops co-approval',ST.a2||post?'S. Iyer · approved 10:08Z (demo)':'Pending · S. Iyer, Finance Ops owner'],['Signer','Demo key · not production']]}
+function vProof(){
+ const s=S();if(s.plan===0||s.plan===3)return vProofOld();
+ const cf=s.k==='conflict',post=ST.applied>=3,items=pkgItems(),M=pkgMeta(),ex=ST.pmode==='exec';
+ const modes=`<div class="seg" role="group" aria-label="Explanation mode"><button data-pmode="tech" aria-pressed="${!ex}">Technical</button><button data-pmode="exec" aria-pressed="${ex}">Executive</button></div>`;
+ const head=ph('ProofSeal','The proof package for the selected response. Every claim can be opened and checked.',tag('sim','Predicted results are simulated'));
+ let body;
+ if(ex){body=`<div class="exec"><p><b>${cf?'The plan cannot run as written.':'HALT recommends three reversible steps.'}</b> ${cf?'One step needs a sign-off that is not available. Nothing has been changed.':'Together they stop all six ways the attacker could reach the finance database.'}</p>
+ <p>${cf?'The other two steps would stop four of the six paths. A person must decide whether that is enough.':'Finance keeps running. Payroll, payments, reconciliation and support are untouched. Three people notice: one signs in again, two see an extra prompt.'}</p>
+ <p>${cf?'':'Every step can be undone in about two minutes. Evidence of the attack is sealed before anything is changed. Two named people must approve before it runs.'}</p>
+ <p class="muted" style="font-size:14px">These results come from simulation, not from the live system${post?', except the column marked observed below':''}. HALT cannot rule out an attacker foothold outside the six events it has seen.</p></div>
+ <section class="sec"><header><h3>At a glance</h3></header><table class="tbl"><tbody>${items.map(i=>`<tr><td>${i[5]?tag('ok','Met'):tag('fc','Not met')}</td><td><b>${i[0]}</b></td><td>${i[1]}</td></tr>`).join('')}</tbody></table></section>`}
+ else{body=`<div class="callout" style="margin-bottom:8px;border-style:dotted"><span class="muted">Hashes and the signing key are placeholders. ${post?'The right column is <b style="color:var(--text)">observed after execution</b>.':'Nothing has been executed, so there is no observed result yet.'}</span></div>
+ <div style="display:grid;grid-template-columns:28px minmax(0,1fr) 190px 190px;gap:14px" class="k"><span></span><span>Claim</span><span style="text-align:right">Predicted · simulated</span><span style="text-align:right">After execution · observed</span></div>
+ ${items.map(i=>`<div class="claim" style="grid-template-columns:28px minmax(0,1fr) 190px 190px">${sigSVG(i[5]?'ok':'bad')}<div><h4>${i[0]}</h4><p class="muted" style="font-size:13px;max-width:56ch">${i[2]}</p><details><summary>How it was checked</summary><div class="dd">${i[3]}. Evidence IDs EV-01 – EV-06. Seal PS-2417-01.</div></details></div><div class="res"><span>${i[1]}</span>${i[5]?tag('sim','Simulated'):tag('fc','Failed · IR-CA-05')}</div><div class="res">${post?`<span>${i[4]}</span>${tag('obs','Observed')}`:'<span class="muted">Not run</span>'}</div></div>`).join('')}`}
+ return `${head}${wf('proofseal')}<div class="xmode" style="margin-bottom:12px"><span class="k">Explanation</span>${modes}</div>${body}
+ <section class="sec" style="margin-top:16px"><header><h3>Package record</h3></header><dl class="kvt">${M.map(m=>`<dt>${m[0]}</dt><dd>${m[1]}</dd>`).join('')}<dt>Seal hash</dt><dd><span class="mono" id="shash">not yet computed</span> <button class="btn sm q" data-verify style="margin-left:8px">Compute in browser</button><div class="muted" style="font-size:12px;margin-top:4px">A real SHA-256 over the package above, computed here as a demo. Not a production signature.</div></dd></dl></section>
+ <section class="sec"><header><h3>What this proof does not claim</h3></header><ul class="muted" style="margin:0;padding-left:18px"><li>That the attacker has no foothold outside the six observed events.</li><li>That forecast paths P2, P3 and P6 would have happened. They are blocked as a precaution.</li></ul></section>
+ <p style="margin-top:10px"><button class="btn pri" data-wf="approval">${post?'Review rollback':'Continue to approval'}</button></p>`}
+async function verifyHash(){const el=$('#shash');if(!el)return;const txt=JSON.stringify({items:pkgItems().map(i=>i.slice(0,3)),meta:pkgMeta(),vers:VERS});
+ try{const b=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(txt));el.textContent='sha256 '+Array.from(new Uint8Array(b)).map(x=>x.toString(16).padStart(2,'0')).join('').slice(0,16)+'…'}catch(e){el.textContent='Hashing is not available in this browser'}}
+
+function specHTML(){
+ const C=[
+ ['IncidentRibbon','Always-visible incident identity and state. Sticky, 68 px.','{incidentId, status:{label,tone}, confidence:Score, stage, detectedAt, approval:ApprovalState, mode:"live"|"replay"}','status pill (neutral · ember · verdigris), confidence opens EvidenceRail, approval chip disabled until a plan exists','bg, line; Plex Mono 10.5 labels','Landmark header; every field has a visible label; score is a button'],
+ ['NavItem','Left navigation for the 7 systems.','{id, label, badge?, current}','default, hover, current (2 px Bone left bar), badge','surface, raised, text2','nav > button, aria-current="page", 44 px target'],
+ ['EvidenceTag','Marks the epistemic status of any value. Mandatory beside every number.','{kind:"observed"|"inferred"|"forecast"|"simulated"|"business"}','Observed = Ember fill square · Inferred = dashed · Forecast = dotted Ember · Simulated = dotted + hatch','threat-observed, threat-text, neutral','Never colour alone: shape and word both change'],
+ ['ScoreChip','Any confidence, likelihood or risk figure.','{value, kind:"confidence"|"likelihood", evidenceId}','default, focus. Click opens the rail score view','text, text2','Button with accessible name “Show evidence for 87 percent confidence”'],
+ ['GraphCanvas','SVG 960×440 ThreadGraph, used large, mini and in EchoLab.','{step, layers, applied, proposed, conflict, path, sel, mini, off, fcAll}','Observed 3 px Ember + evidence square · Forecast dotted 2 px · Inferred dashed · Business 2 px Verdigris · Cut = Bone ring with Verdigris centre · Proposed = dashed ring','threat-*, business, proof-ring','Nodes are focusable buttons with labels; text equivalent in the paths table'],
+ ['LayerToggle','Shows or hides a graph layer.','{layer, pressed}','pressed, unpressed (disabled colour)','raised, border','aria-pressed'],
+ ['TimelineScrubber','Time cursor over observed and forecast ranges.','{events[], cursor, liveAt, forecastUntil, playing, speed}','live (locked to NOW), replay, playing; forecast zone hatched','ember hatch, text','Native range input; aria-valuetext with UTC time; Prev/Next event buttons'],
+ ['EvidenceRail','Details of the selected entity, edge or score.','{selection}','entity, score, empty','surface, kv rows','Rows are definition lists; “Why this score” is a details element'],
+ ['StateBanner','One sentence on the current incident state and the next safe step.','{state, message, cta?, progress?}','11 states, replay variant','bg, raised','role=status on progress updates'],
+ ['ActionRow','One proposed response action.','{id, title, impact, reversibility, authorisation, status}','proposed, queued, executed, blocked by policy','line','Impact, reversibility and authorisation always visible'],
+ ['ApprovalGate','Drawer that approves and executes.','{operator, permissions, actions[], rollback, approvals[]}','pending, analyst approved, co-approved, ready, executing','border-strong','Modal dialog, Esc closes, focus returns'],
+ ['HoldButton','The only way to execute or roll back.','{label, duration=1200, disabled, onComplete}','idle, holding (fill), complete, disabled','text, line','Space/Enter held for 1.2 s; release cancels; helper text explains'],
+ ['PathRow','One dangerous path and its status.','{id, route, basis, blockedBy}','open (observed or forecast), blocked','line','Row is clickable and keyboard-activatable'],
+ ['ProofClaim','One verifiable claim with predicted and observed results.','{title, check, predicted, observed?, status}','pending, verified (simulated), verified (observed), failed','proof-ring','Ring shape plus word, not colour alone'],
+ ['PolicyRow','A rule, its approver and its status for the current plan.','{id, rule, approver, governs, status}','satisfied, awaiting, conflict, not applicable','line','Rule text in disclosure']];
+ const states=STATES.map(s=>`<tr><td><code>${s.k}</code></td><td>${s.n}</td><td>${s.status}</td><td>${s.b.go?s.b.go[0]:'—'}</td><td>${s.fc?'forecast':'—'} ${s.sim===2?'· simulated results':s.sim===1?'· simulating':''} ${s.plan===1?'· plan':s.plan===2?'· plan, A3 blocked':s.plan===3?'· no plan':''}</td></tr>`).join('');
+ const rules=[['No irreversible action as a casual button','HoldButton is the only executor; irreversible actions are not offered (IR-BRK-01).'],['Every score exposes its evidence','ScoreChip → EvidenceRail score view; “Why this score” on every entity.'],['Forecasts are labelled forecasts','EvidenceTag forecast + dotted style + FORECAST LAYER caption + hatched timeline zone.'],['Simulated ≠ observed','Hatch + dotted border + word “Simulated”; observed uses solid Ember or plain text.'],['Approval shows operator, permissions, rollback','ApprovalGate sections in that order.'],['Progressive disclosure','Overview summarises; details elements hold alternatives, rule text and score derivations.']];
+ return `<div class="sp"><button class="btn sm" data-act="closespec" style="float:right">Close specs</button><span class="k">HALT Command Center</span><h1>Component specifications</h1><p class="muted" style="max-width:70ch;margin-top:8px">Developer handoff for the prototype. Tokens come from the HALT design system: Ink #0E1214, Bone #F1F0EA, Ember #D4572F (hostile only), Verdigris #3E9C86 (business only). Archivo and IBM Plex Mono are provisional.</p>
+ <h2>Layout</h2><p class="muted">Desktop 1440×900. Grid: nav 216 · workspace fluid · rail 344. Rows: ribbon 68 · workspace fluid · timeline 132. Minimum supported 1180 px.</p>
+ <h2>Components</h2>${C.map(c=>`<div class="spc"><div><h3>${c[0]}</h3><p class="muted" style="font-size:12.5px;margin-top:4px">${c[1]}</p></div><dl><dt>Props</dt><dd><code>${c[2]}</code></dd><dt>States</dt><dd>${c[3]}</dd><dt>Tokens</dt><dd>${c[4]}</dd><dt>A11y</dt><dd>${c[5]}</dd></dl></div>`).join('')}
+ <h2>State machine</h2><table class="tbl"><thead><tr><th>Key</th><th>State</th><th>Ribbon status</th><th>Primary action</th><th>Enables</th></tr></thead><tbody>${states}</tbody></table><p class="muted" style="margin-top:8px">Happy path: new → correlating → forecast → simulating → plan → approval → executing → contained → rollback. Branches from plan: conflict, nofeasible. Rolling back returns to plan.</p>
+ <h2>Rules and where they are enforced</h2><table class="tbl"><tbody>${rules.map(r=>`<tr><td><b>${r[0]}</b></td><td class="muted">${r[1]}</td></tr>`).join('')}</tbody></table>
+ <h2>Data contract</h2><pre>type Basis = 'observed'|'inferred'|'forecast'|'simulated'
+interface Evidence { id:string; source:string; ts:string; basis:Basis }
+interface Score { value:number; kind:'confidence'|'likelihood'; parts:{claim:string; ref:string; strength:'strong'|'moderate'|'limits'|'simulated'}[]; wouldChange:string }
+interface Edge { id:string; a:string; b:string; basis:Basis; step?:number; cutBy?:'A1'|'A2'|'A3' }
+interface Action { id:string; title:string; impact:string; rollbackPlan:{id:string; eta:number; dryRun:'passed'|'failed'}; policy:string; approvers:string[]; permission:string }
+interface Incident { id:'HLT-2047'; state:StateKey; confidence:Score; events:Evidence[]; edges:Edge[]; paths:{id:string; edges:string[]}[]; actions:Action[] }</pre></div>`}
+document.addEventListener('click',e=>{
+ const t=e.target.closest('[data-view],[data-score],[data-sel],[data-ev],[data-act],[data-go],[data-mode],[data-layer],[data-path],[data-tl],[data-log],[data-ent],#scrim');
+ if(!t){const m=$('#smenu');if(m)m.remove();return}
+ const d=t.dataset;
+ if(t.id==='scrim'){closeDrawer();return}
+ if(d.ent){const [a,b]=d.ent.split(':');ST.sel={t:a,id:b};renderRail();refreshGraphs();return}
+ if(d.path&&!d.view){ST.path=ST.path===d.path&&d.path!=='all'?'all':d.path;if(ST.view==='graph'){$$('[data-path]').forEach(b=>{if(b.classList.contains('chip'))b.setAttribute('aria-pressed',b.dataset.path===ST.path)});refreshGraphs()}else renderWS();return}
+ if(d.view){ST.view=d.view;if(d.path)ST.path=d.path;renderAll();$('#ws').scrollTop=0;return}
+ if(d.score){ST.sel={t:'sc',id:d.score};renderRail();return}
+ if(d.sel){const [a,b]=d.sel.split(':');ST.sel={t:a,id:b};renderRail();refreshGraphs();return}
+ if(d.ev){const n=+d.ev;ST.mode='replay';ST.cur=EV[n-1].s;ST.sel={t:'n',id:['phish','asn','','grant','s1','s2'][n-1]||'grant'};if(n===3)ST.sel={t:'n',id:'user'};renderAll(true);return}
+ if(d.layer){ST.layers[d.layer]=ST.layers[d.layer]?0:1;t.setAttribute('aria-pressed',!!ST.layers[d.layer]);refreshGraphs();return}
+ if(d.mode){ST.mode=d.mode;if(d.mode==='replay'){ST.cur=Math.min(curT(),liveT())}else{ST.playing=false}renderAll();return}
+ if(d.go){if(d.go==='drawer'){openDrawer(approvalHTML());bindDrawer();return}
+  if(['approval','simulating','correlating','plan','rollback','forecast'].includes(d.go)){if(d.go==='rollback'){ST.view='overview';setState('rollback');openDrawer(approvalHTML());bindDrawer();return}if(d.go==='approval'){setState('approval');ST.view='safecut';renderAll();return}setState(d.go);return}
+  ST.view=d.go;renderAll();return}
+ if(d.log){addLog(OPS.n,d.log,'obs');toast('Logged to the response audit: '+d.log);return}
+ if(d.tl){const w=d.tl;if(w==='play'){if(ST.mode==='live'||curT()>=maxT()){ST.mode='replay';ST.cur=T0}ST.playing=!ST.playing;renderAll(true);return}
+  if(w.startsWith('sp')){ST.speed=+w.slice(2);renderTL();return}
+  const t0=curT(),ev=EV.filter(x=>x.s<=liveT());let nx;if(w==='next'){nx=ev.find(x=>x.s>t0+1);if(!nx){ST.mode='live';renderAll();return}}else{nx=[...ev].reverse().find(x=>x.s<t0-1)||ev[0]}
+  ST.mode='replay';ST.cur=nx.s;renderAll(true);return}
+ if(d.act){const a=d.act;
+  if(a==='drawer'){openDrawer(approvalHTML());bindDrawer()}
+  else if(a==='close')closeDrawer();
+  else if(a==='spec'){$('#spec').innerHTML=specHTML();$('#spec').classList.add('on')}
+  else if(a==='closespec')$('#spec').classList.remove('on');
+  else if(a==='a1'){ST.a1=true;addLog(OPS.n,'Approved A1, A2, A3 as responder');openDrawer(approvalHTML());bindDrawer();renderRib()}
+  else if(a==='a2'){ST.a2=true;addLog('S. Iyer','Co-approved A3 (demo)');openDrawer(approvalHTML());bindDrawer();renderRib()}
+  else if(a==='statemenu'){if($('#smenu')){$('#smenu').remove();return}const m=document.createElement('div');m.id='smenu';m.setAttribute('role','menu');m.style.cssText='position:fixed;top:60px;right:20px;z-index:50;background:var(--surface);border:1px solid var(--border);border-radius:4px;width:260px;padding:6px 0';m.innerHTML=STATES.map(s=>`<button role="menuitem" class="navi" data-st="${s.k}" ${ST.state===s.k?'aria-current="page"':''} style="min-height:34px;font-size:13px">${s.n}</button>`).join('');document.body.appendChild(m);m.addEventListener('click',ev=>{const b=ev.target.closest('[data-st]');if(b){ev.stopPropagation();m.remove();setState(b.dataset.st)}})}
+  return}
+});
+document.addEventListener('keydown',e=>{
+ if(e.key==='Escape'){if($('#spec').classList.contains('on'))$('#spec').classList.remove('on');else closeDrawer();const m=$('#smenu');if(m)m.remove()}
+ const g=e.target.closest&&e.target.closest('.gn');if(g&&(e.key==='Enter'||e.key===' ')){e.preventDefault();g.dispatchEvent(new MouseEvent('click',{bubbles:true}))}
+});
+document.addEventListener('input',e=>{
+ if(e.target.id==='scrub'){const tot=TE+HOR-T0;let t=T0+e.target.value/1000*tot;t=clamp(t,T0,maxT());ST.cur=t;ST.mode=t>=liveT()&&Math.abs(t-liveT())<3?'live':'replay';
+  const rd=$('#tl .rd');renderRib();refreshGraphs();const bar=$('.wsbar');if(bar)bar.outerHTML=renderBanner();rd&&(rd.firstChild.textContent=fmt(curT())+'Z ');renderRail()}
+ if(e.target.id==='ack'){ST.ack=e.target.checked;openDrawer(approvalHTML());bindDrawer();const c=$('#ack');c&&c.focus()}
+});
+function bindDrawer(){
+ $$('[data-hold]').forEach(b=>{let raf,st,run=false;const f=b.querySelector('i');
+  const stop=()=>{run=false;cancelAnimationFrame(raf);f.style.width='0'};
+  const tick=()=>{if(!run)return;const p=Math.min(1,(performance.now()-st)/1200);f.style.width=p*100+'%';if(p>=1){stop();done(b.dataset.hold)}else raf=requestAnimationFrame(tick)};
+  const start=()=>{if(b.disabled||run)return;run=true;st=performance.now();raf=requestAnimationFrame(tick)};
+  b.addEventListener('pointerdown',start);['pointerup','pointerleave','pointercancel'].forEach(x=>b.addEventListener(x,stop));
+  b.addEventListener('keydown',e=>{if((e.key===' '||e.key==='Enter')&&!e.repeat){e.preventDefault();start()}});b.addEventListener('keyup',e=>{if(e.key===' '||e.key==='Enter')stop()});b.addEventListener('blur',stop)});
+}
+function done(id){closeDrawer();
+ if(id==='ex'){addLog(OPS.n,'Executed 3 actions (hold confirmed)');setState('executing')}
+ if(id==='rb'){addLog(OPS.n,'Rolled back A1, A2, A3');ST.applied=0;setState('plan');toast('Rolled back. The incident is back to Plan available.')}}
+setInterval(()=>{const el=$('#since');if(el&&ST.mode==='live')el.textContent=dur(ST.base+Math.round((Date.now()-ST.t0)/1000));
+ if(ST.playing){const tot=TE+HOR-T0;ST.cur+=ST.speed*60*0.1;if(ST.cur>=maxT()){ST.cur=maxT();ST.playing=false;renderAll(true);return}
+  const sc=$('#scrub');if(sc)sc.value=Math.round((ST.cur-T0)/tot*1000);const rd=$('#tl .rd');if(rd)rd.firstChild.textContent=fmt(curT())+'Z ';refreshGraphs();renderRib();const k=$('.k',$('#tl'));if(k&&k.parentNode.classList.contains('tlh'))k.textContent='Scrub to watch ThreadGraph change · '+stepNow()+' of 6 events shown'}},100);
+
+document.addEventListener('click',e=>{
+ const t=e.target.closest('[data-xmode],[data-pf],[data-xpath],[data-eplay],[data-udr],[data-pmode],[data-wf],[data-verify]');if(!t)return;const d=t.dataset;
+ if(d.xmode){ST.xmode=d.xmode;renderWS();return}
+ if(d.pf){ST.pf=d.pf;renderWS();return}
+ if(d.xpath){const p=d.xpath;ST.path=(ST.path===p&&p!=='all')?'all':p;if(t.dataset.view){return}if(ST.view==='graph'){$$('[data-xpath]').forEach(b=>{if(b.classList.contains('chip'))b.setAttribute('aria-pressed',b.dataset.xpath===ST.path)});refreshX()}return}
+ if(d.eplay!==undefined){if(!ST.eplay&&ST.et>=10)ST.et=0;ST.eplay=!ST.eplay;refreshEcho();return}
+ if(d.udr!==undefined){openDrawer(uncertaintyHTML());return}
+ if(d.pmode){ST.pmode=d.pmode;renderWS();return}
+ if(d.verify!==undefined){verifyHash();return}
+ if(d.wf){const w=d.wf;if(w==='approval'){const s=S();if(s.plan===1&&ST.applied<3){openDrawer(approvalHTML());bindDrawer()}else if(ST.applied>=3){setState('rollback');openDrawer(approvalHTML());bindDrawer()}else{ST.view='policies';renderAll()}return}
+  ST.view=w;renderAll();$('#ws').scrollTop=0}
+});
+document.addEventListener('input',e=>{
+ if(e.target.id==='xq'){ST.q=e.target.value;refreshX();const r=$('#sres');if(r)r.innerHTML=searchResults()}
+ if(e.target.id==='escrub'){ST.et=+e.target.value;ST.eplay=false;refreshEcho()}
+});
+document.addEventListener('keydown',e=>{if(e.target.id==='xq'&&e.key==='Enter'){const q=ST.q.trim().toLowerCase();const k=Object.keys(XN).find(k=>(XN[k].l+' '+XN[k].t).toLowerCase().indexOf(q)>-1);if(k){ST.sel={t:'n',id:k};renderRail();refreshX()}}});
+setInterval(()=>{if(ST.eplay&&ST.view==='echolab'){ST.et=Math.min(10,ST.et+0.05*ST.speed);if(ST.et>=10)ST.eplay=false;refreshEcho()}},100);
+
+
+setState('approval');
+</script>

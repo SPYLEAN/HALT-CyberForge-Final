@@ -1,0 +1,52 @@
+<!-- @dsCard height=288 -->
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>HALT</title>
+<style>
+  html, body { margin:0; height:100%; }
+  body { background:var(--bg); color:var(--text); font-family:var(--font-display); overflow:hidden; }
+  .cover { position:relative; height:288px; overflow:hidden; }
+  .art { position:absolute; top:0; left:480px; width:480px; height:288px; overflow:hidden; }
+  .art svg { display:block; width:480px; height:288px; }
+  .bone { fill:var(--proof-ring); }
+  .slab { fill:var(--neutral-evidence); }
+  .ember { fill:var(--threat-observed); }
+  .verd { fill:var(--business); }
+  .hole { fill:var(--bg); }
+  .dot { fill:var(--threat-observed); }
+  .blk { rx:var(--radius-md); }
+  .words { position:absolute; left:var(--space-6); right:var(--space-6); bottom:var(--space-6); max-width:440px; }
+  .name { margin:0; font-size:112px; line-height:.9; font-weight:700; font-stretch:112%; letter-spacing:0; color:var(--text); }
+  .tag { margin:var(--space-2) 0 0 4px; font-size:14px; line-height:20px; color:var(--text-secondary); }
+</style>
+</head>
+<body>
+<div class="cover">
+<div class="art" aria-hidden="true">
+<svg viewBox="0 0 480 288" width="480" height="288">
+<!--
+  blocks      bone (proof-ring) 192×152 bled off the right edge · neutral-evidence slab 192×136 bled off the right and bottom · ember (threat-observed) 48 wide, two pieces, one bled off the top and one off the bottom · verdigris (business) band 480×48 passing through the ember gap — ≈26% of 960×288
+  arrangement one hostile column cut by a gap exactly the height of the business band; the band runs on through the slabs, a bone node with a hole sits at the cut
+  pattern     a literal motif: the mark's own idea (a hostile path precisely interrupted while the business path continues), plus two dotted forecast rows of space-5 pitch ending short of the slabs
+  scales      sides in space-2 multiples (gap 48 = space-7, column 48, band 48); pitch space-5 (24); corners radius-md (4); node 32 across, hole 12
+-->
+<rect class="bone blk" x="304" y="0" width="192" height="152" rx="4"/>
+<rect class="slab blk" x="304" y="168" width="192" height="136" rx="4"/>
+<rect class="ember blk" x="96" y="-8" width="48" height="120" rx="4"/>
+<rect class="ember blk" x="96" y="160" width="48" height="136" rx="4"/>
+<rect class="verd blk" x="16" y="112" width="480" height="48" rx="4"/>
+<circle class="bone" cx="120" cy="136" r="16"/>
+<circle class="hole" cx="120" cy="136" r="6"/>
+<circle class="dot" cx="168" cy="40" r="3"/><circle class="dot" cx="192" cy="40" r="3"/><circle class="dot" cx="216" cy="40" r="3"/><circle class="dot" cx="240" cy="40" r="3"/><circle class="dot" cx="264" cy="40" r="3"/>
+<circle class="dot" cx="168" cy="232" r="3"/><circle class="dot" cx="192" cy="232" r="3"/><circle class="dot" cx="216" cy="232" r="3"/><circle class="dot" cx="240" cy="232" r="3"/><circle class="dot" cx="264" cy="232" r="3"/>
+</svg>
+</div>
+<div class="words">
+<h1 class="name">HALT</h1>
+<p class="tag">Stop the attack. Not the business.</p>
+</div>
+</div>
+</body>
+</html>

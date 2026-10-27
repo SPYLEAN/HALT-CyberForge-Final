@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>HALT Lockups</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@100..125,400..800&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+body{margin:0}
+.mono{font-family:'IBM Plex Mono',ui-monospace,monospace}
+.tile{box-sizing:border-box;border-radius:4px;position:relative;display:flex;align-items:center;justify-content:center}
+.lab{position:absolute;left:16px;bottom:12px;font-family:'IBM Plex Mono',ui-monospace,monospace;font-size:11px;letter-spacing:.04em}
+</style>
+</helmet>
+<div style="width:1440px;height:1080px;box-sizing:border-box;background:#F1F0EA;color:#0E1214;font-family:'Archivo',system-ui,sans-serif;padding:56px 64px;display:flex;flex-direction:column;gap:24px">
+
+<div style="display:flex;justify-content:space-between;align-items:flex-end">
+<div>
+<div class="mono" style="font-size:12px;letter-spacing:.08em;color:#4B5358">02 — LOCKUPS &amp; VARIANTS</div>
+<h2 style="margin:12px 0 0;font-size:40px;line-height:1.05;font-weight:700;font-stretch:112%">One mark, five working forms</h2>
+</div>
+<div class="mono" style="font-size:11px;line-height:1.5;color:#4B5358;text-align:right;width:420px">Wordmark is drawn from the mark's own grid: stroke 20 on cap height 100, cap height 0.65 × mark height, gap 2x between mark and wordmark.</div>
+</div>
+
+<div style="display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:24px;grid-template-rows:300px 340px 240px">
+
+<div class="tile" style="background:#0E1214">
+<svg width="150" viewBox="16 6 64 84" role="img" aria-label="HALT icon"><path fill="#F1F0EA" d="M64 6h16v84h-16zM28 42h36v12h-36zM16 18L24 10H32V36.5H16zM16 59.5h16v26.5h-16zM16 48a8 8 0 1 1 16 0a8 8 0 1 1 -16 0zM21 48a3 3 0 1 0 6 0a3 3 0 1 0 -6 0z"/></svg>
+<div class="lab" style="color:#9AA3A8">ICON · ON INK</div>
+</div>
+<div class="tile" style="background:#FFFFFF;border:1px solid #D8D6CC">
+<svg width="150" viewBox="16 6 64 84" role="img" aria-label="HALT icon"><path fill="#0E1214" d="M64 6h16v84h-16zM28 42h36v12h-36zM16 18L24 10H32V36.5H16zM16 59.5h16v26.5h-16zM16 48a8 8 0 1 1 16 0a8 8 0 1 1 -16 0zM21 48a3 3 0 1 0 6 0a3 3 0 1 0 -6 0z"/></svg>
+<div class="lab" style="color:#4B5358">ICON · ON BONE / WHITE</div>
+</div>
+<div class="tile" style="background:#0E1214;grid-column:span 2">
+<svg width="470" viewBox="0 0 294 84" role="img" aria-label="HALT horizontal lockup">
+<g transform="translate(-16 -6)"><path fill="#F1F0EA" d="M64 6h16v84h-16zM28 42h36v12h-36zM16 18L24 10H32V36.5H16zM16 59.5h16v26.5h-16zM16 48a8 8 0 1 1 16 0a8 8 0 1 1 -16 0zM21 48a3 3 0 1 0 6 0a3 3 0 1 0 -6 0z"/></g>
+<g fill="#F1F0EA" transform="translate(96 14.5) scale(.55)">
+<path d="M0 0h20v100h-20zM64 0h20v100h-20zM20 40h44v20h-44z"/>
+<path transform="translate(98 0)" d="M0 100L36 0H58L22 100zM74 100L38 0H60L96 100zM18 62h60v16h-60z"/>
+<path transform="translate(204 0)" d="M0 0h20v100h-20zM0 80h64v20h-64z"/>
+<path transform="translate(276 0)" d="M0 0h84v20h-84zM32 0h20v100h-20z"/>
+</g></svg>
+<div class="lab" style="color:#9AA3A8">HORIZONTAL · ON INK</div>
+</div>
+
+<div class="tile" style="background:#0E1214">
+<svg width="170" viewBox="0 0 198 167" role="img" aria-label="HALT stacked lockup">
+<g transform="translate(67 0) translate(-16 -6)"><path fill="#F1F0EA" d="M64 6h16v84h-16zM28 42h36v12h-36zM16 18L24 10H32V36.5H16zM16 59.5h16v26.5h-16zM16 48a8 8 0 1 1 16 0a8 8 0 1 1 -16 0zM21 48a3 3 0 1 0 6 0a3 3 0 1 0 -6 0z"/></g>
+<g fill="#F1F0EA" transform="translate(0 112) scale(.55)">
+<path d="M0 0h20v100h-20zM64 0h20v100h-20zM20 40h44v20h-44z"/>
+<path transform="translate(98 0)" d="M0 100L36 0H58L22 100zM74 100L38 0H60L96 100zM18 62h60v16h-60z"/>
+<path transform="translate(204 0)" d="M0 0h20v100h-20zM0 80h64v20h-64z"/>
+<path transform="translate(276 0)" d="M0 0h84v20h-84zM32 0h20v100h-20z"/>
+</g></svg>
+<div class="lab" style="color:#9AA3A8">STACKED · ON INK</div>
+</div>
+<div class="tile" style="background:#FFFFFF;border:1px solid #D8D6CC">
+<svg width="170" viewBox="0 0 198 167" role="img" aria-label="HALT stacked lockup">
+<g transform="translate(67 0) translate(-16 -6)"><path fill="#0E1214" d="M64 6h16v84h-16zM28 42h36v12h-36zM16 18L24 10H32V36.5H16zM16 59.5h16v26.5h-16zM16 48a8 8 0 1 1 16 0a8 8 0 1 1 -16 0zM21 48a3 3 0 1 0 6 0a3 3 0 1 0 -6 0z"/></g>
+<g fill="#0E1214" transform="translate(0 112) scale(.55)">
+<path d="M0 0h20v100h-20zM64 0h20v100h-20zM20 40h44v20h-44z"/>
+<path transform="translate(98 0)" d="M0 100L36 0H58L22 100zM74 100L38 0H60L96 100zM18 62h60v16h-60z"/>
+<path transform="translate(204 0)" d="M0 0h20v100h-20zM0 80h64v20h-64z"/>
+<path transform="translate(276 0)" d="M0 0h84v20h-84zM32 0h20v100h-20z"/>
+</g></svg>
+<div class="lab" style="color:#4B5358">STACKED · ON WHITE</div>
+</div>
+<div class="tile" style="background:#3E9C86">
+<svg width="260" viewBox="0 0 294 84" role="img" aria-label="HALT horizontal lockup, single colour on brand colour">
+<g transform="translate(-16 -6)"><path fill="#0E1214" d="M64 6h16v84h-16zM28 42h36v12h-36zM16 18L24 10H32V36.5H16zM16 59.5h16v26.5h-16zM16 48a8 8 0 1 1 16 0a8 8 0 1 1 -16 0zM21 48a3 3 0 1 0 6 0a3 3 0 1 0 -6 0z"/></g>
+<g fill="#0E1214" transform="translate(96 14.5) scale(.55)">
+<path d="M0 0h20v100h-20zM64 0h20v100h-20zM20 40h44v20h-44z"/>
+<path transform="translate(98 0)" d="M0 100L36 0H58L22 100zM74 100L38 0H60L96 100zM18 62h60v16h-60z"/>
+<path transform="translate(204 0)" d="M0 0h20v100h-20zM0 80h64v20h-64z"/>
+<path transform="translate(276 0)" d="M0 0h84v20h-84zM32 0h20v100h-20z"/>
+</g></svg>
+<div class="lab" style="color:#0E1214">MONOCHROME · INK ON VERDIGRIS</div>
+</div>
+<div class="tile" style="background:#D4572F">
+<svg width="260" viewBox="0 0 294 84" role="img" aria-label="HALT horizontal lockup, single colour on brand colour">
+<g transform="translate(-16 -6)"><path fill="#0E1214" d="M64 6h16v84h-16zM28 42h36v12h-36zM16 18L24 10H32V36.5H16zM16 59.5h16v26.5h-16zM16 48a8 8 0 1 1 16 0a8 8 0 1 1 -16 0zM21 48a3 3 0 1 0 6 0a3 3 0 1 0 -6 0z"/></g>
+<g fill="#0E1214" transform="translate(96 14.5) scale(.55)">
+<path d="M0 0h20v100h-20zM64 0h20v100h-20zM20 40h44v20h-44z"/>
+<path transform="translate(98 0)" d="M0 100L36 0H58L22 100zM74 100L38 0H60L96 100zM18 62h60v16h-60z"/>
+<path transform="translate(204 0)" d="M0 0h20v100h-20zM0 80h64v20h-64z"/>
+<path transform="translate(276 0)" d="M0 0h84v20h-84zM32 0h20v100h-20z"/>
+</g></svg>
+<div class="lab" style="color:#0E1214">MONOCHROME · INK ON EMBER</div>
+</div>
+
+<div class="tile" style="background:#0E1214;grid-column:span 2;justify-content:flex-start;padding-left:40px;gap:40px;align-items:center">
+<div style="display:flex;gap:28px;align-items:flex-end">
+<svg width="16" height="16" viewBox="0 0 96 96" role="img" aria-label="Favicon 16 pixels"><path fill="#F1F0EA" d="M64 8h18v80h-18zM24 41h40v14h-40zM14 12h18v23h-18zM14 61h18v23h-18zM14 48a9 9 0 1 1 18 0a9 9 0 1 1 -18 0z"/></svg>
+<svg width="32" height="32" viewBox="0 0 96 96" role="img" aria-label="Favicon 32 pixels"><path fill="#F1F0EA" d="M64 8h18v80h-18zM24 41h40v14h-40zM14 12h18v23h-18zM14 61h18v23h-18zM14 48a9 9 0 1 1 18 0a9 9 0 1 1 -18 0z"/></svg>
+<svg width="64" height="64" viewBox="0 0 96 96" role="img" aria-label="Favicon 64 pixels"><path fill="#F1F0EA" d="M64 8h18v80h-18zM24 41h40v14h-40zM14 12h18v23h-18zM14 61h18v23h-18zM14 48a9 9 0 1 1 18 0a9 9 0 1 1 -18 0z"/></svg>
+</div>
+<div style="width:132px;height:132px;border-radius:30px;background:#F1F0EA;display:flex;align-items:center;justify-content:center">
+<svg width="84" height="84" viewBox="0 0 96 96" role="img" aria-label="App icon"><path fill="#0E1214" d="M64 8h18v80h-18zM24 41h40v14h-40zM14 12h18v23h-18zM14 61h18v23h-18zM14 48a9 9 0 1 1 18 0a9 9 0 1 1 -18 0z"/></svg>
+</div>
+<div class="mono" style="font-size:11px;line-height:1.6;color:#9AA3A8;width:200px">Favicon cut: stem 18, solid node, 4-unit gap, no chamfer, no ring hole. Use below 24 px and for app icons.</div>
+<div class="lab" style="color:#9AA3A8">FAVICON · 16 / 32 / 64 · APP ICON 180</div>
+</div>
+
+<div class="tile" style="background:#FFFFFF;border:1px solid #D8D6CC;grid-column:span 2;justify-content:flex-start;padding-left:40px;gap:36px">
+<div style="display:flex;gap:28px;align-items:flex-end">
+<svg width="18" height="24" viewBox="16 6 64 84" role="img" aria-label="Icon at 24 pixel height"><path fill="#0E1214" d="M64 6h16v84h-16zM28 42h36v12h-36zM16 18L24 10H32V36.5H16zM16 59.5h16v26.5h-16zM16 48a8 8 0 1 1 16 0a8 8 0 1 1 -16 0zM21 48a3 3 0 1 0 6 0a3 3 0 1 0 -6 0z"/></svg>
+<svg width="24" height="32" viewBox="16 6 64 84" role="img" aria-label="Icon at 32 pixel height"><path fill="#0E1214" d="M64 6h16v84h-16zM28 42h36v12h-36zM16 18L24 10H32V36.5H16zM16 59.5h16v26.5h-16zM16 48a8 8 0 1 1 16 0a8 8 0 1 1 -16 0zM21 48a3 3 0 1 0 6 0a3 3 0 1 0 -6 0z"/></svg>
+<svg width="36" height="48" viewBox="16 6 64 84" role="img" aria-label="Icon at 48 pixel height"><path fill="#0E1214" d="M64 6h16v84h-16zM28 42h36v12h-36zM16 18L24 10H32V36.5H16zM16 59.5h16v26.5h-16zM16 48a8 8 0 1 1 16 0a8 8 0 1 1 -16 0zM21 48a3 3 0 1 0 6 0a3 3 0 1 0 -6 0z"/></svg>
+</div>
+<div class="mono" style="font-size:11px;line-height:1.6;color:#4B5358;width:340px">Recognition test at true pixel size: 24, 32 and 48 px tall. The stems, the cut and the node stay separate at every size.</div>
+<div class="lab" style="color:#4B5358">24 PX TEST · SINGLE COLOUR</div>
+</div>
+
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":1080}}'>
+class Component extends DCLogic {
+renderVals() { return {}; }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,135 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>HALT Core 3D Object</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@100..125,400..800&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+body{margin:0}
+.mono{font-family:'IBM Plex Mono',ui-monospace,monospace}
+.k{font-family:'IBM Plex Mono',ui-monospace,monospace;font-size:11px;letter-spacing:.08em;color:#9AA3A8}
+.obj{transform-style:preserve-3d;transform:rotateX(-8deg) rotateY(-28deg);animation:sway 14s ease-in-out infinite alternate}
+@keyframes sway{from{transform:rotateX(-8deg) rotateY(-36deg)}to{transform:rotateX(-8deg) rotateY(36deg)}}
+.paused .obj{animation-play-state:paused}
+@media (prefers-reduced-motion: reduce){.obj{animation:none}}
+.seg{height:44px;padding:0 18px;background:transparent;color:#C9CDCB;border:1px solid #3A454B;border-radius:4px;font-family:'IBM Plex Mono',ui-monospace,monospace;font-size:12px;letter-spacing:.06em;cursor:pointer}
+.seg.on{background:#F1F0EA;color:#0E1214;border-color:#F1F0EA}
+table{border-collapse:collapse;width:100%}
+th,td{text-align:left;padding:9px 12px 9px 0;border-bottom:1px solid #232B30;font-weight:400;vertical-align:top}
+td{font-size:13px;line-height:1.45;color:#C9CDCB}
+td.m{font-family:'IBM Plex Mono',ui-monospace,monospace;font-size:12px;color:#F1F0EA;white-space:nowrap}
+</style>
+</helmet>
+<div style="width:1440px;height:1060px;box-sizing:border-box;background:#0E1214;color:#F1F0EA;font-family:'Archivo',system-ui,sans-serif;display:flex;overflow:hidden">
+
+<div class="{{pauseClass}}" style="width:700px;height:1060px;flex:none;background:#0B0F10;position:relative;border-right:1px solid #232B30">
+<div style="position:absolute;left:24px;top:24px;display:flex;gap:8px;flex-wrap:wrap">
+<sc-for list="{{modes}}" as="m" hint-placeholder-count="3">
+<button class="seg {{m.cls}}" onClick="{{m.pick}}">{{m.label}}</button>
+</sc-for>
+<button class="seg" onClick="{{toggle}}">{{btnLabel}}</button>
+</div>
+
+<div style="position:absolute;left:0;top:130px;width:700px;height:700px;perspective:1500px;perspective-origin:50% 45%" role="img" aria-label="HALT Core: the HALT mark extruded as a stack of thin layers, slowly swaying left and right">
+<div class="obj" style="position:absolute;left:200px;top:140px;width:300px;height:394px">
+<sc-for list="{{layers}}" as="L" hint-placeholder-count="22">
+<svg width="300" height="394" viewBox="16 6 64 84" aria-hidden="true" style="position:absolute;left:0;top:0;transform:translateZ({{L.z}}px);filter:brightness({{L.b}})">
+<path fill="{{L.topFill}}" d="M16 18L24 10H32V36.5H16z"/>
+<path fill="{{L.botFill}}" fill-opacity="{{L.botOp}}" d="M16 59.5h16v26.5h-16z"/>
+<path fill="#3E9C86" d="M64 6h16v84h-16zM28 42h36v12h-36z"/>
+<path fill="#F1F0EA" d="M16 48a8 8 0 1 1 16 0a8 8 0 1 1 -16 0zM21 48a3 3 0 1 0 6 0a3 3 0 1 0 -6 0z"/>
+<circle cx="24" cy="48" r="3" fill="#3E9C86" fill-opacity="{{L.dotOp}}"/>
+</svg>
+</sc-for>
+</div>
+</div>
+<div style="position:absolute;left:150px;top:850px;width:400px;height:40px;background:radial-gradient(ellipse at center, rgba(255,255,255,.07), rgba(255,255,255,0) 70%)"></div>
+<div class="mono" style="position:absolute;left:24px;bottom:24px;font-size:11px;color:#9AA3A8;letter-spacing:.06em">{{caption}}</div>
+</div>
+
+<div style="flex:1;min-width:0;padding:56px 64px 48px 56px;display:flex;flex-direction:column;gap:24px">
+<div>
+<div class="k">07 — HALT CORE · 3D OBJECT DEFINITION</div>
+<h2 style="margin:12px 0 0;font-size:40px;line-height:1.05;font-weight:700;font-stretch:112%">The mark, given depth, not decoration</h2>
+<p style="margin:14px 0 0;font-size:15px;line-height:1.55;color:#C9CDCB;max-width:600px">The Core is the identity as a physical object: the same H extruded into thin layers, one per verified step. It is the single 3D form in the product and it carries state, not ornament.</p>
+</div>
+
+<table>
+<tbody>
+<tr><td class="m">Form</td><td>Exact mark outline, extruded 0.8x. No bevel, no rounding, no added geometry. The node's hole stays open through every layer.</td></tr>
+<tr><td class="m">Build</td><td>22 flat layers at 0.16x pitch. Each layer stands for one verified constraint, so depth reads as proof depth. Back layers step down in brightness to model a single key light.</td></tr>
+<tr><td class="m">Material</td><td>Matte. Flat role colours from the palette, no gloss, bloom, glass or reflection. Layers never glow.</td></tr>
+<tr><td class="m">Light</td><td>One soft key from upper left, one low ambient. A faint contact shadow beneath, nothing else.</td></tr>
+<tr><td class="m">Camera</td><td>Perspective 35° FOV. Orbit limited to ±36° yaw and −8° pitch so the cut is always visible. The back is never shown.</td></tr>
+<tr><td class="m">Motion</td><td>Slow sway, 14 s, ease-in-out, driven only by user attention (hover, focus). At rest it holds a 28° view. Reduced motion holds that view.</td></tr>
+</tbody></table>
+
+<div>
+<div class="k" style="margin-bottom:6px">STATES · SAME OBJECT, THREE READINGS</div>
+<table>
+<tbody>
+<tr><td class="m">Idle</td><td>Hostile stem neutral grey. Spine and bar Verdigris. No node proof.</td></tr>
+<tr><td class="m">Threat</td><td>Upper hostile segment Ember, lower segment still neutral: at risk, not reached.</td></tr>
+<tr><td class="m">Contained</td><td>Upper segment Ember, lower held at 35%, node hole sealed with Verdigris.</td></tr>
+</tbody></table>
+</div>
+
+<div style="display:flex;gap:40px">
+<div style="flex:1">
+<div class="k">WHERE IT LIVES</div>
+<p style="margin:8px 0 0;font-size:13.5px;line-height:1.55;color:#C9CDCB">Once per surface: loading and empty states, the response summary, the proof receipt. Never as a background, never repeated in a grid.</p>
+</div>
+<div style="flex:1">
+<div class="k">BUILD NOTE</div>
+<p style="margin:8px 0 0;font-size:13.5px;line-height:1.55;color:#C9CDCB">Real-time target: extrude the SVG paths, 22 instances, flat shading, no post-processing. The stage on the left is the reference at 1x.</p>
+</div>
+</div>
+
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":1060}}'>
+class Component extends DCLogic {
+renderVals() {
+const st = this.state || {};
+const mode = st.mode || 'contained';
+const paused = !!st.paused;
+const GREY = '#59656B', EMBER = '#D4572F';
+const look = {
+idle:      { top: GREY,  bot: GREY,  botOp: 1,    dot: 0 },
+threat:    { top: EMBER, bot: GREY,  botOp: 1,    dot: 0 },
+contained: { top: EMBER, bot: EMBER, botOp: 0.35, dot: 1 }
+}[mode];
+const N = 22, pitch = 2.5;
+const layers = [];
+for (let i = 0; i < N; i++) {
+const t = i / (N - 1);
+layers.push({
+z: ((i - (N - 1) / 2) * pitch).toFixed(1),
+b: (0.42 + 0.58 * t).toFixed(2),
+topFill: look.top, botFill: look.bot, botOp: look.botOp, dotOp: look.dot
+});
+}
+const labels = { idle: 'IDLE', threat: 'THREAT', contained: 'CONTAINED' };
+return {
+layers,
+pauseClass: paused ? 'paused' : '',
+btnLabel: paused ? 'SWAY' : 'HOLD',
+toggle: () => this.setState({ paused: !paused }),
+caption: 'HALT CORE · ' + labels[mode],
+modes: ['idle', 'threat', 'contained'].map((m) => ({
+label: labels[m],
+cls: m === mode ? 'on' : '',
+pick: () => this.setState({ mode: m })
+}))
+};
+}
+}
+</script>
+</body>
+</html>

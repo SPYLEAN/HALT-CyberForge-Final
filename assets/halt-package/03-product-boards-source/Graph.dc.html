@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>HALT Graph Language</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@100..125,400..800&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+body{margin:0}
+.mono{font-family:'IBM Plex Mono',ui-monospace,monospace}
+.k{font-family:'IBM Plex Mono',ui-monospace,monospace;font-size:11px;letter-spacing:.08em;color:#9AA3A8}
+.t{background:#151B1E;border:1px solid #232B30;border-radius:4px;padding:14px 16px;display:flex;flex-direction:column;gap:8px}
+.t b{font-weight:600;font-size:14px}
+.t p{margin:0;font-size:12.5px;line-height:1.45;color:#C9CDCB}
+</style>
+</helmet>
+<div style="width:1440px;height:1040px;box-sizing:border-box;background:#0E1214;color:#F1F0EA;font-family:'Archivo',system-ui,sans-serif;padding:56px 64px;display:flex;flex-direction:column;gap:28px">
+
+<div style="display:flex;justify-content:space-between;align-items:flex-end">
+<div>
+<div class="k">05 — GRAPH LANGUAGE</div>
+<h2 style="margin:12px 0 0;font-size:40px;line-height:1.05;font-weight:700;font-stretch:112%">The mark, unfolded into a network</h2>
+</div>
+<div class="mono" style="font-size:11px;line-height:1.5;color:#9AA3A8;text-align:right;width:440px">Every graph element is one part of the H. If a shape on screen cannot be traced back to the mark, it does not belong in the graph.</div>
+</div>
+
+<div style="display:flex;gap:40px">
+
+<div style="width:560px;flex:none;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;align-content:start">
+
+<div class="t">
+<svg width="120" height="44" viewBox="0 0 120 44" role="img" aria-label="Asset node glyph"><path fill="#F1F0EA" d="M48 22a12 12 0 1 1 24 0a12 12 0 1 1 -24 0zM56 22a4 4 0 1 0 8 0a4 4 0 1 0 -8 0z"/></svg>
+<b>Asset node</b><p>Ring, Ø 1x, hole 0.37x. A host, service or identity. Always Bone.</p>
+</div>
+
+<div class="t">
+<svg width="120" height="44" viewBox="0 0 120 44" role="img" aria-label="Neutral edge glyph"><path d="M8 34H52l12-12H112" fill="none" stroke="#5B666C" stroke-width="6"/></svg>
+<b>Edge</b><p>Orthogonal runs with 45° corner cuts only. Never curves. Weight 0.5x in graphs, 1x as hero.</p>
+</div>
+
+<div class="t">
+<svg width="120" height="44" viewBox="0 0 120 44" role="img" aria-label="Business path glyph"><path d="M8 22H112" fill="none" stroke="#3E9C86" stroke-width="12"/></svg>
+<b>Business path</b><p>Verdigris, straight and unbroken. Runs past the nodes it serves, like the spine.</p>
+</div>
+
+<div class="t">
+<svg width="120" height="44" viewBox="0 0 120 44" role="img" aria-label="Hostile path glyph"><path d="M8 38V16l12-12H112" fill="none" stroke="#D4572F" stroke-width="6" transform="translate(0 0)"/></svg>
+<b>Hostile path</b><p>Ember. Starts at a chamfered entry that shows the direction it came from.</p>
+</div>
+
+<div class="t">
+<svg width="120" height="44" viewBox="0 0 120 44" role="img" aria-label="Cut and verification glyph"><path d="M4 22H34" stroke="#D4572F" stroke-width="6"/><path fill="#F1F0EA" d="M48 22a12 12 0 1 1 24 0a12 12 0 1 1 -24 0zM56 22a4 4 0 1 0 8 0a4 4 0 1 0 -8 0z"/><path d="M86 22H116" stroke="#D4572F" stroke-opacity=".35" stroke-width="6"/></svg>
+<b>Cut and verification</b><p>Edge, gap 0.22x, node, gap, edge. The node is where the proof is checked.</p>
+</div>
+
+<div class="t">
+<svg width="120" height="44" viewBox="0 0 120 44" role="img" aria-label="Held segment glyph"><path d="M8 22H112" stroke="#D4572F" stroke-opacity=".35" stroke-width="6"/></svg>
+<b>Held segment</b><p>Ember at 35%. The part of the attack path that can no longer be reached.</p>
+</div>
+
+</div>
+
+<div style="flex:1;min-width:0;background:#151B1E;border:1px solid #232B30;border-radius:4px;padding:20px;position:relative">
+<div class="k" style="margin-bottom:6px">COMPOSITION · ONE CUT, BUSINESS UNBROKEN</div>
+<svg width="100%" viewBox="20 20 660 400" role="img" aria-label="Network graph built from HALT primitives: a hostile path is cut at a verification node while the business path continues">
+<path d="M580 72V348" fill="none" stroke="#3E9C86" stroke-width="8"/>
+<path d="M60 360H388M412 360H568M592 360H640" fill="none" stroke="#3E9C86" stroke-width="8"/>
+<path d="M60 60H196l24 24V176l24 24H292" fill="none" stroke="#D4572F" stroke-width="8"/>
+<path d="M348 200H376l24 24V336" fill="none" stroke="#D4572F" stroke-opacity=".35" stroke-width="8"/>
+<g fill="#F1F0EA">
+<path d="M48 60a12 12 0 1 1 24 0a12 12 0 1 1 -24 0zM56 60a4 4 0 1 0 8 0a4 4 0 1 0 -8 0z"/>
+<path d="M308 200a12 12 0 1 1 24 0a12 12 0 1 1 -24 0zM316 200a4 4 0 1 0 8 0a4 4 0 1 0 -8 0z"/>
+<path d="M388 360a12 12 0 1 1 24 0a12 12 0 1 1 -24 0zM396 360a4 4 0 1 0 8 0a4 4 0 1 0 -8 0z"/>
+<path d="M48 360a12 12 0 1 1 24 0a12 12 0 1 1 -24 0zM56 360a4 4 0 1 0 8 0a4 4 0 1 0 -8 0z"/>
+<path d="M568 360a12 12 0 1 1 24 0a12 12 0 1 1 -24 0zM576 360a4 4 0 1 0 8 0a4 4 0 1 0 -8 0z"/>
+<path d="M568 60a12 12 0 1 1 24 0a12 12 0 1 1 -24 0zM576 60a4 4 0 1 0 8 0a4 4 0 1 0 -8 0z"/>
+</g>
+<g font-family="IBM Plex Mono, monospace" font-size="11" fill="#9AA3A8">
+<text x="48" y="36">ENTRY</text>
+<text x="272" y="168">CUT + PROOF</text>
+<text x="344" y="272">HELD · UNREACHED</text>
+<text x="388" y="396">CRITICAL ASSET</text>
+<text x="48" y="396">BUSINESS PATH</text>
+<text x="514" y="36">SERVICE</text>
+</g>
+</svg>
+</div>
+
+</div>
+
+<div style="display:flex;gap:40px;border-top:1px solid #232B30;padding-top:22px">
+<div style="flex:1">
+<div class="k">GEOMETRY</div>
+<p style="margin:8px 0 0;font-size:13.5px;line-height:1.55;color:#C9CDCB">One grid, x = 16 units. Layouts snap to 2x. Corners are 45° cuts of 0.5x. The cut gap is 0.22x either side of a node, the same ratio as in the mark.</p>
+</div>
+<div style="flex:1">
+<div class="k">COLOUR AS MEANING</div>
+<p style="margin:8px 0 0;font-size:13.5px;line-height:1.55;color:#C9CDCB">Ember means hostile, Verdigris means business, Bone means node and proof. Nothing else is coloured. A graph with no hostile path is calm: Verdigris and Bone on Ink.</p>
+</div>
+<div style="flex:1">
+<div class="k">DENSITY</div>
+<p style="margin:8px 0 0;font-size:13.5px;line-height:1.55;color:#C9CDCB">At scale, edges thin to 0.25x and nodes drop their hole above 200 nodes, mirroring the favicon cut. The cut and its verification node stay full size at every zoom.</p>
+</div>
+</div>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":1040}}'>
+class Component extends DCLogic {
+renderVals() { return {}; }
+}
+</script>
+</body>
+</html>

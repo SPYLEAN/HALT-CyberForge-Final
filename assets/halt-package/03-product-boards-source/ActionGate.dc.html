@@ -1,0 +1,159 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Action Gate</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@100..125,400..800&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+body{margin:0}
+.mono{font-family:'IBM Plex Mono',ui-monospace,monospace}
+.k{font-family:'IBM Plex Mono',ui-monospace,monospace;font-size:10.5px;letter-spacing:.09em;color:#9AA3A8}
+.b{height:44px;padding:0 16px;border:1px solid #F1F0EA;border-radius:4px;background:transparent;color:#F1F0EA;font-family:'IBM Plex Mono',ui-monospace,monospace;font-size:12px;letter-spacing:.06em;cursor:pointer;width:100%;text-align:left;display:flex;align-items:center;justify-content:space-between}
+.b:hover{background:#F1F0EA;color:#0E1214}
+.b.done{border-color:#3E9C86;color:#F1F0EA;cursor:default;background:transparent}
+.b.done:hover{background:transparent;color:#F1F0EA}
+.b.primary{background:#F1F0EA;color:#0E1214;font-weight:500}
+.b.primary:hover{background:#FFFFFF}
+.b:disabled{border-color:#3A454B;color:#59656B;background:transparent;cursor:not-allowed}
+.b.quiet{border-color:#3A454B;color:#C9CDCB}
+.t{display:flex;align-items:flex-start;gap:12px;border-top:1px solid #232B30;padding:10px 0}
+.tag{font-family:'IBM Plex Mono',ui-monospace,monospace;font-size:10px;letter-spacing:.06em;border:1px solid #3A454B;border-radius:2px;padding:3px 6px;white-space:nowrap}
+</style>
+</helmet>
+<div style="width:1440px;height:1000px;display:flex;background:#0E1214;color:#F1F0EA;font-family:'Archivo',system-ui,sans-serif;overflow:hidden">
+<dc-import name="AppRail" active="5" h="1000" hint-size="232px,1000px"></dc-import>
+<div style="width:1208px">
+<dc-import name="AppTopbar" status="{{topStatus}}" hint-size="1208px,64px"></dc-import>
+<div style="box-sizing:border-box;padding:22px 32px 0;display:flex;flex-direction:column;gap:16px">
+
+<div>
+<div class="k">ACTION GATE · HUMAN APPROVAL, EXECUTION, ROLLBACK</div>
+<h1 style="margin:8px 0 0;font-size:30px;line-height:1.1;font-weight:700;font-stretch:108%">Approve, execute, and keep the way back open</h1>
+<p style="margin:8px 0 0;font-size:13.5px;line-height:1.5;color:#C9CDCB;min-height:20px">{{banner}}</p>
+</div>
+
+<div style="display:flex;gap:28px;align-items:flex-start">
+<div style="width:768px;height:480px;flex:none">
+<dc-import name="ThreadGraph" mode="{{gmode}}" scale="0.8" bg="transparent" hint-size="768px,480px"></dc-import>
+</div>
+
+<div style="flex:1;min-width:0;display:flex;flex-direction:column;gap:10px">
+<div class="k">APPROVALS REQUIRED · NO ACTION RUNS WITHOUT BOTH</div>
+<div>
+<div style="font-size:13px;font-weight:600">A. Rahman · SOC lead</div>
+<div class="mono" style="font-size:10px;color:#9AA3A8;margin:2px 0 6px">Authorises A1, A2, A3 · policy IR-RESP-01</div>
+<button class="b {{socCls}}" onClick="{{approveSoc}}"><span>{{socLabel}}</span></button>
+</div>
+<div>
+<div style="font-size:13px;font-weight:600">S. Iyer · Finance Ops owner</div>
+<div class="mono" style="font-size:10px;color:#9AA3A8;margin:2px 0 6px">Authorises A3, which changes a finance user’s sign-in</div>
+<button class="b {{finCls}}" onClick="{{approveFin}}"><span>{{finLabel}}</span></button>
+</div>
+<div style="margin-top:6px">
+<sc-if value="{{isReview}}" hint-placeholder-val="{{true}}">
+<button class="b primary" disabled="{{execDisabled}}" onClick="{{execute}}"><span>EXECUTE 3 ACTIONS</span><span>→</span></button>
+<div class="mono" style="margin-top:6px;font-size:10px;line-height:1.5;color:#9AA3A8">{{execHint}}</div>
+</sc-if>
+<sc-if value="{{isExecuting}}" hint-placeholder-val="{{false}}">
+<div class="mono" style="border:1px solid #3A454B;border-radius:4px;padding:12px 14px;font-size:11.5px;line-height:1.5">EXECUTING · {{execStep}}</div>
+</sc-if>
+<sc-if value="{{isApplied}}" hint-placeholder-val="{{false}}">
+<div style="border:1px solid #3E9C86;border-radius:4px;padding:12px 14px">
+<div class="mono" style="font-size:10.5px;letter-spacing:.06em;color:#3E9C86">APPLIED · PROOFSEAL RE-VERIFIED</div>
+<div style="font-size:12.5px;line-height:1.45;margin-top:6px;color:#C9CDCB">Live state checked at 10:09 UTC: 0 of 6 paths reachable, finance sessions normal.</div>
+</div>
+<button class="b quiet" style="margin-top:10px" onClick="{{rollback}}"><span>ROLL BACK ALL · ~2 MIN</span><span>↺</span></button>
+</sc-if>
+<sc-if value="{{isRolled}}" hint-placeholder-val="{{false}}">
+<div style="border:1px solid #D4572F;border-radius:4px;padding:12px 14px">
+<div class="mono" style="font-size:10.5px;letter-spacing:.06em;color:#D4572F">ROLLED BACK</div>
+<div style="font-size:12.5px;line-height:1.45;margin-top:6px;color:#C9CDCB">All three actions reversed. Six paths are open again and the seal is revoked.</div>
+</div>
+</sc-if>
+<button class="b quiet" style="margin-top:10px;height:36px" onClick="{{reset}}"><span>RESET DEMO</span></button>
+</div>
+</div>
+</div>
+
+<div>
+<div class="k" style="margin-bottom:6px">RUNBOOK · EACH ACTION SHOWS ITS IMPACT, WAY BACK AND AUTHORITY</div>
+<div class="t mono" style="border-top:1px solid #3A454B;font-size:10px;color:#9AA3A8;padding:6px 0"><div style="width:34px">ID</div><div style="width:250px">ACTION AND TARGET</div><div style="width:230px">IMPACT</div><div style="width:260px">REVERSIBILITY</div><div style="width:220px">AUTHORISATION</div><div style="width:110px">STATE</div></div>
+<sc-for list="{{rows}}" as="r" hint-placeholder-count="3">
+<div class="t" style="font-size:12px;line-height:1.4">
+<div class="mono" style="width:34px;font-size:11px">{{r.id}}</div>
+<div style="width:250px;padding-right:10px"><div style="font-weight:600;font-size:12.5px">{{r.name}}</div><div class="mono" style="font-size:10px;color:#9AA3A8;margin-top:2px">{{r.target}}</div></div>
+<div style="width:230px;padding-right:10px;color:#C9CDCB">{{r.impact}}</div>
+<div style="width:260px;padding-right:10px;color:#C9CDCB">{{r.rev}}</div>
+<div style="width:220px;padding-right:10px;color:#C9CDCB">{{r.auth}}</div>
+<div style="width:110px"><span class="tag" style="color:{{r.col}};border-color:{{r.col}}">{{r.state}}</span></div>
+</div>
+</sc-for>
+</div>
+
+</div>
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":1000}}'>
+class Component extends DCLogic {
+componentWillUnmount() { (this._t || []).forEach((t) => clearTimeout(t)); }
+renderVals() {
+const st = this.state || {};
+const soc = !!st.soc, fin = !!st.fin;
+const phase = st.phase || 'review';
+const step = st.step || 0;
+const both = soc && fin;
+const later = (ms, fn) => { this._t = this._t || []; this._t.push(setTimeout(fn, ms)); };
+const rowsDef = [
+['A1', 'Revoke OAuth grant', 'DocuSync Pro · grant by M. Verma', 'No other users. One app grant removed.', 'RB-1: M. Verma can consent again. About 30 s.', 'IR-OAUTH-02 · SOC lead'],
+['A2', 'Kill sessions S-1 and S-2', 'Graph API session, portal session', 'M. Verma signs in again.', 'RB-2: sessions cannot be restored, the user signs in. About 1 min.', 'IR-SESS-01 · SOC lead'],
+['A3', 'Step-up authentication', 'M. Verma · finance scopes', 'One prompt on next finance access. AP batch approval is unaffected.', 'RB-3: policy removed. About 20 s.', 'IR-CA-05 · SOC lead and Finance Ops owner']
+];
+const stateOf = (i) => {
+if (phase === 'rolled') return ['ROLLED BACK', '#D4572F'];
+if (phase === 'applied') return ['APPLIED', '#3E9C86'];
+if (phase === 'executing') return step > i ? ['APPLIED', '#3E9C86'] : (step === i ? ['EXECUTING', '#F1F0EA'] : ['QUEUED', '#9AA3A8']);
+const ok = i < 2 ? soc : both;
+return ok ? ['APPROVED', '#F1F0EA'] : ['PENDING APPROVAL', '#9AA3A8'];
+};
+const banners = {
+review: 'Three actions are ready. None runs until both approvers sign off.',
+executing: 'Executing in order. Each action is checked before the next starts.',
+applied: 'Applied at 10:09 UTC. Six paths are broken and the finance thread has not paused.',
+rolled: 'Rolled back at 10:11 UTC. Everything is as it was before the response.'
+};
+const top = { review: 'RESPONSE PENDING APPROVAL', executing: 'EXECUTING', applied: 'CONTAINED · SEALED', rolled: 'ROLLED BACK' }[phase];
+const gmode = { review: 'response', executing: 'response', applied: 'cut', rolled: 'forecast' }[phase];
+const names = ['A1 revoke OAuth grant', 'A2 kill sessions', 'A3 step-up authentication'];
+return {
+topStatus: top, banner: banners[phase], gmode,
+isReview: phase === 'review', isExecuting: phase === 'executing', isApplied: phase === 'applied', isRolled: phase === 'rolled',
+socCls: soc ? 'done' : '', finCls: fin ? 'done' : '',
+socLabel: soc ? 'APPROVED · 10:07 UTC' : 'APPROVE · SOC LEAD',
+finLabel: fin ? 'APPROVED · 10:08 UTC' : 'APPROVE · FINANCE OPS',
+execDisabled: !both,
+execHint: both ? 'Both approvals recorded. Actions run in order A1, A2, A3.' : 'Disabled until both approvals are recorded.',
+execStep: names[Math.min(step, 2)],
+approveSoc: () => { if (phase === 'review') this.setState({ soc: true }); },
+approveFin: () => { if (phase === 'review') this.setState({ fin: true }); },
+execute: () => {
+if (!(both && phase === 'review')) return;
+this.setState({ phase: 'executing', step: 0 });
+later(900, () => this.setState({ step: 1 }));
+later(1800, () => this.setState({ step: 2 }));
+later(2700, () => this.setState({ phase: 'applied', step: 3 }));
+},
+rollback: () => this.setState({ phase: 'rolled' }),
+reset: () => { (this._t || []).forEach((t) => clearTimeout(t)); this._t = []; this.setState({ soc: false, fin: false, phase: 'review', step: 0 }); },
+rows: rowsDef.map((r, i) => { const s = stateOf(i); return { id: r[0], name: r[1], target: r[2], impact: r[3], rev: r[4], auth: r[5], state: s[0], col: s[1] }; })
+};
+}
+}
+</script>
+</body>
+</html>

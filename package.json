@@ -1,0 +1,21 @@
+{
+  "name": "halt",
+  "private": true,
+  "description": "HALT — Proof-Carrying Cyber Response (synthetic demo)",
+  "workspaces": [
+    "apps/*"
+  ],
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "dev": "npm run dev -w @halt/web",
+    "build": "npm run build -w @halt/web",
+    "lint": "npm run lint -w @halt/web",
+    "typecheck": "npm run typecheck -w @halt/web",
+    "test": "npm run test -w @halt/web",
+    "verify:repo": "python -I scripts/verify_repo.py",
+    "compose:up": "docker compose up --build -d --wait",
+    "compose:down": "docker compose down -v"
+  }
+}

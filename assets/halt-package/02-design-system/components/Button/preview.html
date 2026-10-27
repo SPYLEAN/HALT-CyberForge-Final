@@ -1,0 +1,20 @@
+<!-- @dsCard group="Actions" height=220 subtitle="Primary, secondary, quiet, disabled with reason" -->
+<!doctype html>
+<html>
+<head><meta charset="utf-8"><title>Button — preview</title></head>
+<body>
+<div id="root"></div>
+<script>
+var H = window.HALT, h = React.createElement;
+ReactDOM.createRoot(document.getElementById('root')).render(h('div', {className:'halt-col'},
+  h('div', {className:'halt-row', style:{padding:0}},
+    h(H.Button, {variant:'primary', trailing:'→'}, 'EXECUTE 3 ACTIONS'),
+    h(H.Button, null, 'OPEN EVIDENCE'),
+    h(H.Button, {variant:'quiet', trailing:'↺'}, 'ROLL BACK ALL · ~2 MIN'),
+    h(H.Button, {variant:'ghost'}, 'CANCEL')),
+  h('div', {className:'halt-row', style:{padding:0, alignItems:'flex-start'}},
+    h(H.Button, {variant:'primary', trailing:'→', disabled:true, reason:'Disabled until both approvals are recorded.'}, 'EXECUTE 3 ACTIONS'),
+    h(H.Button, {variant:'done'}, 'APPROVED · 10:07 UTC'))));
+</script>
+</body>
+</html>

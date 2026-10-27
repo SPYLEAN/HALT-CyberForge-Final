@@ -1,0 +1,16 @@
+<!-- @dsCard group="Evidence" height=330 subtitle="Observed events, a forecast hop, a human action" -->
+<!doctype html>
+<html>
+<head><meta charset="utf-8"><title>TimelineEvent — preview</title></head>
+<body>
+<div id="root"></div>
+<script>
+var H = window.HALT, h = React.createElement;
+ReactDOM.createRoot(document.getElementById('root')).render(h('div', {className:'halt-pad', style:{maxWidth:560}},
+  h(H.TimelineEvent, {time:'09:43:50', kind:'observed', title:'OAuth consent granted to DocuSync Pro', description:'Mail.Read, Files.ReadWrite.All, offline_access', meta:'EV-02 · Entra audit'}),
+  h(H.TimelineEvent, {time:'09:47:03', kind:'observed', title:'Token replay for session S-1', description:'New ASN, four minutes after the real sign-in', meta:'EV-03 · Sign-in logs'}),
+  h(H.TimelineEvent, {time:'+4 min', kind:'forecast', title:'Likely: new session on finance portal', description:'Reaches fin-ledger-db through ERP connector', meta:'P3 · 4,912 OF 6,000 ROLLOUTS'}),
+  h(H.TimelineEvent, {time:'10:09:20', kind:'action', last:true, title:'A1 Revoke OAuth grant applied', description:'Sealed by PS-2417-01, rollback RB-1 available', meta:'Approved by A. Rahman, S. Iyer'})));
+</script>
+</body>
+</html>

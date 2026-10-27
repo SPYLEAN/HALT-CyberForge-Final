@@ -1,0 +1,16 @@
+<!-- @dsCard group="Overlays" height=400 subtitle="Four kinds: neutral, success, caution, threat" -->
+<!doctype html>
+<html>
+<head><meta charset="utf-8"><title>Toast — preview</title></head>
+<body>
+<div id="root"></div>
+<script>
+var H = window.HALT, h = React.createElement;
+ReactDOM.createRoot(document.getElementById('root')).render(h('div', {className:'halt-col'},
+  h(H.Toast, {kind:'success', title:'A1 applied', onDismiss:function(){}}, 'Grant DocuSync Pro revoked. Rollback RB-1 available for 30 minutes.'),
+  h(H.Toast, {kind:'caution', title:'Seal is stale', onDismiss:function(){}}, 'New telemetry arrived after sealing. Re-run ProofSeal before executing.'),
+  h(H.Toast, {kind:'threat', title:'New hostile event EV-08', onDismiss:function(){}}, 'Token replay for S-3, 10:08:41Z. Path P3 is reachable again.'),
+  h(H.Toast, {kind:'neutral', title:'Simulation finished'}, '6,000 rollouts per future, seed 2417.')));
+</script>
+</body>
+</html>

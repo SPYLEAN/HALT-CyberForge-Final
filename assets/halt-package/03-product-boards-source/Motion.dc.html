@@ -1,0 +1,126 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>HALT Containment Animation</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@100..125,400..800&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+body{margin:0}
+.mono{font-family:'IBM Plex Mono',ui-monospace,monospace}
+.k{font-family:'IBM Plex Mono',ui-monospace,monospace;font-size:11px;letter-spacing:.08em;color:#9AA3A8}
+table{border-collapse:collapse;width:100%}
+th,td{text-align:left;padding:9px 12px 9px 0;border-bottom:1px solid #232B30;font-weight:400;vertical-align:top}
+th{font-family:'IBM Plex Mono',ui-monospace,monospace;font-size:11px;color:#9AA3A8}
+td{font-size:13px;line-height:1.45;color:#C9CDCB}
+td.m{font-family:'IBM Plex Mono',ui-monospace,monospace;font-size:12px;color:#F1F0EA;white-space:nowrap}
+.paused *{animation-play-state:paused !important}
+.biz-s{stroke-dasharray:18 66;animation:flowS 2.4s linear infinite}
+.biz-b{stroke-dasharray:10 26;animation:flowB 1.2s linear infinite}
+.hz{stroke-dasharray:26.5;stroke-dashoffset:0;animation:adv 8s linear infinite}
+.held{opacity:.35;animation:heldK 8s linear infinite}
+.ringp{opacity:0;transform-box:fill-box;transform-origin:center;animation:ringK 8s linear infinite}
+.proof{transform-box:fill-box;transform-origin:center;animation:proofK 8s linear infinite}
+.cap1,.cap2,.cap3{opacity:0}
+.cap1{animation:c1 8s linear infinite}
+.cap2{animation:c2 8s linear infinite}
+.cap3{animation:c3 8s linear infinite}
+@keyframes flowS{from{stroke-dashoffset:84}to{stroke-dashoffset:0}}
+@keyframes flowB{from{stroke-dashoffset:36}to{stroke-dashoffset:0}}
+@keyframes adv{0%,6%{stroke-dashoffset:26.5;opacity:1;animation-timing-function:cubic-bezier(.55,0,1,.45)}34%,90%{stroke-dashoffset:0;opacity:1}98%{stroke-dashoffset:0;opacity:0}100%{stroke-dashoffset:26.5;opacity:0}}
+@keyframes heldK{0%,48%{opacity:0}60%,90%{opacity:.35}98%,100%{opacity:0}}
+@keyframes ringK{0%,34%{transform:scale(1);opacity:0}35%{transform:scale(1);opacity:.9}50%,100%{transform:scale(3);opacity:0}}
+@keyframes proofK{0%,42%{transform:scale(0)}54%,90%{transform:scale(1)}100%{transform:scale(0)}}
+@keyframes c1{0%,5%{opacity:0}8%,32%{opacity:1}35%,100%{opacity:0}}
+@keyframes c2{0%,33%{opacity:0}36%,48%{opacity:1}52%,100%{opacity:0}}
+@keyframes c3{0%,51%{opacity:0}55%,90%{opacity:1}96%,100%{opacity:0}}
+@media (prefers-reduced-motion: reduce){
+.biz-s,.biz-b,.hz,.held,.ringp,.proof,.cap1,.cap2,.cap3{animation:none}
+.biz-s,.biz-b{stroke-dasharray:none}
+.cap3{opacity:1}
+}
+</style>
+</helmet>
+<div style="width:1440px;height:920px;box-sizing:border-box;background:#0E1214;color:#F1F0EA;font-family:'Archivo',system-ui,sans-serif;display:flex;overflow:hidden">
+
+<div class="{{pauseClass}}" style="width:640px;height:920px;flex:none;background:#0B0F10;position:relative;border-right:1px solid #232B30">
+<svg width="384" height="504" viewBox="16 6 64 84" role="img" aria-label="Looping containment animation: a hostile path advances down the left stem, is stopped at the verification node, and the business path continues" style="position:absolute;left:128px;top:96px">
+<defs><clipPath id="clipTop"><path d="M16 18L24 10H32V36.5H16z"/></clipPath></defs>
+<g fill="#222B30"><path d="M16 18L24 10H32V36.5H16zM16 59.5h16v26.5h-16zM64 6h16v84h-16zM28 42h36v12h-36z"/></g>
+<line x1="72" y1="6" x2="72" y2="90" stroke="#3E9C86" stroke-opacity=".5" stroke-width="16"/>
+<line x1="28" y1="48" x2="64" y2="48" stroke="#3E9C86" stroke-opacity=".5" stroke-width="12"/>
+<line class="biz-s" x1="72" y1="6" x2="72" y2="90" stroke="#3E9C86" stroke-width="16"/>
+<line class="biz-b" x1="28" y1="48" x2="64" y2="48" stroke="#3E9C86" stroke-width="12"/>
+<path class="held" fill="#D4572F" d="M16 59.5h16v26.5h-16z"/>
+<g clip-path="url(#clipTop)"><line class="hz" x1="24" y1="10" x2="24" y2="36.5" stroke="#D4572F" stroke-width="16"/></g>
+<path fill="#F1F0EA" d="M16 48a8 8 0 1 1 16 0a8 8 0 1 1 -16 0zM21 48a3 3 0 1 0 6 0a3 3 0 1 0 -6 0z"/>
+<circle class="proof" cx="24" cy="48" r="3" fill="#3E9C86"/>
+<circle class="ringp" cx="24" cy="48" r="8" fill="none" stroke="#D4572F" stroke-width="1"/>
+</svg>
+<div class="mono" style="position:absolute;left:0;right:0;top:704px;height:40px;text-align:center;font-size:12px;letter-spacing:.08em">
+<div class="cap1" style="position:absolute;left:0;right:0;color:#D4572F">01 · HOSTILE PATH ADVANCES</div>
+<div class="cap2" style="position:absolute;left:0;right:0;color:#F1F0EA">02 · CUT AT THE NODE · PROOF CHECKED</div>
+<div class="cap3" style="position:absolute;left:0;right:0;color:#3E9C86">03 · DOWNSTREAM HELD · BUSINESS UNBROKEN</div>
+</div>
+<button onClick="{{toggle}}" class="mono" style="position:absolute;left:24px;top:24px;height:44px;padding:0 18px;background:transparent;color:#F1F0EA;border:1px solid #3A454B;border-radius:4px;font-size:12px;letter-spacing:.06em;cursor:pointer">{{btnLabel}}</button>
+<div class="mono" style="position:absolute;left:24px;bottom:24px;font-size:11px;color:#9AA3A8">LOOP 8.0 s · RESPECTS REDUCED MOTION</div>
+</div>
+
+<div style="flex:1;min-width:0;padding:56px 64px 48px 56px;display:flex;flex-direction:column;gap:26px">
+<div>
+<div class="k">06 — CONTAINMENT ANIMATION</div>
+<h2 style="margin:12px 0 0;font-size:40px;line-height:1.05;font-weight:700;font-stretch:112%">One cut, then stillness</h2>
+<p style="margin:14px 0 0;font-size:15px;line-height:1.55;color:#C9CDCB;max-width:640px">The mark performs the product's decision. A hostile path travels, meets the verification node and stops. The business path never changes speed, colour or direction.</p>
+</div>
+
+<div>
+<div class="k" style="margin-bottom:4px">TIMELINE · 8.0 s</div>
+<table>
+<thead><tr><th>BEAT</th><th>TIME</th><th>WHAT MOVES</th><th>EASING</th></tr></thead>
+<tbody>
+<tr><td class="m">Idle</td><td class="m">0.0 – 0.5 s</td><td>Only the business pulse runs. It runs for the whole loop.</td><td class="m">linear</td></tr>
+<tr><td class="m">Approach</td><td class="m">0.5 – 2.7 s</td><td>Ember fills the first segment from its chamfered entry to the cut.</td><td class="m">ease-in (.55, 0, 1, .45)</td></tr>
+<tr><td class="m">Contact</td><td class="m">2.7 – 4.0 s</td><td>One ring leaves the node, 1x to 3x, fading as it goes. No shake, no flash.</td><td class="m">linear</td></tr>
+<tr><td class="m">Proof</td><td class="m">3.4 – 4.3 s</td><td>The node's hole fills with Verdigris: the decision is checked.</td><td class="m">linear</td></tr>
+<tr><td class="m">Held</td><td class="m">4.0 – 4.8 s</td><td>The downstream segment settles to 35% Ember: unreached.</td><td class="m">linear</td></tr>
+<tr><td class="m">Rest</td><td class="m">4.8 – 7.2 s</td><td>Everything holds still except the business pulse.</td><td class="m">—</td></tr>
+<tr><td class="m">Reset</td><td class="m">7.2 – 8.0 s</td><td>Ember fades out. Verdigris proof dot shrinks. Loop.</td><td class="m">linear</td></tr>
+</tbody></table>
+</div>
+
+<div style="display:flex;gap:40px">
+<div style="flex:1">
+<div class="k">RULES</div>
+<ul style="margin:8px 0 0;padding-left:18px;font-size:13.5px;line-height:1.55;color:#C9CDCB">
+<li>One cut per loop, one impact ring, no glow.</li>
+<li>Ember never overlaps the business path.</li>
+<li>Reduced motion shows the final frame, held.</li>
+</ul>
+</div>
+<div style="flex:1">
+<div class="k">IN THE PRODUCT</div>
+<p style="margin:8px 0 0;font-size:13.5px;line-height:1.55;color:#C9CDCB">The same four beats play on a real graph: a hostile edge advances, the cut edge opens around its node, the node seals, the downstream edges drop to 35%. Scale changes, the sequence does not.</p>
+</div>
+</div>
+
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":920}}'>
+class Component extends DCLogic {
+renderVals() {
+const paused = !!(this.state && this.state.paused);
+return {
+pauseClass: paused ? 'paused' : '',
+btnLabel: paused ? 'PLAY' : 'PAUSE',
+toggle: () => this.setState({ paused: !paused })
+};
+}
+}
+</script>
+</body>
+</html>

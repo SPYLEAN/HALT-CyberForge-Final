@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>HALT Mark</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@100..125,400..800&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+body{margin:0}
+.mono{font-family:'IBM Plex Mono',ui-monospace,monospace}
+</style>
+</helmet>
+<div style="width:1440px;height:960px;box-sizing:border-box;background:#0E1214;color:#F1F0EA;font-family:'Archivo',system-ui,sans-serif;display:flex;position:relative;overflow:hidden">
+
+<div style="width:840px;height:960px;position:relative;flex:none">
+<svg width="840" height="640" viewBox="0 0 840 640" role="img" aria-label="HALT mark with construction annotations" style="position:absolute;left:0;top:0">
+<g stroke="#232B30" stroke-width="1">
+<path d="M220 72V576M316 72V576M412 72V576M508 72V576M604 72V576"/>
+<path d="M220 72H604M220 168H604M220 264H604M220 360H604M220 456H604M220 552H604"/>
+</g>
+<g transform="translate(220 72) scale(6) translate(-16 -6)">
+<path fill="#D4572F" d="M16 18L24 10H32V36.5H16z"/>
+<path fill="#D4572F" fill-opacity="0.35" d="M16 59.5h16v26.5h-16z"/>
+<path fill="#3E9C86" d="M64 6h16v84h-16zM28 42h36v12h-36z"/>
+<path fill="#F1F0EA" d="M16 48a8 8 0 1 1 16 0a8 8 0 1 1 -16 0zM21 48a3 3 0 1 0 6 0a3 3 0 1 0 -6 0z"/>
+</g>
+<g stroke="#9AA3A8" stroke-width="1" fill="none">
+<path d="M188 168H214"/><path d="M188 324H214"/><path d="M610 456H636"/>
+</g>
+<g fill="#9AA3A8"><circle cx="214" cy="168" r="3"/><circle cx="214" cy="324" r="3"/><circle cx="610" cy="456" r="3"/></g>
+</svg>
+
+<div class="mono" style="position:absolute;left:24px;top:136px;width:160px;text-align:right;font-size:12px;line-height:1.5;color:#9AA3A8"><span style="color:#D4572F">01</span> Hostile path<br>enters at a chamfer, stops at the cut</div>
+<div class="mono" style="position:absolute;left:24px;top:292px;width:160px;text-align:right;font-size:12px;line-height:1.5;color:#9AA3A8"><span style="color:#F1F0EA">03</span> Verification node<br>sits at the containment point</div>
+<div class="mono" style="position:absolute;left:644px;top:424px;width:180px;font-size:12px;line-height:1.5;color:#9AA3A8"><span style="color:#3E9C86">02</span> Business path<br>spine and bar, never interrupted, overshoots the H</div>
+<div class="mono" style="position:absolute;left:220px;top:590px;font-size:11px;color:#9AA3A8">GRID 96 · STEM x = 16 · CUT = 3.5 · NODE Ø 16</div>
+
+<div style="position:absolute;left:48px;top:680px;width:744px;display:flex;gap:48px;border-top:1px solid #232B30;padding-top:24px">
+<div style="flex:1">
+<div class="mono" style="font-size:11px;letter-spacing:.08em;color:#9AA3A8">KEPT FROM SENTINELROUTE</div>
+<p style="margin:10px 0 0;font-size:14px;line-height:1.55;color:#C9CDCB">Connected nodes become one verification node. Infrastructure becomes orthogonal stems on a 16-unit grid. Directional movement becomes the chamfered entry and the spine that runs past the H.</p>
+</div>
+<div style="flex:1">
+<div class="mono" style="font-size:11px;letter-spacing:.08em;color:#9AA3A8">RETIRED</div>
+<p style="margin:10px 0 0;font-size:14px;line-height:1.55;color:#C9CDCB">Shield silhouette, arrow, letter S, glow and the cyan-on-black cybersecurity look.</p>
+</div>
+</div>
+</div>
+
+<div style="width:600px;height:960px;box-sizing:border-box;padding:72px 72px 72px 24px;display:flex;flex-direction:column;justify-content:space-between">
+<div>
+<div class="mono" style="font-size:12px;letter-spacing:.08em;color:#9AA3A8">HALT — PROOF-CARRYING CYBER RESPONSE</div>
+<h1 style="margin:28px 0 0;font-size:64px;line-height:1;font-weight:700;font-stretch:112%;letter-spacing:-.01em">Stop the attack. Not the business.</h1>
+<p style="margin:28px 0 0;font-size:17px;line-height:1.55;color:#C9CDCB">HALT calculates and proves the smallest reversible response that blocks every high-risk attack path while preserving critical business operations.</p>
+</div>
+<div style="display:flex;flex-direction:column;gap:18px">
+<div style="display:flex;gap:16px;align-items:flex-start"><div style="width:16px;height:16px;background:#D4572F;margin-top:3px;flex:none"></div><div style="font-size:15px;line-height:1.5"><b style="font-weight:600">Controlled containment.</b> One precise cut, never a shutdown.</div></div>
+<div style="display:flex;gap:16px;align-items:flex-start"><div style="width:16px;height:16px;background:#3E9C86;margin-top:3px;flex:none"></div><div style="font-size:15px;line-height:1.5"><b style="font-weight:600">Operational continuity.</b> The business path runs straight through.</div></div>
+<div style="display:flex;gap:16px;align-items:flex-start"><div style="width:16px;height:16px;border-radius:50%;border:4px solid #F1F0EA;box-sizing:border-box;margin-top:3px;flex:none"></div><div style="font-size:15px;line-height:1.5"><b style="font-weight:600">Verifiable decision.</b> The node marks where the proof is checked.</div></div>
+<div class="mono" style="margin-top:18px;font-size:11px;line-height:1.5;color:#9AA3A8">Role colours are provisional until the approved HALT palette is applied. The mark works in one colour.</div>
+</div>
+</div>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":960}}'>
+class Component extends DCLogic {
+renderVals() { return {}; }
+}
+</script>
+</body>
+</html>

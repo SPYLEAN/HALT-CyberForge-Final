@@ -1,0 +1,16 @@
+<!-- @dsCard group="Data" height=350 subtitle="Hard constraints: met, at limit, violated" -->
+<!doctype html>
+<html>
+<head><meta charset="utf-8"><title>ConstraintIndicator — preview</title></head>
+<body>
+<div id="root"></div>
+<script>
+var H = window.HALT, h = React.createElement;
+ReactDOM.createRoot(document.getElementById('root')).render(h('div', {className:'halt-pad', style:{maxWidth:640}},
+  h(H.ConstraintIndicator, {name:'Block every high-risk path', rule:'Reachability from compromised principals to fin-ledger-db', value:'0 of 6 open', state:'met', fill:0, limit:.01}),
+  h(H.ConstraintIndicator, {name:'Keep critical business processes running', rule:'5 of 5 processes keep every required edge', value:'5 of 5', state:'met', fill:1, limit:1}),
+  h(H.ConstraintIndicator, {name:'Disrupt at most 1 user', rule:'Hard cap set by Finance Ops, policy IR-RESP-01', value:'1 of 1 user', state:'binding', fill:1, limit:1}),
+  h(H.ConstraintIndicator, {name:'Aggressive isolation: AP batch approval', rule:'Process loses a required dependency', value:'0 of 5 left', state:'violated', fill:.2, limit:1})));
+</script>
+</body>
+</html>

@@ -1,0 +1,101 @@
+{
+ "v": 3,
+ "layout": "files",
+ "createdOnFiles": {
+  "v": 1,
+  "at": "2026-10-27T15:40:00Z"
+ },
+ "title": "HALT",
+ "namespace": "HALT",
+ "libraries": [
+  {
+   "name": "react",
+   "version": "18"
+  },
+  {
+   "name": "react-dom",
+   "version": "18"
+  }
+ ],
+ "sections": {},
+ "groups": [
+  "Logo"
+ ],
+ "assetGroups": {
+  "Logo": {
+   "name": "Logo",
+   "tile": "l",
+   "order": [
+    "halt-horizontal-bone.svg",
+    "halt-horizontal-ink.svg",
+    "halt-icon-bone.svg",
+    "halt-icon-ink.svg",
+    "halt-stacked-bone.svg",
+    "halt-stacked-ink.svg",
+    "halt-favicon-bone.svg",
+    "halt-favicon-ink.svg"
+   ],
+   "files": {
+    "halt-horizontal-bone.svg": {
+     "name": "halt-horizontal-bone.svg",
+     "blob": "372490287489b70259022d6c3875f23d",
+     "size": 857,
+     "type": "image/svg+xml"
+    },
+    "halt-horizontal-ink.svg": {
+     "name": "halt-horizontal-ink.svg",
+     "blob": "68eceacd3f451595dae410329770c8b5",
+     "size": 857,
+     "type": "image/svg+xml"
+    },
+    "halt-icon-bone.svg": {
+     "name": "halt-icon-bone.svg",
+     "blob": "6b93aad1ff6c8642d42ce742cb0f041a",
+     "size": 312,
+     "type": "image/svg+xml"
+    },
+    "halt-icon-ink.svg": {
+     "name": "halt-icon-ink.svg",
+     "blob": "f19aa5df5468e75f07a5e70b2b16c04b",
+     "size": 312,
+     "type": "image/svg+xml"
+    },
+    "halt-stacked-bone.svg": {
+     "name": "halt-stacked-bone.svg",
+     "blob": "b7d4dae6df3d66c01a5d55b709e0defb",
+     "size": 790,
+     "type": "image/svg+xml"
+    },
+    "halt-stacked-ink.svg": {
+     "name": "halt-stacked-ink.svg",
+     "blob": "2c22975e423ed5233513236a9cf7f825",
+     "size": 790,
+     "type": "image/svg+xml"
+    },
+    "halt-favicon-bone.svg": {
+     "name": "halt-favicon-bone.svg",
+     "blob": "60ca39801f3f32d41ffc731397a6239b",
+     "size": 262,
+     "type": "image/svg+xml"
+    },
+    "halt-favicon-ink.svg": {
+     "name": "halt-favicon-ink.svg",
+     "blob": "199e0a29bce344225f2f079e4fe1908f",
+     "size": 262,
+     "type": "image/svg+xml"
+    }
+   }
+  }
+ },
+ "blobs": {},
+ "docs": {
+  "readme": "project/README.md",
+  "sections": []
+ },
+ "lastChange": {
+  "by": "Claude",
+  "via": "Claude (Cowork)",
+  "at": "2026-10-27T15:40:00Z",
+  "note": "Created the HALT design system: tokens, 17 components, graph and motion language, brand rules, handoff."
+ }
+}

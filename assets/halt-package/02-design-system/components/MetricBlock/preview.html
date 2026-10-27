@@ -1,0 +1,15 @@
+<!-- @dsCard group="Data" height=280 subtitle="Counts with a derivation line, never a bare score" -->
+<!doctype html>
+<html>
+<head><meta charset="utf-8"><title>MetricBlock — preview</title></head>
+<body>
+<div id="root"></div>
+<script>
+var H = window.HALT, h = React.createElement;
+ReactDOM.createRoot(document.getElementById('root')).render(h('div', {className:'halt-row', style:{alignItems:'stretch'}},
+  h(H.MetricBlock, {label:'Dangerous paths', value:'6', unit:'found', derivation:'7 events, 1 foothold, horizon 10 min', tone:'threat', simulated:true}),
+  h(H.MetricBlock, {label:'Reachable after response', value:'0 of 6', derivation:'Recomputed on snapshot SG-2417-0759'}),
+  h(H.MetricBlock, {label:'Finance processes running', value:'5 of 5', derivation:'Dependency map v14, 3 actions applied', tone:'business', simulated:true})));
+</script>
+</body>
+</html>

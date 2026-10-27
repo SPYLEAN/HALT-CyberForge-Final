@@ -1,0 +1,50 @@
+<!-- @dsCard group="Colour" page height=960 width=960 subtitle="Twelve roles mapped to four brand colours and neutrals" -->
+<!doctype html>
+<html>
+<head><meta charset="utf-8"><title>SemanticMap</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font-family:var(--font-display);}
+.wrap{padding:32px;display:flex;flex-direction:column;gap:32px}
+.k{font-family:var(--font-mono);font-size:10.5px;letter-spacing:.09em;text-transform:uppercase;color:var(--text-secondary);margin:0 0 8px}
+h3{margin:0 0 4px;font-size:15px;font-weight:700}
+p{margin:0;font-size:12.5px;line-height:19px;color:var(--text-secondary)}
+.grid{display:grid;gap:16px}
+.tile{background:var(--surface);border:1px solid var(--line);border-radius:4px;padding:16px}
+.mono{font-family:var(--font-mono)}
+table{border-collapse:collapse;width:100%}
+td,th{text-align:left;padding:8px 12px 8px 0;border-top:1px solid var(--line);font-size:12px;line-height:18px;font-weight:400;vertical-align:top;color:var(--text)}
+th{font-family:var(--font-mono);font-size:10px;letter-spacing:.09em;text-transform:uppercase;color:var(--text-secondary)}
+td.m{font-family:var(--font-mono);font-size:11.5px}
+</style></head>
+<body>
+
+<div class="wrap"><div><p class="k">Semantic mapping · themes switch with the page</p><div class="grid" style="grid-template-columns:repeat(2,1fr)"><div class="tile" style="display:grid;grid-template-columns:72px 1fr;gap:16px;align-items:start">
+<div style="width:72px;height:72px;border-radius:4px;background:var(--bg);border:1px solid var(--border-strong)"></div>
+<div><div class="k" style="margin-bottom:2px">Page background</div><h3 class="mono" style="font-size:13px;font-weight:500">--bg</h3><p style="color:var(--text)">Ground. Everything else is a step off it.</p><p style="margin-top:4px">Quiet ground lets the two threads be the loudest things on the page.</p></div></div><div class="tile" style="display:grid;grid-template-columns:72px 1fr;gap:16px;align-items:start">
+<div style="width:72px;height:72px;border-radius:4px;background:var(--surface-raised);border:1px solid var(--border-strong)"></div>
+<div><div class="k" style="margin-bottom:2px">Elevated surface</div><h3 class="mono" style="font-size:13px;font-weight:500">--surface-raised</h3><p style="color:var(--text)">Drawers, dialogs, tooltips, toasts. With a 1px ring.</p><p style="margin-top:4px">Separation without shadow: nothing floats over the business thread.</p></div></div><div class="tile" style="display:grid;grid-template-columns:72px 1fr;gap:16px;align-items:start">
+<div style="width:72px;height:72px;border-radius:4px;background:var(--text);border:1px solid var(--border-strong)"></div>
+<div><div class="k" style="margin-bottom:2px">Primary text</div><h3 class="mono" style="font-size:13px;font-weight:500">--text</h3><p style="color:var(--text)">Headlines, body, data values.</p><p style="margin-top:4px">Evidence first: readable at 13.8:1 or more.</p></div></div><div class="tile" style="display:grid;grid-template-columns:72px 1fr;gap:16px;align-items:start">
+<div style="width:72px;height:72px;border-radius:4px;background:var(--text-secondary);border:1px solid var(--border-strong)"></div>
+<div><div class="k" style="margin-bottom:2px">Secondary text</div><h3 class="mono" style="font-size:13px;font-weight:500">--text-secondary</h3><p style="color:var(--text)">Labels, IDs, derivations.</p><p style="margin-top:4px">Derivations always visible, never faint: 6:1 or more.</p></div></div><div class="tile" style="display:grid;grid-template-columns:72px 1fr;gap:16px;align-items:start">
+<div style="width:72px;height:72px;border-radius:4px;background:var(--threat-observed);border:1px solid var(--border-strong)"></div>
+<div><div class="k" style="margin-bottom:2px">Observed threat</div><h3 class="mono" style="font-size:13px;font-weight:500">--threat-observed</h3><p style="color:var(--text)">Solid hostile thread, evidence marker, attacker node.</p><p style="margin-top:4px">The attack, shown only where evidence exists.</p></div></div><div class="tile" style="display:grid;grid-template-columns:72px 1fr;gap:16px;align-items:start">
+<div style="width:72px;height:72px;border-radius:4px;background:var(--threat-forecast);border:1px solid var(--border-strong)"></div>
+<div><div class="k" style="margin-bottom:2px">Forecast threat</div><h3 class="mono" style="font-size:13px;font-weight:500">--threat-forecast</h3><p style="color:var(--text)">Same hue as observed; told apart by dotted stroke and dashed ring.</p><p style="margin-top:4px">Uncertain futures never look like facts.</p></div></div><div class="tile" style="display:grid;grid-template-columns:72px 1fr;gap:16px;align-items:start">
+<div style="width:72px;height:72px;border-radius:4px;background:var(--business);border:1px solid var(--border-strong)"></div>
+<div><div class="k" style="margin-bottom:2px">Business continuity</div><h3 class="mono" style="font-size:13px;font-weight:500">--business</h3><p style="color:var(--text)">Preserved thread, dependency edge, healthy process.</p><p style="margin-top:4px">The thing HALT promises not to stop.</p></div></div><div class="tile" style="display:grid;grid-template-columns:72px 1fr;gap:16px;align-items:start">
+<div style="width:72px;height:72px;border-radius:4px;background:var(--proof-ring);border:1px solid var(--border-strong)"></div>
+<div><div class="k" style="margin-bottom:2px">Verified proof</div><h3 class="mono" style="font-size:13px;font-weight:500">--proof-ring</h3><p style="color:var(--text)">Proof ring with business-coloured centre.</p><p style="margin-top:4px">A verified claim is a claim about preserved business operation.</p></div></div><div class="tile" style="display:grid;grid-template-columns:72px 1fr;gap:16px;align-items:start">
+<div style="width:72px;height:72px;border-radius:4px;background:var(--warning);border:1px solid var(--border-strong)"></div>
+<div><div class="k" style="margin-bottom:2px">Warning</div><h3 class="mono" style="font-size:13px;font-weight:500">--warning</h3><p style="color:var(--text)">Triangle glyph, CAUTION, dashed border.</p><p style="margin-top:4px">Never confusable with hostile or healthy.</p></div></div><div class="tile" style="display:grid;grid-template-columns:72px 1fr;gap:16px;align-items:start">
+<div style="width:72px;height:72px;border-radius:4px;background:var(--success);border:1px solid var(--border-strong)"></div>
+<div><div class="k" style="margin-bottom:2px">Success</div><h3 class="mono" style="font-size:13px;font-weight:500">--success</h3><p style="color:var(--text)">Check glyph and word: APPLIED, VERIFIED.</p><p style="margin-top:4px">Success means the business kept running.</p></div></div><div class="tile" style="display:grid;grid-template-columns:72px 1fr;gap:16px;align-items:start">
+<div style="width:72px;height:72px;border-radius:4px;background:var(--neutral-evidence);border:1px solid var(--border-strong)"></div>
+<div><div class="k" style="margin-bottom:2px">Neutral evidence</div><h3 class="mono" style="font-size:13px;font-weight:500">--neutral-evidence</h3><p style="color:var(--text)">Inferred edges, evidence marker outlines.</p><p style="margin-top:4px">What HALT infers is not what it observed.</p></div></div><div class="tile" style="display:grid;grid-template-columns:72px 1fr;gap:16px;align-items:start">
+<div style="width:72px;height:72px;border-radius:4px;background:var(--text-disabled);border:1px solid var(--border-strong)"></div>
+<div><div class="k" style="margin-bottom:2px">Disabled state</div><h3 class="mono" style="font-size:13px;font-weight:500">--text-disabled</h3><p style="color:var(--text)">Disabled labels with a stated reason.</p><p style="margin-top:4px">Execute is disabled until both humans approve.</p></div></div></div></div>
+<p>Four brand colours (Ink, Bone, Ember, Verdigris) plus a neutral ramp carry all twelve roles. No other hue exists. Warning and Success add no colour: Warning is the text colour with a triangle and a dashed border, Success is Verdigris with a check and a word.</p></div>
+
+</body>
+</html>

@@ -1,0 +1,8 @@
+* text=auto eol=lf
+*.png binary
+*.ico binary
+*.glb binary
+*.zip binary
+
+# vendored package: keep bytes exactly as supplied
+assets/halt-package/** -text

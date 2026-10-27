@@ -1,0 +1,151 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>SafeCut Minimum Safe Envelope</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@100..125,400..800&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+body{margin:0}
+.mono{font-family:'IBM Plex Mono',ui-monospace,monospace}
+.k{font-family:'IBM Plex Mono',ui-monospace,monospace;font-size:10.5px;letter-spacing:.09em;color:#9AA3A8}
+a.btn{display:inline-flex;align-items:center;height:44px;padding:0 18px;border:1px solid #F1F0EA;border-radius:4px;color:#F1F0EA;text-decoration:none;font-family:'IBM Plex Mono',ui-monospace,monospace;font-size:12px;letter-spacing:.06em}
+a.btn:hover{background:#F1F0EA;color:#0E1214}
+.row{display:flex;align-items:center;min-height:42px;border-top:1px solid #232B30}
+.sel{background:#151B1E}
+</style>
+</helmet>
+<div style="width:1440px;height:1000px;display:flex;background:#0E1214;color:#F1F0EA;font-family:'Archivo',system-ui,sans-serif;overflow:hidden">
+<dc-import name="AppRail" active="3" h="1000" hint-size="232px,1000px"></dc-import>
+<div style="width:1208px">
+<dc-import name="AppTopbar" status="SAFECUT · ENVELOPE SOLVED" hint-size="1208px,64px"></dc-import>
+<div style="box-sizing:border-box;padding:24px 32px 0;display:flex;flex-direction:column;gap:20px">
+
+<div style="display:flex;justify-content:space-between;align-items:flex-end;gap:24px">
+<div>
+<div class="k">SAFECUT · CONSTRAINED OPTIMISATION FOR MINIMUM DISRUPTION</div>
+<h1 style="margin:8px 0 0;font-size:30px;line-height:1.1;font-weight:700;font-stretch:108%">The smallest envelope that blocks six paths and breaks nothing critical</h1>
+</div>
+<a class="btn" href="ProofSeal.dc.html">VIEW THE PROOF →</a>
+</div>
+
+<div style="display:flex;gap:32px;align-items:flex-start">
+
+<div style="width:700px;flex:none">
+<div class="k" style="margin-bottom:8px">CANDIDATE ACTIONS · 12 CONSIDERED</div>
+<div style="display:flex;padding-bottom:6px" class="mono">
+<div style="width:32px;font-size:10px;color:#9AA3A8">ID</div>
+<div style="width:236px;font-size:10px;color:#9AA3A8">ACTION · REVERSIBILITY</div>
+<div style="width:112px;font-size:10px;color:#9AA3A8">BLOCKS P1–P6</div>
+<div style="width:48px;font-size:10px;color:#9AA3A8">USERS</div>
+<div style="width:48px;font-size:10px;color:#9AA3A8">PROC.</div>
+<div style="width:224px;font-size:10px;color:#9AA3A8">VERDICT</div>
+</div>
+<sc-for list="{{actions}}" as="a" hint-placeholder-count="12">
+<div class="row {{a.cls}}">
+<div class="mono" style="width:32px;font-size:11px">{{a.id}}</div>
+<div style="width:236px;padding:6px 8px 6px 0">
+<div style="font-size:12.5px;line-height:1.3;font-weight:{{a.fw}}">{{a.name}}</div>
+<div class="mono" style="font-size:10px;color:#9AA3A8;margin-top:2px">{{a.rev}}</div>
+</div>
+<div style="width:112px;display:flex;gap:4px">
+<sc-for list="{{a.cov}}" as="c" hint-placeholder-count="6">
+<div style="width:12px;height:12px;box-sizing:border-box;background:{{c.bg}};border:1px solid {{c.bd}}"></div>
+</sc-for>
+</div>
+<div class="mono" style="width:48px;font-size:12px">{{a.users}}</div>
+<div class="mono" style="width:48px;font-size:12px">{{a.proc}}</div>
+<div style="width:224px;padding:6px 0">
+<div class="mono" style="font-size:10px;letter-spacing:.06em;color:{{a.vc}}">{{a.verdict}}</div>
+<div style="font-size:11px;line-height:1.35;color:#9AA3A8;margin-top:2px">{{a.why}}</div>
+</div>
+</div>
+</sc-for>
+</div>
+
+<div style="flex:1;min-width:0">
+<div style="width:412px;height:258px">
+<dc-import name="ThreadGraph" mode="response" scale="0.43" labels="off" bg="transparent" hint-size="413px,258px"></dc-import>
+</div>
+
+<div class="k" style="margin:14px 0 8px">THE ENVELOPE · EACH ACTION IS NECESSARY</div>
+<div style="display:flex;padding-left:176px;gap:0" class="mono">
+<sc-for list="{{pcols}}" as="p" hint-placeholder-count="6"><div style="width:38px;font-size:10px;color:#9AA3A8;text-align:center">{{p}}</div></sc-for>
+</div>
+<sc-for list="{{matrix}}" as="m" hint-placeholder-count="3">
+<div style="display:flex;align-items:center;border-top:1px solid #232B30;min-height:44px">
+<div style="width:176px;padding-right:8px">
+<div style="font-size:12px;font-weight:600">{{m.name}}</div>
+<div class="mono" style="font-size:9.5px;color:#9AA3A8;margin-top:2px">without it: {{m.reopen}} reopen</div>
+</div>
+<sc-for list="{{m.cells}}" as="c" hint-placeholder-count="6">
+<div style="width:38px;display:flex;justify-content:center"><div style="width:12px;height:12px;border-radius:50%;box-sizing:border-box;background:{{c.bg}};border:1px solid {{c.bd}}"></div></div>
+</sc-for>
+</div>
+</sc-for>
+
+<div class="k" style="margin:16px 0 6px">SOLVER RESULT</div>
+<div style="border-top:1px solid #232B30">
+<sc-for list="{{stats}}" as="s" hint-placeholder-count="5">
+<div style="display:flex;justify-content:space-between;gap:12px;padding:7px 0;border-bottom:1px solid #232B30;font-size:12px;line-height:1.4"><span style="color:#C9CDCB">{{s.l}}</span><span class="mono" style="text-align:right;flex:none">{{s.v}}</span></div>
+</sc-for>
+</div>
+</div>
+
+</div>
+</div>
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":1000}}'>
+class Component extends DCLogic {
+renderVals() {
+const cov = (list) => [1,2,3,4,5,6].map((n) => list.indexOf(n) >= 0 ? { bg: '#F1F0EA', bd: '#F1F0EA' } : { bg: 'transparent', bd: '#3A454B' });
+const A = (id, name, rev, c, users, proc, verdict, why, sel) => ({
+id, name, rev, cov: cov(c), users, proc, verdict, why,
+cls: sel ? 'sel' : '', fw: sel ? 700 : 500,
+vc: verdict.indexOf('SELECTED') === 0 ? '#F1F0EA' : (verdict.indexOf('FEASIBLE') === 0 ? '#C9CDCB' : '#9AA3A8')
+});
+const all = [1,2,3,4,5,6];
+const actions = [
+A('a1','Revoke OAuth grant · DocuSync Pro','Reversible · user can consent again',[1,4,6],'0','0','SELECTED','Cuts three paths at the grant.',true),
+A('a2','Kill sessions S-1 and S-2','Reversible · user signs in again',[2,5],'1','0','SELECTED','Cuts the two live footholds.',true),
+A('a3','Step-up authentication · M. Verma, finance scopes','Reversible · policy removed',[3],'1','0','SELECTED','Stops a silent new session.',true),
+A('a4','Disable M. Verma’s account','Reversible · account re-enabled',all,'1','1','REJECTED','She is the only approver of the 11:00 AP batch.',false),
+A('a5','Isolate finance segment','Partly reversible',all,'412','4','REJECTED','Four critical processes stop.',false),
+A('a6','Block ERP web ingress','Reversible · rule removed',[2,3,4,6],'380','4','REJECTED','Stops four processes and leaves P1, P5 open.',false),
+A('a7','Rotate ERP export credential','Not reversible · old secret destroyed',[1,5],'0','1','REJECTED','Stops the treasury export. Cannot be undone.',false),
+A('a8','Quarantine ledger read access','Reversible · access restored',all,'96','5','REJECTED','All five processes stop.',false),
+A('a9','Block attacker ASN','Reversible · rule removed',[],'0','0','INSUFFICIENT','Blocks no path. The attacker can change network.',false),
+A('a10','Disable DocuSync Pro tenant-wide','Reversible · app re-enabled',[1,4,6],'7','0','FEASIBLE · LARGER','Same paths as A1 but affects 7 other users.',false),
+A('a11','Force password reset · M. Verma','Not reversible',[],'1','0','INSUFFICIENT','Grants and tokens survive a reset.',false),
+A('a12','Purge S-1 mailbox rules','Partly reversible',[],'1','0','INSUFFICIENT','Blocks no path.',false)
+];
+const cell = (on) => on ? { bg: '#F1F0EA', bd: '#F1F0EA' } : { bg: 'transparent', bd: '#3A454B' };
+const m = (name, c, reopen) => ({ name, reopen, cells: [1,2,3,4,5,6].map((n) => cell(c.indexOf(n) >= 0)) });
+return {
+actions,
+pcols: ['P1','P2','P3','P4','P5','P6'],
+matrix: [
+m('A1 Revoke OAuth grant',[1,4,6],'P1 P4 P6'),
+m('A2 Kill sessions S-1, S-2',[2,5],'P2 P5'),
+m('A3 Step-up authentication',[3],'P3')
+],
+stats: [
+{ l: 'Subsets checked (12 actions)', v: '4,096' },
+{ l: 'Meet every constraint', v: '6' },
+{ l: 'Smallest feasible size', v: '3 actions' },
+{ l: 'Feasible at that size', v: '2' },
+{ l: 'Best 2-action set blocks', v: '5 of 6 (A1 + A2)' },
+{ l: 'Chosen: users affected', v: '1 (other: 8)' }
+]
+};
+}
+}
+</script>
+</body>
+</html>

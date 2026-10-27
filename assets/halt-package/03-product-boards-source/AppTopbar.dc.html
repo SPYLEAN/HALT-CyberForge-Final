@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>App Top Bar Component</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@100..125,400..800&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+body{margin:0}
+.mono{font-family:'IBM Plex Mono',ui-monospace,monospace}
+</style>
+</helmet>
+<div style="width:1208px;height:64px;box-sizing:border-box;background:#0E1214;border-bottom:1px solid #232B30;color:#F1F0EA;font-family:'Archivo',system-ui,sans-serif;display:flex;align-items:center;justify-content:space-between;padding:0 32px">
+<div style="display:flex;align-items:center;gap:16px;min-width:0">
+<div class="mono" style="font-size:12px;color:#9AA3A8;white-space:nowrap">INC-2417</div>
+<div style="font-size:16px;font-weight:600;white-space:nowrap">OAuth consent phishing toward the finance ledger</div>
+<div class="mono" style="font-size:11px;letter-spacing:.06em;border:1px solid #3A454B;border-radius:3px;padding:5px 9px;white-space:nowrap">{{status}}</div>
+</div>
+<div style="display:flex;align-items:center;gap:20px">
+<div class="mono" style="font-size:11px;color:#9AA3A8;white-space:nowrap">10:04 UTC · T+21 min since first anomaly</div>
+<div class="mono" style="font-size:10px;letter-spacing:.08em;border:1px dashed #9AA3A8;border-radius:3px;padding:5px 9px;white-space:nowrap">SIMULATED DEMONSTRATION DATA</div>
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"status":{"editor":"text","default":"RESPONSE PENDING APPROVAL"},"$preview":{"width":1208,"height":64}}'>
+class Component extends DCLogic {
+renderVals() { return { status: this.props.status || 'RESPONSE PENDING APPROVAL' }; }
+}
+</script>
+</body>
+</html>

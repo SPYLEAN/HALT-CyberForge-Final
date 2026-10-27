@@ -1,0 +1,28 @@
+# dependencies and build output
+node_modules/
+.next/
+apps/web/out/
+apps/web/dist/
+*.tsbuildinfo
+next-env.d.ts
+
+# python
+.venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+*.egg-info/
+
+# local data and secrets
+*.db
+.env
+.env.*
+!.env.example
+secrets/
+
+# test output
+playwright-report/
+test-results/
+coverage/

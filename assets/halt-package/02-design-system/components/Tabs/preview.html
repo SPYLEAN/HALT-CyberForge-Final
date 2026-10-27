@@ -1,0 +1,13 @@
+<!-- @dsCard group="Navigation" height=120 subtitle="Underline tabs, arrow-key navigation" -->
+<!doctype html>
+<html>
+<head><meta charset="utf-8"><title>Tabs — preview</title></head>
+<body>
+<div id="root"></div>
+<script>
+var H = window.HALT, h = React.createElement;
+var items = [{id:'obs', label:'OBSERVED', count:'7'}, {id:'fc', label:'FORECAST', count:'6'}, {id:'resp', label:'RESPONSE'}, {id:'cut', label:'AFTER CUT'}];
+ReactDOM.createRoot(document.getElementById('root')).render(h('div', {className:'halt-pad', style:{maxWidth:560}}, h(H.Tabs, {items:items, label:'Graph state'})));
+</script>
+</body>
+</html>

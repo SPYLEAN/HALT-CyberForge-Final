@@ -1,0 +1,18 @@
+<!-- @dsCard group="Actions" height=520 subtitle="Two approvers, impact, reversibility, authorisation" -->
+<!doctype html>
+<html>
+<head><meta charset="utf-8"><title>ApprovalControl — preview</title></head>
+<body>
+<div id="root"></div>
+<script>
+var H = window.HALT, h = React.createElement;
+function App(){
+  var s = React.useState({soc:false, fin:false}), v = s[0];
+  return h('div', {className:'halt-row', style:{alignItems:'stretch'}},
+   h('div', {style:{width:380}}, h(H.ApprovalControl, {name:'A. Rahman', role:'SOC lead', short:'SOC lead', policy:'IR-RESP-01', authorises:'A1 revoke grant, A2 kill sessions, A3 step-up', impact:'1 user', reversibility:'RB-1..3 · ~2 min', authorisation:'IR-RESP-01', state:v.soc?'approved':'pending', at:'10:07 UTC', onApprove:function(){ s[1](Object.assign({}, v, {soc:true})); }})),
+   h('div', {style:{width:380}}, h(H.ApprovalControl, {name:'S. Iyer', role:'Finance Ops owner', short:'Finance Ops', authorises:'A3, which changes a finance user’s sign-in', impact:'One prompt', reversibility:'RB-3 · ~20 s', authorisation:'IR-CA-05', state:v.fin?'approved':'pending', at:'10:08 UTC', onApprove:function(){ s[1](Object.assign({}, v, {fin:true})); }})));
+}
+ReactDOM.createRoot(document.getElementById('root')).render(h(App));
+</script>
+</body>
+</html>

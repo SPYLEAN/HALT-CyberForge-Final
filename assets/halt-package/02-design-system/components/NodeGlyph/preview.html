@@ -1,0 +1,17 @@
+<!-- @dsCard group="Graph language" height=360 subtitle="Ten node shapes and four states" -->
+<!doctype html>
+<html>
+<head><meta charset="utf-8"><title>NodeGlyph — preview</title></head>
+<body>
+<div id="root"></div>
+<script>
+var H = window.HALT, h = React.createElement;
+var kinds = ['user','device','session','token','application','api','service','database','process','attacker'];
+var rows = [['observed','Observed'],['forecast','Forecast'],['inferred','Inferred'],['verified','Verified']];
+ReactDOM.createRoot(document.getElementById('root')).render(h('div', {className:'halt-pad'},
+  h('div', {style:{display:'grid', gridTemplateColumns:'90px repeat(10, 1fr)', gap:'14px 8px', alignItems:'center', maxWidth:900}},
+    h('div'), kinds.map(function(k){ return h('div', {key:k, className:'label', style:{fontSize:9, textAlign:'center', fontFamily:'var(--font-mono)'}}, {user:'User',device:'Device',session:'Session',token:'Token',application:'App',api:'API',service:'Service',database:'Database',process:'Process',attacker:'Attacker'}[k]); }),
+    rows.map(function(r){ return [h('div', {key:r[0], className:'label', style:{fontFamily:'var(--font-mono)', fontSize:10}}, r[1])].concat(kinds.map(function(k){ return h('div', {key:r[0]+k, style:{display:'flex', justifyContent:'center'}}, h(H.NodeGlyph, {kind:k, state:r[0], size:40})); })); }))));
+</script>
+</body>
+</html>

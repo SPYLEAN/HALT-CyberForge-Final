@@ -1,0 +1,15 @@
+<!-- @dsCard group="Brand" height=140 subtitle="The H mark drawn in currentColor" -->
+<!doctype html>
+<html>
+<head><meta charset="utf-8"><title>HaltMark — preview</title></head>
+<body>
+<div id="root"></div>
+<script>
+var H = window.HALT, h = React.createElement;
+function Tile(p){ return h('div', {style:{padding:16,background:p.bg,color:p.fg,display:'flex',gap:16,alignItems:'center',borderRadius:4,border:'1px solid var(--line)'}}, p.children); }
+ReactDOM.createRoot(document.getElementById('root')).render(h('div', {className:'halt-row'},
+  h(Tile,{bg:'var(--bg)',fg:'var(--text)'}, h(H.HaltMark,{size:24}), h(H.HaltMark,{size:48}), h(H.HaltMark,{size:72})),
+  h(Tile,{bg:'var(--text)',fg:'var(--bg)'}, h(H.HaltMark,{size:24}), h(H.HaltMark,{size:48}), h(H.HaltMark,{size:72}))));
+</script>
+</body>
+</html>

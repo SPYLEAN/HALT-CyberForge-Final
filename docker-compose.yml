@@ -1,0 +1,60 @@
+# HALT local stack. All data is synthetic (SIMULATED).
+# Usage: docker compose up --build -d --wait
+name: halt
+
+services:
+  db:
+    image: postgres:16
+    environment:
+      POSTGRES_USER: halt
+      POSTGRES_PASSWORD: halt
+      POSTGRES_DB: halt
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U halt -d halt"]
+      interval: 3s
+      timeout: 3s
+      retries: 20
+
+  api:
+    build: ./services/api
+    environment:
+      HALT_DB_URL: postgresql+psycopg://halt:halt@db:5432/halt
+      HALT_SEED: "2417"
+      HALT_LLM_ENABLED: "false"
+      HALT_CORS_ORIGINS: '["http://localhost:3000"]'
+    ports:
+      - "8000:8000"
+    depends_on:
+      db:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "python", "-c", "import json,urllib.request;b=json.load(urllib.request.urlopen('http://localhost:8000/api/v1/health'));exit(0 if b['db']=='ok' else 1)"]
+      interval: 3s
+      timeout: 3s
+      retries: 20
+
+  web:
+    build:
+      context: .
+      dockerfile: apps/web/Dockerfile
+    environment:
+      NEXT_PUBLIC_API_URL: http://localhost:8000/api/v1
+      NEXT_PUBLIC_WS_URL: ws://localhost:8000/ws
+      NEXT_PUBLIC_DEMO_MODE: simulated
+    ports:
+      - "3000:3000"
+    depends_on:
+      api:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "node", "-e", "fetch('http://localhost:3000/healthz').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))"]
+      interval: 3s
+      timeout: 3s
+      retries: 20
+
+volumes:
+  pgdata:

@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>HALT Export Specification</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@100..125,400..800&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+body{margin:0}
+.mono{font-family:'IBM Plex Mono',ui-monospace,monospace}
+.k{font-family:'IBM Plex Mono',ui-monospace,monospace;font-size:11px;letter-spacing:.08em;color:#9AA3A8}
+table{border-collapse:collapse;width:100%}
+th,td{text-align:left;padding:10px 12px 10px 0;border-bottom:1px solid #232B30;font-weight:400;vertical-align:top}
+th{font-family:'IBM Plex Mono',ui-monospace,monospace;font-size:11px;color:#9AA3A8}
+td{font-size:13px;line-height:1.45}
+td.m{font-family:'IBM Plex Mono',ui-monospace,monospace;font-size:12px}
+li{margin:0 0 8px}
+</style>
+</helmet>
+<div style="width:1440px;height:1080px;box-sizing:border-box;background:#0E1214;color:#F1F0EA;font-family:'Archivo',system-ui,sans-serif;padding:56px 64px;display:flex;flex-direction:column;gap:28px">
+
+<div>
+<div class="k">04 — EXPORT SPECIFICATION</div>
+<h2 style="margin:12px 0 0;font-size:40px;line-height:1.05;font-weight:700;font-stretch:112%">SVG first, transparent PNG second</h2>
+</div>
+
+<div style="display:flex;gap:56px">
+
+<div style="flex:1.25;min-width:0">
+<div class="k" style="margin-bottom:6px">SVG MANIFEST · EACH IN -ink AND -bone</div>
+<table>
+<thead><tr><th>FILE</th><th>VIEWBOX</th><th>USE</th></tr></thead>
+<tbody>
+<tr><td class="m">halt-icon-{ink|bone}.svg</td><td class="m">16 6 64 84</td><td>App chrome, avatars, docs, 24 px and up</td></tr>
+<tr><td class="m">halt-horizontal-{…}.svg</td><td class="m">0 0 294 84</td><td>Headers, decks, email, sign-off</td></tr>
+<tr><td class="m">halt-stacked-{…}.svg</td><td class="m">0 0 198 167</td><td>Covers, splash, square placements</td></tr>
+<tr><td class="m">halt-wordmark-{…}.svg</td><td class="m">0 0 360 100</td><td>Text-only placements, footers</td></tr>
+<tr><td class="m">halt-favicon-{…}.svg</td><td class="m">0 0 96 96</td><td>Favicon cut for 16–48 px, app icons</td></tr>
+</tbody></table>
+
+<div class="k" style="margin:22px 0 6px">TRANSPARENT PNG · HEIGHT IN PX, SAME NAMES + -{height}.png</div>
+<table>
+<thead><tr><th>SET</th><th>HEIGHTS</th></tr></thead>
+<tbody>
+<tr><td>Icon</td><td class="m">16 · 24 · 32 · 48 · 64 · 128 · 256 · 512 · 1024</td></tr>
+<tr><td>Favicon cut</td><td class="m">16 · 32 · 48 · 180 · 512</td></tr>
+<tr><td>Horizontal</td><td class="m">48 · 96 · 192 · 384</td></tr>
+<tr><td>Stacked</td><td class="m">128 · 256 · 512</td></tr>
+</tbody></table>
+<ul class="mono" style="margin:18px 0 0;padding-left:18px;font-size:12px;line-height:1.5;color:#C9CDCB">
+<li>RGBA 8-bit, sRGB, alpha background, no padding baked in</li>
+<li>Rendered from the SVG at whole-pixel heights, never upscaled</li>
+<li>Clear space is a layout rule: add it in the layout, not the file</li>
+</ul>
+</div>
+
+<div style="flex:1;min-width:0;display:flex;flex-direction:column;gap:22px">
+<div>
+<div class="k" style="margin-bottom:10px">SVG RULES</div>
+<ul style="margin:0;padding-left:18px;font-size:14px;line-height:1.5;color:#C9CDCB">
+<li>Paths only. No text, strokes, filters, masks, gradients or embedded images.</li>
+<li>One fill per file. The node's hole is a reverse-wound subpath, so the default nonzero rule renders it.</li>
+<li>Inline UI uses <span class="mono" style="font-size:12px">fill="currentColor"</span>, so the mark follows text colour.</li>
+<li>Each file carries <span class="mono" style="font-size:12px">role="img"</span> and a <span class="mono" style="font-size:12px">&lt;title&gt;</span>. Decorative uses add <span class="mono" style="font-size:12px">aria-hidden</span>.</li>
+<li>Coordinates stay on the 96 grid, one decimal at most.</li>
+</ul>
+</div>
+
+<div>
+<div class="k" style="margin-bottom:10px">ICON SOURCE · halt-icon-ink.svg</div>
+<pre class="mono" style="margin:0;background:#151B1E;border:1px solid #232B30;border-radius:4px;padding:16px;font-size:11.5px;line-height:1.55;color:#C9CDCB;white-space:pre-wrap;word-break:break-all">&lt;svg xmlns="http://www.w3.org/2000/svg"
+ viewBox="16 6 64 84" role="img" aria-label="HALT"&gt;
+ &lt;title&gt;HALT&lt;/title&gt;
+ &lt;path fill="#0E1214" d="M64 6h16v84h-16z
+  M28 42h36v12h-36z
+  M16 18L24 10H32V36.5H16z
+  M16 59.5h16v26.5h-16z
+  M16 48a8 8 0 1 1 16 0a8 8 0 1 1 -16 0z
+  M21 48a3 3 0 1 0 6 0a3 3 0 1 0 -6 0z"/&gt;
+&lt;/svg&gt;</pre>
+</div>
+
+<div>
+<div class="k" style="margin-bottom:10px">FAVICON &amp; APP ICON SET</div>
+<table>
+<tbody>
+<tr><td class="m">favicon.svg</td><td>Favicon cut, light and dark via <span class="mono" style="font-size:12px">prefers-color-scheme</span></td></tr>
+<tr><td class="m">favicon.ico</td><td>16, 32, 48 px, Ink mark on transparent</td></tr>
+<tr><td class="m">apple-touch-icon.png</td><td>180 px, Bone mark on Ink, square, no rounding</td></tr>
+<tr><td class="m">icon-512-maskable.png</td><td>512 px, mark inside the central 60% safe zone on Ink</td></tr>
+</tbody></table>
+</div>
+</div>
+
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":1080}}'>
+class Component extends DCLogic {
+renderVals() { return {}; }
+}
+</script>
+</body>
+</html>

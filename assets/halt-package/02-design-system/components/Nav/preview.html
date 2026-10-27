@@ -1,0 +1,17 @@
+<!-- @dsCard group="Navigation" height=420 subtitle="App rail: six systems, current page marked" -->
+<!doctype html>
+<html>
+<head><meta charset="utf-8"><title>Nav — preview</title></head>
+<body>
+<div id="root"></div>
+<script>
+var H = window.HALT, h = React.createElement;
+var items = [
+ {id:'r1', index:'01', label:'HALT-R1'}, {id:'tg', index:'02', label:'ThreadGraph'}, {id:'echo', index:'03', label:'EchoLab'},
+ {id:'safecut', index:'04', label:'SafeCut'}, {id:'proof', index:'05', label:'ProofSeal'}, {id:'gate', index:'06', label:'Action Gate'}];
+function App(){ var s = React.useState('tg'); return h('div', {style:{height:420,display:'flex'}}, h(H.Nav, {items:items, active:s[0], onSelect:s[1], height:420,
+  footer:h(H.StatusChip,{kind:'simulated'},'SIMULATED DATA')})); }
+ReactDOM.createRoot(document.getElementById('root')).render(h(App));
+</script>
+</body>
+</html>

@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>HALT-R1 Incident Intelligence</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@100..125,400..800&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+body{margin:0}
+.mono{font-family:'IBM Plex Mono',ui-monospace,monospace}
+.k{font-family:'IBM Plex Mono',ui-monospace,monospace;font-size:10.5px;letter-spacing:.09em;color:#9AA3A8}
+a.btn{display:inline-flex;align-items:center;gap:8px;height:44px;padding:0 18px;border:1px solid #F1F0EA;border-radius:4px;color:#F1F0EA;text-decoration:none;font-family:'IBM Plex Mono',ui-monospace,monospace;font-size:12px;letter-spacing:.06em}
+a.btn:hover{background:#F1F0EA;color:#0E1214}
+</style>
+</helmet>
+<div style="width:1440px;height:960px;display:flex;background:#0E1214;color:#F1F0EA;font-family:'Archivo',system-ui,sans-serif;overflow:hidden">
+<dc-import name="AppRail" active="0" h="960" hint-size="232px,960px"></dc-import>
+<div style="width:1208px">
+<dc-import name="AppTopbar" status="OBSERVED · FORECAST RUNNING" hint-size="1208px,64px"></dc-import>
+<div style="box-sizing:border-box;padding:26px 32px 0;display:flex;flex-direction:column;gap:18px">
+
+<div style="display:flex;justify-content:space-between;align-items:flex-end;gap:32px">
+<div>
+<div class="k">HALT-R1 · INCIDENT INTELLIGENCE</div>
+<h1 style="margin:8px 0 0;font-size:34px;line-height:1.08;font-weight:700;font-stretch:108%">Six paths now lead to the finance ledger</h1>
+<p style="margin:10px 0 0;font-size:14px;line-height:1.5;color:#C9CDCB;max-width:700px">Reconstructed from 7 telemetry events. The ledger supports five critical business processes, so a path to it is a business risk, not only a security one.</p>
+</div>
+<a class="btn" href="ThreadScreen.dc.html">OPEN THREADGRAPH →</a>
+</div>
+
+<div style="display:flex;gap:24px;align-items:flex-start">
+<div style="width:826px;height:516px;flex:none;position:relative">
+<dc-import name="ThreadGraph" mode="forecast" scale="0.86" bg="transparent" hint-size="826px,516px"></dc-import>
+<div class="mono" style="position:absolute;left:0;top:0;display:flex;gap:18px;font-size:10px;color:#9AA3A8">
+<span style="display:flex;align-items:center;gap:6px"><svg width="26" height="6" aria-hidden="true"><path d="M0 3H26" stroke="#D4572F" stroke-width="3"/></svg>OBSERVED · EVIDENCE</span>
+<span style="display:flex;align-items:center;gap:6px"><svg width="26" height="6" aria-hidden="true"><path d="M0 3H26" stroke="#D4572F" stroke-width="2" stroke-dasharray="2 5"/></svg>FORECAST</span>
+<span style="display:flex;align-items:center;gap:6px"><svg width="26" height="6" aria-hidden="true"><path d="M0 3H26" stroke="#3E9C86" stroke-width="5"/></svg>BUSINESS THREAD</span>
+</div>
+</div>
+
+<div style="flex:1;min-width:0">
+<div class="k" style="margin-bottom:8px">SIX PATHS TO fin-ledger-db · LIKELIHOOD</div>
+<div style="border-top:1px solid #232B30">
+<sc-for list="{{paths}}" as="p" hint-placeholder-count="6">
+<div style="display:flex;gap:12px;padding:10px 0;border-bottom:1px solid #232B30;align-items:flex-start">
+<div class="mono" style="width:26px;font-size:12px;color:#D4572F">{{p.id}}</div>
+<div style="flex:1;min-width:0">
+<div style="font-size:12.5px;line-height:1.35">{{p.route}}</div>
+<div class="mono" style="font-size:10px;color:#9AA3A8;margin-top:3px">{{p.basis}}</div>
+</div>
+<div class="mono" style="font-size:13px;width:38px;text-align:right">{{p.p}}</div>
+</div>
+</sc-for>
+</div>
+<div class="mono" style="margin-top:10px;font-size:10px;line-height:1.5;color:#9AA3A8">Likelihood: share of 6,000 simulated rollouts that reach the ledger within 60 min via that path. SIMULATED. Any path: 0.72.</div>
+</div>
+</div>
+
+<div>
+<div class="k" style="margin-bottom:6px">RECONSTRUCTED TIMELINE · EVERY EVENT LINKS TO ITS SOURCE</div>
+<svg width="1144" height="30" viewBox="0 0 1144 30" aria-hidden="true">
+<path d="M80 15H1040" stroke="#D4572F" stroke-width="3"/>
+<path d="M1040 15H1120" stroke="#D4572F" stroke-width="2" stroke-dasharray="2 6"/>
+<g fill="#0E1214" stroke="#F1F0EA" stroke-width="3"><circle cx="80" cy="15" r="7"/><circle cx="240" cy="15" r="7"/><circle cx="400" cy="15" r="7"/><circle cx="560" cy="15" r="7"/><circle cx="720" cy="15" r="7"/><circle cx="880" cy="15" r="7"/><circle cx="1040" cy="15" r="7"/></g>
+<circle cx="1124" cy="15" r="6" fill="#0E1214" stroke="#59656B" stroke-width="2" stroke-dasharray="2 2"/>
+</svg>
+<div style="display:flex;width:1144px">
+<sc-for list="{{events}}" as="e" hint-placeholder-count="7">
+<div style="width:160px;box-sizing:border-box;padding:6px 10px 0 0">
+<div class="mono" style="font-size:12px">{{e.t}}</div>
+<div style="font-size:12px;line-height:1.35;margin-top:4px;color:#C9CDCB">{{e.text}}</div>
+<div class="mono" style="font-size:10px;color:#9AA3A8;margin-top:5px">{{e.ev}} · {{e.src}}</div>
+</div>
+</sc-for>
+</div>
+</div>
+
+</div>
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":960}}'>
+class Component extends DCLogic {
+renderVals() {
+return {
+paths: [
+{ id: 'P1', route: 'OAuth grant → SharePoint Finance-Close → ERP export credential → ledger', basis: 'Observed to SharePoint · forecast beyond', p: '0.58' },
+{ id: 'P2', route: 'Session S-1 → AP shared mailbox → ERP web → ledger', basis: 'Observed to mailbox · forecast beyond', p: '0.49' },
+{ id: 'P3', route: 'New session → Finance portal → ERP web → ledger', basis: 'Forecast only · device-trust cookie replay', p: '0.22' },
+{ id: 'P4', route: 'OAuth grant → AP shared mailbox → ERP web → ledger', basis: 'Forecast only · Mail.Read scope', p: '0.37' },
+{ id: 'P5', route: 'Session S-2 → OneDrive checklist → ERP export credential → ledger', basis: 'Observed to OneDrive · forecast beyond', p: '0.44' },
+{ id: 'P6', route: 'OAuth grant → admin app role → ERP web → ledger', basis: 'Forecast only · low confidence', p: '0.09' }
+],
+events: [
+{ t: '09:41', text: 'Phishing email delivered to M. Verma', ev: 'EV-01', src: 'Mail gateway' },
+{ t: '09:43', text: 'Consent granted to DocuSync Pro', ev: 'EV-02', src: 'Entra audit' },
+{ t: '09:47', text: 'Token replay S-1 from a new ASN', ev: 'EV-03', src: 'Sign-in logs' },
+{ t: '09:47', text: 'Token replay S-2 on the portal', ev: 'EV-04', src: 'Sign-in logs' },
+{ t: '09:52', text: 'Finance-Close library enumerated, 214 requests', ev: 'EV-05', src: 'Graph activity' },
+{ t: '09:55', text: 'AP shared mailbox read, 38 items', ev: 'EV-06', src: 'Exchange audit' },
+{ t: '09:58', text: 'close-checklist.xlsx opened via S-2', ev: 'EV-07', src: 'OneDrive audit' }
+]
+};
+}
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,37 @@
+const CANDS=[
+ ['Revoke OAuth grant','P1, P2','1 user','0 min','Selected as A1','sel'],
+ ['Kill session S-1','P4','1 user signs in again','0 min','Selected, grouped into A2','sel'],
+ ['Kill session S-2','P5','1 user signs in again','0 min','Selected, grouped into A2','sel'],
+ ['Require step-up for finance users','P3, P6','2 approvers, one prompt','0 min','Selected as A3','sel'],
+ ['Isolate Finance API','P1, P4, P5 (+ downstream)','≈ 310 users','≈ 4 h','Rejected: breaks Payroll, Payment processing, Reconciliation','rej'],
+ ['Isolate finance database','All 6','All five processes','≈ 4 h 20 min','Rejected: downtime limit is 0 min','rej'],
+ ['Network-isolate finance subnet','All 6','≈ 412 users','≈ 3 h','Rejected: downtime limit and user-impact limit','rej'],
+ ['Disable M. Verma account','P1, P4, P5','1 user locked out','0 min','Rejected: dominated. Leaves the grant alive, so P2, P3, P6 stay open','rej'],
+ ['Block ASN AS64500 at the edge','P4, P5','0 users','0 min','Rejected: blocks 2 of 6; grant tokens still work from other networks','rej'],
+ ['Disable all OAuth consent','P1, P2, P6','212 users','0 min','Rejected: breaks 14 integrations, over the user-impact limit','rej'],
+ ['Force password reset','None','1 user','0 min','Rejected: tokens and grants survive a password change, blocks 0 of 6','rej'],
+ ['Quarantine mailbox','None','1 user','0 min','Rejected: blocks 0 of 6','rej']];
+const LOO=[['A1','P1, P2'],['A2','P4, P5'],['A3','P3, P6']];
+function constraints(){const cf=S().k==='conflict';
+ return [['All six dangerous paths blocked','= 6','6 of 6',1],['Critical-service downtime','≤ 0 min','0 min',1],['Users affected','≤ 5','3',1],['Every action reversible within 5 min','all','3 of 3 (max about 1 min)',1],['Authorisation available for every action','all',cf?'2 of 3 · A3 blocked by IR-CA-05':'3 of 3 (A3 needs co-approval)',!cf],['Evidence sealed before any action','yes','Yes · PS-2417-01',1]]}
+const DETAIL={
+ A1:{req:'Without A1, P1 and P2 stay open. Both run through the DocuSync Pro grant, and nothing else in the plan touches it.',aff:'Users: M. Verma (1). Services: none. The grant’s mail and file access ends.',time:'≈ 5 s to apply',perm:'Entra: DelegatedPermissionGrant.ReadWrite.All',ev:'Preserved. The grant record, consent event and token log are snapshotted first; revoking does not delete them.',rej:'Disable all OAuth consent (212 users), Disable M. Verma account (leaves grant alive)'},
+ A2:{req:'Without A2, P4 and P5 stay open. Both are live replays that the grant revocation does not end, because the tokens are already issued.',aff:'Users: M. Verma (1) signs in again. Services: none.',time:'≈ 10 s to apply',perm:'Entra: User.RevokeSessions.All',ev:'Preserved. Session records and their sign-in logs are kept; only the tokens expire.',rej:'Block ASN at the edge (2 of 6, tokens work from other networks), Force password reset (tokens survive)'},
+ A3:{req:'Without A3, P3 and P6 stay open. They need a new session or a fresh token exchange, which step-up authentication makes impossible without a prompt.',aff:'Users: two finance approvers see one prompt. Services: none interrupted.',time:'≈ 15 s to apply',perm:'Entra: Policy.ReadWrite.ConditionalAccess · co-approval IR-CA-05',ev:'Preserved, and adds a log source: every step-up challenge is recorded.',rej:'Isolate Finance API (≈ 310 users), Network-isolate finance subnet (≈ 3 h downtime)'}};
+function vSafe(){
+ const s=S();if(s.plan===0||s.plan===3)return vSafeOld();
+ const cf=s.k==='conflict',cs=constraints();
+ return `${ph('SafeCut',cf?'A3 cannot be authorised, so the plan as a whole cannot run.':'The smallest set of reversible actions that blocks every dangerous path and keeps every critical service running.',cf?tag('fc','Policy conflict'):tag('sim','Simulated plan'))}${wf('safecut')}
+ <div class="prov"><div><span class="k">Who calculated this</span><h4>An exact solver, not a language model</h4><p class="muted" style="font-size:13px">SafeCut solver v0.9 searched all 4,096 subsets of 12 candidate actions against the constraints below. The result is deterministic: same graph, same answer. Certificate sc-9f3a-2417.</p></div>
+ <div><span class="k">What the language model did</span><h4>Wrote the explanations. Nothing else.</h4><p class="muted" style="font-size:13px">Wording on this page is generated from the solver’s output. It cannot add, remove or reorder an action, and it is not used to check the result.</p></div></div>
+ <section class="sec"><header><h3>The problem SafeCut solved</h3></header><p><b>Minimise</b> 10 × users affected + 5 × downtime minutes + number of actions. <b>Subject to</b> every constraint below. The chosen set scores <span class="mono">33</span>; the best set that breaks any constraint scores lower but is not allowed.</p>
+ <table class="tbl cst" style="margin-top:8px"><thead><tr><th>Constraint</th><th>Limit</th><th>Plan</th><th></th></tr></thead><tbody>${cs.map(c=>`<tr><td>${c[0]}</td><td class="n">${c[1]}</td><td>${c[2]}</td><td>${c[3]?tag('ok','Satisfied'):tag('fc','Not satisfied')}</td></tr>`).join('')}</tbody></table></section>
+ <div class="canvas" data-xgraph>${xSVG(xOpts({mode:'both'}))}</div><div style="margin-top:8px">${xlegend}</div>
+ <section class="sec"><header><h3>Why each action is required</h3><span class="muted">Remove any one and paths reopen</span></header>
+ ${ACTS.map((a,i)=>{const d=DETAIL[a.id],l=LOO[i];return `<details ${i===0?'open':''}><summary><span class="mono">${a.id}</span> ${a.t} ${tag(ST.applied>=i+1?'ok':'n',actStatus(a.id).split(' · ')[0])}<span class="muted" style="margin-left:auto;font-weight:400">blocks ${a.blocks}</span></summary><div class="dd"><dl class="kvt">
+ <dt>Why required</dt><dd>${d.req}</dd><dt>Paths blocked</dt><dd>${a.blocks.split(', ').map(p=>`<button class="chip" data-xpath="${p}" data-view="graph">${p}</button>`).join(' ')}</dd>
+ <dt>Affects</dt><dd>${d.aff}</dd><dt>Execution time</dt><dd>${d.time}</dd><dt>Reversibility</dt><dd>${a.rb}. Dry run passed (simulated).</dd><dt>Permission</dt><dd>${d.perm}<br>${a.pol} · ${a.who}</dd><dt>Evidence</dt><dd>${d.ev}</dd><dt>Rejected instead</dt><dd>${d.rej}</dd></dl></div></details>`}).join('')}</section>
+ <section class="sec"><header><h3>Is it the smallest?</h3></header><p class="muted" style="margin-bottom:6px">Leave-one-out check on the solver’s result.</p><table class="tbl"><thead><tr><th>If you drop</th><th>Paths that reopen</th><th>Result</th></tr></thead><tbody>${LOO.map(l=>`<tr><td class="n">${l[0]}</td><td>${l[1]}</td><td>${tag('fc','Constraint broken')}</td></tr>`).join('')}</tbody></table></section>
+ <section class="sec"><header><h3>Alternatives considered</h3><span class="muted">12 candidates</span></header><table class="tbl"><thead><tr><th>Action</th><th>Blocks</th><th>Users</th><th>Downtime</th><th>Verdict</th></tr></thead><tbody>${CANDS.map(c=>`<tr><td><b>${c[0]}</b></td><td>${c[1]}</td><td>${c[2]}</td><td class="n">${c[3]}</td><td>${c[5]==='sel'?tag('ok',c[4]):'<span class="muted">'+c[4]+'</span>'}</td></tr>`).join('')}</tbody></table>
+ <div class="callout" style="margin-top:10px"><b>Purge M. Verma’s mailbox</b> · irreversible<p class="muted" style="margin-top:4px">Never offered by HALT as a button. Needs CISO break-glass with two people (IR-BRK-01).</p></div></section>
+ <p style="margin-top:6px;display:flex;gap:10px"><button class="btn pri" data-wf="proofseal">Continue to ProofSeal</button>${cf?`<button class="btn" data-view="policies">See policy conflict</button>`:''}</p>`}

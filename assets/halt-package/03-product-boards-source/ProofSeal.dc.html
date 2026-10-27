@@ -1,0 +1,129 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>ProofSeal Verification</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@100..125,400..800&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+body{margin:0}
+.mono{font-family:'IBM Plex Mono',ui-monospace,monospace}
+.k{font-family:'IBM Plex Mono',ui-monospace,monospace;font-size:10.5px;letter-spacing:.09em;color:#9AA3A8}
+a.btn{display:inline-flex;align-items:center;height:44px;padding:0 18px;border:1px solid #F1F0EA;border-radius:4px;color:#F1F0EA;text-decoration:none;font-family:'IBM Plex Mono',ui-monospace,monospace;font-size:12px;letter-spacing:.06em}
+a.btn:hover{background:#F1F0EA;color:#0E1214}
+a.ev{color:#F1F0EA;text-decoration:underline;text-underline-offset:3px}
+.tr{display:flex;align-items:flex-start;border-top:1px solid #232B30;padding:8px 0;font-size:12px;line-height:1.4}
+</style>
+</helmet>
+<div style="width:1440px;height:1080px;display:flex;background:#0E1214;color:#F1F0EA;font-family:'Archivo',system-ui,sans-serif;overflow:hidden">
+<dc-import name="AppRail" active="4" h="1080" hint-size="232px,1080px"></dc-import>
+<div style="width:1208px">
+<dc-import name="AppTopbar" status="PROOFSEAL · VERIFIED · AWAITING APPROVAL" hint-size="1208px,64px"></dc-import>
+<div style="box-sizing:border-box;padding:24px 32px 0;display:flex;flex-direction:column;gap:20px">
+
+<div style="display:flex;justify-content:space-between;align-items:flex-end;gap:24px">
+<div>
+<div class="k">PROOFSEAL · EVIDENCE-BACKED VERIFICATION</div>
+<h1 style="margin:8px 0 0;font-size:30px;line-height:1.1;font-weight:700;font-stretch:108%">Four claims, each tied to evidence you can open</h1>
+</div>
+<a class="btn" href="ActionGate.dc.html">GO TO ACTION GATE →</a>
+</div>
+
+<div style="display:flex;gap:40px;align-items:flex-start">
+
+<div style="width:690px;flex:none;position:relative">
+<div style="position:absolute;left:8px;top:14px;bottom:150px;width:1px;background:#F1F0EA;opacity:.5"></div>
+<sc-for list="{{claims}}" as="c" hint-placeholder-count="4">
+<div style="display:flex;gap:20px;padding-bottom:22px;position:relative">
+<div style="width:17px;height:17px;border-radius:50%;box-sizing:border-box;border:2px solid #F1F0EA;background:#0E1214;flex:none;position:relative;margin-top:3px"><div style="position:absolute;left:3px;top:3px;width:7px;height:7px;border-radius:50%;background:#3E9C86"></div></div>
+<div style="flex:1">
+<div style="display:flex;justify-content:space-between;gap:12px;align-items:baseline">
+<div style="font-size:16px;font-weight:700;line-height:1.3">{{c.claim}}</div>
+<div class="mono" style="font-size:10px;letter-spacing:.06em;color:#3E9C86;white-space:nowrap">{{c.status}}</div>
+</div>
+<div style="font-size:12.5px;line-height:1.5;color:#C9CDCB;margin-top:6px">{{c.method}}</div>
+<div class="mono" style="font-size:10.5px;color:#9AA3A8;margin-top:6px">{{c.refs}}</div>
+</div>
+</div>
+</sc-for>
+<div style="margin-left:37px;border:1px dashed #3A454B;border-radius:4px;padding:14px 16px">
+<div class="k">WHAT THIS PROOF DOES NOT CLAIM</div>
+<ul style="margin:8px 0 0;padding-left:16px;font-size:12px;line-height:1.55;color:#C9CDCB">
+<li>That the attacker holds no foothold outside the 7 observed events.</li>
+<li>That forecast paths P3 and P6 will happen. They are blocked as a precaution.</li>
+<li>Likelihoods are simulated, not measured.</li>
+</ul>
+</div>
+</div>
+
+<div style="flex:1;min-width:0;display:flex;flex-direction:column;gap:16px">
+<div>
+<div class="k" style="margin-bottom:6px">POST-ACTION GRAPH · RECOMPUTED · SIMULATED</div>
+<div style="width:380px;height:238px"><dc-import name="ThreadGraph" mode="cut" scale="0.396" labels="off" bg="transparent" hint-size="380px,238px"></dc-import></div>
+</div>
+<div style="border:1px solid #3A454B;border-radius:4px;padding:16px 18px">
+<div style="display:flex;justify-content:space-between;align-items:center">
+<div class="k">PROOF RECEIPT</div>
+<div class="mono" style="font-size:10px;color:#3E9C86;letter-spacing:.06em">VERIFIED</div>
+</div>
+<div style="margin-top:8px">
+<sc-for list="{{receipt}}" as="r" hint-placeholder-count="7">
+<div style="display:flex;justify-content:space-between;gap:12px;padding:6px 0;border-top:1px solid #232B30;font-size:11.5px;line-height:1.4"><span style="color:#9AA3A8">{{r.l}}</span><span class="mono" style="text-align:right;font-size:11px">{{r.v}}</span></div>
+</sc-for>
+</div>
+<div class="mono" style="margin-top:8px;font-size:10px;line-height:1.5;color:#9AA3A8">Demonstration receipt. Hashes and key are synthetic placeholders, not a production signature.</div>
+</div>
+</div>
+
+</div>
+
+<div>
+<div class="k" style="margin-bottom:6px">EVIDENCE BUNDLE · 7 ITEMS</div>
+<div class="tr mono" style="border-top:1px solid #3A454B;font-size:10px;color:#9AA3A8"><div style="width:64px">ID</div><div style="width:150px">SOURCE</div><div style="width:480px">EVENT</div><div style="width:110px">TIME (UTC)</div><div style="width:120px">SUPPORTS</div></div>
+<sc-for list="{{evidence}}" as="e" hint-placeholder-count="7">
+<div class="tr"><div class="mono" style="width:64px"><a class="ev" href="#evidence">{{e.id}}</a></div><div style="width:150px;color:#C9CDCB">{{e.src}}</div><div style="width:480px;padding-right:12px">{{e.text}}</div><div class="mono" style="width:110px;font-size:11px">{{e.t}}</div><div class="mono" style="width:120px;font-size:11px;color:#9AA3A8">{{e.sup}}</div></div>
+</sc-for>
+</div>
+
+</div>
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":1080}}'>
+class Component extends DCLogic {
+renderVals() {
+return {
+claims: [
+{ claim: 'All six high-risk paths are blocked after the three actions.', status: 'VERIFIED', method: 'Reachability recomputed on the post-action snapshot. No route from any compromised principal to fin-ledger-db remains: 0 of 6 paths.', refs: 'Snapshot SG-2417-0759 · EV-02, EV-03, EV-04 · solver run SC-2417-14' },
+{ claim: 'No critical business process loses a required dependency.', status: 'VERIFIED', method: 'Each of the 5 processes keeps every edge it needs. The three actions touch one grant, two sessions and one policy, none on the business thread.', refs: 'Dependency map v14 · processes owned by Finance Ops' },
+{ claim: 'Every action can be reversed.', status: 'VERIFIED · DRY RUN', method: 'Each rollback plan was dry-run against a copy of the snapshot. Restoring all three takes about 2 minutes.', refs: 'Rollback plans RB-1, RB-2, RB-3' },
+{ claim: 'No smaller envelope exists.', status: 'VERIFIED', method: 'Exhaustive over 4,096 subsets of 12 actions. The best two-action set blocks 5 of 6 paths and leaves P3 open.', refs: 'Solver certificate SC-2417-14' }
+],
+receipt: [
+{ l: 'Seal', v: 'PS-2417-01' },
+{ l: 'Graph snapshot', v: 'sha256 9f3a…c41e' },
+{ l: 'Evidence bundle', v: 'sha256 71d0…8b2a' },
+{ l: 'Solver certificate', v: 'SC-2417-14' },
+{ l: 'Sealed', v: '10:06:12Z' },
+{ l: 'Valid until', v: '10:36Z or new telemetry' },
+{ l: 'Signer', v: 'demo key · not production' }
+],
+evidence: [
+{ id: 'EV-01', src: 'Mail gateway', text: 'Message delivered to M. Verma with a consent link', t: '09:41:12', sup: 'Claim 1' },
+{ id: 'EV-02', src: 'Entra audit', text: 'Consent granted to DocuSync Pro: Mail.Read, Files.ReadWrite.All, offline_access', t: '09:43:50', sup: 'Claims 1, 3' },
+{ id: 'EV-03', src: 'Sign-in logs', text: 'Token replay for S-1 from a new ASN, four minutes after the real sign-in', t: '09:47:03', sup: 'Claims 1, 3' },
+{ id: 'EV-04', src: 'Sign-in logs', text: 'Token replay for S-2 on the finance portal, same ASN', t: '09:47:41', sup: 'Claims 1, 3' },
+{ id: 'EV-05', src: 'Graph activity', text: 'Finance-Close library enumerated: 214 requests', t: '09:52:18', sup: 'Claims 1, 2' },
+{ id: 'EV-06', src: 'Exchange audit', text: 'AP shared mailbox read through S-1: 38 items', t: '09:55:02', sup: 'Claims 1, 2' },
+{ id: 'EV-07', src: 'OneDrive audit', text: 'close-checklist.xlsx opened through S-2', t: '09:58:36', sup: 'Claims 1, 2' }
+]
+};
+}
+}
+</script>
+</body>
+</html>

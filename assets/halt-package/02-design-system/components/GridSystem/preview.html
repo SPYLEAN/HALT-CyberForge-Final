@@ -1,0 +1,61 @@
+<!-- @dsCard group="Layout" page height=1120 width=960 subtitle="Grids, spacing, borders, radius, elevation, breakpoints" -->
+<!doctype html>
+<html>
+<head><meta charset="utf-8"><title>GridSystem</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font-family:var(--font-display);}
+.wrap{padding:32px;display:flex;flex-direction:column;gap:32px}
+.k{font-family:var(--font-mono);font-size:10.5px;letter-spacing:.09em;text-transform:uppercase;color:var(--text-secondary);margin:0 0 8px}
+h3{margin:0 0 4px;font-size:15px;font-weight:700}
+p{margin:0;font-size:12.5px;line-height:19px;color:var(--text-secondary)}
+.grid{display:grid;gap:16px}
+.tile{background:var(--surface);border:1px solid var(--line);border-radius:4px;padding:16px}
+.mono{font-family:var(--font-mono)}
+table{border-collapse:collapse;width:100%}
+td,th{text-align:left;padding:8px 12px 8px 0;border-top:1px solid var(--line);font-size:12px;line-height:18px;font-weight:400;vertical-align:top;color:var(--text)}
+th{font-family:var(--font-mono);font-size:10px;letter-spacing:.09em;text-transform:uppercase;color:var(--text-secondary)}
+td.m{font-family:var(--font-mono);font-size:11.5px}
+
+.cols{display:grid;grid-template-columns:repeat(12,1fr);gap:24px;height:72px}
+.cols i{background:var(--surface-raised);border:1px solid var(--line);display:block}
+.app{display:grid;grid-template-columns:232px 1fr 360px;grid-template-rows:64px 1fr;height:260px;border:1px solid var(--border-strong);border-radius:4px;overflow:hidden}
+.app > div{display:flex;align-items:center;justify-content:center;font-family:var(--font-mono);font-size:10.5px;letter-spacing:.06em;color:var(--text-secondary)}
+.bar{height:16px;background:var(--text);border-radius:0}
+.elev{height:88px;display:flex;align-items:center;justify-content:center;border-radius:4px;font-family:var(--font-mono);font-size:11px;background:var(--surface-raised)}
+</style></head>
+<body>
+<div class="wrap">
+<div><p class="k">12-column marketing grid · 1200px max, 24px gutter, 64px margin</p><div class="cols"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div></div>
+<div><p class="k">Product application grid · rail 232 · top bar 64 · main 12 fluid columns · inspector 360</p>
+<div class="app"><div style="grid-row:1/3;background:var(--surface);border-right:1px solid var(--line)">RAIL 232</div><div style="background:var(--surface);border-bottom:1px solid var(--line)">TOP BAR 64 · SIMULATED chip lives here</div><div style="grid-row:1/3;background:var(--surface);border-left:1px solid var(--line)">INSPECTOR 360</div><div style="padding:24px"><div class="cols" style="width:100%;height:100%;gap:24px;grid-template-columns:repeat(12,1fr)"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div></div></div></div>
+<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:32px">
+<div><p class="k">Spacing · 4px base, 8px rhythm</p><div style="display:flex;flex-direction:column;gap:8px"><div style="display:flex;align-items:center;gap:12px"><span class="mono" style="width:70px;font-size:11px">space-1</span><span class="bar" style="width:4px"></span><span class="mono" style="font-size:11px;color:var(--text-secondary)">4px</span></div><div style="display:flex;align-items:center;gap:12px"><span class="mono" style="width:70px;font-size:11px">space-2</span><span class="bar" style="width:8px"></span><span class="mono" style="font-size:11px;color:var(--text-secondary)">8px</span></div><div style="display:flex;align-items:center;gap:12px"><span class="mono" style="width:70px;font-size:11px">space-3</span><span class="bar" style="width:12px"></span><span class="mono" style="font-size:11px;color:var(--text-secondary)">12px</span></div><div style="display:flex;align-items:center;gap:12px"><span class="mono" style="width:70px;font-size:11px">space-4</span><span class="bar" style="width:16px"></span><span class="mono" style="font-size:11px;color:var(--text-secondary)">16px</span></div><div style="display:flex;align-items:center;gap:12px"><span class="mono" style="width:70px;font-size:11px">space-5</span><span class="bar" style="width:24px"></span><span class="mono" style="font-size:11px;color:var(--text-secondary)">24px</span></div><div style="display:flex;align-items:center;gap:12px"><span class="mono" style="width:70px;font-size:11px">space-6</span><span class="bar" style="width:32px"></span><span class="mono" style="font-size:11px;color:var(--text-secondary)">32px</span></div><div style="display:flex;align-items:center;gap:12px"><span class="mono" style="width:70px;font-size:11px">space-7</span><span class="bar" style="width:48px"></span><span class="mono" style="font-size:11px;color:var(--text-secondary)">48px</span></div><div style="display:flex;align-items:center;gap:12px"><span class="mono" style="width:70px;font-size:11px">space-8</span><span class="bar" style="width:64px"></span><span class="mono" style="font-size:11px;color:var(--text-secondary)">64px</span></div><div style="display:flex;align-items:center;gap:12px"><span class="mono" style="width:70px;font-size:11px">space-9</span><span class="bar" style="width:96px"></span><span class="mono" style="font-size:11px;color:var(--text-secondary)">96px</span></div></div></div>
+<div><p class="k">Borders and radius</p>
+<div style="display:flex;flex-direction:column;gap:12px">
+<div style="border:1px solid var(--line);padding:12px;border-radius:4px;font-size:12px">hairline 1px <span class="mono">line</span>: dividers</div>
+<div style="border:1px solid var(--border-strong);padding:12px;border-radius:4px;font-size:12px">control 1px <span class="mono">border-strong</span></div>
+<div style="border:1px dashed var(--threat-observed);padding:12px;border-radius:4px;font-size:12px">forecast hostile: dashed Ember</div>
+<div style="border:1px solid var(--business);padding:12px;border-radius:4px;font-size:12px">preserved: Verdigris</div>
+<div style="display:flex;gap:12px;align-items:center"><div style="width:44px;height:44px;border:1px solid var(--border-strong);border-radius:0"></div><div style="width:44px;height:44px;border:1px solid var(--border-strong);border-radius:2px"></div><div style="width:44px;height:44px;border:1px solid var(--border-strong);border-radius:4px"></div><div style="width:44px;height:44px;border:1px solid var(--border-strong);border-radius:50%"></div><span class="mono" style="font-size:10.5px;color:var(--text-secondary)">0 · 2 · 4 · node</span></div>
+</div></div>
+<div><p class="k">Elevation · surface step plus 1px ring</p>
+<div style="display:flex;flex-direction:column;gap:12px">
+<div class="elev" style="background:var(--bg);box-shadow:var(--elevation-0)">0 · page · none</div>
+<div class="elev" style="box-shadow:var(--elevation-1)">1 · card, toast, tooltip</div>
+<div class="elev" style="box-shadow:var(--elevation-2)">2 · drawer, dialog</div>
+</div></div>
+</div>
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:32px">
+<div><p class="k">Breakpoints</p><table><tbody>
+<tr><td class="m" style="width:100px">bp-sm 640</td><td>Phone. One column, rail becomes a bottom bar, derivations inline.</td></tr>
+<tr><td class="m">bp-md 960</td><td>Tablet. Rail shows index numbers, inspector becomes a sheet.</td></tr>
+<tr><td class="m">bp-lg 1280</td><td>Laptop. Full rail, graph plus inspector.</td></tr>
+<tr><td class="m">bp-xl 1600</td><td>Wide. The graph canvas grows, panels keep their width.</td></tr></tbody></table></div>
+<div><p class="k">Maximum content widths</p><table><tbody>
+<tr><td class="m" style="width:130px">max-marketing</td><td>1200px</td></tr><tr><td class="m">max-app</td><td>1440px design width; canvas grows beyond</td></tr><tr><td class="m">max-prose</td><td>640px</td></tr>
+<tr><td class="m">max-drawer</td><td>480px</td></tr><tr><td class="m">max-dialog</td><td>560px</td></tr><tr><td class="m">max-toast</td><td>400px</td></tr></tbody></table></div>
+</div></div>
+
+</body>
+</html>

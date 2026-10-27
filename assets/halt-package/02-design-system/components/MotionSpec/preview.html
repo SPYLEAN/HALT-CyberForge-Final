@@ -1,0 +1,66 @@
+<!-- @dsCard group="Motion" page height=1100 width=960 subtitle="Eight motions with duration, easing and live replay" -->
+<!doctype html>
+<html>
+<head><meta charset="utf-8"><title>MotionSpec</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font-family:var(--font-display);}
+.wrap{padding:32px;display:flex;flex-direction:column;gap:32px}
+.k{font-family:var(--font-mono);font-size:10.5px;letter-spacing:.09em;text-transform:uppercase;color:var(--text-secondary);margin:0 0 8px}
+h3{margin:0 0 4px;font-size:15px;font-weight:700}
+p{margin:0;font-size:12.5px;line-height:19px;color:var(--text-secondary)}
+.grid{display:grid;gap:16px}
+.tile{background:var(--surface);border:1px solid var(--line);border-radius:4px;padding:16px}
+.mono{font-family:var(--font-mono)}
+table{border-collapse:collapse;width:100%}
+td,th{text-align:left;padding:8px 12px 8px 0;border-top:1px solid var(--line);font-size:12px;line-height:18px;font-weight:400;vertical-align:top;color:var(--text)}
+th{font-family:var(--font-mono);font-size:10px;letter-spacing:.09em;text-transform:uppercase;color:var(--text-secondary)}
+td.m{font-family:var(--font-mono);font-size:11.5px}
+
+.demo{height:72px;display:flex;align-items:center;justify-content:center;background:var(--surface);border:1px solid var(--line);border-radius:4px;overflow:hidden}
+.demo svg{display:block}
+button.rp{box-sizing:border-box;min-height:44px;padding:0 14px;border:1px solid var(--border-strong);border-radius:4px;background:transparent;color:var(--text);font-family:var(--font-mono);font-size:11px;letter-spacing:.06em;cursor:pointer}
+button.rp:hover{background:var(--text);color:var(--bg)}
+button.rp:focus-visible{outline:none;box-shadow:var(--focus-ring)}
+.row{display:grid;grid-template-columns:120px minmax(0,1fr) 178px 240px 76px;gap:16px;align-items:center;padding:12px 0;border-top:1px solid var(--line)}
+.row .t{font-size:14px;font-weight:600}
+.row .why{font-size:12px;line-height:18px;color:var(--text-secondary)}
+.row .tok{font-family:var(--font-mono);font-size:11px;line-height:17px}
+/* every animation is a FROM state; the base state is the end state, so reduced motion shows the end */
+.m1.go .line{animation:m1 var(--duration-approach) var(--ease-approach) both}
+@keyframes m1{from{stroke-dashoffset:180}}
+.m2.go .sq{animation:m2 var(--duration-evidence) var(--ease-out) both;transform-origin:center;transform-box:fill-box}
+@keyframes m2{from{opacity:0;transform:scale(.5)}}
+.m3.go .n{animation:m3 var(--duration-expand) var(--ease-out) both}
+.m3.go .n:nth-of-type(2){animation-delay:60ms}.m3.go .n:nth-of-type(3){animation-delay:120ms}.m3.go .n:nth-of-type(4){animation-delay:180ms}
+@keyframes m3{from{opacity:0;transform:translateX(-14px)}}
+.m4.go .gap{animation:m4 var(--duration-cut) var(--ease-cut) both}
+@keyframes m4{from{width:0;x:120px}}
+.m4.go .proof{animation:m4p var(--duration-proof) var(--ease-out) 700ms both}
+@keyframes m4p{from{opacity:0}}
+.m5.go .lbl{animation:m5 var(--duration-switch) var(--ease-standard) both}
+@keyframes m5{from{opacity:0}}
+.m6.go .ring{animation:m6 var(--duration-proof) var(--ease-out) both}
+@keyframes m6{from{stroke-dashoffset:60}}
+.m6.go .core{animation:m6c 240ms var(--ease-out) 420ms both;transform-origin:center;transform-box:fill-box}
+@keyframes m6c{from{transform:scale(0)}}
+.m7 .fill{transform-origin:left;transform:scaleX(1)}
+.m7.go .fill{animation:m7 var(--duration-approval) var(--ease-out) both}
+@keyframes m7{from{transform:scaleX(0)}}
+.m8.go .gap{animation:m8 var(--duration-cut) var(--ease-standard) both}
+@keyframes m8{from{width:52px;x:94px}}
+@media (prefers-reduced-motion: reduce){ *{animation:none !important} }
+.svgm{font-family:var(--font-mono)}.row .beh{font-size:11.5px;line-height:17px;color:var(--text);margin-top:6px}
+</style></head>
+<body>
+<div class="wrap"><div><p class="k">Eight motions · purpose, duration, easing · every demo replays · reduced motion shows the end state</p>
+<div class="row" style="border-top:1px solid var(--border-strong);padding:8px 0"><p class="k" style="margin:0">Motion</p><p class="k" style="margin:0">Purpose</p><p class="k" style="margin:0">Duration · easing</p><p class="k" style="margin:0">Demo</p><p class="k" style="margin:0">Replay</p></div>
+<div class="row"><div class="t">1. Threat propagation</div><div><div class="why">Show the attack accelerating toward the target, so the cut feels late and necessary.</div><div class="beh">Hostile line draws from the compromised node toward the target, one pass.</div></div><div class="tok">duration-approach 2200ms<br><span style="color:var(--text-secondary)">ease-approach (.55,0,1,.45)</span></div><div class="demo m1" id="m1"><svg width="240" height="40" viewBox="0 0 240 40"><path d="M8 20H160" stroke="var(--border-strong)" stroke-width="1.5" stroke-dasharray="3 5" fill="none"/><path class="line" d="M8 20H160" stroke="var(--threat-observed)" stroke-width="3" fill="none" stroke-dasharray="180" stroke-dashoffset="0"/><rect x="164" y="12" width="16" height="16" fill="var(--bg)" stroke="var(--text)" stroke-width="2.5"/><path d="M190 20H232" stroke="var(--business)" stroke-width="8" fill="none"/></svg></div><div><button class="rp" data-t="m1" aria-label="Replay Threat propagation">REPLAY</button></div></div><div class="row"><div class="t">2. Evidence appearance</div><div><div class="why">Evidence arrives; it does not perform. Quick and calm.</div><div class="beh">Square marker scales from 50% and fades in on the hostile segment.</div></div><div class="tok">duration-evidence 240ms<br><span style="color:var(--text-secondary)">ease-out (.2,.8,.2,1)</span></div><div class="demo m2" id="m2"><svg width="240" height="40" viewBox="0 0 240 40"><path d="M16 20H224" stroke="var(--threat-observed)" stroke-width="3"/><rect class="sq" x="112" y="14" width="12" height="12" fill="var(--text)"/><text x="130" y="31" class="svgm" font-size="9" fill="var(--text-secondary)">EV-03</text></svg></div><div><button class="rp" data-t="m2" aria-label="Replay Evidence appearance">REPLAY</button></div></div><div class="row"><div class="t">3. Graph expansion</div><div><div class="why">Reveal the next hop of the graph in reading order.</div><div class="beh">Nodes slide 14px from the left and fade in, staggered by hop.</div></div><div class="tok">duration-expand 480ms +60ms stagger<br><span style="color:var(--text-secondary)">ease-out (.2,.8,.2,1)</span></div><div class="demo m3" id="m3"><svg width="240" height="40" viewBox="0 0 240 40"><g class="n"><circle cx="30" cy="20" r="9" fill="var(--bg)" stroke="var(--text)" stroke-width="2.5"/></g><g class="n"><rect x="76" y="11" width="18" height="18" rx="2" fill="var(--bg)" stroke="var(--text)" stroke-width="2.5"/></g><g class="n"><polygon points="130,10 140,20 130,30 120,20" fill="var(--bg)" stroke="var(--text)" stroke-width="2.5"/></g><g class="n"><circle cx="190" cy="20" r="9" fill="var(--bg)" stroke="var(--threat-observed)" stroke-width="2.5" stroke-dasharray="3.5 3.5"/></g></svg></div><div><button class="rp" data-t="m3" aria-label="Replay Graph expansion">REPLAY</button></div></div><div class="row"><div class="t">4. Path interruption</div><div><div class="why">Show the cut: danger breaks, the business keeps moving.</div><div class="beh">A gap opens in the hostile line, a proof ring lands in it; the Verdigris thread never pauses.</div></div><div class="tok">duration-cut 900ms, proof 600ms<br><span style="color:var(--text-secondary)">ease-cut (.16,.84,.3,1)</span></div><div class="demo m4" id="m4"><svg width="240" height="48" viewBox="0 0 240 48"><path d="M10 14H230" stroke="var(--threat-observed)" stroke-width="3"/><rect class="gap" x="94" y="6" width="52" height="16" fill="var(--surface)"/><circle class="proof" cx="120" cy="14" r="8" fill="var(--bg)" stroke="var(--proof-ring)" stroke-width="3"/><circle class="proof" cx="120" cy="14" r="2.8" fill="var(--proof-core)"/><path d="M10 38H230" stroke="var(--business)" stroke-width="8" stroke-opacity=".6"/></svg></div><div><button class="rp" data-t="m4" aria-label="Replay Path interruption">REPLAY</button></div></div><div class="row"><div class="t">5. Simulation switching</div><div><div class="why">Move between futures A, B, C without the business thread flickering.</div><div class="beh">Only the hostile layer and labels cross-fade; the Verdigris thread is untouched.</div></div><div class="tok">duration-switch 360ms<br><span style="color:var(--text-secondary)">ease-standard (.4,0,.2,1)</span></div><div class="demo m5" id="m5"><svg width="240" height="40" viewBox="0 0 240 40"><path d="M10 34H230" stroke="var(--business)" stroke-width="6" stroke-opacity=".6"/><text class="lbl svgm" x="12" y="18" font-size="11" fill="var(--text)" id="m5t">FUTURE C · MINIMUM-SAFE</text></svg></div><div><button class="rp" data-t="m5" aria-label="Replay Simulation switching">REPLAY</button></div></div><div class="row"><div class="t">6. Proof verification</div><div><div class="why">A claim is checked, then confirmed: a precise signal, not a celebration.</div><div class="beh">Bone ring draws clockwise, then the Verdigris centre scales in.</div></div><div class="tok">duration-proof 600ms<br><span style="color:var(--text-secondary)">ease-out (.2,.8,.2,1)</span></div><div class="demo m6" id="m6"><svg width="240" height="40" viewBox="0 0 240 40"><circle class="ring" cx="120" cy="20" r="10" fill="var(--bg)" stroke="var(--proof-ring)" stroke-width="3" stroke-dasharray="63" stroke-dashoffset="0"/><circle class="core" cx="120" cy="20" r="3.8" fill="var(--proof-core)"/></svg></div><div><button class="rp" data-t="m6" aria-label="Replay Proof verification">REPLAY</button></div></div><div class="row"><div class="t">7. Human approval</div><div><div class="why">Make the human decision feel deliberate and immediate.</div><div class="beh">The button border turns Verdigris and a tint fills left to right; no confetti, no sound.</div></div><div class="tok">duration-approval 240ms<br><span style="color:var(--text-secondary)">ease-out (.2,.8,.2,1)</span></div><div class="demo m7" id="m7"><svg width="240" height="48" viewBox="0 0 240 48"><rect x="30" y="6" width="180" height="36" rx="4" fill="none" stroke="var(--text)" stroke-width="1.5"/><rect class="fill" x="30.75" y="6.75" width="178.5" height="34.5" rx="3" fill="var(--business)" fill-opacity=".35"/><text x="46" y="29" class="svgm" font-size="11" fill="var(--text)">APPROVED · 10:07 UTC</text></svg></div><div><button class="rp" data-t="m7" aria-label="Replay Human approval">REPLAY</button></div></div><div class="row"><div class="t">8. Rollback</div><div><div class="why">Reverse the response truthfully: the paths reopen at the speed they closed.</div><div class="beh">The gap closes, the hostile line is whole again and the seal ring is revoked.</div></div><div class="tok">duration-cut 900ms<br><span style="color:var(--text-secondary)">ease-standard (.4,0,.2,1)</span></div><div class="demo m8" id="m8"><svg width="240" height="48" viewBox="0 0 240 48"><path d="M10 14H230" stroke="var(--threat-observed)" stroke-width="3"/><rect class="gap" x="120" y="6" width="0" height="16" fill="var(--surface)"/><path d="M10 38H230" stroke="var(--business)" stroke-width="8" stroke-opacity=".6"/></svg></div><div><button class="rp" data-t="m8" aria-label="Replay Rollback">REPLAY</button></div></div></div>
+<p>Ambient loops: the forecast thread marches (<span class="mono">duration-march</span> 1800ms, linear) and the preserved thread pulses (<span class="mono">duration-pulse</span> 3000ms, linear). Linear is deliberate: constant flow reads as steady business operation.</p></div>
+<script>
+var labels = ['FUTURE A · AGGRESSIVE ISOLATION','FUTURE B · PASSIVE MONITORING','FUTURE C · MINIMUM-SAFE'], li = 2;
+function play(id){ var el = document.getElementById(id); if(!el) return; el.classList.remove('go'); void el.getBoundingClientRect(); el.classList.add('go'); }
+document.querySelectorAll('button.rp').forEach(function(b){ b.addEventListener('click', function(){ var id = b.getAttribute('data-t'); if(id==='m5'){ li=(li+1)%3; document.getElementById('m5t').textContent = labels[li]; } play(id); }); });
+</script>
+</body>
+</html>

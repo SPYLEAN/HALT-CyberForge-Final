@@ -1,0 +1,143 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>HALT Developer Specification</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@100..125,400..800&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+body{margin:0}
+.mono{font-family:'IBM Plex Mono',ui-monospace,monospace}
+.k{font-family:'IBM Plex Mono',ui-monospace,monospace;font-size:10.5px;letter-spacing:.09em;color:#9AA3A8}
+td,th{text-align:left;padding:7px 10px 7px 0;border-top:1px solid #232B30;font-weight:400;font-size:12px;line-height:1.45;vertical-align:top;color:#C9CDCB}
+th{font-family:'IBM Plex Mono',ui-monospace,monospace;font-size:10px;color:#9AA3A8}
+table{border-collapse:collapse;width:100%}
+td.m{font-family:'IBM Plex Mono',ui-monospace,monospace;font-size:11px;color:#F1F0EA}
+pre{margin:0;background:#151B1E;border:1px solid #232B30;border-radius:4px;padding:14px 16px;font-family:'IBM Plex Mono',ui-monospace,monospace;font-size:10.5px;line-height:1.55;color:#C9CDCB;white-space:pre-wrap}
+li{margin:0 0 6px}
+</style>
+</helmet>
+<div style="width:1440px;height:1240px;box-sizing:border-box;background:#0E1214;color:#F1F0EA;font-family:'Archivo',system-ui,sans-serif;padding:56px 64px;display:flex;flex-direction:column;gap:28px">
+
+<div style="display:flex;justify-content:space-between;align-items:flex-end">
+<div>
+<div class="k">A8 — DEVELOPER SPECIFICATION · DESIGN PHASE</div>
+<h2 style="margin:12px 0 0;font-size:40px;line-height:1.05;font-weight:700;font-stretch:112%">What each screen consumes and returns</h2>
+</div>
+<div class="mono" style="font-size:11px;line-height:1.5;color:#9AA3A8;text-align:right;width:480px">No backend is specified or built. All data is local mock data for incident INC-2417, labelled SIMULATED.</div>
+</div>
+
+<div style="display:flex;gap:40px;align-items:flex-start">
+
+<div style="width:420px;flex:none">
+<div class="k" style="margin-bottom:6px">PIPELINE · INPUTS AND OUTPUTS</div>
+<table>
+<thead><tr><th>SYSTEM</th><th>CONSUMES</th><th>RETURNS</th></tr></thead>
+<tbody>
+<tr><td class="m">HALT-R1</td><td>Telemetry events (7), asset inventory</td><td>Incident, Evidence[], AttackPath[6], forecast</td></tr>
+<tr><td class="m">ThreadGraph</td><td>Incident, business dependency map v14</td><td>Graph: nodes, edges, path membership</td></tr>
+<tr><td class="m">EchoLab</td><td>Graph, 3 candidate responses</td><td>Future[3]: metrics, n = 6,000 rollouts each</td></tr>
+<tr><td class="m">SafeCut</td><td>Graph, 12-action library, constraints</td><td>Envelope, solver certificate</td></tr>
+<tr><td class="m">ProofSeal</td><td>Envelope, snapshot, evidence bundle</td><td>Proof: 4 claims, receipt, expiry</td></tr>
+<tr><td class="m">Action Gate</td><td>Proof, approvals, rollback plans</td><td>Execution log, GateState, rollback</td></tr>
+</tbody></table>
+
+<div class="k" style="margin:22px 0 6px">GATE STATE MACHINE</div>
+<table>
+<thead><tr><th>FROM</th><th>EVENT</th><th>TO</th></tr></thead>
+<tbody>
+<tr><td class="m">review</td><td>both approvals recorded, Execute</td><td class="m">executing</td></tr>
+<tr><td class="m">executing</td><td>A1, A2, A3 applied in order</td><td class="m">applied</td></tr>
+<tr><td class="m">applied</td><td>Roll back all</td><td class="m">rolled</td></tr>
+<tr><td class="m">any</td><td>New telemetry after seal</td><td class="m">review (seal stale)</td></tr>
+</tbody></table>
+<p class="mono" style="margin:10px 0 0;font-size:10.5px;line-height:1.55;color:#9AA3A8">Execute is disabled until every required approver has approved. No code path executes a critical action without a recorded human approval.</p>
+</div>
+
+<div style="flex:1;min-width:0">
+<div class="k" style="margin-bottom:6px">TYPES · THE MOCK-DATA CONTRACT</div>
+<pre>type Evidence = { id: 'EV-01'..'EV-07'; source: string; ts: string; summary: string }
+type Hop = { node: string; status: 'observed' | 'forecast';
+             evidence?: string[]; likelihood?: number }
+type AttackPath = { id: 'P1'..'P6'; hops: Hop[];
+                    target: 'fin-ledger-db'; likelihood: number; rollouts: 6000 }
+type Action = {
+  id: 'A1' | 'A2' | 'A3'; kind: 'revoke_grant' | 'kill_sessions' | 'step_up'
+  targets: string[]; blocks: string[]            // path ids
+  impact: { users: number; processes: number }   // counts, no scores
+  rollback: { id: string; seconds: number; method: string }
+  authorisation: { policy: string; approvers: string[] } }
+type Envelope = { actions: string[]; blocks: 6; minimal: true;
+                  subsetsChecked: 4096; certificate: string }
+type Claim = { id: string; text: string; method: string;
+               evidence: string[]; status: 'verified' | 'failed' | 'stale' }
+type Proof = { seal: string; snapshot: string; claims: Claim[]; validUntil: string }
+type GateState = 'review' | 'executing' | 'applied' | 'rolled'</pre>
+<div class="k" style="margin:22px 0 6px">THREADGRAPH COMPONENT</div>
+<table>
+<thead><tr><th>PROP</th><th>VALUES</th><th>MEANING</th></tr></thead>
+<tbody>
+<tr><td class="m">mode</td><td class="m">observed · forecast · response · cut · isolate</td><td>Evidence only; plus forecast; plus proposed envelope; after containment; aggressive isolation</td></tr>
+<tr><td class="m">focus</td><td class="m">all · P1 … P6</td><td>Dims every other path to 14%</td></tr>
+<tr><td class="m">scale · labels · motion</td><td class="m">0.4–1.5 · on/off · on/off</td><td>Mini graphs hide labels. Motion off shows the end state.</td></tr>
+</tbody></table>
+</div>
+
+<div style="width:340px;flex:none">
+<div class="k" style="margin-bottom:6px">ACCESSIBILITY</div>
+<ul style="margin:0;padding-left:16px;font-size:12px;line-height:1.5;color:#C9CDCB">
+<li>Observed and forecast differ by dash pattern and node ring, not by colour alone.</li>
+<li>Every graph has a text equivalent: the six-path table on HALT-R1 and the evidence chain on ThreadGraph.</li>
+<li>Each graph state carries an aria summary, for example “after containment: hostile paths cut, business thread continuing”.</li>
+<li>All buttons are real buttons, 44 px high, with a 2 px Bone focus ring offset by 2 px.</li>
+<li>Reduced motion removes the march, pulse and break animation and shows the end state.</li>
+<li>Secondary text on Ink is at least 7:1. Ember and Verdigris never carry text on Bone.</li>
+</ul>
+<div class="k" style="margin:22px 0 6px">FILE LAYOUT FOR A PREVIEW</div>
+<pre>src/mock/incident-2417.ts
+src/types.ts
+src/components/ThreadGraph.tsx
+src/components/AppRail.tsx
+src/screens/{R1,ThreadGraph,
+  EchoLab,SafeCut,ProofSeal,
+  ActionGate}.tsx</pre>
+<p class="mono" style="margin:10px 0 0;font-size:10.5px;line-height:1.55;color:#9AA3A8">A React preview with local mock data is not built yet. The artboards are the design source and the types above are the contract.</p>
+</div>
+
+</div>
+
+<div style="border-top:1px solid #232B30;padding-top:18px">
+<div class="k" style="margin-bottom:8px">DEMONSTRATION SCRIPT · INC-2417</div>
+<div style="display:flex;gap:0">
+<sc-for list="{{steps}}" as="s" hint-placeholder-count="7">
+<div style="width:164px;padding-right:12px;box-sizing:border-box">
+<div class="mono" style="font-size:11px;color:#D4572F">{{s.n}}</div>
+<div style="font-size:12px;line-height:1.45;margin-top:4px;color:#C9CDCB">{{s.t}}</div>
+</div>
+</sc-for>
+</div>
+</div>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":1240}}'>
+class Component extends DCLogic {
+renderVals() {
+return { steps: [
+{ n: '01 · R1', t: 'Seven events become a timeline and six forecast paths to the ledger.' },
+{ n: '02 · THREADGRAPH', t: 'Click P1 to P6. Observed hops show evidence, forecast hops show likelihood.' },
+{ n: '03 · ECHOLAB', t: 'Compare A, B, C. A stops finance, B leaves the ledger exposed, C blocks all six.' },
+{ n: '04 · SAFECUT', t: 'See twelve candidates, why nine fail, and why three actions are the minimum.' },
+{ n: '05 · PROOFSEAL', t: 'Open four claims, each linked to evidence. Read what the proof does not claim.' },
+{ n: '06 · ACTION GATE', t: 'Both approvers approve. Execute. Paths break, the Verdigris thread keeps moving.' },
+{ n: '07 · ROLLBACK', t: 'Roll back all. Paths reopen and the seal is revoked.' }
+] };
+}
+}
+</script>
+</body>
+</html>

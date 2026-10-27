@@ -1,0 +1,158 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>ThreadGraph Screen</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@100..125,400..800&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+body{margin:0}
+.mono{font-family:'IBM Plex Mono',ui-monospace,monospace}
+.k{font-family:'IBM Plex Mono',ui-monospace,monospace;font-size:10.5px;letter-spacing:.09em;color:#9AA3A8}
+.chip{height:44px;min-width:56px;padding:0 14px;background:transparent;color:#C9CDCB;border:1px solid #3A454B;border-radius:4px;font-family:'IBM Plex Mono',ui-monospace,monospace;font-size:12px;cursor:pointer}
+.chip:hover{border-color:#F1F0EA}
+.chip.on{background:#F1F0EA;color:#0E1214;border-color:#F1F0EA}
+a.btn{display:inline-flex;align-items:center;height:44px;padding:0 18px;border:1px solid #F1F0EA;border-radius:4px;color:#F1F0EA;text-decoration:none;font-family:'IBM Plex Mono',ui-monospace,monospace;font-size:12px;letter-spacing:.06em}
+a.btn:hover{background:#F1F0EA;color:#0E1214}
+</style>
+</helmet>
+<div style="width:1440px;height:960px;display:flex;background:#0E1214;color:#F1F0EA;font-family:'Archivo',system-ui,sans-serif;overflow:hidden">
+<dc-import name="AppRail" active="1" h="960" hint-size="232px,960px"></dc-import>
+<div style="width:1208px">
+<dc-import name="AppTopbar" status="THREADGRAPH · 6 PATHS" hint-size="1208px,64px"></dc-import>
+<div style="box-sizing:border-box;padding:24px 32px 0;display:flex;flex-direction:column;gap:14px">
+
+<div style="display:flex;justify-content:space-between;align-items:flex-end;gap:24px">
+<div>
+<div class="k">THREADGRAPH · ATTACK AND BUSINESS DEPENDENCIES IN ONE GRAPH</div>
+<h1 style="margin:8px 0 0;font-size:30px;line-height:1.1;font-weight:700;font-stretch:108%">The attack and the business share the same last hop</h1>
+</div>
+<a class="btn" href="EchoLab.dc.html">SIMULATE RESPONSES →</a>
+</div>
+
+<div style="display:flex;gap:8px;align-items:center">
+<span class="k" style="margin-right:8px">FOCUS PATH</span>
+<sc-for list="{{chips}}" as="c" hint-placeholder-count="7">
+<button class="chip {{c.cls}}" onClick="{{c.pick}}">{{c.label}}</button>
+</sc-for>
+</div>
+
+<div style="display:flex;gap:24px;align-items:flex-start">
+<div style="width:845px;height:528px;flex:none">
+<dc-import name="ThreadGraph" mode="forecast" focus="{{focus}}" scale="0.88" bg="transparent" hint-size="845px,528px"></dc-import>
+</div>
+<div style="flex:1;min-width:0">
+<div class="k" style="margin-bottom:8px">{{drawerTitle}}</div>
+<div style="border-top:1px solid #232B30">
+<sc-for list="{{hops}}" as="h" hint-placeholder-count="4">
+<div style="padding:10px 0;border-bottom:1px solid #232B30">
+<div style="display:flex;justify-content:space-between;gap:8px;align-items:center">
+<div style="font-size:13px;font-weight:600">{{h.name}}</div>
+<div class="mono" style="font-size:9.5px;letter-spacing:.06em;color:{{h.col}};border:1px solid {{h.col}};border-radius:2px;padding:2px 5px;border-style:{{h.bs}}">{{h.status}}</div>
+</div>
+<div style="font-size:11.5px;line-height:1.4;color:#C9CDCB;margin-top:4px">{{h.note}}</div>
+<div class="mono" style="font-size:10px;color:#9AA3A8;margin-top:4px">{{h.ev}}</div>
+</div>
+</sc-for>
+</div>
+<div class="mono" style="margin-top:12px;font-size:10px;line-height:1.5;color:#9AA3A8">{{footnote}}</div>
+</div>
+</div>
+
+<div style="border-top:1px solid #232B30;padding-top:12px">
+<div class="k" style="margin-bottom:8px">BUSINESS PROCESSES ON THE VERDIGRIS THREAD</div>
+<div style="display:flex;gap:0">
+<sc-for list="{{procs}}" as="b" hint-placeholder-count="5">
+<div style="width:228px;padding-right:12px;box-sizing:border-box">
+<div style="font-size:13px;font-weight:600">{{b.name}}</div>
+<div class="mono" style="font-size:10px;color:#9AA3A8;margin-top:3px;line-height:1.45">{{b.win}}<br>needs {{b.dep}}</div>
+</div>
+</sc-for>
+</div>
+</div>
+
+</div>
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":960}}'>
+class Component extends DCLogic {
+renderVals() {
+const focus = (this.state && this.state.focus) || 'all';
+const OBS = '#F1F0EA', FOR = '#9AA3A8';
+const D = {
+P1: [
+['OAuth grant · DocuSync Pro','OBSERVED','Consent granted by M. Verma with Mail.Read, Files.ReadWrite.All and offline_access.','EV-02 · Entra audit · 09:43:50'],
+['SharePoint · Finance-Close','OBSERVED','214 file-listing requests from the grant.','EV-05 · Graph activity · 09:52:18'],
+['ERP export credential','FORECAST','A stored credential in the library would let the export job be replayed. Not yet used.','Forecast · no evidence yet'],
+['fin-ledger-db','FORECAST','Reached through the export path, 0.58 of 6,000 simulated rollouts.','SIMULATED']
+],
+P2: [
+['Session S-1 · Graph API','OBSERVED','Token replayed from a new ASN four minutes after the real sign-in.','EV-03 · Sign-in logs · 09:47:03'],
+['AP shared mailbox','OBSERVED','38 items read through S-1.','EV-06 · Exchange audit · 09:55:02'],
+['ERP web','FORECAST','Approval-workflow mail can reach ERP web.','Forecast · no evidence yet'],
+['fin-ledger-db','FORECAST','0.49 of 6,000 simulated rollouts.','SIMULATED']
+],
+P3: [
+['New session (device-trust cookie)','FORECAST','A replayed device-trust cookie can mint session S-3 without a prompt.','Forecast · no evidence yet'],
+['Finance portal','FORECAST','S-3 would sign in to the portal silently.','Forecast'],
+['ERP web','FORECAST','Portal single sign-on reaches ERP web.','Forecast'],
+['fin-ledger-db','FORECAST','0.22 of 6,000 simulated rollouts.','SIMULATED']
+],
+P4: [
+['OAuth grant · DocuSync Pro','OBSERVED','Mail.Read scope extends to the AP shared mailbox.','EV-02 · Entra audit · 09:43:50'],
+['AP shared mailbox','FORECAST','Read through the grant, separate from S-1.','Forecast'],
+['ERP web','FORECAST','Approval-workflow mail can reach ERP web.','Forecast'],
+['fin-ledger-db','FORECAST','0.37 of 6,000 simulated rollouts.','SIMULATED']
+],
+P5: [
+['Session S-2 · Portal','OBSERVED','Portal token replayed from the same ASN.','EV-04 · Sign-in logs · 09:47:41'],
+['OneDrive · close-checklist','OBSERVED','Workbook opened. It references the export job.','EV-07 · OneDrive audit · 09:58:36'],
+['ERP export credential','FORECAST','Credential reachable from the checklist. Not yet used.','Forecast · no evidence yet'],
+['fin-ledger-db','FORECAST','0.44 of 6,000 simulated rollouts.','SIMULATED']
+],
+P6: [
+['OAuth grant · DocuSync Pro','OBSERVED','Grant can request an admin app role.','EV-02 · Entra audit · 09:43:50'],
+['Admin app role','FORECAST','Needs an approver to accept. Low confidence.','Forecast'],
+['ERP web','FORECAST','An elevated app role reaches ERP web.','Forecast'],
+['fin-ledger-db','FORECAST','0.09 of 6,000 simulated rollouts.','SIMULATED']
+]
+};
+let hops, title, foot;
+if (focus === 'all') {
+hops = [
+['Observed footholds','OBSERVED','1 OAuth grant and 2 live sessions, all tied to M. Verma.','EV-02 · EV-03 · EV-04'],
+['Forecast footholds','FORECAST','1 new session could be minted from a replayed device-trust cookie.','Forecast'],
+['Shared last hop','FORECAST','Four paths travel the ERP web to ledger edge that Payroll and AP also use.','ThreadGraph dependency map']
+];
+title = 'ALL PATHS · WHAT THE EVIDENCE SUPPORTS';
+foot = 'Select a path to dim the others and read its evidence chain. Solid threads are observed. Dotted threads are forecast and carry no evidence yet.';
+} else {
+hops = D[focus];
+title = focus + ' · EVIDENCE CHAIN';
+foot = 'Observed hops link to a telemetry event. Forecast hops show the share of simulated rollouts that take them. SIMULATED.';
+}
+const ids = ['all','P1','P2','P3','P4','P5','P6'];
+return {
+focus: focus,
+drawerTitle: title,
+footnote: foot,
+chips: ids.map((id) => ({ label: id === 'all' ? 'ALL' : id, cls: id === focus ? 'on' : '', pick: () => this.setState({ focus: id }) })),
+hops: hops.map((h) => ({ name: h[0], status: h[1], note: h[2], ev: h[3], col: h[1] === 'OBSERVED' ? OBS : FOR, bs: h[1] === 'OBSERVED' ? 'solid' : 'dashed' })),
+procs: [
+{ name: 'Payroll run', win: '17:00 – 17:40', dep: 'ERP web, ledger' },
+{ name: 'AP payment batch', win: '11:00 – 12:30', dep: 'AP mailbox, ERP web' },
+{ name: 'Month-end close', win: 'all day', dep: 'Portal, ERP web, ledger' },
+{ name: 'Customer invoicing', win: 'continuous', dep: 'ERP web, ledger' },
+{ name: 'Treasury report', win: '13:00 – 13:45', dep: 'ERP export, ledger' }
+]
+};
+}
+}
+</script>
+</body>
+</html>

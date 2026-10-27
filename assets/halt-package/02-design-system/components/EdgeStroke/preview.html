@@ -1,0 +1,15 @@
+<!-- @dsCard group="Graph language" height=420 subtitle="Six edge treatments, differing by form first" -->
+<!doctype html>
+<html>
+<head><meta charset="utf-8"><title>EdgeStroke — preview</title></head>
+<body>
+<div id="root"></div>
+<script>
+var H = window.HALT, h = React.createElement;
+var rows = [['observed','Observed relationship','Solid Ember 3px, evidence square'],['inferred','Inferred relationship','Neutral dashed 6 4, 1.5px'],['forecast','Forecast path','Dotted Ember 2 6, marching, dashed ring end'],
+ ['dependency','Business dependency','Verdigris 2px, open ends'],['blocked','Blocked path','Ember to the cut, proof ring, held 30% beyond'],['preserved','Preserved path','Verdigris 8px, 3s pulse']];
+ReactDOM.createRoot(document.getElementById('root')).render(h('div', {className:'halt-pad', style:{display:'grid', gridTemplateColumns:'240px 220px 1fr', gap:'14px 24px', alignItems:'center', maxWidth:900}},
+  rows.map(function(r){ return [h(H.EdgeStroke,{key:r[0], kind:r[0]}), h('div',{key:r[0]+'n', style:{fontSize:14, fontWeight:600}}, r[1]), h('div',{key:r[0]+'d', className:'telemetry', style:{fontFamily:'var(--font-mono)', fontSize:11.5, color:'var(--text-secondary)'}}, r[2])]; })));
+</script>
+</body>
+</html>

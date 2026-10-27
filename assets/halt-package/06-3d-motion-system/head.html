@@ -1,0 +1,39 @@
+<title>HALT 3D Motion System</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;600;800&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#0E1214;--bone:#F1F0EA;--ember:#D4572F;--ver:#3E9C86;--mut:#9AA3A8;--ln:#2B3438;--pn:#161C1F}
+*{box-sizing:border-box}body{margin:0;background:var(--ink);color:var(--bone);font:15px/1.5 Archivo,system-ui,sans-serif}
+.app{max-width:1280px;margin:0 auto;padding:20px 16px 60px}
+.hd{display:flex;flex-wrap:wrap;gap:16px;justify-content:space-between;align-items:flex-end;margin-bottom:16px}
+h1{font-size:clamp(22px,4vw,32px);margin:4px 0 0;font-weight:800;letter-spacing:-.01em}h2{font-size:18px;margin:28px 0 8px}
+.kk{font:500 11px 'IBM Plex Mono',monospace;letter-spacing:.08em;text-transform:uppercase;color:var(--mut)}
+.mono{font-family:'IBM Plex Mono',monospace;font-size:12px}.big{font-size:14px}
+.tabs{display:flex;flex-wrap:wrap;gap:4px}.tb,.b{font:500 12px 'IBM Plex Mono',monospace;background:transparent;color:var(--bone);border:1.5px solid var(--ln);padding:8px 12px;border-radius:2px;cursor:pointer;min-height:36px}
+.tb.on,.b.on{background:var(--bone);color:var(--ink);border-color:var(--bone)}.tb:hover,.b:hover{border-color:var(--bone)}
+button:focus-visible,input:focus-visible,textarea:focus-visible,[tabindex]:focus-visible{outline:2px solid var(--ver);outline-offset:2px}
+.pv{display:grid;grid-template-columns:minmax(0,1fr) 300px;gap:16px}.pv.small .stage{height:360px}
+.stage{position:relative;height:min(64vh,620px);min-height:380px;background:var(--ink);border:1.5px solid var(--ln);overflow:hidden}
+.stage.chk{background:repeating-conic-gradient(#1b2226 0 25%,#12181b 0 50%) 0 0/24px 24px}
+.stage canvas,.fb{position:absolute;inset:0;width:100%;height:100%;display:block}.fb svg{width:100%;height:100%}
+.lbls{position:absolute;inset:0;pointer-events:none;overflow:hidden}
+.h3d-lbl{position:absolute;left:0;top:0;font:500 10px 'IBM Plex Mono',monospace;color:var(--bone);white-space:nowrap;opacity:0;will-change:transform;text-shadow:0 0 4px var(--ink),0 0 4px var(--ink),0 0 2px var(--ink)}.h3d-lbl.hostile{color:#E8855F}.h3d-lbl.biz{color:#6FC2AC}.h3d-lbl.proof{color:var(--bone);font-weight:500}.h3d-lbl.sim{color:var(--mut);font-style:italic}
+.cap{position:absolute;left:0;right:0;bottom:0;background:var(--ink);border-top:1.5px solid var(--ln);padding:10px 14px;font-size:13px}.cap b{display:block;font:500 11px 'IBM Plex Mono',monospace;letter-spacing:.06em;text-transform:uppercase;color:var(--mut)}
+.badge{position:absolute;left:10px;top:10px;font:500 10px 'IBM Plex Mono',monospace;background:var(--ink);border:1px solid var(--ln);padding:3px 7px;color:var(--mut)}
+.ctl{display:flex;flex-direction:column;gap:12px}.g{display:flex;flex-direction:column;gap:6px}.col{display:flex;flex-direction:column;gap:4px}.row{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+.col .b{text-align:left}.desc{margin:0;color:var(--bone);font-size:13px;border-left:3px solid var(--bone);padding-left:10px}
+.ck{font-size:13px;display:flex;gap:6px;align-items:flex-start}.st{margin:0;color:var(--mut);min-height:18px}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);margin:0}
+input[type=range]{width:100%;accent-color:#F1F0EA}
+.pg{margin-top:12px;border-top:1.5px solid var(--ln);padding-top:4px}.m{color:var(--mut);font-size:13px;max-width:78ch}
+.t{width:100%;border-collapse:collapse;font-size:13px;margin:6px 0 10px}.t th,.t td{border-bottom:1px solid var(--ln);padding:7px 8px;text-align:left;vertical-align:top}
+.t th{font:500 11px 'IBM Plex Mono',monospace;color:var(--mut);text-transform:uppercase;letter-spacing:.05em}.t .k{font:500 12px 'IBM Plex Mono',monospace;white-space:nowrap}.t .n{font-family:'IBM Plex Mono',monospace;text-align:right}
+pre{background:var(--pn);border:1px solid var(--ln);padding:12px;overflow:auto;font:12px/1.55 'IBM Plex Mono',monospace;white-space:pre}
+.ta{width:100%;min-height:340px;background:var(--pn);color:var(--bone);border:1.5px solid var(--ln);padding:12px;font:12px/1.5 'IBM Plex Mono',monospace}
+.er{color:var(--ember);font:12px 'IBM Plex Mono',monospace}.sw{display:flex;flex-wrap:wrap;gap:6px}.sw span{padding:14px 12px;font:12px 'IBM Plex Mono',monospace;border:1px solid var(--ln)}
+.scroll{overflow-x:auto}
+@media(max-width:900px){.pv{grid-template-columns:1fr}.stage{height:56vh;min-height:320px}.t{display:block;overflow-x:auto}}
+@media (prefers-reduced-motion:reduce){*{scroll-behavior:auto!important}}
+</style>
+<div id="root"></div>
+<noscript>HALT 3D motion system. Enable JavaScript to use the preview. The system defines seven states: Dormant, Intrusion, Reconstruction, Business Context, Futures, Safe Containment, Verified.</noscript>

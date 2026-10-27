@@ -1,0 +1,139 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>EchoLab Counterfactual Futures</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@100..125,400..800&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+body{margin:0}
+.mono{font-family:'IBM Plex Mono',ui-monospace,monospace}
+.k{font-family:'IBM Plex Mono',ui-monospace,monospace;font-size:10.5px;letter-spacing:.09em;color:#9AA3A8}
+a.btn{display:inline-flex;align-items:center;height:44px;padding:0 18px;border:1px solid #F1F0EA;border-radius:4px;color:#F1F0EA;text-decoration:none;font-family:'IBM Plex Mono',ui-monospace,monospace;font-size:12px;letter-spacing:.06em}
+a.btn:hover{background:#F1F0EA;color:#0E1214}
+</style>
+</helmet>
+<div style="width:1440px;height:1080px;display:flex;background:#0E1214;color:#F1F0EA;font-family:'Archivo',system-ui,sans-serif;overflow:hidden">
+<dc-import name="AppRail" active="2" h="1080" hint-size="232px,1080px"></dc-import>
+<div style="width:1208px">
+<dc-import name="AppTopbar" status="ECHOLAB · 3 FUTURES" hint-size="1208px,64px"></dc-import>
+<div style="box-sizing:border-box;padding:24px 32px 0;display:flex;flex-direction:column;gap:20px">
+
+<div style="display:flex;justify-content:space-between;align-items:flex-end;gap:24px">
+<div>
+<div class="k">ECHOLAB · COUNTERFACTUAL RESPONSE SIMULATION</div>
+<h1 style="margin:8px 0 0;font-size:30px;line-height:1.1;font-weight:700;font-stretch:108%">Three futures, one graph, the same 6,000 rollouts each</h1>
+<p class="mono" style="margin:8px 0 0;font-size:11px;color:#9AA3A8">Horizon 60 min from 10:04 UTC · all figures SIMULATED</p>
+</div>
+<a class="btn" href="SafeCut.dc.html">SEE WHY C IS SMALLEST →</a>
+</div>
+
+<div style="display:flex;gap:20px">
+<sc-for list="{{futures}}" as="f" hint-placeholder-count="3">
+<div style="width:368px;flex:none">
+<div style="border-top:3px solid {{f.rule}};padding-top:12px;display:flex;gap:12px;align-items:center;min-height:50px">
+<div class="mono" style="width:30px;height:30px;border-radius:50%;border:2px solid #F1F0EA;display:flex;align-items:center;justify-content:center;font-size:13px;flex:none">{{f.letter}}</div>
+<div>
+<div style="font-size:16px;font-weight:700">{{f.name}}</div>
+<div class="mono" style="font-size:10px;color:#9AA3A8;margin-top:2px">{{f.tag}}</div>
+</div>
+</div>
+<div style="width:368px;height:228px;margin-top:10px">
+<dc-import name="ThreadGraph" mode="{{f.mode}}" scale="0.38" labels="off" bg="transparent" hint-size="365px,228px"></dc-import>
+</div>
+<div style="margin-top:6px">
+<sc-for list="{{f.rows}}" as="r" hint-placeholder-count="6">
+<div style="display:flex;justify-content:space-between;align-items:baseline;gap:12px;padding:8px 0;border-top:1px solid #232B30">
+<div class="mono" style="font-size:10px;color:#9AA3A8;width:120px;flex:none">{{r.l}}</div>
+<div style="text-align:right">
+<div style="font-size:15px;font-weight:600">{{r.v}}</div>
+<div style="font-size:10.5px;color:#9AA3A8;margin-top:1px">{{r.s}}</div>
+</div>
+</div>
+</sc-for>
+</div>
+<div class="k" style="margin:10px 0 4px">BUSINESS CONTINUITY · 10:00 – 18:00</div>
+<svg width="368" height="124" viewBox="0 0 368 124" role="img" aria-label="{{f.lanesAria}}">
+<sc-for list="{{f.lanes}}" as="l" hint-placeholder-count="5">
+<text x="0" y="{{l.ty}}" font-family="IBM Plex Mono, monospace" font-size="9" fill="#9AA3A8">{{l.name}}</text>
+<sc-for list="{{l.segs}}" as="s" hint-placeholder-count="2">
+<rect x="{{s.x}}" y="{{l.y}}" width="{{s.w}}" height="8" fill="{{s.fill}}" stroke="{{s.stroke}}" stroke-width="1" stroke-dasharray="{{s.dash}}"/>
+</sc-for>
+</sc-for>
+<sc-if value="{{f.exposed}}" hint-placeholder-val="{{false}}">
+<path d="M17 112H368" stroke="#D4572F" stroke-width="2" stroke-dasharray="2 5"/>
+<text x="368" y="122" text-anchor="end" font-family="IBM Plex Mono, monospace" font-size="9" fill="#9AA3A8">LEDGER EXPOSED FROM ~10:22</text>
+</sc-if>
+<sc-if value="{{f.sealed}}" hint-placeholder-val="{{false}}">
+<circle cx="7" cy="112" r="4" fill="#0E1214" stroke="#F1F0EA" stroke-width="2"/>
+<text x="16" y="115" font-family="IBM Plex Mono, monospace" font-size="9" fill="#9AA3A8">RESPONSE APPLIED ~10:12 · NO LANE INTERRUPTED</text>
+</sc-if>
+<sc-if value="{{f.outage}}" hint-placeholder-val="{{false}}">
+<text x="368" y="122" text-anchor="end" font-family="IBM Plex Mono, monospace" font-size="9" fill="#9AA3A8">DASHED = INTERRUPTED 10:10 – 13:50</text>
+</sc-if>
+</svg>
+<div style="font-size:12.5px;line-height:1.45;color:#C9CDCB;margin-top:8px;min-height:36px">{{f.verdict}}</div>
+</div>
+</sc-for>
+</div>
+
+</div>
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":1080}}'>
+class Component extends DCLogic {
+renderVals() {
+const X = (t) => (t - 10) * 46;
+const OK = '#3E9C86', EMB = '#D4572F';
+const procs = [['Month-end close', 10, 18], ['Customer invoicing', 10, 18], ['AP payment batch', 11, 12.5], ['Treasury report', 13, 13.75], ['Payroll run', 17, 17.667]];
+const lanes = (out) => procs.map((p, i) => {
+const y = 14 + i * 18;
+const segs = [];
+const push = (a, b, ok) => { if (b > a) segs.push({ x: X(a).toFixed(1), w: (X(b) - X(a)).toFixed(1), fill: ok ? OK : 'none', stroke: ok ? 'none' : EMB, dash: ok ? 'none' : '3 2' }); };
+if (!out) push(p[1], p[2], true);
+else {
+push(p[1], Math.min(p[2], out[0]), true);
+push(Math.max(p[1], out[0]), Math.min(p[2], out[1]), false);
+push(Math.max(p[1], out[1]), p[2], true);
+}
+return { name: p[0], y: y, ty: y - 3, segs: segs };
+});
+const mk = (letter, name, tag, mode, rule, rows, verdict, extra) => Object.assign({ letter, name, tag, mode, rule, rows: rows.map((r) => ({ l: r[0], v: r[1], s: r[2] })), verdict, exposed: false, sealed: false, outage: false }, extra);
+return {
+futures: [
+mk('A', 'Aggressive isolation', 'Isolate finance segment · block ERP · rotate export credential', 'isolate', '#59656B', [
+['PATHS BLOCKED', '6 of 6', 'The whole finance segment is cut off'],
+['LEDGER REACHED IN 60 MIN', '0.00', 'Contained'],
+['USERS AFFECTED', '412', 'Finance and AP staff'],
+['CRITICAL PROCESSES INTERRUPTED', '4 of 5', 'AP cut-off at 12:00 missed'],
+['REVERSIBLE ACTIONS', '2 of 4', 'A missed cut-off cannot be recalled'],
+['TIME TO RESTORE', '3 h 40 min', 'Simulated']
+], 'Contains the threat by stopping finance. The attack is blocked and so is the business.', { lanes: lanes([10.17, 13.83]), outage: true, lanesAria: 'Business lanes for future A, four of five interrupted between 10:10 and 13:50' }),
+mk('B', 'Passive monitoring', 'No action · alert and watch', 'forecast', '#59656B', [
+['PATHS BLOCKED', '0 of 6', 'All six remain open'],
+['LEDGER REACHED IN 60 MIN', '0.72', '4,320 of 6,000 rollouts'],
+['USERS AFFECTED', '0', 'None, until the ledger is touched'],
+['CRITICAL PROCESSES INTERRUPTED', '0 of 5', 'For now'],
+['REVERSIBLE ACTIONS', 'n/a', 'No action taken'],
+['TIME TO RESTORE', 'n/a', 'Median time to ledger: 18 min']
+], 'Keeps finance running while leaving the ledger exposed. Availability is preserved, integrity is not.', { lanes: lanes(null), exposed: true, lanesAria: 'Business lanes for future B, all running, ledger exposed from about 10:22' }),
+mk('C', 'HALT minimum-safe response', 'Selected by SafeCut · revoke grant, kill 2 sessions, step-up', 'cut', '#3E9C86', [
+['PATHS BLOCKED', '6 of 6', 'Cut at four points'],
+['LEDGER REACHED IN 60 MIN', '0.00', 'Contained'],
+['USERS AFFECTED', '1', 'M. Verma re-authenticates'],
+['CRITICAL PROCESSES INTERRUPTED', '0 of 5', 'Payroll 17:00 on schedule'],
+['REVERSIBLE ACTIONS', '3 of 3', 'Rollback plan on every action'],
+['TIME TO RESTORE', '2 min', 'One rollback']
+], 'Blocks all six paths and finance keeps moving. Every action can be undone.', { lanes: lanes(null), sealed: true, lanesAria: 'Business lanes for future C, all five running without interruption' })
+]
+};
+}
+}
+</script>
+</body>
+</html>

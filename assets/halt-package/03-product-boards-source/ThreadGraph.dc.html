@@ -1,0 +1,180 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>ThreadGraph Component</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<style>
+body{margin:0}
+.lbl{font-family:'IBM Plex Mono',ui-monospace,monospace;font-size:11px;paint-order:stroke;stroke:#0E1214;stroke-width:4px;stroke-linejoin:round}
+.lbl9{font-family:'IBM Plex Mono',ui-monospace,monospace;font-size:9px;paint-order:stroke;stroke:#0E1214;stroke-width:3px}
+.lbl10{font-family:'IBM Plex Mono',ui-monospace,monospace;font-size:10px;letter-spacing:.06em}
+.pulse{stroke-dasharray:24 96;animation:pulse 3s linear infinite}
+.march{animation:march 1.8s linear infinite}
+.dn{animation:dn .9s .15s ease-out backwards}
+.ndn{animation:ndn .9s .15s ease-out backwards}
+.pin{transform-box:fill-box;transform-origin:center;animation:pin .6s .7s cubic-bezier(.2,.8,.2,1) backwards}
+@keyframes pulse{from{stroke-dashoffset:120}to{stroke-dashoffset:0}}
+@keyframes march{to{stroke-dashoffset:-16}}
+@keyframes dn{from{stroke-opacity:1}}
+@keyframes ndn{from{opacity:1}}
+@keyframes pin{from{transform:scale(0);opacity:0}}
+@media (prefers-reduced-motion: reduce){.pulse,.march,.dn,.ndn,.pin{animation:none}}
+</style>
+</helmet>
+<div style="width:{{w}}px;height:{{h}}px;background:{{bg}}">
+<svg width="{{w}}" height="{{h}}" viewBox="0 0 960 600" role="img" aria-label="{{aria}}">
+<polyline points="{{spineA}}" fill="none" stroke="#3E9C86" stroke-width="8" stroke-opacity=".6"/>
+<polyline points="{{spineB}}" fill="none" stroke="{{bStroke}}" stroke-width="8" stroke-opacity="{{bOp}}" stroke-dasharray="{{bDash}}"/>
+<polyline class="{{pulseCls}}" points="{{spinePulse}}" fill="none" stroke="#3E9C86" stroke-width="8"/>
+<sc-if value="{{showIso}}" hint-placeholder-val="{{false}}">
+<rect x="640" y="436" width="300" height="124" fill="none" stroke="#F1F0EA" stroke-width="1" stroke-dasharray="4 4" stroke-opacity=".7"/>
+<text class="lbl10" x="650" y="454" fill="#F1F0EA">ISOLATED · FINANCE SEGMENT</text>
+</sc-if>
+<sc-for list="{{edges}}" as="e" hint-placeholder-count="30">
+<polyline class="{{e.cls}}" points="{{e.pts}}" fill="none" stroke="#D4572F" stroke-width="{{e.w}}" stroke-dasharray="{{e.dash}}" stroke-opacity="{{e.op}}" stroke-linejoin="round"/>
+</sc-for>
+<sc-if value="{{showEnv}}" hint-placeholder-val="{{true}}">
+<line x1="340" y1="64" x2="340" y2="440" stroke="#F1F0EA" stroke-width="1" stroke-dasharray="{{envDash}}" stroke-opacity=".7"/>
+<text class="lbl10" x="340" y="48" fill="#F1F0EA" text-anchor="middle">SAFECUT ENVELOPE</text>
+</sc-if>
+<sc-for list="{{nodes}}" as="n" hint-placeholder-count="15">
+<circle class="{{n.cls}}" cx="{{n.x}}" cy="{{n.y}}" r="{{n.r}}" fill="#0E1214" stroke="{{n.stroke}}" stroke-width="{{n.sw}}" stroke-dasharray="{{n.dash}}" opacity="{{n.op}}"/>
+</sc-for>
+<circle cx="880" cy="520" r="4" fill="{{targetFill}}"/>
+<sc-for list="{{labels}}" as="t" hint-placeholder-count="25">
+<text class="lbl" x="{{t.x}}" y="{{t.y}}" text-anchor="{{t.an}}" fill="{{t.fill}}" opacity="{{t.op}}">{{t.text}}</text>
+</sc-for>
+<sc-for list="{{evid}}" as="v" hint-placeholder-count="7">
+<rect x="{{v.rx}}" y="{{v.ry}}" width="7" height="7" fill="#F1F0EA"/>
+<text class="lbl9" x="{{v.x}}" y="{{v.ty}}" text-anchor="middle" fill="#9AA3A8">{{v.id}}</text>
+</sc-for>
+<sc-for list="{{cuts}}" as="c" hint-placeholder-count="4">
+<circle class="{{c.cls}}" cx="340" cy="{{c.y}}" r="10" fill="#0E1214" stroke="#F1F0EA" stroke-width="{{c.sw}}" stroke-dasharray="{{c.dash}}"/>
+<circle class="{{c.cls}}" cx="340" cy="{{c.y}}" r="3.5" fill="#3E9C86" opacity="{{c.dot}}"/>
+<text class="lbl10" x="340" y="{{c.ty}}" text-anchor="middle" fill="#F1F0EA">{{c.t}}</text>
+</sc-for>
+<sc-for list="{{tags}}" as="g" hint-placeholder-count="3">
+<rect x="{{g.rx}}" y="568" width="6" height="6" fill="{{g.col}}"/>
+<text class="lbl10" x="{{g.x}}" y="574" fill="{{g.tc}}">{{g.t}}</text>
+</sc-for>
+</svg>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"mode":{"editor":"enum","options":["observed","forecast","response","cut","isolate"],"default":"cut"},"labels":{"editor":"enum","options":["on","off"],"default":"on"},"focus":{"editor":"text","default":"all"},"scale":{"editor":"float","default":1,"min":0.5,"max":1.5,"step":0.05},"motion":{"editor":"enum","options":["on","off"],"default":"on"},"bg":{"editor":"color","default":"#0E1214"},"$preview":{"width":960,"height":600}}'>
+class Component extends DCLogic {
+renderVals() {
+const mode = this.props.mode || 'cut';
+const focus = this.props.focus || 'all';
+const sc = parseFloat(this.props.scale) || 1;
+const motion = (this.props.motion || 'on') === 'on';
+const bg = this.props.bg || '#0E1214';
+const EMB = '#D4572F', VER = '#3E9C86', BONE = '#F1F0EA', GREY = '#59656B';
+const CX = 340;
+const P = (a) => a.map((p) => p.join(',')).join(' ');
+const dim = (paths) => (focus === 'all' || !paths || paths.indexOf(focus) >= 0) ? 1 : 0.14;
+const NODES = [
+{id:'E',x:120,y:100,k:'O',L:['Phishing email · 09:41'],lx:18,ly:4,an:'start',paths:['P1','P2','P3','P4','P5','P6']},
+{id:'U',x:120,y:260,k:'O',L:['M. Verma · AP analyst'],lx:-40,ly:36,an:'start',paths:['P1','P2','P3','P4','P5','P6']},
+{id:'G',x:470,y:110,k:'O',down:1,L:['OAuth grant','DocuSync Pro'],lx:-14,ly:24,an:'end',paths:['P1','P4','P6']},
+{id:'S1',x:470,y:210,k:'O',down:1,L:['Session S-1','Graph API'],lx:-14,ly:24,an:'end',paths:['P2']},
+{id:'S2',x:470,y:310,k:'O',down:1,L:['Session S-2','Portal'],lx:-14,ly:24,an:'end',paths:['P5']},
+{id:'S3',x:470,y:410,k:'F',down:1,L:['New session','(forecast)'],lx:-14,ly:24,an:'end',paths:['P3']},
+{id:'SPG',x:600,y:110,k:'O',down:1,L:['SharePoint','Finance-Close'],lx:0,ly:-30,an:'middle',paths:['P1']},
+{id:'MBX',x:600,y:210,k:'O',down:1,L:['AP shared','mailbox'],lx:14,ly:-30,an:'start',paths:['P2','P4']},
+{id:'OD',x:600,y:310,k:'O',down:1,L:['OneDrive','close-checklist'],lx:0,ly:28,an:'middle',paths:['P5']},
+{id:'ADM',x:760,y:50,k:'F',down:1,L:['Admin app role'],lx:18,ly:4,an:'start',paths:['P6']},
+{id:'XC',x:760,y:210,k:'F',down:1,L:['ERP export','credential'],lx:18,ly:-2,an:'start',paths:['P1','P5']},
+{id:'FU',x:60,y:520,k:'S',L:['Finance users'],lx:0,ly:30,an:'middle',paths:[]},
+{id:'FP',x:470,y:520,k:'S',L:['Finance portal'],lx:0,ly:30,an:'middle',paths:['P3']},
+{id:'ERP',x:700,y:520,k:'S',L:['ERP web'],lx:0,ly:30,an:'middle',paths:['P2','P3','P4','P6']},
+{id:'DB',x:880,y:520,k:'T',L:['fin-ledger-db'],lx:0,ly:34,an:'middle',paths:['P1','P2','P3','P4','P5','P6']}
+];
+const cutE = (y, pre, k, paths) => [
+{role:'A',k:k,paths:paths,pts:pre.concat([[CX-15,y]])},
+{role:'M',k:k,paths:paths,pts:[[CX-15,y],[CX+15,y]]},
+{role:'B',k:k,paths:paths,down:1,pts:[[CX+15,y],[470,y]]}
+];
+const EDGES = [].concat(
+[{k:'O',paths:['P1','P2','P3','P4','P5','P6'],pts:[[120,100],[120,260]]}],
+cutE(110,[[120,260],[150,260],[300,110]],'O',['P1','P4','P6']),
+cutE(210,[[120,260],[150,260],[200,210]],'O',['P2']),
+cutE(310,[[120,260],[150,260],[200,310]],'O',['P5']),
+cutE(410,[[120,260],[150,260],[300,410]],'F',['P3']),
+[
+{k:'O',down:1,paths:['P1'],pts:[[470,110],[600,110]]},
+{k:'O',down:1,paths:['P2'],pts:[[470,210],[600,210]]},
+{k:'O',down:1,paths:['P5'],pts:[[470,310],[600,310]]},
+{k:'F',down:1,paths:['P4'],pts:[[470,110],[500,140],[530,140],[530,210],[600,210]]},
+{k:'F',down:1,paths:['P6'],pts:[[470,110],[530,50],[760,50]]},
+{k:'F',down:1,paths:['P1'],pts:[[600,110],[660,110],[760,210]]},
+{k:'F',down:1,paths:['P5'],pts:[[600,310],[640,310],[740,210],[760,210]]},
+{k:'F',down:1,paths:['P2','P4'],pts:[[600,210],[680,210],[680,440],[700,460],[700,520]]},
+{k:'F',down:1,paths:['P6'],pts:[[760,50],[820,50],[820,400],[700,520]]},
+{k:'F',down:1,paths:['P1','P5'],pts:[[760,210],[760,330],[880,450],[880,520]]},
+{k:'F',down:1,paths:['P3'],pts:[[470,410],[470,520]]},
+{k:'F',down:1,ov:1,paths:['P3'],pts:[[470,510],[700,510]]},
+{k:'F',down:1,ov:1,paths:['P2','P3','P4','P6'],pts:[[700,510],[880,510]]}
+]);
+const cut = mode === 'cut';
+const iso = mode === 'isolate';
+const down = cut || iso;
+const showLabels = (this.props.labels || 'on') === 'on';
+const edges = [];
+EDGES.forEach((e) => {
+if (mode === 'observed' && (e.k === 'F' || e.ov)) return;
+if (cut && e.role === 'M') return;
+const held = down && e.down;
+const op = (held ? (e.k === 'O' ? 0.3 : 0.25) : 1) * dim(e.paths);
+let cls = '';
+if (held) cls = 'dn';
+else if (e.k === 'F' && motion && !down) cls = 'march';
+edges.push({ pts: P(e.pts), w: e.ov ? 2 : (e.k === 'O' ? 3 : 2), dash: e.k === 'F' ? '2 6' : 'none', op: op, cls: motion ? cls : '' });
+});
+const nodes = [], labels = [];
+NODES.forEach((n) => {
+if (mode === 'observed' && n.k === 'F') return;
+const held = down && n.down;
+const op = (held ? 0.4 : 1) * ((n.paths.length && n.k !== 'S') ? dim(n.paths) : 1);
+nodes.push({
+x: n.x, y: n.y, r: n.k === 'T' ? 15 : 11,
+stroke: n.k === 'F' ? GREY : ((n.k === 'S' || n.k === 'T') ? VER : BONE),
+sw: n.k === 'T' ? 4 : 3, dash: n.k === 'F' ? '3 3' : 'none', op: op,
+cls: (held && motion) ? 'ndn' : ''
+});
+if (showLabels) n.L.forEach((t, i) => labels.push({ x: n.x + n.lx, y: n.y + n.ly + i * 13, an: n.an, text: t, fill: n.k === 'F' ? '#9AA3A8' : BONE, op: op }));
+});
+const evid = !showLabels ? [] : [[120,180,'EV-01'],[225,185,'EV-02'],[262,210,'EV-03'],[262,310,'EV-04'],[535,110,'EV-05'],[505,210,'EV-06'],[535,310,'EV-07']].map((a) => ({ x: a[0], rx: a[0] - 3.5, ry: a[1] - 3.5, ty: a[1] - 8, id: a[2] }));
+const cdefs = [{ y: 110, t: 'A1' }, { y: 210, t: 'A2' }, { y: 310, t: 'A2' }, { y: 410, t: 'A3' }];
+const cuts = (mode === 'response' || cut) ? cdefs.map((c) => ({
+y: c.y, ty: c.y - 18, t: c.t, sw: cut ? 3 : 2, dash: cut ? 'none' : '3 3',
+dot: cut ? 1 : 0, cls: (cut && motion) ? 'pin' : ''
+})) : [];
+const tags = !showLabels ? [] : [[265,'AP payment batch',0],[585,'Month-end close',1],[790,'Payroll run · 17:00',1]].map((a) => {
+const off = iso && a[2] === 1;
+return { rx: a[0] - 60, x: a[0] - 50, t: off ? a[1] + ' · INTERRUPTED' : a[1], col: off ? GREY : VER, tc: off ? '#9AA3A8' : BONE };
+});
+const names = { observed: 'observed evidence only', forecast: 'observed evidence and forecast paths', response: 'forecast with the proposed SafeCut envelope', cut: 'after containment: hostile paths cut, business thread continuing' };
+return {
+w: Math.round(960 * sc), h: Math.round(600 * sc), bg: bg,
+aria: 'ThreadGraph, ' + names[mode],
+spineA: P([[60,520],[470,520]]),
+spineB: P([[470,520],[700,520],[880,520]]),
+spinePulse: iso ? P([[60,520],[470,520]]) : P([[60,520],[470,520],[700,520],[880,520]]),
+bStroke: iso ? GREY : VER, bOp: iso ? 0.8 : 0.6, bDash: iso ? '6 6' : 'none',
+showIso: iso,
+pulseCls: motion ? 'pulse' : '',
+edges: edges, nodes: nodes, labels: labels, evid: evid, cuts: cuts, tags: tags,
+showEnv: mode === 'response' || cut,
+envDash: cut ? 'none' : '4 4',
+targetFill: cut ? VER : EMB
+};
+}
+}
+</script>
+</body>
+</html>

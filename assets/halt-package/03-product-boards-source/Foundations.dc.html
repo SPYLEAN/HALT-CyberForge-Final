@@ -1,0 +1,135 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>HALT Product Foundations</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@100..125,400..800&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+body{margin:0}
+.mono{font-family:'IBM Plex Mono',ui-monospace,monospace}
+.k{font-family:'IBM Plex Mono',ui-monospace,monospace;font-size:10.5px;letter-spacing:.09em;color:#9AA3A8}
+.tile{background:#151B1E;border:1px solid #232B30;border-radius:4px;padding:16px 18px;box-sizing:border-box}
+.tile h3{margin:12px 0 4px;font-size:15px;font-weight:700}
+.tile p{margin:0;font-size:12px;line-height:1.5;color:#C9CDCB}
+.sw{width:100%;height:56px;border-radius:3px;display:flex;align-items:flex-end;padding:6px 8px;box-sizing:border-box}
+td,th{text-align:left;padding:7px 12px 7px 0;border-top:1px solid #232B30;font-weight:400;font-size:12px;line-height:1.4;vertical-align:top}
+th{font-family:'IBM Plex Mono',ui-monospace,monospace;font-size:10px;color:#9AA3A8}
+table{border-collapse:collapse;width:100%}
+</style>
+</helmet>
+<div style="width:1440px;height:1100px;box-sizing:border-box;background:#0E1214;color:#F1F0EA;font-family:'Archivo',system-ui,sans-serif;padding:56px 64px;display:flex;flex-direction:column;gap:26px">
+
+<div style="display:flex;justify-content:space-between;align-items:flex-end">
+<div>
+<div class="k">A1 — PRODUCT FOUNDATIONS</div>
+<h2 style="margin:12px 0 0;font-size:40px;line-height:1.05;font-weight:700;font-stretch:112%">One visual language: threads</h2>
+</div>
+<div class="mono" style="font-size:11px;line-height:1.5;color:#9AA3A8;text-align:right;width:480px">Observed is solid. Forecast is dotted. Business is a thick unbroken thread. Proof is a ring. No line carries meaning by colour alone.</div>
+</div>
+
+<div>
+<div class="k" style="margin-bottom:10px">THREAD SEMANTICS</div>
+<div style="display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:16px">
+
+<div class="tile">
+<svg width="100%" height="44" viewBox="0 0 200 44" role="img" aria-label="Observed hostile thread"><path d="M6 22H194" stroke="#D4572F" stroke-width="3"/><rect x="96" y="18.5" width="7" height="7" fill="#F1F0EA"/></svg>
+<h3>Observed hostile</h3><p>Solid Ember, 3 px, with an evidence marker. Every solid hostile segment links to a telemetry event.</p>
+</div>
+<div class="tile">
+<svg width="100%" height="44" viewBox="0 0 200 44" role="img" aria-label="Forecast hostile thread"><path d="M6 22H170" stroke="#D4572F" stroke-width="2" stroke-dasharray="2 6"/><circle cx="182" cy="22" r="9" fill="#0E1214" stroke="#59656B" stroke-width="3" stroke-dasharray="3 3"/></svg>
+<h3>Forecast hostile</h3><p>Dotted Ember, 2 px, ending in a dashed ring. Never solid. Slow march motion. No evidence ID, only a simulated likelihood.</p>
+</div>
+<div class="tile">
+<svg width="100%" height="44" viewBox="0 0 200 44" role="img" aria-label="Business thread"><path d="M6 22H194" stroke="#3E9C86" stroke-width="8" stroke-opacity=".6"/><path d="M6 22H194" stroke="#3E9C86" stroke-width="8" stroke-dasharray="24 96"/></svg>
+<h3>Business thread</h3><p>Thick Verdigris, 8 px, always continuous. A pulse travels it. If it breaks, that is the harm being measured.</p>
+</div>
+<div class="tile">
+<svg width="100%" height="44" viewBox="0 0 200 44" role="img" aria-label="Proof signal"><path d="M6 22H80M120 22H194" stroke="#D4572F" stroke-width="3"/><circle cx="100" cy="22" r="10" fill="#0E1214" stroke="#F1F0EA" stroke-width="3"/><circle cx="100" cy="22" r="3.5" fill="#3E9C86"/></svg>
+<h3>Proof signal</h3><p>Bone ring with a Verdigris centre, set into a gap of 0.22x. Used only where a claim was checked.</p>
+</div>
+<div class="tile">
+<svg width="100%" height="44" viewBox="0 0 200 44" role="img" aria-label="Held segment"><path d="M6 22H194" stroke="#D4572F" stroke-width="3" stroke-opacity=".3"/></svg>
+<h3>Held</h3><p>Ember at 30%. The downstream part of a path that can no longer be reached. Stays visible so the cut can be audited.</p>
+</div>
+
+</div>
+</div>
+
+<div style="display:flex;gap:40px">
+
+<div style="width:520px;flex:none">
+<div class="k" style="margin-bottom:10px">COLOUR · PROVISIONAL TOKENS</div>
+<div style="display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px">
+<div><div class="sw" style="background:#0E1214;border:1px solid #3A454B"><span class="mono" style="font-size:10px">#0E1214</span></div><div style="font-size:12px;margin-top:6px"><b style="font-weight:600">Ink</b><br><span style="color:#9AA3A8">Ground</span></div></div>
+<div><div class="sw" style="background:#F1F0EA;color:#0E1214"><span class="mono" style="font-size:10px">#F1F0EA</span></div><div style="font-size:12px;margin-top:6px"><b style="font-weight:600">Bone</b><br><span style="color:#9AA3A8">Nodes, proof, text</span></div></div>
+<div><div class="sw" style="background:#D4572F;color:#0E1214"><span class="mono" style="font-size:10px">#D4572F</span></div><div style="font-size:12px;margin-top:6px"><b style="font-weight:600">Ember</b><br><span style="color:#9AA3A8">Hostile only</span></div></div>
+<div><div class="sw" style="background:#3E9C86;color:#0E1214"><span class="mono" style="font-size:10px">#3E9C86</span></div><div style="font-size:12px;margin-top:6px"><b style="font-weight:600">Verdigris</b><br><span style="color:#9AA3A8">Business only</span></div></div>
+</div>
+<div style="display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin-top:12px">
+<div><div class="sw" style="background:#151B1E;border:1px solid #232B30"><span class="mono" style="font-size:10px">#151B1E</span></div><div style="font-size:11px;margin-top:6px;color:#9AA3A8">Surface</div></div>
+<div><div class="sw" style="background:#232B30"><span class="mono" style="font-size:10px">#232B30</span></div><div style="font-size:11px;margin-top:6px;color:#9AA3A8">Hairline</div></div>
+<div><div class="sw" style="background:#59656B"><span class="mono" style="font-size:10px">#59656B</span></div><div style="font-size:11px;margin-top:6px;color:#9AA3A8">Neutral edge</div></div>
+<div><div class="sw" style="background:#9AA3A8;color:#0E1214"><span class="mono" style="font-size:10px">#9AA3A8</span></div><div style="font-size:11px;margin-top:6px;color:#9AA3A8">Secondary text</div></div>
+</div>
+<p class="mono" style="margin:12px 0 0;font-size:10.5px;line-height:1.55;color:#9AA3A8">Values stand in until the approved HALT palette is supplied. Roles are fixed: Ember never means anything but hostile, Verdigris never anything but business. Secondary text on Ink is 7.4:1.</p>
+</div>
+
+<div style="flex:1;min-width:0">
+<div class="k" style="margin-bottom:6px">TYPE, SPACE, MOTION</div>
+<table>
+<tbody>
+<tr><td class="mono" style="width:130px">Display</td><td>Archivo 700, stretch 108%, 30–40 px, tracking 0</td></tr>
+<tr><td class="mono">Body</td><td>Archivo 400–600, 12–14 px, line height 1.45–1.55</td></tr>
+<tr><td class="mono">Label, ID, data</td><td>IBM Plex Mono 400, 10–12 px, uppercase labels tracked .09em</td></tr>
+<tr><td class="mono">Space and radius</td><td>4 px base, 8 px rhythm, 4 px radius, 1 px hairlines. No shadows, no blur.</td></tr>
+<tr><td class="mono">Touch targets</td><td>44 px minimum for every button, chip and link button</td></tr>
+<tr><td class="mono">Motion</td><td>Approach 2.2 s ease-in · cut 0.9 s ease-out · proof 0.6 s · pulse 3 s linear. Reduced motion shows the end state.</td></tr>
+</tbody></table>
+</div>
+
+</div>
+
+<div style="display:flex;gap:40px">
+<div style="flex:1">
+<div class="k" style="margin-bottom:6px">EVERY ACTION SHOWS THREE THINGS</div>
+<table>
+<tbody>
+<tr><td class="mono" style="width:130px">Impact</td><td>Users, processes, assets. Counted, never scored.</td></tr>
+<tr><td class="mono">Reversibility</td><td>The rollback plan ID, what it restores, how long it takes.</td></tr>
+<tr><td class="mono">Authorisation</td><td>The policy that permits it and the human approvers it needs.</td></tr>
+</tbody></table>
+</div>
+<div style="flex:1">
+<div class="k" style="margin-bottom:6px">EVERY NUMBER SHOWS ITS DERIVATION</div>
+<table>
+<tbody>
+<tr><td class="mono" style="width:130px">Likelihood</td><td>Share of N simulated rollouts, with N and the horizon.</td></tr>
+<tr><td class="mono">Demo data</td><td>A persistent SIMULATED badge in the top bar and on each forecast figure.</td></tr>
+<tr><td class="mono">No bare scores</td><td>No severity or risk score appears without the counts behind it.</td></tr>
+</tbody></table>
+</div>
+<div style="flex:1">
+<div class="k" style="margin-bottom:6px">NOT IN THIS PRODUCT</div>
+<table>
+<tbody>
+<tr><td>Shields, hacker figures, matrix rain, brains, globes, particles</td></tr>
+<tr><td>Fake terminals, glass panels, decorative charts</td></tr>
+<tr><td>Auto-execution of any critical action</td></tr>
+</tbody></table>
+</div>
+</div>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":1100}}'>
+class Component extends DCLogic {
+renderVals() { return {}; }
+}
+</script>
+</body>
+</html>

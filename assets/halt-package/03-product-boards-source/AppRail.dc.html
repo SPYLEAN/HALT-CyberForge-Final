@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>App Rail Component</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@100..125,400..800&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+body{margin:0}
+.mono{font-family:'IBM Plex Mono',ui-monospace,monospace}
+</style>
+</helmet>
+<div style="width:232px;height:{{h}}px;box-sizing:border-box;background:#0B0F10;border-right:1px solid #232B30;color:#F1F0EA;font-family:'Archivo',system-ui,sans-serif;display:flex;flex-direction:column;justify-content:space-between;padding:24px 0">
+<div>
+<div style="padding:0 24px">
+<svg width="132" viewBox="0 0 294 84" role="img" aria-label="HALT"><g transform="translate(-16 -6)"><path fill="#F1F0EA" d="M64 6h16v84h-16zM28 42h36v12h-36zM16 18L24 10H32V36.5H16zM16 59.5h16v26.5h-16zM16 48a8 8 0 1 1 16 0a8 8 0 1 1 -16 0zM21 48a3 3 0 1 0 6 0a3 3 0 1 0 -6 0z"/></g><g fill="#F1F0EA" transform="translate(96 14.5) scale(.55)"><path d="M0 0h20v100h-20zM64 0h20v100h-20zM20 40h44v20h-44z"/><path transform="translate(98 0)" d="M0 100L36 0H58L22 100zM74 100L38 0H60L96 100zM18 62h60v16h-60z"/><path transform="translate(204 0)" d="M0 0h20v100h-20zM0 80h64v20h-64z"/><path transform="translate(276 0)" d="M0 0h84v20h-84zM32 0h20v100h-20z"/></g></svg>
+</div>
+<div class="mono" style="padding:36px 24px 14px;font-size:10px;letter-spacing:.1em;color:#9AA3A8">RESPONSE PIPELINE</div>
+<nav aria-label="Response pipeline" style="position:relative;padding:0 24px">
+<div style="position:absolute;left:31px;top:14px;bottom:14px;width:2px;background:#232B30"></div>
+<sc-for list="{{steps}}" as="s" hint-placeholder-count="6">
+<div style="position:relative;display:flex;gap:16px;align-items:flex-start;height:68px">
+<div style="width:16px;height:16px;border-radius:50%;box-sizing:border-box;margin-top:2px;flex:none;position:relative;background:#0B0F10;border:{{s.ring}}">
+<div style="position:absolute;left:3px;top:3px;width:6px;height:6px;border-radius:50%;background:{{s.dot}}"></div>
+</div>
+<div>
+<div style="font-size:14px;font-weight:{{s.fw}};color:{{s.col}}">{{s.name}}</div>
+<div class="mono" style="margin-top:3px;font-size:11px;line-height:1.35;color:#9AA3A8">{{s.desc}}</div>
+</div>
+</div>
+</sc-for>
+</nav>
+</div>
+<div style="padding:0 24px">
+<div class="mono" style="font-size:10px;line-height:1.5;color:#9AA3A8;border-top:1px solid #232B30;padding-top:14px">SIMULATED ENVIRONMENT<br>Synthetic telemetry, no live systems.</div>
+<div style="display:flex;gap:10px;align-items:center;margin-top:14px">
+<div class="mono" style="width:32px;height:32px;border-radius:50%;border:1px solid #3A454B;display:flex;align-items:center;justify-content:center;font-size:11px">AR</div>
+<div style="font-size:12px;line-height:1.35">A. Rahman<div class="mono" style="font-size:10px;color:#9AA3A8">SOC lead · approver</div></div>
+</div>
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"active":{"editor":"int","default":1,"min":0,"max":5},"h":{"editor":"int","default":900},"$preview":{"width":232,"height":900}}'>
+class Component extends DCLogic {
+renderVals() {
+const a = parseInt(this.props.active, 10);
+const act = isNaN(a) ? 1 : a;
+const S = [
+['HALT-R1','Incident intelligence'],
+['ThreadGraph','Attack and business map'],
+['EchoLab','Counterfactual futures'],
+['SafeCut','Minimum safe envelope'],
+['ProofSeal','Evidence-backed proof'],
+['Action Gate','Approve, execute, roll back']
+];
+return {
+h: parseInt(this.props.h, 10) || 900,
+steps: S.map((s, i) => ({
+name: s[0], desc: s[1],
+fw: i === act ? 700 : 500,
+col: i === act ? '#F1F0EA' : (i < act ? '#C9CDCB' : '#9AA3A8'),
+ring: i === act ? '2px solid #F1F0EA' : (i < act ? '2px solid #3E9C86' : '2px solid #3A454B'),
+dot: i === act ? '#F1F0EA' : (i < act ? '#3E9C86' : 'transparent')
+}))
+};
+}
+}
+</script>
+</body>
+</html>

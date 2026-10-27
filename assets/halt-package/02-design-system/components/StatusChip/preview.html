@@ -1,0 +1,14 @@
+<!-- @dsCard group="Status" height=170 subtitle="Ten states, each with a glyph and a word" -->
+<!doctype html>
+<html>
+<head><meta charset="utf-8"><title>StatusChip — preview</title></head>
+<body>
+<div id="root"></div>
+<script>
+var H = window.HALT, h = React.createElement;
+var ks = ['observed','forecast','blocked','preserved','verified','success','caution','pending','simulated','neutral'];
+ReactDOM.createRoot(document.getElementById('root')).render(h('div', {className:'halt-row'}, ks.map(function(k){ return h(H.StatusChip, {key:k, kind:k}); }),
+  h(H.StatusChip, {kind:'forecast'}, 'FORECAST · 4,912 OF 6,000 · SIMULATED')));
+</script>
+</body>
+</html>
