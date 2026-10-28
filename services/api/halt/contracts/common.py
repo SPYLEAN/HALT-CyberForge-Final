@@ -21,7 +21,8 @@ EvidenceId = Annotated[str, StringConstraints(pattern=r"^EV-\d{2}$")]
 class Contract(BaseModel):
     """Base for every contract model: unknown fields are rejected, instances are immutable."""
 
-    model_config = ConfigDict(extra="forbid", frozen=True)
+    # Defaults are always present in responses, so the generated TypeScript marks them required.
+    model_config = ConfigDict(extra="forbid", frozen=True, json_schema_serialization_defaults_required=True)
 
 
 class Meta(Contract):

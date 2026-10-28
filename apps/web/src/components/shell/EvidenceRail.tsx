@@ -17,7 +17,7 @@ export const EMPTY_TEXT: Record<EvidenceSection["id"], string> = {
 
 export function EvidenceRail({ sections, subject }: { sections: EvidenceSection[]; subject?: string | null }) {
   return (
-    <aside className="cc-inspector" aria-label="Evidence">
+    <aside className="cc-inspector" aria-label="Evidence" tabIndex={0}>
       <p className="label">{subject ? `Evidence · ${subject}` : "Evidence"}</p>
       {sections.map((section) => (
         <section key={section.id} aria-labelledby={`ev-${section.id}`} style={{ marginTop: "var(--space-5)" }}>

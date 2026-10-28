@@ -299,6 +299,7 @@ interface AuditEntry { seq: number; at: string; actor: string; kind: string; sub
 | GET | `/incidents/{id}` | — | `Incident` (summary, state, confidence `Derivation`) | 404 |
 | GET | `/incidents/{id}/events?until=<s>` | — | `SecurityEvent[]` | 404 |
 | POST | `/incidents/{id}/correlate` | `{until?}` | `Finding[]` | 404 |
+| GET | `/incidents/{id}/findings` | — | `FindingList` (empty until correlated) | 404 |
 | GET | `/incidents/{id}/graph?at=<s>&plan_id=` | — | `GraphSnapshot` | 404 |
 | GET | `/incidents/{id}/paths` | — | `AttackPath[]` | 409 if not correlated |
 | GET | `/incidents/{id}/actions` | — | `ResponseAction[]` | — |
@@ -310,6 +311,7 @@ interface AuditEntry { seq: number; at: string; actor: string; kind: string; sub
 | POST | `/plans/{plan_id}/proof` | — | `Proof` | 409 if infeasible |
 | GET | `/proofs/{proof_id}` | — | `Proof` | 404 |
 | POST | `/proofs/{proof_id}/verify` | — | `{certificate_match, signature_valid, recomputed: Sha256}` | 404 |
+| GET | `/plans/{plan_id}/approvals` | — | `ApprovalList` (`items`, `outstanding_roles`) | 404 |
 | POST | `/plans/{plan_id}/approvals` | `{policy_id, approver_id, decision, note?}` | `Approval` | 403 role missing, 409 stale |
 | POST | `/plans/{plan_id}/execute` | `{proof_id}` | `Execution` | 409 missing approvals / unsealed / stale proof |
 | GET | `/executions/{exec_id}` | — | `Execution` | 404 |
@@ -321,7 +323,7 @@ interface AuditEntry { seq: number; at: string; actor: string; kind: string; sub
 
 Approvals, execute and rollback require header `X-Halt-Actor: <approver_id>` (demo identity, recorded in audit; not authentication). An unknown actor gets 403; an approval must be given by the approver themselves (actor = approver_id), otherwise 403.
 
-List and action responses are envelopes carrying `meta` (`halt/contracts/api.py`): `IncidentList`, `EventList`, `FindingList` (+ incident `confidence`), `PathList`, `ActionList`, `PolicySet` (policies, approvers, constraints), `ApprovalResult` (+ `outstanding_roles`), `ExecutionResult`, `AuditList`, `AuditVerify` (+ `enforcement: db | app`), `ProofVerify`, `ExplainResult`. `Incident`, `GraphSnapshot`, `SimulationRun`, `Plan` and `Proof` carry `meta` themselves. Every response except `/health` and errors has `meta.simulated = true` and `meta.seed` (AT-6.4). Errors are `ApiError` with `request_id`. Incident states add `rolled_back`.
+List and action responses are envelopes carrying `meta` (`halt/contracts/api.py`): `IncidentList`, `EventList`, `FindingList` (+ incident `confidence`), `PathList`, `ActionList`, `PolicySet` (policies, approvers, constraints), `ApprovalResult` (+ `outstanding_roles`), `ExecutionResult`, `AuditList`, `AuditVerify` (+ `enforcement: db | app`), `ProofVerify`, `ExplainResult`. `Incident`, `GraphSnapshot`, `SimulationRun`, `Plan` and `Proof` carry `meta` themselves. `Incident` also carries `replay_end_s` (the replay scrubber's range) and `latest` (`plan_id`, `simulation_id`, `proof_id`, `execution_id`), so a client rehydrates after a reload. Fields with defaults are marked required in response schemas (`json_schema_serialization_defaults_required`), so generated TypeScript never sees them as optional. Every response except `/health` and errors has `meta.simulated = true` and `meta.seed` (AT-6.4). Errors are `ApiError` with `request_id`. Incident states add `rolled_back`.
 
 ## 11. WebSocket `/ws/incidents/{id}`
 

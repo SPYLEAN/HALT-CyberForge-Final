@@ -8,6 +8,7 @@ from fastapi import APIRouter, Header, Query, Request
 
 from halt.contracts.api import (
     ActionList,
+    ApprovalList,
     ApprovalRequest,
     ApprovalResult,
     AuditList,
@@ -100,6 +101,15 @@ def correlate(request: Request, incident_id: str, body: CorrelateRequest) -> Fin
     return FindingList(items=items, confidence=service.confidence(rt), meta=service.meta(rt))
 
 
+@router.get("/incidents/{incident_id}/findings", response_model=FindingList)
+def get_findings(request: Request, incident_id: str) -> FindingList:
+    service = svc(request)
+    rt = service.runtime(incident_id)
+    return FindingList(
+        items=service.findings(incident_id), confidence=service.confidence(rt), meta=service.meta(rt)
+    )
+
+
 @router.get("/incidents/{incident_id}/graph", response_model=GraphSnapshot)
 def graph(
     request: Request,
@@ -177,6 +187,14 @@ def verify(request: Request, proof_id: str) -> ProofVerify:
 
 
 # ---- Action Gate
+
+
+@router.get("/plans/{plan_id}/approvals", response_model=ApprovalList)
+def list_approvals(request: Request, plan_id: str) -> ApprovalList:
+    service = svc(request)
+    rt = service.owner("plan", plan_id)
+    items, outstanding = service.approvals(plan_id)
+    return ApprovalList(items=items, outstanding_roles=outstanding, meta=service.meta(rt))
 
 
 @router.post("/plans/{plan_id}/approvals", response_model=ApprovalResult)

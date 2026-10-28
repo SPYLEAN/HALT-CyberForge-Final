@@ -50,7 +50,7 @@ export function ConstraintIndicator({ name, rule, value, state = "met", fill, li
       <svg width={18} height={18} viewBox="0 0 16 16" aria-hidden style={{ marginTop: 1 }}>
         {glyph()}
       </svg>
-      <div>
+      <div role="cell">
         <div className="name">{name}</div>
         <div className="rule">{rule}</div>
         {fill != null ? (
@@ -60,7 +60,7 @@ export function ConstraintIndicator({ name, rule, value, state = "met", fill, li
           </div>
         ) : null}
       </div>
-      <div>
+      <div role="cell">
         <div className="val">{value}</div>
         <div className="state">{word}</div>
       </div>

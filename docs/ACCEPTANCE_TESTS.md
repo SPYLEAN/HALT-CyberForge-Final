@@ -100,7 +100,7 @@ Tooling: `pytest` (+ `hypothesis` for properties) for the API; Vitest + Testing 
 
 | ID | Criterion |
 |---|---|
-| AT-8.1 | All seven nav views render from API data with the API mocked by recorded fixtures (MSW) and with the real API (E2E) |
+| AT-8.1 | All seven nav views render from API data, both from responses recorded from the real backend (`services/api/scripts/record_fixtures.py`, replayed by a fetch stub instead of MSW) and with the real API (Playwright E2E) |
 | AT-8.2 | With the API stopped, views show an explicit error/skeleton state — never prototype numbers |
 | AT-8.3 | ThreadGraph: observed/forecast/inferred edges distinguished by dash pattern (Cytoscape style assertions); U1 rendered as uncertain |
 | AT-8.4 | After `applied`: 6 proof rings in gaps; business thread element present and continuous throughout (never removed from DOM) |

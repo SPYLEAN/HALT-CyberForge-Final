@@ -191,6 +191,23 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/v1/incidents/{incident_id}/findings": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get Findings */
+        get: operations["get_findings_api_v1_incidents__incident_id__findings_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/v1/incidents/{incident_id}/graph": {
         parameters: {
             query?: never;
@@ -317,7 +334,8 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        get?: never;
+        /** List Approvals */
+        get: operations["list_approvals_api_v1_plans__plan_id__approvals_get"];
         put?: never;
         /** Approve */
         post: operations["approve_api_v1_plans__plan_id__approvals_post"];
@@ -453,11 +471,19 @@ export interface components {
             /** Id */
             id: string;
             /** Note */
-            note?: string | null;
+            note: string | null;
             /** Plan Id */
             plan_id: string;
             /** Policy Id */
             policy_id: string;
+        };
+        /** ApprovalList */
+        ApprovalList: {
+            /** Items */
+            items: components["schemas"]["Approval"][];
+            meta: components["schemas"]["Meta"];
+            /** Outstanding Roles */
+            outstanding_roles: string[];
         };
         /** ApprovalRequest */
         ApprovalRequest: {
@@ -492,14 +518,14 @@ export interface components {
             /** Roles */
             roles: string[];
             /** User Node Id */
-            user_node_id?: string | null;
+            user_node_id: string | null;
         };
         /** AttackPath */
         AttackPath: {
             /** Edge Ids */
             edge_ids: string[];
             /** Entry Edge Ids */
-            entry_edge_ids?: string[];
+            entry_edge_ids: string[];
             /** High Risk */
             high_risk: boolean;
             /** Id */
@@ -583,9 +609,9 @@ export interface components {
         /** BusinessInfo */
         BusinessInfo: {
             /** Deadline */
-            deadline?: string | null;
+            deadline: string | null;
             /** Owner */
-            owner?: string | null;
+            owner: string | null;
             /** Users */
             users: number;
         };
@@ -633,7 +659,7 @@ export interface components {
             /** Limit */
             limit: number | boolean | null;
             /** Unit */
-            unit?: ("min" | "users" | "s" | "paths") | null;
+            unit: ("min" | "users" | "s" | "paths") | null;
         };
         /** ConstraintOverride */
         ConstraintOverride: {
@@ -691,13 +717,13 @@ export interface components {
          */
         Derivation: {
             /** Denominator */
-            denominator?: number | null;
+            denominator: number | null;
             /** Method */
             method: string;
             /** Numerator */
-            numerator?: number | null;
+            numerator: number | null;
             /** Source Ids */
-            source_ids?: string[];
+            source_ids: string[];
         };
         /** DisplayAction */
         DisplayAction: {
@@ -779,13 +805,13 @@ export interface components {
         /** ExecutionStep */
         ExecutionStep: {
             /** At */
-            at?: string | null;
+            at: string | null;
             /** Candidate Id */
             candidate_id: string;
             /** Display Action Id */
             display_action_id: string;
             /** Post Snapshot Hash */
-            post_snapshot_hash?: string | null;
+            post_snapshot_hash: string | null;
             /**
              * Status
              * @enum {string}
@@ -815,14 +841,14 @@ export interface components {
         /** Finding */
         Finding: {
             /** Attack */
-            attack?: components["schemas"]["AttackTechnique"][];
+            attack: components["schemas"]["AttackTechnique"][];
             /** Evidence Ids */
             evidence_ids: string[];
             /** Id */
             id: string;
             /** Limits */
-            limits?: string[];
-            model_score?: components["schemas"]["FindingScore"] | null;
+            limits: string[];
+            model_score: components["schemas"]["FindingScore"] | null;
             score: components["schemas"]["FindingScore"];
             /**
              * Stage
@@ -925,9 +951,9 @@ export interface components {
         /** GraphEdge */
         GraphEdge: {
             /** Evidence Ids */
-            evidence_ids?: string[];
+            evidence_ids: string[];
             /** First Seen */
-            first_seen?: string | null;
+            first_seen: string | null;
             /**
              * Historical
              * @default false
@@ -935,14 +961,14 @@ export interface components {
             historical: boolean;
             /** Id */
             id: string;
-            inference?: components["schemas"]["Inference"] | null;
+            inference: components["schemas"]["Inference"] | null;
             /**
              * Kind
              * @enum {string}
              */
             kind: "hostile" | "dependency" | "identity";
             /** Origin */
-            origin?: string | null;
+            origin: string | null;
             /**
              * Provenance
              * @enum {string}
@@ -954,7 +980,7 @@ export interface components {
             source: string;
             /** Target */
             target: string;
-            transition?: components["schemas"]["Transition"] | null;
+            transition: components["schemas"]["Transition"] | null;
         };
         /** GraphNode */
         GraphNode: {
@@ -963,7 +989,7 @@ export interface components {
              * @default false
              */
             attacker_controlled: boolean;
-            business?: components["schemas"]["BusinessInfo"] | null;
+            business: components["schemas"]["BusinessInfo"] | null;
             /**
              * Criticality
              * @default none
@@ -971,9 +997,9 @@ export interface components {
              */
             criticality: "none" | "standard" | "critical";
             /** Evidence Ids */
-            evidence_ids?: string[];
+            evidence_ids: string[];
             /** First Seen */
-            first_seen?: string | null;
+            first_seen: string | null;
             /** Id */
             id: string;
             /**
@@ -985,7 +1011,7 @@ export interface components {
             label: string;
             layout: components["schemas"]["Layout"];
             /** Origin */
-            origin?: string | null;
+            origin: string | null;
             /**
              * Provenance
              * @enum {string}
@@ -1052,19 +1078,22 @@ export interface components {
             /** Description */
             description: string;
             /** Groups */
-            groups?: components["schemas"]["UserGroupImpact"][];
+            groups: components["schemas"]["UserGroupImpact"][];
             /** Processes */
-            processes?: components["schemas"]["ProcessDowntime"][];
+            processes: components["schemas"]["ProcessDowntime"][];
             /** Users */
-            users?: string[];
+            users: string[];
         };
         /** Incident */
         Incident: {
             confidence: components["schemas"]["Derivation"] | null;
             /** Id */
             id: string;
+            latest: components["schemas"]["LatestArtefacts"];
             meta: components["schemas"]["Meta"];
             params: components["schemas"]["IncidentParams"];
+            /** Replay End S */
+            replay_end_s: number;
             /**
              * State
              * @enum {string}
@@ -1155,6 +1184,20 @@ export interface components {
             /** Rationale */
             rationale: string;
         };
+        /**
+         * LatestArtefacts
+         * @description Ids of the incident's current artefacts, so a client can rehydrate after a reload.
+         */
+        LatestArtefacts: {
+            /** Execution Id */
+            execution_id: string | null;
+            /** Plan Id */
+            plan_id: string | null;
+            /** Proof Id */
+            proof_id: string | null;
+            /** Simulation Id */
+            simulation_id: string | null;
+        };
         /** Layout */
         Layout: {
             /** X */
@@ -1172,7 +1215,7 @@ export interface components {
             /** Incident Id */
             incident_id: string;
             /** Input Hashes */
-            input_hashes?: {
+            input_hashes: {
                 [key: string]: string;
             };
             /**
@@ -1213,7 +1256,7 @@ export interface components {
             display_actions: components["schemas"]["DisplayAction"][];
             /** Id */
             id: string;
-            infeasibility?: components["schemas"]["Infeasibility"] | null;
+            infeasibility: components["schemas"]["Infeasibility"] | null;
             input_hashes: components["schemas"]["PlanInputHashes"];
             meta: components["schemas"]["Meta"];
             objective: components["schemas"]["Objective"] | null;
@@ -1246,8 +1289,41 @@ export interface components {
              * @enum {string}
              */
             label: "A" | "B" | "C";
+            /**
+             * Plan Id
+             * @default null
+             */
+            plan_id: string | null;
+            /**
+             * Source
+             * @enum {string}
+             */
+            source: "preset_aggressive" | "preset_passive" | "plan";
+        };
+        /** PlanRef */
+        "PlanRef-Input": {
+            /**
+             * Label
+             * @enum {string}
+             */
+            label: "A" | "B" | "C";
             /** Plan Id */
             plan_id?: string | null;
+            /**
+             * Source
+             * @enum {string}
+             */
+            source: "preset_aggressive" | "preset_passive" | "plan";
+        };
+        /** PlanRef */
+        "PlanRef-Output": {
+            /**
+             * Label
+             * @enum {string}
+             */
+            label: "A" | "B" | "C";
+            /** Plan Id */
+            plan_id: string | null;
             /**
              * Source
              * @enum {string}
@@ -1276,16 +1352,16 @@ export interface components {
         /** Policy */
         Policy: {
             /** Applies To Action Types */
-            applies_to_action_types?: ("revoke_oauth_grant" | "revoke_session" | "conditional_access_step_up" | "isolate_api" | "isolate_database" | "isolate_subnet" | "disable_account" | "block_asn" | "revoke_all_consents" | "force_password_reset" | "quarantine_mailbox")[];
+            applies_to_action_types: ("revoke_oauth_grant" | "revoke_session" | "conditional_access_step_up" | "isolate_api" | "isolate_database" | "isolate_subnet" | "disable_account" | "block_asn" | "revoke_all_consents" | "force_password_reset" | "quarantine_mailbox")[];
             /** Id */
             id: string;
             /** Rationale */
             rationale: string;
             /** Required Roles */
-            required_roles?: string[];
+            required_roles: string[];
             /** Title */
             title: string;
-            window?: components["schemas"]["PolicyWindow"] | null;
+            window: components["schemas"]["PolicyWindow"] | null;
         };
         /** PolicySet */
         PolicySet: {
@@ -1397,9 +1473,9 @@ export interface components {
         /** Removed */
         Removed: {
             /** Edge Ids */
-            edge_ids?: string[];
+            edge_ids: string[];
             /** Node Ids */
-            node_ids?: string[];
+            node_ids: string[];
         };
         /** ResetRequest */
         ResetRequest: {
@@ -1419,7 +1495,7 @@ export interface components {
              */
             connector: "simulated";
             /** Cuts */
-            cuts?: components["schemas"]["Cut"][];
+            cuts: components["schemas"]["Cut"][];
             /** Evidence Preserving */
             evidence_preserving: boolean;
             /** Id */
@@ -1445,15 +1521,15 @@ export interface components {
             /** Rollback Id */
             rollback_id: string | null;
             /** Seconds */
-            seconds?: number | null;
+            seconds: number | null;
         };
         /** SecurityEvent */
         SecurityEvent: {
             /** Actor Node Ids */
-            actor_node_ids?: string[];
-            attack?: components["schemas"]["AttackTechnique"] | null;
+            actor_node_ids: string[];
+            attack: components["schemas"]["AttackTechnique"] | null;
             /** Attributes */
-            attributes?: {
+            attributes: {
                 [key: string]: string | number | boolean;
             };
             /** Id */
@@ -1525,6 +1601,46 @@ export interface components {
              */
             seed: number;
         };
+        /** SimulationRequest */
+        "SimulationRequest-Input": {
+            /**
+             * Horizon S
+             * @default 600
+             */
+            horizon_s: number;
+            /** Plans */
+            plans: components["schemas"]["PlanRef-Input"][];
+            /**
+             * Rollouts
+             * @default 6000
+             */
+            rollouts: number;
+            /**
+             * Seed
+             * @default 2417
+             */
+            seed: number;
+        };
+        /** SimulationRequest */
+        "SimulationRequest-Output": {
+            /**
+             * Horizon S
+             * @default 600
+             */
+            horizon_s: number;
+            /** Plans */
+            plans: components["schemas"]["PlanRef-Output"][];
+            /**
+             * Rollouts
+             * @default 6000
+             */
+            rollouts: number;
+            /**
+             * Seed
+             * @default 2417
+             */
+            seed: number;
+        };
         /** SimulationRun */
         SimulationRun: {
             /** Futures */
@@ -1534,7 +1650,7 @@ export interface components {
             /** Id */
             id: string;
             meta: components["schemas"]["Meta"];
-            request: components["schemas"]["SimulationRequest"];
+            request: components["schemas"]["SimulationRequest-Output"];
         };
         /** SolverInfo */
         SolverInfo: {
@@ -1966,6 +2082,37 @@ export interface operations {
             };
         };
     };
+    get_findings_api_v1_incidents__incident_id__findings_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                incident_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["FindingList"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
     graph_api_v1_incidents__incident_id__graph_get: {
         parameters: {
             query?: {
@@ -2143,7 +2290,7 @@ export interface operations {
         };
         requestBody: {
             content: {
-                "application/json": components["schemas"]["SimulationRequest"];
+                "application/json": components["schemas"]["SimulationRequest-Input"];
             };
         };
         responses: {
@@ -2185,6 +2332,37 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["Plan"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    list_approvals_api_v1_plans__plan_id__approvals_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                plan_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApprovalList"];
                 };
             };
             /** @description Validation Error */

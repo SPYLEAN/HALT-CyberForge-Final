@@ -20,7 +20,7 @@ from halt.contracts.events import SecurityEvent
 from halt.contracts.findings import AttackPath, Finding
 from halt.contracts.gate import Approval, Execution
 from halt.contracts.graph import GraphSnapshot
-from halt.contracts.incident import Incident, IncidentState, IncidentSummary
+from halt.contracts.incident import Incident, IncidentState, IncidentSummary, LatestArtefacts
 from halt.contracts.plan import Plan
 from halt.contracts.proof import Proof
 from halt.contracts.simulation import SimulationRequest, SimulationRun
@@ -32,7 +32,7 @@ from halt.proofseal.checks import ProofError, prove
 from halt.proofseal.seal import Sealer
 from halt.r1.correlate import enrich, findings, incidents
 from halt.r1.model import configured_model
-from halt.replay.stream import forecast_at
+from halt.replay.stream import end_t, forecast_at
 from halt.safecut.instance import PLAN_TIME_OFFSET_S
 from halt.safecut.solve import solve
 from halt.scenario.loader import apply_variant, load_scenario, scenario_hashes
@@ -69,6 +69,7 @@ class Runtime:
     simulations: dict[str, SimulationRun] = field(default_factory=dict)
     executions: dict[str, str] = field(default_factory=dict)  # execution id -> plan id
     latest_plan: str | None = None
+    latest_simulation: str | None = None
 
     @property
     def id(self) -> str:
@@ -171,8 +172,24 @@ class IncidentService:
             params=rt.scenario.incident.params,
             state=self.state(rt),
             confidence=self.confidence(rt),
+            replay_end_s=end_t(rt.scenario),
+            latest=self.latest(rt),
             meta=self.meta(rt),
         )
+
+    def latest(self, rt: Runtime) -> LatestArtefacts:
+        plan_id = rt.latest_plan
+        gate = rt.gates.get(plan_id) if plan_id else None
+        proof = next((p.id for p in reversed(rt.proofs.values()) if p.plan_id == plan_id), None)
+        return LatestArtefacts(
+            plan_id=plan_id,
+            simulation_id=rt.latest_simulation,
+            proof_id=proof,
+            execution_id=gate.execution.id if gate and gate.execution else None,
+        )
+
+    def findings(self, incident_id: str) -> list[Finding]:
+        return self.runtime(incident_id).findings or []
 
     def summaries(self) -> list[IncidentSummary]:
         return [
@@ -281,6 +298,7 @@ class IncidentService:
             except SimulationError as exc:
                 raise Conflict("bad_simulation", str(exc)) from None
             rt.simulations[run.id] = run
+            rt.latest_simulation = run.id
             rt.audit.append(
                 rt.tick(), "echolab", "simulated", run.id, {"futures": [f.label for f in run.futures]}
             )
@@ -326,6 +344,10 @@ class IncidentService:
             self.repo.save_artefact("approval", f"{plan_id}:{approval.id}", rt.id, rt.now, approval, None)
             self._broadcast_gate(rt, gate)
             return approval, sorted(gate.outstanding_roles())
+
+    def approvals(self, plan_id: str) -> tuple[list[Approval], list[str]]:
+        gate = self.owner("plan", plan_id).gates[plan_id]
+        return list(gate.approvals), sorted(gate.outstanding_roles())
 
     def execute(self, plan_id: str, actor: str, proof_id: str) -> Execution:
         with self.lock:

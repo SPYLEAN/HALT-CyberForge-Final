@@ -54,6 +54,15 @@ class IncidentSummary(Contract):
     t0: AwareDatetime
 
 
+class LatestArtefacts(Contract):
+    """Ids of the incident's current artefacts, so a client can rehydrate after a reload."""
+
+    plan_id: str | None = None
+    simulation_id: str | None = None
+    proof_id: str | None = None
+    execution_id: str | None = None
+
+
 class Incident(Contract):
     id: IncidentId
     title: str
@@ -62,4 +71,6 @@ class Incident(Contract):
     params: IncidentParams
     state: IncidentState
     confidence: Derivation | None
+    replay_end_s: float  # last timeline message (replay seconds); the scrubber's range
+    latest: LatestArtefacts
     meta: Meta

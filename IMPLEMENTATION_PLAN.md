@@ -289,8 +289,11 @@ src/components/views/ProofSealView.tsx    [new] claims, enumeration, certificate
 src/components/views/TimelineView.tsx     [new]
 src/components/views/PoliciesView.tsx     [new]
 src/components/gate/ActionGateDrawer.tsx  [new] approvals, Execute (disabled + reason), progress, rollback
-src/components/gate/VariantSwitcher.tsx   [new] demo-only, labelled
-tests/unit/views/*.test.tsx               [new] AT-8.1..8.3, 8.5, 8.6 (MSW)
+src/lib/api/ops.tsx                       [new] operator data layer: every value an API response; rehydrates from Incident.latest
+src/components/views/{GraphPanel,NextStep,evidence,common,CommandCenter}.tsx   [new]
+services/api/scripts/record_fixtures.py   [new] recorded API responses per stage → tests/fixtures/api/stages.json
+tests/unit/views.test.tsx                 [new] AT-8.1, 8.2, 8.5 against recorded responses
+tests/unit/graph-model.test.ts            [new] AT-8.3, 8.4 (model), 8.6
 e2e/command-center.spec.ts                [new] AT-8.1, 8.4, 8.7
 e2e/a11y.spec.ts                          [new] AT-8.8
 ```

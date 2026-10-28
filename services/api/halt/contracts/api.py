@@ -92,6 +92,12 @@ class ApprovalResult(Contract):
     meta: Meta
 
 
+class ApprovalList(Contract):
+    items: list[Approval]
+    outstanding_roles: list[str]
+    meta: Meta
+
+
 class ExecutionResult(Contract):
     execution: Execution
     meta: Meta

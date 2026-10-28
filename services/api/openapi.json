@@ -51,6 +51,7 @@
         "required": [
           "code",
           "message",
+          "detail",
           "request_id"
         ],
         "title": "ApiError",
@@ -106,9 +107,39 @@
           "policy_id",
           "approver_id",
           "decision",
-          "at"
+          "at",
+          "note"
         ],
         "title": "Approval",
+        "type": "object"
+      },
+      "ApprovalList": {
+        "additionalProperties": false,
+        "properties": {
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/Approval"
+            },
+            "title": "Items",
+            "type": "array"
+          },
+          "meta": {
+            "$ref": "#/components/schemas/Meta"
+          },
+          "outstanding_roles": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Outstanding Roles",
+            "type": "array"
+          }
+        },
+        "required": [
+          "items",
+          "outstanding_roles",
+          "meta"
+        ],
+        "title": "ApprovalList",
         "type": "object"
       },
       "ApprovalRequest": {
@@ -214,7 +245,8 @@
           "id",
           "name",
           "roles",
-          "available"
+          "available",
+          "user_node_id"
         ],
         "title": "Approver",
         "type": "object"
@@ -284,6 +316,7 @@
           "id",
           "node_ids",
           "edge_ids",
+          "entry_edge_ids",
           "target_id",
           "provenance",
           "reach",
@@ -500,7 +533,9 @@
           }
         },
         "required": [
-          "users"
+          "users",
+          "deadline",
+          "owner"
         ],
         "title": "BusinessInfo",
         "type": "object"
@@ -541,6 +576,7 @@
         "required": [
           "seq",
           "t",
+          "type",
           "playing",
           "speed"
         ],
@@ -635,7 +671,8 @@
           "id",
           "label",
           "kind",
-          "limit"
+          "limit",
+          "unit"
         ],
         "title": "Constraint",
         "type": "object"
@@ -820,7 +857,10 @@
           }
         },
         "required": [
-          "method"
+          "numerator",
+          "denominator",
+          "method",
+          "source_ids"
         ],
         "title": "Derivation",
         "type": "object"
@@ -939,6 +979,7 @@
         "required": [
           "seq",
           "t",
+          "type",
           "event"
         ],
         "title": "EventMessage",
@@ -1102,7 +1143,9 @@
         "required": [
           "display_action_id",
           "candidate_id",
-          "status"
+          "status",
+          "at",
+          "post_snapshot_hash"
         ],
         "title": "ExecutionStep",
         "type": "object"
@@ -1227,7 +1270,10 @@
           "title",
           "stage",
           "evidence_ids",
-          "score"
+          "score",
+          "model_score",
+          "attack",
+          "limits"
         ],
         "title": "Finding",
         "type": "object"
@@ -1290,6 +1336,7 @@
         "required": [
           "seq",
           "t",
+          "type",
           "finding"
         ],
         "title": "FindingMessage",
@@ -1424,6 +1471,7 @@
         "required": [
           "seq",
           "t",
+          "type",
           "execution"
         ],
         "title": "GateMessage",
@@ -1466,6 +1514,7 @@
         "required": [
           "seq",
           "t",
+          "type",
           "add_nodes",
           "add_edges"
         ],
@@ -1577,7 +1626,13 @@
           "target",
           "kind",
           "relation",
-          "provenance"
+          "provenance",
+          "evidence_ids",
+          "origin",
+          "inference",
+          "transition",
+          "historical",
+          "first_seen"
         ],
         "title": "GraphEdge",
         "type": "object"
@@ -1686,6 +1741,12 @@
           "kind",
           "label",
           "provenance",
+          "attacker_controlled",
+          "criticality",
+          "business",
+          "evidence_ids",
+          "origin",
+          "first_seen",
           "layout"
         ],
         "title": "GraphNode",
@@ -1739,6 +1800,7 @@
           "at",
           "nodes",
           "edges",
+          "removed",
           "meta"
         ],
         "title": "GraphSnapshot",
@@ -1834,6 +1896,9 @@
           }
         },
         "required": [
+          "users",
+          "groups",
+          "processes",
           "description"
         ],
         "title": "Impact",
@@ -1857,11 +1922,18 @@
             "title": "Id",
             "type": "string"
           },
+          "latest": {
+            "$ref": "#/components/schemas/LatestArtefacts"
+          },
           "meta": {
             "$ref": "#/components/schemas/Meta"
           },
           "params": {
             "$ref": "#/components/schemas/IncidentParams"
+          },
+          "replay_end_s": {
+            "title": "Replay End S",
+            "type": "number"
           },
           "state": {
             "enum": [
@@ -1903,6 +1975,8 @@
           "params",
           "state",
           "confidence",
+          "replay_end_s",
+          "latest",
           "meta"
         ],
         "title": "Incident",
@@ -2016,7 +2090,8 @@
           "title",
           "summary",
           "t0",
-          "params"
+          "params",
+          "synthetic"
         ],
         "title": "IncidentSpec",
         "type": "object"
@@ -2123,6 +2198,64 @@
         "title": "Inference",
         "type": "object"
       },
+      "LatestArtefacts": {
+        "additionalProperties": false,
+        "description": "Ids of the incident's current artefacts, so a client can rehydrate after a reload.",
+        "properties": {
+          "execution_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Execution Id"
+          },
+          "plan_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Plan Id"
+          },
+          "proof_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Proof Id"
+          },
+          "simulation_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Simulation Id"
+          }
+        },
+        "required": [
+          "plan_id",
+          "simulation_id",
+          "proof_id",
+          "execution_id"
+        ],
+        "title": "LatestArtefacts",
+        "type": "object"
+      },
       "Layout": {
         "additionalProperties": false,
         "properties": {
@@ -2181,8 +2314,11 @@
         },
         "required": [
           "incident_id",
+          "simulated",
           "seed",
-          "generated_at"
+          "schema_version",
+          "generated_at",
+          "input_hashes"
         ],
         "title": "Meta",
         "type": "object"
@@ -2311,6 +2447,7 @@
           "objective",
           "constraints",
           "rejected",
+          "infeasibility",
           "solver",
           "input_hashes",
           "meta"
@@ -2372,6 +2509,48 @@
                 "type": "null"
               }
             ],
+            "default": null,
+            "title": "Plan Id"
+          },
+          "source": {
+            "enum": [
+              "preset_aggressive",
+              "preset_passive",
+              "plan"
+            ],
+            "title": "Source",
+            "type": "string"
+          }
+        },
+        "required": [
+          "label",
+          "source",
+          "plan_id"
+        ],
+        "title": "PlanRef",
+        "type": "object"
+      },
+      "PlanRef-Input": {
+        "additionalProperties": false,
+        "properties": {
+          "label": {
+            "enum": [
+              "A",
+              "B",
+              "C"
+            ],
+            "title": "Label",
+            "type": "string"
+          },
+          "plan_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
             "title": "Plan Id"
           },
           "source": {
@@ -2387,6 +2566,47 @@
         "required": [
           "label",
           "source"
+        ],
+        "title": "PlanRef",
+        "type": "object"
+      },
+      "PlanRef-Output": {
+        "additionalProperties": false,
+        "properties": {
+          "label": {
+            "enum": [
+              "A",
+              "B",
+              "C"
+            ],
+            "title": "Label",
+            "type": "string"
+          },
+          "plan_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Plan Id"
+          },
+          "source": {
+            "enum": [
+              "preset_aggressive",
+              "preset_passive",
+              "plan"
+            ],
+            "title": "Source",
+            "type": "string"
+          }
+        },
+        "required": [
+          "label",
+          "source",
+          "plan_id"
         ],
         "title": "PlanRef",
         "type": "object"
@@ -2428,7 +2648,8 @@
           }
         },
         "required": [
-          "type"
+          "type",
+          "speed"
         ],
         "title": "PlayCommand",
         "type": "object"
@@ -2490,6 +2711,9 @@
         "required": [
           "id",
           "title",
+          "applies_to_action_types",
+          "required_roles",
+          "window",
           "rationale"
         ],
         "title": "Policy",
@@ -2814,6 +3038,10 @@
             "type": "array"
           }
         },
+        "required": [
+          "node_ids",
+          "edge_ids"
+        ],
         "title": "Removed",
         "type": "object"
       },
@@ -2899,10 +3127,12 @@
           "type",
           "title",
           "targets",
+          "cuts",
           "impact",
           "reversibility",
           "authorisation",
-          "evidence_preserving"
+          "evidence_preserving",
+          "connector"
         ],
         "title": "ResponseAction",
         "type": "object"
@@ -2946,7 +3176,8 @@
         "required": [
           "reversible",
           "rollback_id",
-          "method"
+          "method",
+          "seconds"
         ],
         "title": "Reversibility",
         "type": "object"
@@ -3028,7 +3259,11 @@
           "id",
           "ts",
           "source",
-          "kind"
+          "kind",
+          "actor_node_ids",
+          "attributes",
+          "attack",
+          "synthetic"
         ],
         "title": "SecurityEvent",
         "type": "object"
@@ -3079,13 +3314,55 @@
           }
         },
         "required": [
+          "alg",
           "key_id",
-          "value"
+          "value",
+          "demo_key"
         ],
         "title": "Signature",
         "type": "object"
       },
       "SimulationRequest": {
+        "additionalProperties": false,
+        "properties": {
+          "horizon_s": {
+            "default": 600,
+            "exclusiveMinimum": 0,
+            "title": "Horizon S",
+            "type": "integer"
+          },
+          "plans": {
+            "items": {
+              "$ref": "#/components/schemas/PlanRef"
+            },
+            "maxItems": 3,
+            "minItems": 1,
+            "title": "Plans",
+            "type": "array"
+          },
+          "rollouts": {
+            "default": 6000,
+            "maximum": 20000,
+            "minimum": 100,
+            "title": "Rollouts",
+            "type": "integer"
+          },
+          "seed": {
+            "default": 2417,
+            "title": "Seed",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "plans",
+          "rollouts",
+          "horizon_s",
+          "seed"
+        ],
+        "title": "SimulationRequest",
+        "type": "object"
+      },
+      "SimulationRequest-Input": {
         "additionalProperties": false,
         "properties": {
           "horizon_s": {
@@ -3096,7 +3373,7 @@
           },
           "plans": {
             "items": {
-              "$ref": "#/components/schemas/PlanRef"
+              "$ref": "#/components/schemas/PlanRef-Input"
             },
             "maxItems": 3,
             "minItems": 1,
@@ -3118,6 +3395,46 @@
         },
         "required": [
           "plans"
+        ],
+        "title": "SimulationRequest",
+        "type": "object"
+      },
+      "SimulationRequest-Output": {
+        "additionalProperties": false,
+        "properties": {
+          "horizon_s": {
+            "default": 600,
+            "exclusiveMinimum": 0.0,
+            "title": "Horizon S",
+            "type": "integer"
+          },
+          "plans": {
+            "items": {
+              "$ref": "#/components/schemas/PlanRef-Output"
+            },
+            "maxItems": 3,
+            "minItems": 1,
+            "title": "Plans",
+            "type": "array"
+          },
+          "rollouts": {
+            "default": 6000,
+            "maximum": 20000.0,
+            "minimum": 100.0,
+            "title": "Rollouts",
+            "type": "integer"
+          },
+          "seed": {
+            "default": 2417,
+            "title": "Seed",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "plans",
+          "rollouts",
+          "horizon_s",
+          "seed"
         ],
         "title": "SimulationRequest",
         "type": "object"
@@ -3145,7 +3462,7 @@
             "$ref": "#/components/schemas/Meta"
           },
           "request": {
-            "$ref": "#/components/schemas/SimulationRequest"
+            "$ref": "#/components/schemas/SimulationRequest-Output"
           }
         },
         "required": [
@@ -3181,6 +3498,7 @@
           }
         },
         "required": [
+          "engine",
           "version",
           "wall_ms",
           "status_raw"
@@ -3229,6 +3547,7 @@
         "required": [
           "seq",
           "t",
+          "type",
           "state"
         ],
         "title": "StageMessage",
@@ -3261,6 +3580,7 @@
         "required": [
           "seq",
           "t",
+          "type",
           "reason"
         ],
         "title": "StaleMessage",
@@ -3817,6 +4137,45 @@
         "summary": "Explain Subject"
       }
     },
+    "/api/v1/incidents/{incident_id}/findings": {
+      "get": {
+        "operationId": "get_findings_api_v1_incidents__incident_id__findings_get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "incident_id",
+            "required": true,
+            "schema": {
+              "title": "Incident Id",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FindingList"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Get Findings"
+      }
+    },
     "/api/v1/incidents/{incident_id}/graph": {
       "get": {
         "operationId": "graph_api_v1_incidents__incident_id__graph_get",
@@ -4083,7 +4442,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/SimulationRequest"
+                "$ref": "#/components/schemas/SimulationRequest-Input"
               }
             }
           },
@@ -4154,6 +4513,43 @@
       }
     },
     "/api/v1/plans/{plan_id}/approvals": {
+      "get": {
+        "operationId": "list_approvals_api_v1_plans__plan_id__approvals_get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "plan_id",
+            "required": true,
+            "schema": {
+              "title": "Plan Id",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApprovalList"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "List Approvals"
+      },
       "post": {
         "operationId": "approve_api_v1_plans__plan_id__approvals_post",
         "parameters": [

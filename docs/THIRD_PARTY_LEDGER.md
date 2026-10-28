@@ -27,6 +27,11 @@ Phase 0 (2026-10-27). Lockfile: `package-lock.json`. Python is not lock-filed ye
 | scikit-learn | 1.9.1 (Phase 2) |
 | ortools | 9.15.6755 (Phase 4) |
 | cryptography | 50.0.2 (Phase 5) |
+| zod / openapi-fetch | 4.6.7 / 0.17.0 (Phase 7) |
+| @testing-library/react / jsdom / @vitejs/plugin-react | 16.3.3 / 30.1.3 / 6.1.2 (dev, Phase 7) |
+| cytoscape | 3.34.4, bundles its own types (Phase 8) |
+| @playwright/test / @axe-core/playwright | 1.64.1 / 4.14.0 (dev, Phase 8) |
+| msw | **Not added**: recorded API fixtures replayed through a fetch stub cover the same need |
 | hypothesis | 6.170.12 (dev, Phase 4) |
 | types-networkx | latest (dev, Phase 2) |
 

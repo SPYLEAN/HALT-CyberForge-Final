@@ -121,3 +121,10 @@ body {
     transition-duration: 0.01ms !important;
   }
 }
+
+/* Scrollable regions are focusable for keyboard scrolling; the focus ring is never removed (README). */
+.cc-main:focus-visible,
+.cc-inspector:focus-visible {
+  outline: none;
+  box-shadow: inset var(--focus-ring);
+}

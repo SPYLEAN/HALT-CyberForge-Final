@@ -6,7 +6,11 @@ import type { paths } from "./schema";
 import type { ApiError } from "./types";
 
 /** Typed client generated from the API's OpenAPI document (npm run gen:api). */
-export const api = createClient<paths>({ baseUrl: env.NEXT_PUBLIC_API_ORIGIN });
+export const api = createClient<paths>({
+  baseUrl: env.NEXT_PUBLIC_API_ORIGIN,
+  // Resolve fetch per request (not at import), so tests can replay recorded API responses.
+  fetch: (request) => globalThis.fetch(request),
+});
 
 export class ApiFailure extends Error {
   constructor(
