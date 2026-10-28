@@ -117,7 +117,9 @@ ProofSeal does **not** reuse SafeCut's matrices. It:
 3. Rechecks each constraint from raw action fields.
 4. Enumerates all `2^|A|` subsets (4,096) with the same feasibility predicate and objective, confirms the plan is optimal and reports whether it is unique.
 5. Confirms irredundancy: removing any single selected action leaves at least one high-risk path reachable.
-6. Seals: `certificate = sha256(JCS(proof_body))`, signed with an Ed25519 key generated per deployment and labelled `DEMO KEY`. Proof states what it does **not** cover (e.g. attacker capabilities outside the modelled graph).
+6. Seals: `certificate = sha256(JCS(proof_body))`, signed with an Ed25519 key generated per deployment and labelled `DEMO KEY`. `sealed_at` comes from the replay clock (plan time), so the certificate is identical across runs and keys; `valid_until` = sealed_at + 40 min. The proof states what it does **not** cover: below-threshold routes left open, with their simulated reach under the plan (U1: 502 of 6,000), attacker capabilities outside the graph, simulated probabilities and simulated execution.
+
+`halt/proofseal` never imports `halt.safecut` (a test enforces it); coverage, closure, eligibility and the objective are re-implemented in `proofseal/enumerate.py` from the documented rules.
 
 ## 7. Action Gate state machine
 
@@ -125,9 +127,11 @@ ProofSeal does **not** reuse SafeCut's matrices. It:
 review ──(all required approvals recorded ∧ proof sealed ∧ Execute)──▶ executing
 executing ──(each action applied in plan order)──▶ applied (contained)
 applied ──(Roll back all, within window)──▶ rolled
-any ──(new telemetry after sealing)──▶ review   (proof marked stale)
+review ──(new telemetry after sealing)──▶ review   (proof marked stale; execution refused until re-sealed)
 review ──(authorisation unavailable)──▶ blocked_by_policy
 ```
+
+Telemetry after execution does not undo an applied plan; it is handled by the rollback window. Approvals are per role: each required role (policy roles plus active freeze exceptions) needs a latest decision of `approved` from an available approver holding it; a decline blocks that role.
 
 Simulated connectors mutate a copy of the graph snapshot. Each step writes an audit entry. No code path executes an action without a recorded human approval for every policy that requires one; this is asserted in unit and E2E tests.
 

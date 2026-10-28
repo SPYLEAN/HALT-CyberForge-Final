@@ -71,7 +71,7 @@ Tooling: `pytest` (+ `hypothesis` for properties) for the API; Vitest + Testing 
 | AT-5.6 | Approver lacking the required role → 403 |
 | AT-5.7 | Execution applies steps in plan order; each step writes one audit entry; final state `applied` |
 | AT-5.8 | Rollback restores the pre-action snapshot hash exactly; state `rolled` |
-| AT-5.9 | Audit chain verifies; a direct SQL `UPDATE`/`DELETE` on `audit_log` raises (Postgres) |
+| AT-5.9 | Audit chain verifies; edits, deletions and reordering are detected; the store is append-only. The PostgreSQL trigger half (direct SQL `UPDATE`/`DELETE` on `audit_log` raises) is AT-6.7 |
 | AT-5.10 | New telemetry after sealing marks proof `stale` and Gate returns to `review` |
 
 ## Phase 6 — API and replay
@@ -83,6 +83,7 @@ Tooling: `pytest` (+ `hypothesis` for properties) for the API; Vitest + Testing 
 | AT-6.3 | REST state at `t` equals WS-accumulated state at `t` (graph hash compare) |
 | AT-6.4 | Every response has `meta.simulated = true` and `meta.seed = 2417` |
 | AT-6.5 | Logs are valid JSON lines with `request_id` |
+| AT-6.7 | On PostgreSQL, a direct SQL `UPDATE` or `DELETE` on `audit_log` raises (migration trigger); runs in the CI postgres job |
 | AT-6.6 | `/explain` with LLM disabled returns `engine = "template"`; with a stub LLM returning an unknown evidence ID → 422 |
 
 ## Phase 7 — Frontend foundations

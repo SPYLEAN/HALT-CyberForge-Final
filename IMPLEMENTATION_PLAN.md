@@ -204,10 +204,9 @@ tests/test_no_hardcoded_plan.py           [new] AT-4.2
 halt/proofseal/checks.py                  [new] independent claims CHK-01..CHK-09
 halt/proofseal/enumerate.py               [new] 2^n subset enumeration (own feasibility predicate)
 halt/proofseal/seal.py                    [new] certificate, Ed25519 sign/verify, demo key management
-halt/gate/state_machine.py                [new] transitions + guards
+halt/gate/gate.py                         [new] state machine, guards, ordered execution, rollback window, audit
 halt/gate/authorise.py                    [new] role/policy/freeze-window checks
-halt/gate/connectors.py                   [new] SimulatedConnector per action type (apply / rollback on snapshot)
-halt/gate/execute.py                      [new] ordered execution, rollback window
+halt/gate/connectors.py                   [new] simulated environment: apply / roll back hard cuts on the snapshot
 halt/audit/log.py                         [new] hash-chained append; verify
 tests/test_proofseal.py                   [new] AT-5.1..5.4
 tests/test_gate.py                        [new] AT-5.5..5.8, 5.10
