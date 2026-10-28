@@ -184,7 +184,7 @@ def check(s: Scenario, *, variants: bool = True) -> None:
         raise ScenarioError("Invalid scenario:\n  " + "\n  ".join(errors))
 
 
-def _apply(s: Scenario, variant: Variant) -> Scenario:
+def apply_variant(s: Scenario, variant: Variant) -> Scenario:
     topology, actions, approvers, constraints = s.topology, s.actions, s.approvers, s.constraints
     for op in variant.ops:
         if isinstance(op, RemoveEdge):
@@ -235,7 +235,7 @@ def load_scenario(directory: Path = DEFAULT_SCENARIO_DIR, variant: str = "baseli
     chosen = next((v for v in scenario.variants if v.key == variant), None)
     if chosen is None:
         raise ScenarioError(f"unknown variant {variant!r}; known: {[v.key for v in scenario.variants]}")
-    applied = _apply(scenario, chosen)
+    applied = apply_variant(scenario, chosen)
     # model_copy skips validation: re-validate so an overlay cannot produce an invalid scenario.
     applied = TypeAdapter(Scenario).validate_python(applied.model_dump())
     check(applied, variants=False)

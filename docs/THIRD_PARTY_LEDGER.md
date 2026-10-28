@@ -77,7 +77,8 @@ npm 11 blocked the `unrs-resolver` postinstall script (used by ESLint import res
 | fastapi, starlette | API | MIT / BSD-3 | Required |
 | uvicorn | ASGI server | BSD-3 | Required |
 | pydantic, pydantic-settings | Contracts, env validation | MIT | Required |
-| sqlalchemy, alembic | ORM, migrations | MIT | Required |
+| sqlalchemy | ORM, schema, PostgreSQL triggers | MIT | Required |
+| alembic | Migrations | MIT | **Deferred**: single schema version so far (`metadata.create_all`) |
 | psycopg (v3) | PostgreSQL driver | LGPL-3.0 | Required (dynamic linking only; no modification) |
 | networkx | Graph algorithms | BSD-3 | Required |
 | ortools | CP-SAT solver | Apache-2.0 | Required |

@@ -7,6 +7,7 @@ from __future__ import annotations
 
 import json
 import sys
+import tempfile
 from pathlib import Path
 
 from halt.config import Settings
@@ -16,8 +17,12 @@ OUT = Path(__file__).resolve().parent.parent / "openapi.json"
 
 
 def render() -> str:
-    app = create_app(Settings(db_url="sqlite+pysqlite:///:memory:"))
-    return json.dumps(app.openapi(), indent=2, sort_keys=True, ensure_ascii=False) + "\n"
+    with tempfile.TemporaryDirectory() as tmp:
+        app = create_app(
+            Settings(db_url="sqlite+pysqlite:///:memory:", signing_key_path=str(Path(tmp) / "key.pem"))
+        )
+        schema = app.openapi()
+    return json.dumps(schema, indent=2, sort_keys=True, ensure_ascii=False) + "\n"
 
 
 def main() -> int:

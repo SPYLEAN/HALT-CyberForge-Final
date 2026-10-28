@@ -147,9 +147,11 @@ Simulated connectors mutate a copy of the graph snapshot. Each step writes an au
 
 ## 9. Persistence (PostgreSQL)
 
-Tables: `incidents`, `events`, `graph_snapshots` (JSONB + hash), `findings`, `attack_paths`, `simulation_runs`, `plans`, `plan_actions`, `proofs`, `approvals`, `executions`, `execution_steps`, `policies`, `audit_log`.
+Tables (as built, `halt/db/models.py`): `incidents`; `artefacts` (simulation, plan, proof, approval and execution documents stored as canonical JSON with their hash, keyed by id); `audit_log` (one hash chain per incident). Events, graph and policies come from the versioned fixture and are not copied into the database. The schema is created with `metadata.create_all`; on PostgreSQL the same step installs the append-only triggers. Alembic is deferred until the schema needs a second version.
 
-`audit_log(seq bigserial, at timestamptz, actor, kind, subject_id, payload jsonb, prev_hash char(64), hash char(64))` with a `BEFORE UPDATE OR DELETE` trigger that raises. `hash = sha256(prev_hash || JCS(row_without_hash))`. `GET /audit/verify` walks the chain.
+The live incident runtime (`halt/service.py`) is held in memory and written through: a restart keeps artefacts and audit but starts a fresh runtime (use `replay/reset`). The operator clock is logical: it starts at plan time (t0 + 15 min) and advances 15 s per state-changing call, so repeated demo runs produce identical plan ids, simulation hashes, proof certificates and audit hashes (tested).
+
+`audit_log(incident_id, seq, at, actor, kind, subject_id, payload, prev_hash, hash)` with `BEFORE UPDATE OR DELETE` (row) and `BEFORE TRUNCATE` (statement) triggers that raise. `hash = sha256(prev_hash || JCS(row_without_hash))`. `GET /audit/verify` walks the chain.
 
 ## 10. Observability and config
 

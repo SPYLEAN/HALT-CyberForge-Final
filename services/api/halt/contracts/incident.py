@@ -20,6 +20,7 @@ IncidentState = Literal[
     "executing",
     "contained",
     "rollback_available",
+    "rolled_back",
     "blocked_by_policy",
     "no_safe_plan",
 ]

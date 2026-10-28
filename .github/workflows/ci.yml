@@ -20,8 +20,20 @@ jobs:
       - run: python -I scripts/verify_repo.py
 
   api:
-    name: API (ruff, mypy, pytest)
+    name: API (ruff, mypy, pytest incl. PostgreSQL audit trigger)
     runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_USER: halt
+          POSTGRES_PASSWORD: halt
+          POSTGRES_DB: halt_test
+        ports: ["5432:5432"]
+        options: >-
+          --health-cmd "pg_isready -U halt -d halt_test" --health-interval 3s --health-timeout 3s --health-retries 20
+    env:
+      HALT_TEST_PG_URL: postgresql+psycopg://halt:halt@localhost:5432/halt_test
     defaults:
       run:
         working-directory: services/api

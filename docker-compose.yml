@@ -25,6 +25,7 @@ services:
       HALT_DB_URL: postgresql+psycopg://halt:halt@db:5432/halt
       HALT_SEED: "2417"
       HALT_LLM_ENABLED: "false"
+      HALT_SIGNING_KEY_PATH: /home/halt/secrets/demo-signing-key.pem
       HALT_CORS_ORIGINS: '["http://localhost:3000"]'
     ports:
       - "8000:8000"

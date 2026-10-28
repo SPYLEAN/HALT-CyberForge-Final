@@ -216,28 +216,23 @@ tests/test_audit.py                       [new] AT-5.9
 ### Phase 6 — API, persistence, replay
 
 ```
-halt/db/base.py, models.py, session.py    [new] SQLAlchemy 2 models per ARCHITECTURE §9
-halt/db/repo.py                           [new] repositories (no domain logic)
-alembic.ini, alembic/env.py               [new]
-alembic/versions/0001_init.py             [new] tables + audit_log no-update/no-delete trigger
+halt/db/__init__.py, models.py            [new] engine, tables, create_schema; PostgreSQL append-only triggers via DDL event
+halt/db/repo.py                           [new] repositories (no domain logic); DbAuditStore
+halt/service.py                           [new] incident runtime orchestrating every engine; logical operator clock
+halt/contracts/api.py                     [new] request bodies and Meta-carrying response envelopes
 halt/replay/clock.py                      [new] deterministic replay clock (play/pause/seek/speed)
 halt/replay/stream.py                     [new] message builder for t-ranges
 halt/explain/templates.py                 [new] evidence-citing templates
 halt/explain/llm.py                       [new] optional adapter (off); citation validator
-halt/api/deps.py, errors.py               [new] DI, actor header, error mapping
-halt/api/routes_incidents.py              [new] incidents, events, correlate, graph, paths, actions, policies, replay/reset
-halt/api/routes_simulations.py            [new]
-halt/api/routes_plans.py                  [new] plans, approvals, execute
-halt/api/routes_proofs.py                 [new]
-halt/api/routes_executions.py             [new] get, rollback
-halt/api/routes_audit.py                  [new]
+halt/api/errors.py                        [new] error mapping to ApiError
+halt/api/routes.py                        [new] every REST route in DATA_CONTRACTS §10
 halt/api/ws.py                            [new] /ws/incidents/{id}
 halt/main.py                              [new] app factory, CORS, logging middleware, /health
-scripts/seed.py                           [new] load fixture into DB
 tests/test_api_contract.py                [new] AT-6.1, 6.4
 tests/test_ws_replay.py                   [new] AT-6.2, 6.3
 tests/test_logging.py                     [new] AT-6.5
 tests/test_explain.py                     [new] AT-6.6
+tests/test_pg_audit.py                    [new] AT-6.7 (runs when HALT_TEST_PG_URL is set; CI postgres service)
 ```
 
 ### Phase 7 — frontend foundations (`apps/web/`)

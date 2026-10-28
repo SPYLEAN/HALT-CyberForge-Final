@@ -319,7 +319,9 @@ interface AuditEntry { seq: number; at: string; actor: string; kind: string; sub
 | POST | `/incidents/{id}/replay/reset` | `{variant?}` | `Incident` | — |
 | POST | `/incidents/{id}/explain` | `{subject_id}` | `{text, cited_ids[], engine: "template" \| "llm"}` | 422 if citations invalid |
 
-Requests that change state require header `X-Halt-Actor: <approver_id>` (demo identity, recorded in audit; not authentication).
+Approvals, execute and rollback require header `X-Halt-Actor: <approver_id>` (demo identity, recorded in audit; not authentication). An unknown actor gets 403; an approval must be given by the approver themselves (actor = approver_id), otherwise 403.
+
+List and action responses are envelopes carrying `meta` (`halt/contracts/api.py`): `IncidentList`, `EventList`, `FindingList` (+ incident `confidence`), `PathList`, `ActionList`, `PolicySet` (policies, approvers, constraints), `ApprovalResult` (+ `outstanding_roles`), `ExecutionResult`, `AuditList`, `AuditVerify` (+ `enforcement: db | app`), `ProofVerify`, `ExplainResult`. `Incident`, `GraphSnapshot`, `SimulationRun`, `Plan` and `Proof` carry `meta` themselves. Every response except `/health` and errors has `meta.simulated = true` and `meta.seed` (AT-6.4). Errors are `ApiError` with `request_id`. Incident states add `rolled_back`.
 
 ## 11. WebSocket `/ws/incidents/{id}`
 
@@ -339,7 +341,7 @@ Server → client (every message carries `seq` and `t`, replay seconds since `09
 | { type: "stale"; t; reason: string }            // new telemetry after sealing
 ```
 
-Replay is server-authoritative and deterministic: the same `seek(t)` yields the same message set in the same order. The client may also rebuild state at any `t` from REST (`/events?until=t`, `/graph?at=t`), which the landing → Command Center handoff uses.
+Replay is deterministic and per connection: each socket has its own cursor, so the landing page and the Command Center can replay independently. `seek(t)` sends a clock message then every timeline message with time ≤ t; the same seek always yields the same messages (seq aside, which strictly increases per connection). Timeline: stage `new` and the structural graph at 0; each incident event with its graph delta and any new or changed finding; `correlating` when HALT-R1 first forms the incident (EV-03, t = 129 s); `forecast_ready` and the forecast layer at the last event (EV-06, t = 666 s). Stage, gate and stale messages caused by API calls are broadcast live to every socket of the incident. The client may also rebuild state at any `t` from REST (`/events?until=t`, `/graph?at=t`), which the landing → Command Center handoff uses.
 
 ## 12. Scenario fixture format
 
