@@ -1,0 +1,6 @@
+[
+  { "id": "a_rahman", "name": "A. Rahman", "roles": ["tier2_analyst"], "available": true },
+  { "id": "s_iyer", "name": "S. Iyer", "roles": ["finance_ops_owner"], "available": true, "user_node_id": "user.s_iyer" },
+  { "id": "k_mensah", "name": "K. Mensah", "roles": ["soc_lead"], "available": true },
+  { "id": "l_duarte", "name": "L. Duarte", "roles": ["ciso"], "available": true }
+]

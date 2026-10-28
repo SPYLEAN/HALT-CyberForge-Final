@@ -1,0 +1,65 @@
+{
+  "nodes": [
+    { "id": "attacker.phish_sender", "kind": "attacker", "label": "Phishing sender", "provenance": "observed", "attacker_controlled": true, "evidence_ids": ["EV-01"], "first_seen": "2026-10-27T09:41:12Z", "layout": { "x": 60, "y": 90 } },
+    { "id": "attacker.as64500", "kind": "attacker", "label": "ASN AS64500", "provenance": "observed", "attacker_controlled": true, "evidence_ids": ["EV-02", "EV-05"], "first_seen": "2026-10-27T09:42:36Z", "layout": { "x": 60, "y": 200 } },
+    { "id": "attacker.docusync_app", "kind": "attacker", "label": "DocuSync Pro (unverified publisher)", "provenance": "observed", "attacker_controlled": true, "evidence_ids": ["EV-04"], "first_seen": "2026-10-27T09:43:50Z", "layout": { "x": 200, "y": 30 } },
+
+    { "id": "user.m_verma", "kind": "user", "label": "M. Verma · Finance Ops", "provenance": "observed", "criticality": "standard", "evidence_ids": ["EV-01", "EV-02", "EV-03", "EV-04", "EV-05"], "first_seen": "2026-10-27T09:41:12Z", "layout": { "x": 200, "y": 150 } },
+    { "id": "device.mv_laptop", "kind": "device", "label": "M. Verma laptop (managed)", "provenance": "structural", "origin": "Device inventory", "layout": { "x": 200, "y": 250 } },
+    { "id": "token.grant_docusync", "kind": "token", "label": "OAuth grant · DocuSync Pro", "provenance": "observed", "evidence_ids": ["EV-04"], "first_seen": "2026-10-27T09:43:50Z", "layout": { "x": 360, "y": 80 } },
+    { "id": "session.s1", "kind": "session", "label": "Session S-1 (replayed)", "provenance": "observed", "evidence_ids": ["EV-05"], "first_seen": "2026-10-27T09:47:03Z", "layout": { "x": 360, "y": 170 } },
+    { "id": "session.s2", "kind": "session", "label": "Session S-2 (replayed)", "provenance": "observed", "evidence_ids": ["EV-05"], "first_seen": "2026-10-27T09:47:03Z", "layout": { "x": 360, "y": 250 } },
+    { "id": "session.s3", "kind": "session", "label": "Session S-3 (forecast)", "provenance": "forecast", "layout": { "x": 360, "y": 340 } },
+
+    { "id": "api.finance", "kind": "api", "label": "Finance API", "provenance": "structural", "origin": "Dependency map v14", "criticality": "critical", "business": { "users": 310 }, "evidence_ids": ["EV-06"], "layout": { "x": 570, "y": 90 } },
+    { "id": "process.payment", "kind": "process", "label": "Payment processing", "provenance": "structural", "origin": "Dependency map v14", "criticality": "critical", "business": { "users": 85, "deadline": "16:00Z", "owner": "S. Iyer" }, "evidence_ids": ["EV-06"], "layout": { "x": 690, "y": 275 } },
+    { "id": "process.payroll", "kind": "process", "label": "Payroll", "provenance": "structural", "origin": "Dependency map v14", "criticality": "critical", "business": { "users": 640, "deadline": "18:00Z", "owner": "S. Iyer" }, "layout": { "x": 690, "y": 185 } },
+    { "id": "process.reconciliation", "kind": "process", "label": "Reconciliation", "provenance": "structural", "origin": "Dependency map v14", "criticality": "critical", "business": { "users": 22, "deadline": "17:00Z", "owner": "S. Iyer" }, "layout": { "x": 690, "y": 365 } },
+    { "id": "process.support", "kind": "process", "label": "Customer support", "provenance": "structural", "origin": "Dependency map v14", "criticality": "standard", "business": { "users": 38 }, "layout": { "x": 520, "y": 215 } },
+    { "id": "db.finance_ledger", "kind": "database", "label": "Finance ledger database", "provenance": "structural", "origin": "Dependency map v14", "criticality": "critical", "layout": { "x": 890, "y": 225 } },
+
+    { "id": "user.finance_staff", "kind": "user", "label": "Finance staff", "provenance": "structural", "origin": "Directory", "business": { "users": 120 }, "layout": { "x": 60, "y": 380 } },
+    { "id": "user.s_iyer", "kind": "user", "label": "S. Iyer · Finance Ops owner", "provenance": "structural", "origin": "Directory", "layout": { "x": 200, "y": 440 } },
+    { "id": "user.j_okafor", "kind": "user", "label": "J. Okafor · Finance approver", "provenance": "structural", "origin": "Directory", "layout": { "x": 360, "y": 440 } }
+  ],
+  "edges": [
+    { "id": "e.phish-user", "source": "attacker.phish_sender", "target": "user.m_verma", "kind": "hostile", "relation": "delivered_consent_link", "provenance": "observed", "evidence_ids": ["EV-01"], "historical": true, "first_seen": "2026-10-27T09:41:12Z" },
+    { "id": "e.asn-user", "source": "attacker.as64500", "target": "user.m_verma", "kind": "hostile", "relation": "signed_in_as", "provenance": "observed", "evidence_ids": ["EV-02"], "historical": true, "first_seen": "2026-10-27T09:42:36Z" },
+    { "id": "i.phish-asn", "source": "attacker.phish_sender", "target": "attacker.as64500", "kind": "hostile", "relation": "shares_infrastructure", "provenance": "inferred", "inference": { "confidence": 0.74, "rationale": "Sender domain and sign-in ASN share a hosting provider." }, "historical": true, "first_seen": "2026-10-27T09:42:36Z" },
+    { "id": "e.user-grant", "source": "user.m_verma", "target": "token.grant_docusync", "kind": "hostile", "relation": "consented", "provenance": "observed", "evidence_ids": ["EV-04"], "historical": true, "first_seen": "2026-10-27T09:43:50Z" },
+
+    { "id": "e.app-grant", "source": "attacker.docusync_app", "target": "token.grant_docusync", "kind": "hostile", "relation": "holds_delegated_grant", "provenance": "observed", "evidence_ids": ["EV-04"], "transition": { "p": 1.0, "delay_s": [0, 0] }, "first_seen": "2026-10-27T09:43:50Z" },
+    { "id": "e.asn-s1", "source": "attacker.as64500", "target": "session.s1", "kind": "hostile", "relation": "replays", "provenance": "observed", "evidence_ids": ["EV-05"], "transition": { "p": 0.95, "delay_s": [5, 30] }, "first_seen": "2026-10-27T09:47:03Z" },
+    { "id": "e.asn-s2", "source": "attacker.as64500", "target": "session.s2", "kind": "hostile", "relation": "replays", "provenance": "observed", "evidence_ids": ["EV-05"], "transition": { "p": 0.95, "delay_s": [5, 30] }, "first_seen": "2026-10-27T09:47:03Z" },
+    { "id": "e.s1-fapi", "source": "session.s1", "target": "api.finance", "kind": "hostile", "relation": "calls", "provenance": "observed", "evidence_ids": ["EV-06"], "transition": { "p": 0.9, "delay_s": [10, 60] }, "first_seen": "2026-10-27T09:52:18Z" },
+    { "id": "e.s2-pay", "source": "session.s2", "target": "process.payment", "kind": "hostile", "relation": "opens", "provenance": "observed", "evidence_ids": ["EV-06"], "transition": { "p": 0.85, "delay_s": [10, 60] }, "first_seen": "2026-10-27T09:52:18Z" },
+    { "id": "f.grant-fapi", "source": "token.grant_docusync", "target": "api.finance", "kind": "hostile", "relation": "calls_with_token", "provenance": "forecast", "transition": { "p": 0.8, "delay_s": [30, 180] } },
+    { "id": "f.grant-recon", "source": "token.grant_docusync", "target": "process.reconciliation", "kind": "hostile", "relation": "calls_with_token", "provenance": "forecast", "transition": { "p": 0.55, "delay_s": [60, 240] } },
+    { "id": "f.grant-payroll", "source": "token.grant_docusync", "target": "process.payroll", "kind": "hostile", "relation": "calls_with_token", "provenance": "forecast", "transition": { "p": 0.45, "delay_s": [60, 240] } },
+    { "id": "f.user-s3", "source": "user.m_verma", "target": "session.s3", "kind": "hostile", "relation": "mints_session", "provenance": "forecast", "transition": { "p": 0.6, "delay_s": [30, 180] } },
+    { "id": "f.s3-pay", "source": "session.s3", "target": "process.payment", "kind": "hostile", "relation": "opens", "provenance": "forecast", "transition": { "p": 0.8, "delay_s": [30, 120] } },
+    { "id": "f.fapi-db", "source": "api.finance", "target": "db.finance_ledger", "kind": "hostile", "relation": "queries", "provenance": "forecast", "transition": { "p": 0.85, "delay_s": [30, 150] } },
+    { "id": "f.pay-db", "source": "process.payment", "target": "db.finance_ledger", "kind": "hostile", "relation": "queries", "provenance": "forecast", "transition": { "p": 0.7, "delay_s": [30, 150] } },
+    { "id": "f.recon-db", "source": "process.reconciliation", "target": "db.finance_ledger", "kind": "hostile", "relation": "queries", "provenance": "forecast", "transition": { "p": 0.6, "delay_s": [30, 150] } },
+    { "id": "f.payroll-db", "source": "process.payroll", "target": "db.finance_ledger", "kind": "hostile", "relation": "queries", "provenance": "forecast", "transition": { "p": 0.55, "delay_s": [30, 150] } },
+    { "id": "i.asn-support", "source": "attacker.as64500", "target": "process.support", "kind": "hostile", "relation": "reuses_sso", "provenance": "inferred", "inference": { "confidence": 0.55, "rationale": "The support portal shares an SSO application with the finance portal." }, "transition": { "p": 0.35, "delay_s": [60, 240] } },
+    { "id": "f.support-fapi", "source": "process.support", "target": "api.finance", "kind": "hostile", "relation": "calls", "provenance": "forecast", "transition": { "p": 0.3, "delay_s": [60, 240] } },
+
+    { "id": "e.user-s1", "source": "user.m_verma", "target": "session.s1", "kind": "identity", "relation": "owns_session", "provenance": "observed", "evidence_ids": ["EV-05"], "first_seen": "2026-10-27T09:47:03Z" },
+    { "id": "e.user-s2", "source": "user.m_verma", "target": "session.s2", "kind": "identity", "relation": "owns_session", "provenance": "observed", "evidence_ids": ["EV-05"], "first_seen": "2026-10-27T09:47:03Z" },
+    { "id": "e.user-device", "source": "user.m_verma", "target": "device.mv_laptop", "kind": "identity", "relation": "uses_device", "provenance": "structural", "origin": "Device inventory" },
+
+    { "id": "d.payment-fapi", "source": "process.payment", "target": "api.finance", "kind": "dependency", "relation": "requires", "provenance": "structural", "origin": "Dependency map v14" },
+    { "id": "d.payroll-fapi", "source": "process.payroll", "target": "api.finance", "kind": "dependency", "relation": "requires", "provenance": "structural", "origin": "Dependency map v14" },
+    { "id": "d.recon-fapi", "source": "process.reconciliation", "target": "api.finance", "kind": "dependency", "relation": "requires", "provenance": "structural", "origin": "Dependency map v14" },
+    { "id": "d.support-fapi", "source": "process.support", "target": "api.finance", "kind": "dependency", "relation": "requires", "provenance": "structural", "origin": "Dependency map v14" },
+    { "id": "d.fapi-db", "source": "api.finance", "target": "db.finance_ledger", "kind": "dependency", "relation": "requires", "provenance": "structural", "origin": "Dependency map v14" },
+    { "id": "d.payment-db", "source": "process.payment", "target": "db.finance_ledger", "kind": "dependency", "relation": "requires", "provenance": "structural", "origin": "Dependency map v14" },
+    { "id": "d.payroll-db", "source": "process.payroll", "target": "db.finance_ledger", "kind": "dependency", "relation": "requires", "provenance": "structural", "origin": "Dependency map v14" },
+    { "id": "d.recon-db", "source": "process.reconciliation", "target": "db.finance_ledger", "kind": "dependency", "relation": "requires", "provenance": "structural", "origin": "Dependency map v14" },
+    { "id": "d.payment-verma", "source": "process.payment", "target": "user.m_verma", "kind": "dependency", "relation": "requires_human", "provenance": "structural", "origin": "Finance runbook FR-12: M. Verma releases the 16:00 supplier run" },
+    { "id": "d.staff-payment", "source": "user.finance_staff", "target": "process.payment", "kind": "dependency", "relation": "operates", "provenance": "structural", "origin": "Dependency map v14" },
+    { "id": "d.staff-payroll", "source": "user.finance_staff", "target": "process.payroll", "kind": "dependency", "relation": "operates", "provenance": "structural", "origin": "Dependency map v14" },
+    { "id": "d.staff-recon", "source": "user.finance_staff", "target": "process.reconciliation", "kind": "dependency", "relation": "operates", "provenance": "structural", "origin": "Dependency map v14" }
+  ]
+}

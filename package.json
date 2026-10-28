@@ -14,6 +14,7 @@
     "lint": "npm run lint -w @halt/web",
     "typecheck": "npm run typecheck -w @halt/web",
     "test": "npm run test -w @halt/web",
+    "gen:api": "npm run gen:api -w @halt/web",
     "verify:repo": "python -I scripts/verify_repo.py",
     "compose:up": "docker compose up --build -d --wait",
     "compose:down": "docker compose down -v"

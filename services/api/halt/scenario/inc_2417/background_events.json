@@ -1,0 +1,7846 @@
+[
+ {
+  "id": "BG-0001",
+  "ts": "2026-10-27T09:01:14Z",
+  "source": {
+   "system": "Graph activity log",
+   "record_id": "GR-70388"
+  },
+  "kind": "resource_access",
+  "actor_node_ids": [],
+  "attributes": {
+   "upn": "user41@finance.example",
+   "resource": "AP invoices",
+   "request_count": 34,
+   "window_s": 240,
+   "via": "Finance API"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0002",
+  "ts": "2026-10-27T09:01:56Z",
+  "source": {
+   "system": "Mail gateway message trace",
+   "record_id": "MA-70274"
+  },
+  "kind": "mail_delivered",
+  "actor_node_ids": [],
+  "attributes": {
+   "recipient": "user50@finance.example",
+   "sender_domain": "payroll-svc.example",
+   "sender_domain_age_days": 1567,
+   "link_type": "document"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0003",
+  "ts": "2026-10-27T09:02:00Z",
+  "source": {
+   "system": "Graph activity log",
+   "record_id": "GR-70197"
+  },
+  "kind": "resource_access",
+  "actor_node_ids": [],
+  "attributes": {
+   "upn": "user60@finance.example",
+   "resource": "AP invoices",
+   "request_count": 18,
+   "window_s": 240,
+   "via": "Finance API"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0004",
+  "ts": "2026-10-27T09:02:01Z",
+  "source": {
+   "system": "Graph activity log",
+   "record_id": "GR-70334"
+  },
+  "kind": "resource_access",
+  "actor_node_ids": [],
+  "attributes": {
+   "upn": "user42@finance.example",
+   "resource": "Finance-Close library",
+   "request_count": 39,
+   "window_s": 240,
+   "via": "Finance API"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0005",
+  "ts": "2026-10-27T09:02:06Z",
+  "source": {
+   "system": "Entra audit log",
+   "record_id": "EN-70051"
+  },
+  "kind": "mfa_method_added",
+  "actor_node_ids": [],
+  "attributes": {
+   "upn": "user60@finance.example",
+   "method": "fido2",
+   "asn": 64498,
+   "seconds_since_sign_in": 29242
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0006",
+  "ts": "2026-10-27T09:02:14Z",
+  "source": {
+   "system": "Entra sign-in logs",
+   "record_id": "EN-70044"
+  },
+  "kind": "sign_in",
+  "actor_node_ids": [],
+  "attributes": {
+   "upn": "user38@finance.example",
+   "asn": 64497,
+   "asn_first_seen_for_user": false,
+   "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) Edge/141.0",
+   "user_agent_first_seen_for_user": false,
+   "result": "success"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0007",
+  "ts": "2026-10-27T09:02:20Z",
+  "source": {
+   "system": "Entra sign-in logs",
+   "record_id": "EN-70319"
+  },
+  "kind": "sign_in",
+  "actor_node_ids": [],
+  "attributes": {
+   "upn": "user09@finance.example",
+   "asn": 64498,
+   "asn_first_seen_for_user": false,
+   "user_agent": "Microsoft Outlook 16.0",
+   "user_agent_first_seen_for_user": false,
+   "result": "success"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0008",
+  "ts": "2026-10-27T09:02:42Z",
+  "source": {
+   "system": "Entra sign-in logs",
+   "record_id": "EN-70393"
+  },
+  "kind": "sign_in",
+  "actor_node_ids": [],
+  "attributes": {
+   "upn": "user26@finance.example",
+   "asn": 64497,
+   "asn_first_seen_for_user": false,
+   "user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 14_6) Safari/18.1",
+   "user_agent_first_seen_for_user": false,
+   "result": "success"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0009",
+  "ts": "2026-10-27T09:02:52Z",
+  "source": {
+   "system": "Entra sign-in logs",
+   "record_id": "EN-70078"
+  },
+  "kind": "sign_in",
+  "actor_node_ids": [],
+  "attributes": {
+   "upn": "user02@finance.example",
+   "asn": 64498,
+   "asn_first_seen_for_user": false,
+   "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) Edge/141.0",
+   "user_agent_first_seen_for_user": false,
+   "result": "success"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0010",
+  "ts": "2026-10-27T09:03:13Z",
+  "source": {
+   "system": "Graph activity log",
+   "record_id": "GR-70105"
+  },
+  "kind": "resource_access",
+  "actor_node_ids": [],
+  "attributes": {
+   "upn": "user56@finance.example",
+   "resource": "Expense reports",
+   "request_count": 4,
+   "window_s": 240,
+   "via": "SharePoint"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0011",
+  "ts": "2026-10-27T09:03:15Z",
+  "source": {
+   "system": "Entra sign-in logs",
+   "record_id": "EN-70177"
+  },
+  "kind": "sign_in",
+  "actor_node_ids": [],
+  "attributes": {
+   "upn": "user26@finance.example",
+   "asn": 64496,
+   "asn_first_seen_for_user": false,
+   "user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 14_6) Safari/18.1",
+   "user_agent_first_seen_for_user": false,
+   "result": "success"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0012",
+  "ts": "2026-10-27T09:03:20Z",
+  "source": {
+   "system": "Entra sign-in logs",
+   "record_id": "EN-70032"
+  },
+  "kind": "sign_in",
+  "actor_node_ids": [],
+  "attributes": {
+   "upn": "user40@finance.example",
+   "asn": 64498,
+   "asn_first_seen_for_user": false,
+   "user_agent": "Microsoft Outlook 16.0",
+   "user_agent_first_seen_for_user": false,
+   "result": "success"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0013",
+  "ts": "2026-10-27T09:03:22Z",
+  "source": {
+   "system": "Entra audit log",
+   "record_id": "EN-70042"
+  },
+  "kind": "mfa_method_added",
+  "actor_node_ids": [],
+  "attributes": {
+   "upn": "user26@finance.example",
+   "method": "fido2",
+   "asn": 64497,
+   "seconds_since_sign_in": 30853
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0014",
+  "ts": "2026-10-27T09:03:50Z",
+  "source": {
+   "system": "Entra sign-in logs",
+   "record_id": "EN-70182"
+  },
+  "kind": "sign_in",
+  "actor_node_ids": [],
+  "attributes": {
+   "upn": "user20@finance.example",
+   "asn": 64498,
+   "asn_first_seen_for_user": false,
+   "user_agent": "Microsoft Outlook 16.0",
+   "user_agent_first_seen_for_user": false,
+   "result": "success"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0015",
+  "ts": "2026-10-27T09:03:53Z",
+  "source": {
+   "system": "Graph activity log",
+   "record_id": "GR-70237"
+  },
+  "kind": "resource_access",
+  "actor_node_ids": [],
+  "attributes": {
+   "upn": "user35@finance.example",
+   "resource": "AP invoices",
+   "request_count": 17,
+   "window_s": 240,
+   "via": "SharePoint"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0016",
+  "ts": "2026-10-27T09:04:04Z",
+  "source": {
+   "system": "Entra sign-in logs",
+   "record_id": "EN-70227"
+  },
+  "kind": "sign_in",
+  "actor_node_ids": [],
+  "attributes": {
+   "upn": "user50@finance.example",
+   "asn": 64496,
+   "asn_first_seen_for_user": false,
+   "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) Edge/141.0",
+   "user_agent_first_seen_for_user": true,
+   "result": "success"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0017",
+  "ts": "2026-10-27T09:04:35Z",
+  "source": {
+   "system": "Entra sign-in logs",
+   "record_id": "EN-70343"
+  },
+  "kind": "sign_in",
+  "actor_node_ids": [],
+  "attributes": {
+   "upn": "user40@finance.example",
+   "asn": 64497,
+   "asn_first_seen_for_user": false,
+   "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) Edge/141.0",
+   "user_agent_first_seen_for_user": false,
+   "result": "success"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0018",
+  "ts": "2026-10-27T09:05:32Z",
+  "source": {
+   "system": "Entra sign-in logs",
+   "record_id": "EN-70322"
+  },
+  "kind": "sign_in",
+  "actor_node_ids": [],
+  "attributes": {
+   "upn": "user11@finance.example",
+   "asn": 64498,
+   "asn_first_seen_for_user": false,
+   "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) Edge/141.0",
+   "user_agent_first_seen_for_user": false,
+   "result": "success"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0019",
+  "ts": "2026-10-27T09:05:42Z",
+  "source": {
+   "system": "Graph activity log",
+   "record_id": "GR-70141"
+  },
+  "kind": "resource_access",
+  "actor_node_ids": [],
+  "attributes": {
+   "upn": "user51@finance.example",
+   "resource": "Expense reports",
+   "request_count": 19,
+   "window_s": 240,
+   "via": "SharePoint"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0020",
+  "ts": "2026-10-27T09:05:53Z",
+  "source": {
+   "system": "Entra sign-in logs",
+   "record_id": "EN-70390"
+  },
+  "kind": "sign_in",
+  "actor_node_ids": [],
+  "attributes": {
+   "upn": "user33@finance.example",
+   "asn": 64497,
+   "asn_first_seen_for_user": false,
+   "user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 14_6) Safari/18.1",
+   "user_agent_first_seen_for_user": false,
+   "result": "success"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0021",
+  "ts": "2026-10-27T09:06:02Z",
+  "source": {
+   "system": "Entra sign-in logs",
+   "record_id": "EN-70180"
+  },
+  "kind": "sign_in",
+  "actor_node_ids": [],
+  "attributes": {
+   "upn": "user44@finance.example",
+   "asn": 64496,
+   "asn_first_seen_for_user": false,
+   "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) Edge/141.0",
+   "user_agent_first_seen_for_user": false,
+   "result": "success"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0022",
+  "ts": "2026-10-27T09:06:11Z",
+  "source": {
+   "system": "Entra sign-in logs",
+   "record_id": "EN-70106"
+  },
+  "kind": "sign_in",
+  "actor_node_ids": [],
+  "attributes": {
+   "upn": "user17@finance.example",
+   "asn": 64498,
+   "asn_first_seen_for_user": false,
+   "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) Edge/141.0",
+   "user_agent_first_seen_for_user": false,
+   "result": "success"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0023",
+  "ts": "2026-10-27T09:06:27Z",
+  "source": {
+   "system": "Entra sign-in logs",
+   "record_id": "EN-70167"
+  },
+  "kind": "sign_in",
+  "actor_node_ids": [],
+  "attributes": {
+   "upn": "user18@finance.example",
+   "asn": 64498,
+   "asn_first_seen_for_user": false,
+   "user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 14_6) Safari/18.1",
+   "user_agent_first_seen_for_user": false,
+   "result": "success"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0024",
+  "ts": "2026-10-27T09:06:31Z",
+  "source": {
+   "system": "Entra sign-in logs",
+   "record_id": "EN-70284"
+  },
+  "kind": "sign_in",
+  "actor_node_ids": [],
+  "attributes": {
+   "upn": "user46@finance.example",
+   "asn": 64498,
+   "asn_first_seen_for_user": false,
+   "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) Edge/141.0",
+   "user_agent_first_seen_for_user": false,
+   "result": "success"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0025",
+  "ts": "2026-10-27T09:06:48Z",
+  "source": {
+   "system": "Graph activity log",
+   "record_id": "GR-70342"
+  },
+  "kind": "resource_access",
+  "actor_node_ids": [],
+  "attributes": {
+   "upn": "user42@finance.example",
+   "resource": "Expense reports",
+   "request_count": 35,
+   "window_s": 240,
+   "via": "SharePoint"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0026",
+  "ts": "2026-10-27T09:07:06Z",
+  "source": {
+   "system": "Entra sign-in logs",
+   "record_id": "EN-70218"
+  },
+  "kind": "sign_in",
+  "actor_node_ids": [],
+  "attributes": {
+   "upn": "user35@finance.example",
+   "asn": 64497,
+   "asn_first_seen_for_user": false,
+   "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) Edge/141.0",
+   "user_agent_first_seen_for_user": false,
+   "result": "success"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0027",
+  "ts": "2026-10-27T09:07:23Z",
+  "source": {
+   "system": "Entra sign-in logs",
+   "record_id": "EN-70359"
+  },
+  "kind": "sign_in",
+  "actor_node_ids": [],
+  "attributes": {
+   "upn": "user47@finance.example",
+   "asn": 64496,
+   "asn_first_seen_for_user": false,
+   "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) Edge/141.0",
+   "user_agent_first_seen_for_user": false,
+   "result": "success"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0028",
+  "ts": "2026-10-27T09:07:27Z",
+  "source": {
+   "system": "Mail gateway message trace",
+   "record_id": "MA-70384"
+  },
+  "kind": "mail_delivered",
+  "actor_node_ids": [],
+  "attributes": {
+   "recipient": "user20@finance.example",
+   "sender_domain": "supplier-one.example",
+   "sender_domain_age_days": 3007,
+   "link_type": "document"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0029",
+  "ts": "2026-10-27T09:07:30Z",
+  "source": {
+   "system": "Graph activity log",
+   "record_id": "GR-70151"
+  },
+  "kind": "resource_access",
+  "actor_node_ids": [],
+  "attributes": {
+   "upn": "user16@finance.example",
+   "resource": "Expense reports",
+   "request_count": 13,
+   "window_s": 240,
+   "via": "SharePoint"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0030",
+  "ts": "2026-10-27T09:08:16Z",
+  "source": {
+   "system": "Entra sign-in logs",
+   "record_id": "EN-70305"
+  },
+  "kind": "sign_in",
+  "actor_node_ids": [],
+  "attributes": {
+   "upn": "user08@finance.example",
+   "asn": 64498,
+   "asn_first_seen_for_user": false,
+   "user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 14_6) Safari/18.1",
+   "user_agent_first_seen_for_user": false,
+   "result": "success"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0031",
+  "ts": "2026-10-27T09:08:18Z",
+  "source": {
+   "system": "Entra sign-in logs",
+   "record_id": "EN-70146"
+  },
+  "kind": "sign_in",
+  "actor_node_ids": [],
+  "attributes": {
+   "upn": "user55@finance.example",
+   "asn": 64497,
+   "asn_first_seen_for_user": false,
+   "user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 14_6) Safari/18.1",
+   "user_agent_first_seen_for_user": true,
+   "result": "success"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0032",
+  "ts": "2026-10-27T09:08:25Z",
+  "source": {
+   "system": "Mail gateway message trace",
+   "record_id": "MA-70395"
+  },
+  "kind": "mail_delivered",
+  "actor_node_ids": [],
+  "attributes": {
+   "recipient": "user51@finance.example",
+   "sender_domain": "supplier-one.example",
+   "sender_domain_age_days": 1443,
+   "link_type": "none"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0033",
+  "ts": "2026-10-27T09:09:05Z",
+  "source": {
+   "system": "Entra audit log",
+   "record_id": "EN-70017"
+  },
+  "kind": "mfa_method_added",
+  "actor_node_ids": [],
+  "attributes": {
+   "upn": "user32@finance.example",
+   "method": "authenticator_push",
+   "asn": 64497,
+   "seconds_since_sign_in": 38171
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0034",
+  "ts": "2026-10-27T09:09:53Z",
+  "source": {
+   "system": "Entra sign-in logs",
+   "record_id": "EN-70212"
+  },
+  "kind": "sign_in",
+  "actor_node_ids": [],
+  "attributes": {
+   "upn": "user11@finance.example",
+   "asn": 64497,
+   "asn_first_seen_for_user": false,
+   "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) Edge/141.0",
+   "user_agent_first_seen_for_user": false,
+   "result": "success"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0035",
+  "ts": "2026-10-27T09:09:54Z",
+  "source": {
+   "system": "Mail gateway message trace",
+   "record_id": "MA-70126"
+  },
+  "kind": "mail_delivered",
+  "actor_node_ids": [],
+  "attributes": {
+   "recipient": "user29@finance.example",
+   "sender_domain": "bank-notices.example",
+   "sender_domain_age_days": 2446,
+   "link_type": "document"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0036",
+  "ts": "2026-10-27T09:10:20Z",
+  "source": {
+   "system": "Graph activity log",
+   "record_id": "GR-70134"
+  },
+  "kind": "resource_access",
+  "actor_node_ids": [],
+  "attributes": {
+   "upn": "user15@finance.example",
+   "resource": "Vendor master",
+   "request_count": 33,
+   "window_s": 240,
+   "via": "SharePoint"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0037",
+  "ts": "2026-10-27T09:10:44Z",
+  "source": {
+   "system": "Graph activity log",
+   "record_id": "GR-70250"
+  },
+  "kind": "resource_access",
+  "actor_node_ids": [],
+  "attributes": {
+   "upn": "user34@finance.example",
+   "resource": "AP invoices",
+   "request_count": 36,
+   "window_s": 240,
+   "via": "SharePoint"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0038",
+  "ts": "2026-10-27T09:11:10Z",
+  "source": {
+   "system": "Graph activity log",
+   "record_id": "GR-70089"
+  },
+  "kind": "resource_access",
+  "actor_node_ids": [],
+  "attributes": {
+   "upn": "user34@finance.example",
+   "resource": "Finance-Close library",
+   "request_count": 21,
+   "window_s": 240,
+   "via": "Finance API"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0039",
+  "ts": "2026-10-27T09:11:12Z",
+  "source": {
+   "system": "Entra sign-in logs",
+   "record_id": "EN-70400"
+  },
+  "kind": "sign_in",
+  "actor_node_ids": [],
+  "attributes": {
+   "upn": "user08@finance.example",
+   "asn": 64510,
+   "asn_first_seen_for_user": true,
+   "user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 14_6) Safari/18.1",
+   "user_agent_first_seen_for_user": false,
+   "result": "success"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0040",
+  "ts": "2026-10-27T09:11:16Z",
+  "source": {
+   "system": "Entra sign-in logs",
+   "record_id": "EN-70211"
+  },
+  "kind": "sign_in",
+  "actor_node_ids": [],
+  "attributes": {
+   "upn": "user36@finance.example",
+   "asn": 64498,
+   "asn_first_seen_for_user": false,
+   "user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 14_6) Safari/18.1",
+   "user_agent_first_seen_for_user": false,
+   "result": "success"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0041",
+  "ts": "2026-10-27T09:11:20Z",
+  "source": {
+   "system": "Entra sign-in logs",
+   "record_id": "EN-70090"
+  },
+  "kind": "sign_in",
+  "actor_node_ids": [],
+  "attributes": {
+   "upn": "user52@finance.example",
+   "asn": 64496,
+   "asn_first_seen_for_user": false,
+   "user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 14_6) Safari/18.1",
+   "user_agent_first_seen_for_user": false,
+   "result": "success"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0042",
+  "ts": "2026-10-27T09:11:29Z",
+  "source": {
+   "system": "Graph activity log",
+   "record_id": "GR-70287"
+  },
+  "kind": "resource_access",
+  "actor_node_ids": [],
+  "attributes": {
+   "upn": "user36@finance.example",
+   "resource": "Expense reports",
+   "request_count": 26,
+   "window_s": 240,
+   "via": "Finance API"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0043",
+  "ts": "2026-10-27T09:11:50Z",
+  "source": {
+   "system": "Graph activity log",
+   "record_id": "GR-70059"
+  },
+  "kind": "resource_access",
+  "actor_node_ids": [],
+  "attributes": {
+   "upn": "user06@finance.example",
+   "resource": "Expense reports",
+   "request_count": 39,
+   "window_s": 240,
+   "via": "SharePoint"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0044",
+  "ts": "2026-10-27T09:11:50Z",
+  "source": {
+   "system": "Mail gateway message trace",
+   "record_id": "MA-70214"
+  },
+  "kind": "mail_delivered",
+  "actor_node_ids": [],
+  "attributes": {
+   "recipient": "user02@finance.example",
+   "sender_domain": "payroll-svc.example",
+   "sender_domain_age_days": 999,
+   "link_type": "document"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0045",
+  "ts": "2026-10-27T09:11:56Z",
+  "source": {
+   "system": "Entra sign-in logs",
+   "record_id": "EN-70329"
+  },
+  "kind": "sign_in",
+  "actor_node_ids": [],
+  "attributes": {
+   "upn": "user05@finance.example",
+   "asn": 64496,
+   "asn_first_seen_for_user": false,
+   "user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 14_6) Safari/18.1",
+   "user_agent_first_seen_for_user": true,
+   "result": "success"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0046",
+  "ts": "2026-10-27T09:12:03Z",
+  "source": {
+   "system": "Entra sign-in logs",
+   "record_id": "EN-70382"
+  },
+  "kind": "sign_in",
+  "actor_node_ids": [],
+  "attributes": {
+   "upn": "user25@finance.example",
+   "asn": 64497,
+   "asn_first_seen_for_user": false,
+   "user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 14_6) Safari/18.1",
+   "user_agent_first_seen_for_user": false,
+   "result": "success"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0047",
+  "ts": "2026-10-27T09:12:09Z",
+  "source": {
+   "system": "Entra audit log",
+   "record_id": "EN-70238"
+  },
+  "kind": "oauth_consent",
+  "actor_node_ids": [],
+  "attributes": {
+   "upn": "user60@finance.example",
+   "app_name": "MeetSpace",
+   "publisher_verified": true,
+   "app_age_days": 581,
+   "scopes": "User.Read Calendars.Read",
+   "consent_type": "user"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0048",
+  "ts": "2026-10-27T09:12:13Z",
+  "source": {
+   "system": "Entra sign-in logs",
+   "record_id": "EN-70361"
+  },
+  "kind": "sign_in",
+  "actor_node_ids": [],
+  "attributes": {
+   "upn": "user47@finance.example",
+   "asn": 64497,
+   "asn_first_seen_for_user": false,
+   "user_agent": "Microsoft Outlook 16.0",
+   "user_agent_first_seen_for_user": false,
+   "result": "success"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0049",
+  "ts": "2026-10-27T09:12:22Z",
+  "source": {
+   "system": "Entra sign-in logs",
+   "record_id": "EN-70012"
+  },
+  "kind": "sign_in",
+  "actor_node_ids": [],
+  "attributes": {
+   "upn": "user13@finance.example",
+   "asn": 64497,
+   "asn_first_seen_for_user": false,
+   "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) Edge/141.0",
+   "user_agent_first_seen_for_user": false,
+   "result": "success"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0050",
+  "ts": "2026-10-27T09:12:28Z",
+  "source": {
+   "system": "Entra sign-in logs",
+   "record_id": "EN-70200"
+  },
+  "kind": "sign_in",
+  "actor_node_ids": [],
+  "attributes": {
+   "upn": "user34@finance.example",
+   "asn": 64496,
+   "asn_first_seen_for_user": false,
+   "user_agent": "Microsoft Outlook 16.0",
+   "user_agent_first_seen_for_user": false,
+   "result": "success"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0051",
+  "ts": "2026-10-27T09:12:33Z",
+  "source": {
+   "system": "Entra sign-in logs",
+   "record_id": "EN-70028"
+  },
+  "kind": "sign_in",
+  "actor_node_ids": [],
+  "attributes": {
+   "upn": "user12@finance.example",
+   "asn": 64498,
+   "asn_first_seen_for_user": false,
+   "user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 14_6) Safari/18.1",
+   "user_agent_first_seen_for_user": false,
+   "result": "success"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0052",
+  "ts": "2026-10-27T09:12:38Z",
+  "source": {
+   "system": "Entra sign-in logs",
+   "record_id": "EN-70130"
+  },
+  "kind": "sign_in",
+  "actor_node_ids": [],
+  "attributes": {
+   "upn": "user20@finance.example",
+   "asn": 64498,
+   "asn_first_seen_for_user": false,
+   "user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 14_6) Safari/18.1",
+   "user_agent_first_seen_for_user": false,
+   "result": "success"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0053",
+  "ts": "2026-10-27T09:12:53Z",
+  "source": {
+   "system": "Entra audit log",
+   "record_id": "EN-70241"
+  },
+  "kind": "mfa_method_added",
+  "actor_node_ids": [],
+  "attributes": {
+   "upn": "user60@finance.example",
+   "method": "authenticator_push",
+   "asn": 64496,
+   "seconds_since_sign_in": 50712
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0054",
+  "ts": "2026-10-27T09:13:07Z",
+  "source": {
+   "system": "Mail gateway message trace",
+   "record_id": "MA-70326"
+  },
+  "kind": "mail_delivered",
+  "actor_node_ids": [],
+  "attributes": {
+   "recipient": "user23@finance.example",
+   "sender_domain": "supplier-one.example",
+   "sender_domain_age_days": 2530,
+   "link_type": "document"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0055",
+  "ts": "2026-10-27T09:13:46Z",
+  "source": {
+   "system": "Graph activity log",
+   "record_id": "GR-70008"
+  },
+  "kind": "resource_access",
+  "actor_node_ids": [],
+  "attributes": {
+   "upn": "user28@finance.example",
+   "resource": "Finance-Close library",
+   "request_count": 19,
+   "window_s": 240,
+   "via": "SharePoint"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0056",
+  "ts": "2026-10-27T09:13:46Z",
+  "source": {
+   "system": "Entra sign-in logs",
+   "record_id": "EN-70060"
+  },
+  "kind": "sign_in",
+  "actor_node_ids": [],
+  "attributes": {
+   "upn": "user28@finance.example",
+   "asn": 64497,
+   "asn_first_seen_for_user": false,
+   "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) Edge/141.0",
+   "user_agent_first_seen_for_user": false,
+   "result": "success"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0057",
+  "ts": "2026-10-27T09:13:53Z",
+  "source": {
+   "system": "Graph activity log",
+   "record_id": "GR-70053"
+  },
+  "kind": "resource_access",
+  "actor_node_ids": [],
+  "attributes": {
+   "upn": "user07@finance.example",
+   "resource": "Finance-Close library",
+   "request_count": 1,
+   "window_s": 240,
+   "via": "SharePoint"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0058",
+  "ts": "2026-10-27T09:13:59Z",
+  "source": {
+   "system": "Entra sign-in logs",
+   "record_id": "EN-70294"
+  },
+  "kind": "sign_in",
+  "actor_node_ids": [],
+  "attributes": {
+   "upn": "user56@finance.example",
+   "asn": 64498,
+   "asn_first_seen_for_user": false,
+   "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) Edge/141.0",
+   "user_agent_first_seen_for_user": false,
+   "result": "success"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0059",
+  "ts": "2026-10-27T09:14:15Z",
+  "source": {
+   "system": "Entra sign-in logs",
+   "record_id": "EN-70272"
+  },
+  "kind": "sign_in",
+  "actor_node_ids": [],
+  "attributes": {
+   "upn": "user27@finance.example",
+   "asn": 64510,
+   "asn_first_seen_for_user": true,
+   "user_agent": "Microsoft Outlook 16.0",
+   "user_agent_first_seen_for_user": false,
+   "result": "success"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0060",
+  "ts": "2026-10-27T09:14:15Z",
+  "source": {
+   "system": "Graph activity log",
+   "record_id": "GR-70332"
+  },
+  "kind": "resource_access",
+  "actor_node_ids": [],
+  "attributes": {
+   "upn": "user07@finance.example",
+   "resource": "Vendor master",
+   "request_count": 36,
+   "window_s": 240,
+   "via": "Finance API"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0061",
+  "ts": "2026-10-27T09:14:22Z",
+  "source": {
+   "system": "Entra sign-in logs",
+   "record_id": "EN-70087"
+  },
+  "kind": "sign_in",
+  "actor_node_ids": [],
+  "attributes": {
+   "upn": "user13@finance.example",
+   "asn": 64498,
+   "asn_first_seen_for_user": false,
+   "user_agent": "Microsoft Outlook 16.0",
+   "user_agent_first_seen_for_user": false,
+   "result": "success"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0062",
+  "ts": "2026-10-27T09:14:24Z",
+  "source": {
+   "system": "Entra sign-in logs",
+   "record_id": "EN-70345"
+  },
+  "kind": "sign_in",
+  "actor_node_ids": [],
+  "attributes": {
+   "upn": "user55@finance.example",
+   "asn": 64498,
+   "asn_first_seen_for_user": false,
+   "user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 14_6) Safari/18.1",
+   "user_agent_first_seen_for_user": false,
+   "result": "success"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0063",
+  "ts": "2026-10-27T09:14:26Z",
+  "source": {
+   "system": "Graph activity log",
+   "record_id": "GR-70149"
+  },
+  "kind": "resource_access",
+  "actor_node_ids": [],
+  "attributes": {
+   "upn": "user40@finance.example",
+   "resource": "Finance-Close library",
+   "request_count": 17,
+   "window_s": 240,
+   "via": "SharePoint"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0064",
+  "ts": "2026-10-27T09:14:38Z",
+  "source": {
+   "system": "Graph activity log",
+   "record_id": "GR-70301"
+  },
+  "kind": "resource_access",
+  "actor_node_ids": [],
+  "attributes": {
+   "upn": "user28@finance.example",
+   "resource": "Finance-Close library",
+   "request_count": 10,
+   "window_s": 240,
+   "via": "Finance API"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0065",
+  "ts": "2026-10-27T09:14:57Z",
+  "source": {
+   "system": "Entra sign-in logs",
+   "record_id": "EN-70002"
+  },
+  "kind": "sign_in",
+  "actor_node_ids": [],
+  "attributes": {
+   "upn": "user31@finance.example",
+   "asn": 64496,
+   "asn_first_seen_for_user": false,
+   "user_agent": "Microsoft Outlook 16.0",
+   "user_agent_first_seen_for_user": false,
+   "result": "success"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0066",
+  "ts": "2026-10-27T09:15:00Z",
+  "source": {
+   "system": "Graph activity log",
+   "record_id": "GR-70153"
+  },
+  "kind": "resource_access",
+  "actor_node_ids": [],
+  "attributes": {
+   "upn": "user11@finance.example",
+   "resource": "AP invoices",
+   "request_count": 5,
+   "window_s": 240,
+   "via": "Finance API"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0067",
+  "ts": "2026-10-27T09:15:35Z",
+  "source": {
+   "system": "Graph activity log",
+   "record_id": "GR-70210"
+  },
+  "kind": "resource_access",
+  "actor_node_ids": [],
+  "attributes": {
+   "upn": "user04@finance.example",
+   "resource": "Expense reports",
+   "request_count": 29,
+   "window_s": 240,
+   "via": "Finance API"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0068",
+  "ts": "2026-10-27T09:15:42Z",
+  "source": {
+   "system": "Entra sign-in logs",
+   "record_id": "EN-70338"
+  },
+  "kind": "sign_in",
+  "actor_node_ids": [],
+  "attributes": {
+   "upn": "user18@finance.example",
+   "asn": 64496,
+   "asn_first_seen_for_user": false,
+   "user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 14_6) Safari/18.1",
+   "user_agent_first_seen_for_user": false,
+   "result": "success"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0069",
+  "ts": "2026-10-27T09:15:56Z",
+  "source": {
+   "system": "Graph activity log",
+   "record_id": "GR-70296"
+  },
+  "kind": "resource_access",
+  "actor_node_ids": [],
+  "attributes": {
+   "upn": "user11@finance.example",
+   "resource": "AP invoices",
+   "request_count": 13,
+   "window_s": 240,
+   "via": "SharePoint"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0070",
+  "ts": "2026-10-27T09:16:35Z",
+  "source": {
+   "system": "Entra audit log",
+   "record_id": "EN-70313"
+  },
+  "kind": "oauth_consent",
+  "actor_node_ids": [],
+  "attributes": {
+   "upn": "user33@finance.example",
+   "app_name": "SignFlow",
+   "publisher_verified": true,
+   "app_age_days": 1769,
+   "scopes": "User.Read Files.Read",
+   "consent_type": "user"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0071",
+  "ts": "2026-10-27T09:16:44Z",
+  "source": {
+   "system": "Entra audit log",
+   "record_id": "EN-70364"
+  },
+  "kind": "mfa_method_added",
+  "actor_node_ids": [],
+  "attributes": {
+   "upn": "user21@finance.example",
+   "method": "fido2",
+   "asn": 64496,
+   "seconds_since_sign_in": 66863
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0072",
+  "ts": "2026-10-27T09:17:02Z",
+  "source": {
+   "system": "Graph activity log",
+   "record_id": "GR-70068"
+  },
+  "kind": "resource_access",
+  "actor_node_ids": [],
+  "attributes": {
+   "upn": "user11@finance.example",
+   "resource": "Vendor master",
+   "request_count": 36,
+   "window_s": 240,
+   "via": "Finance API"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0073",
+  "ts": "2026-10-27T09:17:06Z",
+  "source": {
+   "system": "Entra sign-in logs",
+   "record_id": "EN-70188"
+  },
+  "kind": "sign_in",
+  "actor_node_ids": [],
+  "attributes": {
+   "upn": "user52@finance.example",
+   "asn": 64497,
+   "asn_first_seen_for_user": false,
+   "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) Edge/141.0",
+   "user_agent_first_seen_for_user": false,
+   "result": "success"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0074",
+  "ts": "2026-10-27T09:17:15Z",
+  "source": {
+   "system": "Entra sign-in logs",
+   "record_id": "EN-70348"
+  },
+  "kind": "sign_in",
+  "actor_node_ids": [],
+  "attributes": {
+   "upn": "user55@finance.example",
+   "asn": 64496,
+   "asn_first_seen_for_user": false,
+   "user_agent": "Microsoft Outlook 16.0",
+   "user_agent_first_seen_for_user": false,
+   "result": "success"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0075",
+  "ts": "2026-10-27T09:17:17Z",
+  "source": {
+   "system": "Entra sign-in logs",
+   "record_id": "EN-70327"
+  },
+  "kind": "sign_in",
+  "actor_node_ids": [],
+  "attributes": {
+   "upn": "user35@finance.example",
+   "asn": 64496,
+   "asn_first_seen_for_user": false,
+   "user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 14_6) Safari/18.1",
+   "user_agent_first_seen_for_user": false,
+   "result": "success"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0076",
+  "ts": "2026-10-27T09:17:20Z",
+  "source": {
+   "system": "Entra sign-in logs",
+   "record_id": "EN-70118"
+  },
+  "kind": "sign_in",
+  "actor_node_ids": [],
+  "attributes": {
+   "upn": "user36@finance.example",
+   "asn": 64497,
+   "asn_first_seen_for_user": false,
+   "user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 14_6) Safari/18.1",
+   "user_agent_first_seen_for_user": false,
+   "result": "success"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0077",
+  "ts": "2026-10-27T09:17:52Z",
+  "source": {
+   "system": "Graph activity log",
+   "record_id": "GR-70111"
+  },
+  "kind": "resource_access",
+  "actor_node_ids": [],
+  "attributes": {
+   "upn": "user28@finance.example",
+   "resource": "Finance-Close library",
+   "request_count": 37,
+   "window_s": 240,
+   "via": "Finance API"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0078",
+  "ts": "2026-10-27T09:17:58Z",
+  "source": {
+   "system": "Entra sign-in logs",
+   "record_id": "EN-70298"
+  },
+  "kind": "sign_in",
+  "actor_node_ids": [],
+  "attributes": {
+   "upn": "user50@finance.example",
+   "asn": 64496,
+   "asn_first_seen_for_user": false,
+   "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) Edge/141.0",
+   "user_agent_first_seen_for_user": false,
+   "result": "success"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0079",
+  "ts": "2026-10-27T09:18:19Z",
+  "source": {
+   "system": "Graph activity log",
+   "record_id": "GR-70233"
+  },
+  "kind": "resource_access",
+  "actor_node_ids": [],
+  "attributes": {
+   "upn": "user31@finance.example",
+   "resource": "Vendor master",
+   "request_count": 7,
+   "window_s": 240,
+   "via": "Finance API"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0080",
+  "ts": "2026-10-27T09:18:22Z",
+  "source": {
+   "system": "Graph activity log",
+   "record_id": "GR-70392"
+  },
+  "kind": "resource_access",
+  "actor_node_ids": [],
+  "attributes": {
+   "upn": "user07@finance.example",
+   "resource": "Expense reports",
+   "request_count": 1,
+   "window_s": 240,
+   "via": "SharePoint"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0081",
+  "ts": "2026-10-27T09:18:25Z",
+  "source": {
+   "system": "Mail gateway message trace",
+   "record_id": "MA-70223"
+  },
+  "kind": "mail_delivered",
+  "actor_node_ids": [],
+  "attributes": {
+   "recipient": "user12@finance.example",
+   "sender_domain": "supplier-one.example",
+   "sender_domain_age_days": 2808,
+   "link_type": "none"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0082",
+  "ts": "2026-10-27T09:18:40Z",
+  "source": {
+   "system": "Graph activity log",
+   "record_id": "GR-70069"
+  },
+  "kind": "resource_access",
+  "actor_node_ids": [],
+  "attributes": {
+   "upn": "user10@finance.example",
+   "resource": "Vendor master",
+   "request_count": 19,
+   "window_s": 240,
+   "via": "Finance API"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0083",
+  "ts": "2026-10-27T09:18:43Z",
+  "source": {
+   "system": "Entra sign-in logs",
+   "record_id": "EN-70217"
+  },
+  "kind": "sign_in",
+  "actor_node_ids": [],
+  "attributes": {
+   "upn": "user58@finance.example",
+   "asn": 64498,
+   "asn_first_seen_for_user": false,
+   "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) Edge/141.0",
+   "user_agent_first_seen_for_user": false,
+   "result": "success"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0084",
+  "ts": "2026-10-27T09:19:15Z",
+  "source": {
+   "system": "Entra sign-in logs",
+   "record_id": "EN-70290"
+  },
+  "kind": "sign_in",
+  "actor_node_ids": [],
+  "attributes": {
+   "upn": "user14@finance.example",
+   "asn": 64497,
+   "asn_first_seen_for_user": false,
+   "user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 14_6) Safari/18.1",
+   "user_agent_first_seen_for_user": false,
+   "result": "success"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0085",
+  "ts": "2026-10-27T09:19:50Z",
+  "source": {
+   "system": "Graph activity log",
+   "record_id": "GR-70235"
+  },
+  "kind": "resource_access",
+  "actor_node_ids": [],
+  "attributes": {
+   "upn": "user31@finance.example",
+   "resource": "Vendor master",
+   "request_count": 11,
+   "window_s": 240,
+   "via": "Finance API"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0086",
+  "ts": "2026-10-27T09:19:54Z",
+  "source": {
+   "system": "Entra sign-in logs",
+   "record_id": "EN-70047"
+  },
+  "kind": "sign_in",
+  "actor_node_ids": [],
+  "attributes": {
+   "upn": "user11@finance.example",
+   "asn": 64497,
+   "asn_first_seen_for_user": false,
+   "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) Edge/141.0",
+   "user_agent_first_seen_for_user": false,
+   "result": "success"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0087",
+  "ts": "2026-10-27T09:19:56Z",
+  "source": {
+   "system": "Graph activity log",
+   "record_id": "GR-70320"
+  },
+  "kind": "resource_access",
+  "actor_node_ids": [],
+  "attributes": {
+   "upn": "user09@finance.example",
+   "resource": "AP invoices",
+   "request_count": 10,
+   "window_s": 240,
+   "via": "Finance API"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0088",
+  "ts": "2026-10-27T09:20:30Z",
+  "source": {
+   "system": "Mail gateway message trace",
+   "record_id": "MA-70085"
+  },
+  "kind": "mail_delivered",
+  "actor_node_ids": [],
+  "attributes": {
+   "recipient": "user25@finance.example",
+   "sender_domain": "payroll-svc.example",
+   "sender_domain_age_days": 2194,
+   "link_type": "none"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0089",
+  "ts": "2026-10-27T09:20:55Z",
+  "source": {
+   "system": "Graph activity log",
+   "record_id": "GR-70246"
+  },
+  "kind": "resource_access",
+  "actor_node_ids": [],
+  "attributes": {
+   "upn": "user50@finance.example",
+   "resource": "Expense reports",
+   "request_count": 25,
+   "window_s": 240,
+   "via": "Finance API"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0090",
+  "ts": "2026-10-27T09:21:12Z",
+  "source": {
+   "system": "Entra audit log",
+   "record_id": "EN-70401"
+  },
+  "kind": "mfa_method_added",
+  "actor_node_ids": [],
+  "attributes": {
+   "upn": "user08@finance.example",
+   "method": "authenticator_push",
+   "asn": 64510,
+   "seconds_since_sign_in": 600
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0091",
+  "ts": "2026-10-27T09:21:19Z",
+  "source": {
+   "system": "Entra audit log",
+   "record_id": "EN-70121"
+  },
+  "kind": "oauth_consent",
+  "actor_node_ids": [],
+  "attributes": {
+   "upn": "user49@finance.example",
+   "app_name": "MeetSpace",
+   "publisher_verified": true,
+   "app_age_days": 2599,
+   "scopes": "User.Read Calendars.Read",
+   "consent_type": "user"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0092",
+  "ts": "2026-10-27T09:21:19Z",
+  "source": {
+   "system": "Entra sign-in logs",
+   "record_id": "EN-70253"
+  },
+  "kind": "sign_in",
+  "actor_node_ids": [],
+  "attributes": {
+   "upn": "user07@finance.example",
+   "asn": 64498,
+   "asn_first_seen_for_user": false,
+   "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) Edge/141.0",
+   "user_agent_first_seen_for_user": false,
+   "result": "success"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0093",
+  "ts": "2026-10-27T09:21:43Z",
+  "source": {
+   "system": "Entra audit log",
+   "record_id": "EN-70399"
+  },
+  "kind": "mfa_method_added",
+  "actor_node_ids": [],
+  "attributes": {
+   "upn": "user33@finance.example",
+   "method": "authenticator_push",
+   "asn": 64498,
+   "seconds_since_sign_in": 7785
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0094",
+  "ts": "2026-10-27T09:22:19Z",
+  "source": {
+   "system": "Graph activity log",
+   "record_id": "GR-70239"
+  },
+  "kind": "resource_access",
+  "actor_node_ids": [],
+  "attributes": {
+   "upn": "user38@finance.example",
+   "resource": "Expense reports",
+   "request_count": 5,
+   "window_s": 240,
+   "via": "SharePoint"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0095",
+  "ts": "2026-10-27T09:22:26Z",
+  "source": {
+   "system": "Graph activity log",
+   "record_id": "GR-70318"
+  },
+  "kind": "resource_access",
+  "actor_node_ids": [],
+  "attributes": {
+   "upn": "user43@finance.example",
+   "resource": "AP invoices",
+   "request_count": 32,
+   "window_s": 240,
+   "via": "SharePoint"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0096",
+  "ts": "2026-10-27T09:22:31Z",
+  "source": {
+   "system": "Entra sign-in logs",
+   "record_id": "EN-70315"
+  },
+  "kind": "sign_in",
+  "actor_node_ids": [],
+  "attributes": {
+   "upn": "user42@finance.example",
+   "asn": 64497,
+   "asn_first_seen_for_user": false,
+   "user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 14_6) Safari/18.1",
+   "user_agent_first_seen_for_user": true,
+   "result": "success"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0097",
+  "ts": "2026-10-27T09:22:53Z",
+  "source": {
+   "system": "Graph activity log",
+   "record_id": "GR-70203"
+  },
+  "kind": "resource_access",
+  "actor_node_ids": [],
+  "attributes": {
+   "upn": "user38@finance.example",
+   "resource": "Finance-Close library",
+   "request_count": 35,
+   "window_s": 240,
+   "via": "Finance API"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0098",
+  "ts": "2026-10-27T09:22:57Z",
+  "source": {
+   "system": "Graph activity log",
+   "record_id": "GR-70306"
+  },
+  "kind": "resource_access",
+  "actor_node_ids": [],
+  "attributes": {
+   "upn": "user53@finance.example",
+   "resource": "Vendor master",
+   "request_count": 16,
+   "window_s": 240,
+   "via": "Finance API"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0099",
+  "ts": "2026-10-27T09:23:06Z",
+  "source": {
+   "system": "Mail gateway message trace",
+   "record_id": "MA-70150"
+  },
+  "kind": "mail_delivered",
+  "actor_node_ids": [],
+  "attributes": {
+   "recipient": "user06@finance.example",
+   "sender_domain": "supplier-one.example",
+   "sender_domain_age_days": 242,
+   "link_type": "document"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0100",
+  "ts": "2026-10-27T09:23:39Z",
+  "source": {
+   "system": "Entra sign-in logs",
+   "record_id": "EN-70308"
+  },
+  "kind": "sign_in",
+  "actor_node_ids": [],
+  "attributes": {
+   "upn": "user57@finance.example",
+   "asn": 64497,
+   "asn_first_seen_for_user": false,
+   "user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 14_6) Safari/18.1",
+   "user_agent_first_seen_for_user": false,
+   "result": "success"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0101",
+  "ts": "2026-10-27T09:23:56Z",
+  "source": {
+   "system": "Mail gateway message trace",
+   "record_id": "MA-70103"
+  },
+  "kind": "mail_delivered",
+  "actor_node_ids": [],
+  "attributes": {
+   "recipient": "user10@finance.example",
+   "sender_domain": "bank-notices.example",
+   "sender_domain_age_days": 982,
+   "link_type": "none"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0102",
+  "ts": "2026-10-27T09:24:38Z",
+  "source": {
+   "system": "Mail gateway message trace",
+   "record_id": "MA-70206"
+  },
+  "kind": "mail_delivered",
+  "actor_node_ids": [],
+  "attributes": {
+   "recipient": "user03@finance.example",
+   "sender_domain": "supplier-one.example",
+   "sender_domain_age_days": 1331,
+   "link_type": "document"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0103",
+  "ts": "2026-10-27T09:24:45Z",
+  "source": {
+   "system": "Entra sign-in logs",
+   "record_id": "EN-70099"
+  },
+  "kind": "sign_in",
+  "actor_node_ids": [],
+  "attributes": {
+   "upn": "user24@finance.example",
+   "asn": 64498,
+   "asn_first_seen_for_user": false,
+   "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) Edge/141.0",
+   "user_agent_first_seen_for_user": false,
+   "result": "success"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0104",
+  "ts": "2026-10-27T09:24:58Z",
+  "source": {
+   "system": "Graph activity log",
+   "record_id": "GR-70385"
+  },
+  "kind": "resource_access",
+  "actor_node_ids": [],
+  "attributes": {
+   "upn": "user44@finance.example",
+   "resource": "Expense reports",
+   "request_count": 18,
+   "window_s": 240,
+   "via": "SharePoint"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0105",
+  "ts": "2026-10-27T09:25:33Z",
+  "source": {
+   "system": "Graph activity log",
+   "record_id": "GR-70321"
+  },
+  "kind": "resource_access",
+  "actor_node_ids": [],
+  "attributes": {
+   "upn": "user57@finance.example",
+   "resource": "Expense reports",
+   "request_count": 27,
+   "window_s": 240,
+   "via": "Finance API"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0106",
+  "ts": "2026-10-27T09:25:46Z",
+  "source": {
+   "system": "Graph activity log",
+   "record_id": "GR-70183"
+  },
+  "kind": "resource_access",
+  "actor_node_ids": [],
+  "attributes": {
+   "upn": "user52@finance.example",
+   "resource": "Vendor master",
+   "request_count": 6,
+   "window_s": 240,
+   "via": "SharePoint"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0107",
+  "ts": "2026-10-27T09:25:57Z",
+  "source": {
+   "system": "Entra sign-in logs",
+   "record_id": "EN-70312"
+  },
+  "kind": "sign_in",
+  "actor_node_ids": [],
+  "attributes": {
+   "upn": "user34@finance.example",
+   "asn": 64497,
+   "asn_first_seen_for_user": false,
+   "user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 14_6) Safari/18.1",
+   "user_agent_first_seen_for_user": false,
+   "result": "success"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0108",
+  "ts": "2026-10-27T09:26:55Z",
+  "source": {
+   "system": "Entra sign-in logs",
+   "record_id": "EN-70124"
+  },
+  "kind": "sign_in",
+  "actor_node_ids": [],
+  "attributes": {
+   "upn": "user17@finance.example",
+   "asn": 64496,
+   "asn_first_seen_for_user": false,
+   "user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 14_6) Safari/18.1",
+   "user_agent_first_seen_for_user": false,
+   "result": "success"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0109",
+  "ts": "2026-10-27T09:27:02Z",
+  "source": {
+   "system": "Entra sign-in logs",
+   "record_id": "EN-70347"
+  },
+  "kind": "sign_in",
+  "actor_node_ids": [],
+  "attributes": {
+   "upn": "user06@finance.example",
+   "asn": 64498,
+   "asn_first_seen_for_user": false,
+   "user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 14_6) Safari/18.1",
+   "user_agent_first_seen_for_user": false,
+   "result": "success"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0110",
+  "ts": "2026-10-27T09:27:14Z",
+  "source": {
+   "system": "Entra audit log",
+   "record_id": "EN-70262"
+  },
+  "kind": "oauth_consent",
+  "actor_node_ids": [],
+  "attributes": {
+   "upn": "user25@finance.example",
+   "app_name": "SignFlow",
+   "publisher_verified": true,
+   "app_age_days": 460,
+   "scopes": "User.Read Files.Read",
+   "consent_type": "user"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0111",
+  "ts": "2026-10-27T09:27:19Z",
+  "source": {
+   "system": "Entra sign-in logs",
+   "record_id": "EN-70261"
+  },
+  "kind": "sign_in",
+  "actor_node_ids": [],
+  "attributes": {
+   "upn": "user51@finance.example",
+   "asn": 64498,
+   "asn_first_seen_for_user": false,
+   "user_agent": "Microsoft Outlook 16.0",
+   "user_agent_first_seen_for_user": false,
+   "result": "success"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0112",
+  "ts": "2026-10-27T09:27:31Z",
+  "source": {
+   "system": "Entra sign-in logs",
+   "record_id": "EN-70000"
+  },
+  "kind": "sign_in",
+  "actor_node_ids": [],
+  "attributes": {
+   "upn": "user31@finance.example",
+   "asn": 64497,
+   "asn_first_seen_for_user": false,
+   "user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 14_6) Safari/18.1",
+   "user_agent_first_seen_for_user": false,
+   "result": "success"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0113",
+  "ts": "2026-10-27T09:27:37Z",
+  "source": {
+   "system": "Entra sign-in logs",
+   "record_id": "EN-70174"
+  },
+  "kind": "sign_in",
+  "actor_node_ids": [],
+  "attributes": {
+   "upn": "user18@finance.example",
+   "asn": 64497,
+   "asn_first_seen_for_user": false,
+   "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) Edge/141.0",
+   "user_agent_first_seen_for_user": false,
+   "result": "success"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0114",
+  "ts": "2026-10-27T09:27:49Z",
+  "source": {
+   "system": "Mail gateway message trace",
+   "record_id": "MA-70285"
+  },
+  "kind": "mail_delivered",
+  "actor_node_ids": [],
+  "attributes": {
+   "recipient": "user46@finance.example",
+   "sender_domain": "intranet.example",
+   "sender_domain_age_days": 2845,
+   "link_type": "none"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0115",
+  "ts": "2026-10-27T09:28:00Z",
+  "source": {
+   "system": "Entra sign-in logs",
+   "record_id": "EN-70378"
+  },
+  "kind": "sign_in",
+  "actor_node_ids": [],
+  "attributes": {
+   "upn": "user12@finance.example",
+   "asn": 64496,
+   "asn_first_seen_for_user": false,
+   "user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 14_6) Safari/18.1",
+   "user_agent_first_seen_for_user": false,
+   "result": "success"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0116",
+  "ts": "2026-10-27T09:28:21Z",
+  "source": {
+   "system": "Graph activity log",
+   "record_id": "GR-70185"
+  },
+  "kind": "resource_access",
+  "actor_node_ids": [],
+  "attributes": {
+   "upn": "user40@finance.example",
+   "resource": "Vendor master",
+   "request_count": 38,
+   "window_s": 240,
+   "via": "SharePoint"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0117",
+  "ts": "2026-10-27T09:28:41Z",
+  "source": {
+   "system": "Entra sign-in logs",
+   "record_id": "EN-70131"
+  },
+  "kind": "sign_in",
+  "actor_node_ids": [],
+  "attributes": {
+   "upn": "user40@finance.example",
+   "asn": 64496,
+   "asn_first_seen_for_user": false,
+   "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) Edge/141.0",
+   "user_agent_first_seen_for_user": false,
+   "result": "success"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0118",
+  "ts": "2026-10-27T09:28:45Z",
+  "source": {
+   "system": "Graph activity log",
+   "record_id": "GR-70232"
+  },
+  "kind": "resource_access",
+  "actor_node_ids": [],
+  "attributes": {
+   "upn": "user02@finance.example",
+   "resource": "Expense reports",
+   "request_count": 36,
+   "window_s": 240,
+   "via": "SharePoint"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0119",
+  "ts": "2026-10-27T09:28:51Z",
+  "source": {
+   "system": "Entra audit log",
+   "record_id": "EN-70391"
+  },
+  "kind": "mfa_method_added",
+  "actor_node_ids": [],
+  "attributes": {
+   "upn": "user18@finance.example",
+   "method": "fido2",
+   "asn": 64496,
+   "seconds_since_sign_in": 35032
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0120",
+  "ts": "2026-10-27T09:29:08Z",
+  "source": {
+   "system": "Mail gateway message trace",
+   "record_id": "MA-70031"
+  },
+  "kind": "mail_delivered",
+  "actor_node_ids": [],
+  "attributes": {
+   "recipient": "user22@finance.example",
+   "sender_domain": "bank-notices.example",
+   "sender_domain_age_days": 2045,
+   "link_type": "none"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0121",
+  "ts": "2026-10-27T09:29:36Z",
+  "source": {
+   "system": "Graph activity log",
+   "record_id": "GR-70027"
+  },
+  "kind": "resource_access",
+  "actor_node_ids": [],
+  "attributes": {
+   "upn": "user25@finance.example",
+   "resource": "Expense reports",
+   "request_count": 39,
+   "window_s": 240,
+   "via": "SharePoint"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0122",
+  "ts": "2026-10-27T09:30:01Z",
+  "source": {
+   "system": "Entra sign-in logs",
+   "record_id": "EN-70159"
+  },
+  "kind": "sign_in",
+  "actor_node_ids": [],
+  "attributes": {
+   "upn": "user20@finance.example",
+   "asn": 64497,
+   "asn_first_seen_for_user": false,
+   "user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 14_6) Safari/18.1",
+   "user_agent_first_seen_for_user": false,
+   "result": "success"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0123",
+  "ts": "2026-10-27T09:30:37Z",
+  "source": {
+   "system": "Entra sign-in logs",
+   "record_id": "EN-70205"
+  },
+  "kind": "sign_in",
+  "actor_node_ids": [],
+  "attributes": {
+   "upn": "user02@finance.example",
+   "asn": 64496,
+   "asn_first_seen_for_user": false,
+   "user_agent": "Microsoft Outlook 16.0",
+   "user_agent_first_seen_for_user": false,
+   "result": "success"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0124",
+  "ts": "2026-10-27T09:30:51Z",
+  "source": {
+   "system": "Entra sign-in logs",
+   "record_id": "EN-70270"
+  },
+  "kind": "sign_in",
+  "actor_node_ids": [],
+  "attributes": {
+   "upn": "user49@finance.example",
+   "asn": 64497,
+   "asn_first_seen_for_user": false,
+   "user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 14_6) Safari/18.1",
+   "user_agent_first_seen_for_user": false,
+   "result": "success"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0125",
+  "ts": "2026-10-27T09:31:08Z",
+  "source": {
+   "system": "Mail gateway message trace",
+   "record_id": "MA-70109"
+  },
+  "kind": "mail_delivered",
+  "actor_node_ids": [],
+  "attributes": {
+   "recipient": "user38@finance.example",
+   "sender_domain": "supplier-one.example",
+   "sender_domain_age_days": 314,
+   "link_type": "document"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0126",
+  "ts": "2026-10-27T09:31:11Z",
+  "source": {
+   "system": "Entra sign-in logs",
+   "record_id": "EN-70302"
+  },
+  "kind": "sign_in",
+  "actor_node_ids": [],
+  "attributes": {
+   "upn": "user13@finance.example",
+   "asn": 64496,
+   "asn_first_seen_for_user": false,
+   "user_agent": "Microsoft Outlook 16.0",
+   "user_agent_first_seen_for_user": false,
+   "result": "success"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0127",
+  "ts": "2026-10-27T09:31:43Z",
+  "source": {
+   "system": "Entra sign-in logs",
+   "record_id": "EN-70209"
+  },
+  "kind": "sign_in",
+  "actor_node_ids": [],
+  "attributes": {
+   "upn": "user15@finance.example",
+   "asn": 64496,
+   "asn_first_seen_for_user": false,
+   "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) Edge/141.0",
+   "user_agent_first_seen_for_user": false,
+   "result": "success"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0128",
+  "ts": "2026-10-27T09:31:46Z",
+  "source": {
+   "system": "Entra sign-in logs",
+   "record_id": "EN-70037"
+  },
+  "kind": "sign_in",
+  "actor_node_ids": [],
+  "attributes": {
+   "upn": "user55@finance.example",
+   "asn": 64497,
+   "asn_first_seen_for_user": false,
+   "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) Edge/141.0",
+   "user_agent_first_seen_for_user": true,
+   "result": "success"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0129",
+  "ts": "2026-10-27T09:31:49Z",
+  "source": {
+   "system": "Entra sign-in logs",
+   "record_id": "EN-70350"
+  },
+  "kind": "sign_in",
+  "actor_node_ids": [],
+  "attributes": {
+   "upn": "user30@finance.example",
+   "asn": 64496,
+   "asn_first_seen_for_user": false,
+   "user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 14_6) Safari/18.1",
+   "user_agent_first_seen_for_user": false,
+   "result": "success"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0130",
+  "ts": "2026-10-27T09:31:59Z",
+  "source": {
+   "system": "Entra sign-in logs",
+   "record_id": "EN-70269"
+  },
+  "kind": "sign_in",
+  "actor_node_ids": [],
+  "attributes": {
+   "upn": "user29@finance.example",
+   "asn": 64498,
+   "asn_first_seen_for_user": false,
+   "user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 14_6) Safari/18.1",
+   "user_agent_first_seen_for_user": false,
+   "result": "success"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0131",
+  "ts": "2026-10-27T09:32:29Z",
+  "source": {
+   "system": "Entra sign-in logs",
+   "record_id": "EN-70256"
+  },
+  "kind": "sign_in",
+  "actor_node_ids": [],
+  "attributes": {
+   "upn": "user14@finance.example",
+   "asn": 64497,
+   "asn_first_seen_for_user": false,
+   "user_agent": "Microsoft Outlook 16.0",
+   "user_agent_first_seen_for_user": false,
+   "result": "success"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0132",
+  "ts": "2026-10-27T09:32:31Z",
+  "source": {
+   "system": "Entra sign-in logs",
+   "record_id": "EN-70026"
+  },
+  "kind": "sign_in",
+  "actor_node_ids": [],
+  "attributes": {
+   "upn": "user07@finance.example",
+   "asn": 64497,
+   "asn_first_seen_for_user": false,
+   "user_agent": "Microsoft Outlook 16.0",
+   "user_agent_first_seen_for_user": false,
+   "result": "success"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0133",
+  "ts": "2026-10-27T09:32:41Z",
+  "source": {
+   "system": "Entra sign-in logs",
+   "record_id": "EN-70129"
+  },
+  "kind": "sign_in",
+  "actor_node_ids": [],
+  "attributes": {
+   "upn": "user37@finance.example",
+   "asn": 64498,
+   "asn_first_seen_for_user": false,
+   "user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 14_6) Safari/18.1",
+   "user_agent_first_seen_for_user": false,
+   "result": "success"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0134",
+  "ts": "2026-10-27T09:32:49Z",
+  "source": {
+   "system": "Mail gateway message trace",
+   "record_id": "MA-70116"
+  },
+  "kind": "mail_delivered",
+  "actor_node_ids": [],
+  "attributes": {
+   "recipient": "user59@finance.example",
+   "sender_domain": "intranet.example",
+   "sender_domain_age_days": 2505,
+   "link_type": "none"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0135",
+  "ts": "2026-10-27T09:33:04Z",
+  "source": {
+   "system": "Entra sign-in logs",
+   "record_id": "EN-70252"
+  },
+  "kind": "sign_in",
+  "actor_node_ids": [],
+  "attributes": {
+   "upn": "user41@finance.example",
+   "asn": 64498,
+   "asn_first_seen_for_user": false,
+   "user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 14_6) Safari/18.1",
+   "user_agent_first_seen_for_user": false,
+   "result": "success"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0136",
+  "ts": "2026-10-27T09:33:24Z",
+  "source": {
+   "system": "Entra sign-in logs",
+   "record_id": "EN-70279"
+  },
+  "kind": "sign_in",
+  "actor_node_ids": [],
+  "attributes": {
+   "upn": "user49@finance.example",
+   "asn": 64498,
+   "asn_first_seen_for_user": false,
+   "user_agent": "Microsoft Outlook 16.0",
+   "user_agent_first_seen_for_user": false,
+   "result": "success"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0137",
+  "ts": "2026-10-27T09:33:42Z",
+  "source": {
+   "system": "Entra sign-in logs",
+   "record_id": "EN-70328"
+  },
+  "kind": "sign_in",
+  "actor_node_ids": [],
+  "attributes": {
+   "upn": "user46@finance.example",
+   "asn": 64497,
+   "asn_first_seen_for_user": false,
+   "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) Edge/141.0",
+   "user_agent_first_seen_for_user": false,
+   "result": "success"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0138",
+  "ts": "2026-10-27T09:33:44Z",
+  "source": {
+   "system": "Entra sign-in logs",
+   "record_id": "EN-70075"
+  },
+  "kind": "sign_in",
+  "actor_node_ids": [],
+  "attributes": {
+   "upn": "user25@finance.example",
+   "asn": 64496,
+   "asn_first_seen_for_user": false,
+   "user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 14_6) Safari/18.1",
+   "user_agent_first_seen_for_user": false,
+   "result": "success"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0139",
+  "ts": "2026-10-27T09:33:52Z",
+  "source": {
+   "system": "Entra sign-in logs",
+   "record_id": "EN-70086"
+  },
+  "kind": "sign_in",
+  "actor_node_ids": [],
+  "attributes": {
+   "upn": "user02@finance.example",
+   "asn": 64497,
+   "asn_first_seen_for_user": false,
+   "user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 14_6) Safari/18.1",
+   "user_agent_first_seen_for_user": false,
+   "result": "success"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0140",
+  "ts": "2026-10-27T09:33:52Z",
+  "source": {
+   "system": "Entra sign-in logs",
+   "record_id": "EN-70280"
+  },
+  "kind": "sign_in",
+  "actor_node_ids": [],
+  "attributes": {
+   "upn": "user16@finance.example",
+   "asn": 64498,
+   "asn_first_seen_for_user": false,
+   "user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 14_6) Safari/18.1",
+   "user_agent_first_seen_for_user": false,
+   "result": "success"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0141",
+  "ts": "2026-10-27T09:33:56Z",
+  "source": {
+   "system": "Entra sign-in logs",
+   "record_id": "EN-70122"
+  },
+  "kind": "sign_in",
+  "actor_node_ids": [],
+  "attributes": {
+   "upn": "user02@finance.example",
+   "asn": 64496,
+   "asn_first_seen_for_user": false,
+   "user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 14_6) Safari/18.1",
+   "user_agent_first_seen_for_user": false,
+   "result": "success"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0142",
+  "ts": "2026-10-27T09:34:04Z",
+  "source": {
+   "system": "Graph activity log",
+   "record_id": "GR-70282"
+  },
+  "kind": "resource_access",
+  "actor_node_ids": [],
+  "attributes": {
+   "upn": "user15@finance.example",
+   "resource": "Finance-Close library",
+   "request_count": 2,
+   "window_s": 240,
+   "via": "Finance API"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0143",
+  "ts": "2026-10-27T09:35:13Z",
+  "source": {
+   "system": "Graph activity log",
+   "record_id": "GR-70202"
+  },
+  "kind": "resource_access",
+  "actor_node_ids": [],
+  "attributes": {
+   "upn": "user40@finance.example",
+   "resource": "Finance-Close library",
+   "request_count": 15,
+   "window_s": 240,
+   "via": "Finance API"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0144",
+  "ts": "2026-10-27T09:35:15Z",
+  "source": {
+   "system": "Graph activity log",
+   "record_id": "GR-70398"
+  },
+  "kind": "resource_access",
+  "actor_node_ids": [],
+  "attributes": {
+   "upn": "user36@finance.example",
+   "resource": "Finance-Close library",
+   "request_count": 11,
+   "window_s": 240,
+   "via": "Finance API"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0145",
+  "ts": "2026-10-27T09:35:26Z",
+  "source": {
+   "system": "Entra sign-in logs",
+   "record_id": "EN-70171"
+  },
+  "kind": "sign_in",
+  "actor_node_ids": [],
+  "attributes": {
+   "upn": "user09@finance.example",
+   "asn": 64497,
+   "asn_first_seen_for_user": false,
+   "user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 14_6) Safari/18.1",
+   "user_agent_first_seen_for_user": false,
+   "result": "success"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0146",
+  "ts": "2026-10-27T09:35:35Z",
+  "source": {
+   "system": "Entra sign-in logs",
+   "record_id": "EN-70228"
+  },
+  "kind": "sign_in",
+  "actor_node_ids": [],
+  "attributes": {
+   "upn": "user16@finance.example",
+   "asn": 64498,
+   "asn_first_seen_for_user": false,
+   "user_agent": "Microsoft Outlook 16.0",
+   "user_agent_first_seen_for_user": false,
+   "result": "success"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0147",
+  "ts": "2026-10-27T09:35:58Z",
+  "source": {
+   "system": "Entra sign-in logs",
+   "record_id": "EN-70349"
+  },
+  "kind": "sign_in",
+  "actor_node_ids": [],
+  "attributes": {
+   "upn": "user18@finance.example",
+   "asn": 64497,
+   "asn_first_seen_for_user": false,
+   "user_agent": "Microsoft Outlook 16.0",
+   "user_agent_first_seen_for_user": false,
+   "result": "success"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0148",
+  "ts": "2026-10-27T09:36:16Z",
+  "source": {
+   "system": "Entra sign-in logs",
+   "record_id": "EN-70158"
+  },
+  "kind": "sign_in",
+  "actor_node_ids": [],
+  "attributes": {
+   "upn": "user13@finance.example",
+   "asn": 64498,
+   "asn_first_seen_for_user": false,
+   "user_agent": "Microsoft Outlook 16.0",
+   "user_agent_first_seen_for_user": false,
+   "result": "success"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0149",
+  "ts": "2026-10-27T09:36:17Z",
+  "source": {
+   "system": "Mail gateway message trace",
+   "record_id": "MA-70094"
+  },
+  "kind": "mail_delivered",
+  "actor_node_ids": [],
+  "attributes": {
+   "recipient": "user45@finance.example",
+   "sender_domain": "supplier-one.example",
+   "sender_domain_age_days": 2465,
+   "link_type": "document"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0150",
+  "ts": "2026-10-27T09:36:24Z",
+  "source": {
+   "system": "Entra audit log",
+   "record_id": "EN-70064"
+  },
+  "kind": "mfa_method_added",
+  "actor_node_ids": [],
+  "attributes": {
+   "upn": "user54@finance.example",
+   "method": "authenticator_push",
+   "asn": 64497,
+   "seconds_since_sign_in": 18691
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0151",
+  "ts": "2026-10-27T09:36:39Z",
+  "source": {
+   "system": "Mail gateway message trace",
+   "record_id": "MA-70193"
+  },
+  "kind": "mail_delivered",
+  "actor_node_ids": [],
+  "attributes": {
+   "recipient": "user38@finance.example",
+   "sender_domain": "bank-notices.example",
+   "sender_domain_age_days": 3999,
+   "link_type": "none"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0152",
+  "ts": "2026-10-27T09:37:10Z",
+  "source": {
+   "system": "Entra sign-in logs",
+   "record_id": "EN-70009"
+  },
+  "kind": "sign_in",
+  "actor_node_ids": [],
+  "attributes": {
+   "upn": "user39@finance.example",
+   "asn": 64496,
+   "asn_first_seen_for_user": false,
+   "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) Edge/141.0",
+   "user_agent_first_seen_for_user": false,
+   "result": "success"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0153",
+  "ts": "2026-10-27T09:37:17Z",
+  "source": {
+   "system": "Mail gateway message trace",
+   "record_id": "MA-70058"
+  },
+  "kind": "mail_delivered",
+  "actor_node_ids": [],
+  "attributes": {
+   "recipient": "user56@finance.example",
+   "sender_domain": "supplier-one.example",
+   "sender_domain_age_days": 2673,
+   "link_type": "none"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0154",
+  "ts": "2026-10-27T09:37:21Z",
+  "source": {
+   "system": "Mail gateway message trace",
+   "record_id": "MA-70081"
+  },
+  "kind": "mail_delivered",
+  "actor_node_ids": [],
+  "attributes": {
+   "recipient": "user23@finance.example",
+   "sender_domain": "payroll-svc.example",
+   "sender_domain_age_days": 203,
+   "link_type": "none"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0155",
+  "ts": "2026-10-27T09:37:21Z",
+  "source": {
+   "system": "Entra sign-in logs",
+   "record_id": "EN-70215"
+  },
+  "kind": "sign_in",
+  "actor_node_ids": [],
+  "attributes": {
+   "upn": "user10@finance.example",
+   "asn": 64496,
+   "asn_first_seen_for_user": false,
+   "user_agent": "Microsoft Outlook 16.0",
+   "user_agent_first_seen_for_user": false,
+   "result": "success"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0156",
+  "ts": "2026-10-27T09:37:22Z",
+  "source": {
+   "system": "Graph activity log",
+   "record_id": "GR-70244"
+  },
+  "kind": "resource_access",
+  "actor_node_ids": [],
+  "attributes": {
+   "upn": "user22@finance.example",
+   "resource": "Vendor master",
+   "request_count": 37,
+   "window_s": 240,
+   "via": "Finance API"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0157",
+  "ts": "2026-10-27T09:37:23Z",
+  "source": {
+   "system": "Graph activity log",
+   "record_id": "GR-70297"
+  },
+  "kind": "resource_access",
+  "actor_node_ids": [],
+  "attributes": {
+   "upn": "user58@finance.example",
+   "resource": "Finance-Close library",
+   "request_count": 26,
+   "window_s": 240,
+   "via": "Finance API"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0158",
+  "ts": "2026-10-27T09:37:49Z",
+  "source": {
+   "system": "Graph activity log",
+   "record_id": "GR-70178"
+  },
+  "kind": "resource_access",
+  "actor_node_ids": [],
+  "attributes": {
+   "upn": "user35@finance.example",
+   "resource": "Expense reports",
+   "request_count": 2,
+   "window_s": 240,
+   "via": "SharePoint"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0159",
+  "ts": "2026-10-27T09:37:50Z",
+  "source": {
+   "system": "Entra sign-in logs",
+   "record_id": "EN-70076"
+  },
+  "kind": "sign_in",
+  "actor_node_ids": [],
+  "attributes": {
+   "upn": "user05@finance.example",
+   "asn": 64498,
+   "asn_first_seen_for_user": false,
+   "user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 14_6) Safari/18.1",
+   "user_agent_first_seen_for_user": false,
+   "result": "success"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0160",
+  "ts": "2026-10-27T09:37:52Z",
+  "source": {
+   "system": "Graph activity log",
+   "record_id": "GR-70035"
+  },
+  "kind": "resource_access",
+  "actor_node_ids": [],
+  "attributes": {
+   "upn": "user13@finance.example",
+   "resource": "Finance-Close library",
+   "request_count": 2,
+   "window_s": 240,
+   "via": "Finance API"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0161",
+  "ts": "2026-10-27T09:38:15Z",
+  "source": {
+   "system": "Entra sign-in logs",
+   "record_id": "EN-70145"
+  },
+  "kind": "sign_in",
+  "actor_node_ids": [],
+  "attributes": {
+   "upn": "user05@finance.example",
+   "asn": 64496,
+   "asn_first_seen_for_user": false,
+   "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) Edge/141.0",
+   "user_agent_first_seen_for_user": false,
+   "result": "success"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0162",
+  "ts": "2026-10-27T09:38:21Z",
+  "source": {
+   "system": "Graph activity log",
+   "record_id": "GR-70173"
+  },
+  "kind": "resource_access",
+  "actor_node_ids": [],
+  "attributes": {
+   "upn": "user14@finance.example",
+   "resource": "Expense reports",
+   "request_count": 18,
+   "window_s": 240,
+   "via": "Finance API"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0163",
+  "ts": "2026-10-27T09:38:29Z",
+  "source": {
+   "system": "Entra sign-in logs",
+   "record_id": "EN-70314"
+  },
+  "kind": "sign_in",
+  "actor_node_ids": [],
+  "attributes": {
+   "upn": "user39@finance.example",
+   "asn": 64496,
+   "asn_first_seen_for_user": false,
+   "user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 14_6) Safari/18.1",
+   "user_agent_first_seen_for_user": false,
+   "result": "success"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0164",
+  "ts": "2026-10-27T09:38:33Z",
+  "source": {
+   "system": "Entra sign-in logs",
+   "record_id": "EN-70005"
+  },
+  "kind": "sign_in",
+  "actor_node_ids": [],
+  "attributes": {
+   "upn": "user28@finance.example",
+   "asn": 64497,
+   "asn_first_seen_for_user": false,
+   "user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 14_6) Safari/18.1",
+   "user_agent_first_seen_for_user": false,
+   "result": "success"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0165",
+  "ts": "2026-10-27T09:38:36Z",
+  "source": {
+   "system": "Entra sign-in logs",
+   "record_id": "EN-70370"
+  },
+  "kind": "sign_in",
+  "actor_node_ids": [],
+  "attributes": {
+   "upn": "user12@finance.example",
+   "asn": 64497,
+   "asn_first_seen_for_user": false,
+   "user_agent": "Microsoft Outlook 16.0",
+   "user_agent_first_seen_for_user": false,
+   "result": "success"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0166",
+  "ts": "2026-10-27T09:38:57Z",
+  "source": {
+   "system": "Entra sign-in logs",
+   "record_id": "EN-70268"
+  },
+  "kind": "sign_in",
+  "actor_node_ids": [],
+  "attributes": {
+   "upn": "user39@finance.example",
+   "asn": 64496,
+   "asn_first_seen_for_user": false,
+   "user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 14_6) Safari/18.1",
+   "user_agent_first_seen_for_user": false,
+   "result": "success"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0167",
+  "ts": "2026-10-27T09:39:01Z",
+  "source": {
+   "system": "Entra sign-in logs",
+   "record_id": "EN-70036"
+  },
+  "kind": "sign_in",
+  "actor_node_ids": [],
+  "attributes": {
+   "upn": "user24@finance.example",
+   "asn": 64497,
+   "asn_first_seen_for_user": false,
+   "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) Edge/141.0",
+   "user_agent_first_seen_for_user": false,
+   "result": "success"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0168",
+  "ts": "2026-10-27T09:39:05Z",
+  "source": {
+   "system": "Entra sign-in logs",
+   "record_id": "EN-70356"
+  },
+  "kind": "sign_in",
+  "actor_node_ids": [],
+  "attributes": {
+   "upn": "user28@finance.example",
+   "asn": 64498,
+   "asn_first_seen_for_user": false,
+   "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) Edge/141.0",
+   "user_agent_first_seen_for_user": false,
+   "result": "success"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0169",
+  "ts": "2026-10-27T09:39:20Z",
+  "source": {
+   "system": "Entra sign-in logs",
+   "record_id": "EN-70245"
+  },
+  "kind": "sign_in",
+  "actor_node_ids": [],
+  "attributes": {
+   "upn": "user47@finance.example",
+   "asn": 64497,
+   "asn_first_seen_for_user": false,
+   "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) Edge/141.0",
+   "user_agent_first_seen_for_user": false,
+   "result": "success"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0170",
+  "ts": "2026-10-27T09:39:20Z",
+  "source": {
+   "system": "Entra sign-in logs",
+   "record_id": "EN-70383"
+  },
+  "kind": "sign_in",
+  "actor_node_ids": [],
+  "attributes": {
+   "upn": "user43@finance.example",
+   "asn": 64497,
+   "asn_first_seen_for_user": false,
+   "user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 14_6) Safari/18.1",
+   "user_agent_first_seen_for_user": true,
+   "result": "success"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0171",
+  "ts": "2026-10-27T09:39:45Z",
+  "source": {
+   "system": "Entra sign-in logs",
+   "record_id": "EN-70360"
+  },
+  "kind": "sign_in",
+  "actor_node_ids": [],
+  "attributes": {
+   "upn": "user36@finance.example",
+   "asn": 64497,
+   "asn_first_seen_for_user": false,
+   "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) Edge/141.0",
+   "user_agent_first_seen_for_user": false,
+   "result": "success"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0172",
+  "ts": "2026-10-27T09:40:04Z",
+  "source": {
+   "system": "Entra audit log",
+   "record_id": "EN-70054"
+  },
+  "kind": "mfa_method_added",
+  "actor_node_ids": [],
+  "attributes": {
+   "upn": "user46@finance.example",
+   "method": "fido2",
+   "asn": 64497,
+   "seconds_since_sign_in": 56688
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0173",
+  "ts": "2026-10-27T09:40:11Z",
+  "source": {
+   "system": "Graph activity log",
+   "record_id": "GR-70275"
+  },
+  "kind": "resource_access",
+  "actor_node_ids": [],
+  "attributes": {
+   "upn": "user44@finance.example",
+   "resource": "Vendor master",
+   "request_count": 28,
+   "window_s": 240,
+   "via": "SharePoint"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0174",
+  "ts": "2026-10-27T09:40:15Z",
+  "source": {
+   "system": "Entra audit log",
+   "record_id": "EN-70010"
+  },
+  "kind": "oauth_consent",
+  "actor_node_ids": [],
+  "attributes": {
+   "upn": "user31@finance.example",
+   "app_name": "MeetSpace",
+   "publisher_verified": true,
+   "app_age_days": 1669,
+   "scopes": "User.Read Calendars.Read",
+   "consent_type": "user"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0175",
+  "ts": "2026-10-27T09:40:21Z",
+  "source": {
+   "system": "Entra sign-in logs",
+   "record_id": "EN-70074"
+  },
+  "kind": "sign_in",
+  "actor_node_ids": [],
+  "attributes": {
+   "upn": "user20@finance.example",
+   "asn": 64498,
+   "asn_first_seen_for_user": false,
+   "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) Edge/141.0",
+   "user_agent_first_seen_for_user": false,
+   "result": "success"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0176",
+  "ts": "2026-10-27T09:40:28Z",
+  "source": {
+   "system": "Entra sign-in logs",
+   "record_id": "EN-70387"
+  },
+  "kind": "sign_in",
+  "actor_node_ids": [],
+  "attributes": {
+   "upn": "user53@finance.example",
+   "asn": 64497,
+   "asn_first_seen_for_user": false,
+   "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) Edge/141.0",
+   "user_agent_first_seen_for_user": false,
+   "result": "success"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0177",
+  "ts": "2026-10-27T09:41:04Z",
+  "source": {
+   "system": "Graph activity log",
+   "record_id": "GR-70048"
+  },
+  "kind": "resource_access",
+  "actor_node_ids": [],
+  "attributes": {
+   "upn": "user27@finance.example",
+   "resource": "Vendor master",
+   "request_count": 38,
+   "window_s": 240,
+   "via": "Finance API"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0178",
+  "ts": "2026-10-27T09:41:10Z",
+  "source": {
+   "system": "Entra sign-in logs",
+   "record_id": "EN-70083"
+  },
+  "kind": "sign_in",
+  "actor_node_ids": [],
+  "attributes": {
+   "upn": "user46@finance.example",
+   "asn": 64496,
+   "asn_first_seen_for_user": false,
+   "user_agent": "Microsoft Outlook 16.0",
+   "user_agent_first_seen_for_user": false,
+   "result": "success"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0179",
+  "ts": "2026-10-27T09:41:15Z",
+  "source": {
+   "system": "Graph activity log",
+   "record_id": "GR-70108"
+  },
+  "kind": "resource_access",
+  "actor_node_ids": [],
+  "attributes": {
+   "upn": "user35@finance.example",
+   "resource": "Vendor master",
+   "request_count": 39,
+   "window_s": 240,
+   "via": "SharePoint"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0180",
+  "ts": "2026-10-27T09:41:21Z",
+  "source": {
+   "system": "Graph activity log",
+   "record_id": "GR-70373"
+  },
+  "kind": "resource_access",
+  "actor_node_ids": [],
+  "attributes": {
+   "upn": "user07@finance.example",
+   "resource": "Finance-Close library",
+   "request_count": 9,
+   "window_s": 240,
+   "via": "Finance API"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0181",
+  "ts": "2026-10-27T09:41:40Z",
+  "source": {
+   "system": "Mail gateway message trace",
+   "record_id": "MA-70397"
+  },
+  "kind": "mail_delivered",
+  "actor_node_ids": [],
+  "attributes": {
+   "recipient": "user20@finance.example",
+   "sender_domain": "intranet.example",
+   "sender_domain_age_days": 3553,
+   "link_type": "document"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0182",
+  "ts": "2026-10-27T09:42:06Z",
+  "source": {
+   "system": "Entra sign-in logs",
+   "record_id": "EN-70317"
+  },
+  "kind": "sign_in",
+  "actor_node_ids": [],
+  "attributes": {
+   "upn": "user08@finance.example",
+   "asn": 64497,
+   "asn_first_seen_for_user": false,
+   "user_agent": "Microsoft Outlook 16.0",
+   "user_agent_first_seen_for_user": true,
+   "result": "success"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0183",
+  "ts": "2026-10-27T09:42:11Z",
+  "source": {
+   "system": "Entra sign-in logs",
+   "record_id": "EN-70114"
+  },
+  "kind": "sign_in",
+  "actor_node_ids": [],
+  "attributes": {
+   "upn": "user10@finance.example",
+   "asn": 64497,
+   "asn_first_seen_for_user": false,
+   "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) Edge/141.0",
+   "user_agent_first_seen_for_user": false,
+   "result": "success"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0184",
+  "ts": "2026-10-27T09:42:30Z",
+  "source": {
+   "system": "Entra sign-in logs",
+   "record_id": "EN-70016"
+  },
+  "kind": "sign_in",
+  "actor_node_ids": [],
+  "attributes": {
+   "upn": "user58@finance.example",
+   "asn": 64496,
+   "asn_first_seen_for_user": false,
+   "user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 14_6) Safari/18.1",
+   "user_agent_first_seen_for_user": true,
+   "result": "success"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0185",
+  "ts": "2026-10-27T09:42:33Z",
+  "source": {
+   "system": "Entra sign-in logs",
+   "record_id": "EN-70063"
+  },
+  "kind": "sign_in",
+  "actor_node_ids": [],
+  "attributes": {
+   "upn": "user31@finance.example",
+   "asn": 64498,
+   "asn_first_seen_for_user": false,
+   "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) Edge/141.0",
+   "user_agent_first_seen_for_user": false,
+   "result": "success"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0186",
+  "ts": "2026-10-27T09:42:35Z",
+  "source": {
+   "system": "Graph activity log",
+   "record_id": "GR-70170"
+  },
+  "kind": "resource_access",
+  "actor_node_ids": [],
+  "attributes": {
+   "upn": "user07@finance.example",
+   "resource": "Vendor master",
+   "request_count": 1,
+   "window_s": 240,
+   "via": "SharePoint"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0187",
+  "ts": "2026-10-27T09:42:36Z",
+  "source": {
+   "system": "Graph activity log",
+   "record_id": "GR-70018"
+  },
+  "kind": "resource_access",
+  "actor_node_ids": [],
+  "attributes": {
+   "upn": "user33@finance.example",
+   "resource": "AP invoices",
+   "request_count": 4,
+   "window_s": 240,
+   "via": "Finance API"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0188",
+  "ts": "2026-10-27T09:42:58Z",
+  "source": {
+   "system": "Entra sign-in logs",
+   "record_id": "EN-70264"
+  },
+  "kind": "sign_in",
+  "actor_node_ids": [],
+  "attributes": {
+   "upn": "user29@finance.example",
+   "asn": 64497,
+   "asn_first_seen_for_user": false,
+   "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) Edge/141.0",
+   "user_agent_first_seen_for_user": false,
+   "result": "success"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0189",
+  "ts": "2026-10-27T09:43:06Z",
+  "source": {
+   "system": "Graph activity log",
+   "record_id": "GR-70368"
+  },
+  "kind": "resource_access",
+  "actor_node_ids": [],
+  "attributes": {
+   "upn": "user21@finance.example",
+   "resource": "Finance-Close library",
+   "request_count": 38,
+   "window_s": 240,
+   "via": "Finance API"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0190",
+  "ts": "2026-10-27T09:43:18Z",
+  "source": {
+   "system": "Graph activity log",
+   "record_id": "GR-70257"
+  },
+  "kind": "resource_access",
+  "actor_node_ids": [],
+  "attributes": {
+   "upn": "user43@finance.example",
+   "resource": "AP invoices",
+   "request_count": 13,
+   "window_s": 240,
+   "via": "Finance API"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0191",
+  "ts": "2026-10-27T09:43:29Z",
+  "source": {
+   "system": "Entra sign-in logs",
+   "record_id": "EN-70162"
+  },
+  "kind": "sign_in",
+  "actor_node_ids": [],
+  "attributes": {
+   "upn": "user24@finance.example",
+   "asn": 64496,
+   "asn_first_seen_for_user": false,
+   "user_agent": "Microsoft Outlook 16.0",
+   "user_agent_first_seen_for_user": false,
+   "result": "success"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0192",
+  "ts": "2026-10-27T09:43:43Z",
+  "source": {
+   "system": "Mail gateway message trace",
+   "record_id": "MA-70132"
+  },
+  "kind": "mail_delivered",
+  "actor_node_ids": [],
+  "attributes": {
+   "recipient": "user03@finance.example",
+   "sender_domain": "payroll-svc.example",
+   "sender_domain_age_days": 2241,
+   "link_type": "document"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0193",
+  "ts": "2026-10-27T09:43:44Z",
+  "source": {
+   "system": "Graph activity log",
+   "record_id": "GR-70071"
+  },
+  "kind": "resource_access",
+  "actor_node_ids": [],
+  "attributes": {
+   "upn": "user31@finance.example",
+   "resource": "Vendor master",
+   "request_count": 7,
+   "window_s": 240,
+   "via": "Finance API"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0194",
+  "ts": "2026-10-27T09:44:03Z",
+  "source": {
+   "system": "Graph activity log",
+   "record_id": "GR-70219"
+  },
+  "kind": "resource_access",
+  "actor_node_ids": [],
+  "attributes": {
+   "upn": "user30@finance.example",
+   "resource": "Vendor master",
+   "request_count": 21,
+   "window_s": 240,
+   "via": "SharePoint"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0195",
+  "ts": "2026-10-27T09:44:10Z",
+  "source": {
+   "system": "Entra sign-in logs",
+   "record_id": "EN-70143"
+  },
+  "kind": "sign_in",
+  "actor_node_ids": [],
+  "attributes": {
+   "upn": "user33@finance.example",
+   "asn": 64497,
+   "asn_first_seen_for_user": false,
+   "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) Edge/141.0",
+   "user_agent_first_seen_for_user": false,
+   "result": "success"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0196",
+  "ts": "2026-10-27T09:44:27Z",
+  "source": {
+   "system": "Entra sign-in logs",
+   "record_id": "EN-70091"
+  },
+  "kind": "sign_in",
+  "actor_node_ids": [],
+  "attributes": {
+   "upn": "user03@finance.example",
+   "asn": 64498,
+   "asn_first_seen_for_user": false,
+   "user_agent": "Microsoft Outlook 16.0",
+   "user_agent_first_seen_for_user": false,
+   "result": "success"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0197",
+  "ts": "2026-10-27T09:44:29Z",
+  "source": {
+   "system": "Graph activity log",
+   "record_id": "GR-70224"
+  },
+  "kind": "resource_access",
+  "actor_node_ids": [],
+  "attributes": {
+   "upn": "user33@finance.example",
+   "resource": "Vendor master",
+   "request_count": 3,
+   "window_s": 240,
+   "via": "Finance API"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0198",
+  "ts": "2026-10-27T09:44:35Z",
+  "source": {
+   "system": "Graph activity log",
+   "record_id": "GR-70080"
+  },
+  "kind": "resource_access",
+  "actor_node_ids": [],
+  "attributes": {
+   "upn": "user44@finance.example",
+   "resource": "Expense reports",
+   "request_count": 20,
+   "window_s": 240,
+   "via": "Finance API"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0199",
+  "ts": "2026-10-27T09:44:44Z",
+  "source": {
+   "system": "Entra sign-in logs",
+   "record_id": "EN-70184"
+  },
+  "kind": "sign_in",
+  "actor_node_ids": [],
+  "attributes": {
+   "upn": "user51@finance.example",
+   "asn": 64496,
+   "asn_first_seen_for_user": false,
+   "user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 14_6) Safari/18.1",
+   "user_agent_first_seen_for_user": false,
+   "result": "success"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0200",
+  "ts": "2026-10-27T09:45:05Z",
+  "source": {
+   "system": "Entra sign-in logs",
+   "record_id": "EN-70254"
+  },
+  "kind": "sign_in",
+  "actor_node_ids": [],
+  "attributes": {
+   "upn": "user22@finance.example",
+   "asn": 64498,
+   "asn_first_seen_for_user": false,
+   "user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 14_6) Safari/18.1",
+   "user_agent_first_seen_for_user": false,
+   "result": "success"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0201",
+  "ts": "2026-10-27T09:45:14Z",
+  "source": {
+   "system": "Entra sign-in logs",
+   "record_id": "EN-70013"
+  },
+  "kind": "sign_in",
+  "actor_node_ids": [],
+  "attributes": {
+   "upn": "user22@finance.example",
+   "asn": 64496,
+   "asn_first_seen_for_user": false,
+   "user_agent": "Microsoft Outlook 16.0",
+   "user_agent_first_seen_for_user": false,
+   "result": "success"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0202",
+  "ts": "2026-10-27T09:45:36Z",
+  "source": {
+   "system": "Entra sign-in logs",
+   "record_id": "EN-70377"
+  },
+  "kind": "sign_in",
+  "actor_node_ids": [],
+  "attributes": {
+   "upn": "user29@finance.example",
+   "asn": 64497,
+   "asn_first_seen_for_user": false,
+   "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) Edge/141.0",
+   "user_agent_first_seen_for_user": false,
+   "result": "failure"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0203",
+  "ts": "2026-10-27T09:45:41Z",
+  "source": {
+   "system": "Graph activity log",
+   "record_id": "GR-70142"
+  },
+  "kind": "resource_access",
+  "actor_node_ids": [],
+  "attributes": {
+   "upn": "user54@finance.example",
+   "resource": "Expense reports",
+   "request_count": 33,
+   "window_s": 240,
+   "via": "Finance API"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0204",
+  "ts": "2026-10-27T09:45:50Z",
+  "source": {
+   "system": "Graph activity log",
+   "record_id": "GR-70220"
+  },
+  "kind": "resource_access",
+  "actor_node_ids": [],
+  "attributes": {
+   "upn": "user37@finance.example",
+   "resource": "AP invoices",
+   "request_count": 25,
+   "window_s": 240,
+   "via": "SharePoint"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0205",
+  "ts": "2026-10-27T09:46:07Z",
+  "source": {
+   "system": "Graph activity log",
+   "record_id": "GR-70019"
+  },
+  "kind": "resource_access",
+  "actor_node_ids": [],
+  "attributes": {
+   "upn": "user22@finance.example",
+   "resource": "AP invoices",
+   "request_count": 2,
+   "window_s": 240,
+   "via": "SharePoint"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0206",
+  "ts": "2026-10-27T09:46:12Z",
+  "source": {
+   "system": "Entra sign-in logs",
+   "record_id": "EN-70403"
+  },
+  "kind": "token_replay",
+  "actor_node_ids": [],
+  "attributes": {
+   "upn": "user24@finance.example",
+   "sessions": "S-BG-1",
+   "asn": 64496,
+   "issued_asn": 64497,
+   "device_mismatch": false
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0207",
+  "ts": "2026-10-27T09:46:26Z",
+  "source": {
+   "system": "Entra audit log",
+   "record_id": "EN-70263"
+  },
+  "kind": "mfa_method_added",
+  "actor_node_ids": [],
+  "attributes": {
+   "upn": "user45@finance.example",
+   "method": "authenticator_push",
+   "asn": 64498,
+   "seconds_since_sign_in": 79808
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0208",
+  "ts": "2026-10-27T09:46:26Z",
+  "source": {
+   "system": "Entra sign-in logs",
+   "record_id": "EN-70372"
+  },
+  "kind": "sign_in",
+  "actor_node_ids": [],
+  "attributes": {
+   "upn": "user45@finance.example",
+   "asn": 64497,
+   "asn_first_seen_for_user": false,
+   "user_agent": "Microsoft Outlook 16.0",
+   "user_agent_first_seen_for_user": false,
+   "result": "success"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0209",
+  "ts": "2026-10-27T09:46:54Z",
+  "source": {
+   "system": "Graph activity log",
+   "record_id": "GR-70226"
+  },
+  "kind": "resource_access",
+  "actor_node_ids": [],
+  "attributes": {
+   "upn": "user23@finance.example",
+   "resource": "AP invoices",
+   "request_count": 38,
+   "window_s": 240,
+   "via": "Finance API"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0210",
+  "ts": "2026-10-27T09:46:57Z",
+  "source": {
+   "system": "Entra sign-in logs",
+   "record_id": "EN-70043"
+  },
+  "kind": "sign_in",
+  "actor_node_ids": [],
+  "attributes": {
+   "upn": "user40@finance.example",
+   "asn": 64496,
+   "asn_first_seen_for_user": false,
+   "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) Edge/141.0",
+   "user_agent_first_seen_for_user": true,
+   "result": "success"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0211",
+  "ts": "2026-10-27T09:47:06Z",
+  "source": {
+   "system": "Entra audit log",
+   "record_id": "EN-70346"
+  },
+  "kind": "mfa_method_added",
+  "actor_node_ids": [],
+  "attributes": {
+   "upn": "user27@finance.example",
+   "method": "fido2",
+   "asn": 64496,
+   "seconds_since_sign_in": 27795
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0212",
+  "ts": "2026-10-27T09:47:11Z",
+  "source": {
+   "system": "Entra sign-in logs",
+   "record_id": "EN-70144"
+  },
+  "kind": "sign_in",
+  "actor_node_ids": [],
+  "attributes": {
+   "upn": "user31@finance.example",
+   "asn": 64498,
+   "asn_first_seen_for_user": false,
+   "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) Edge/141.0",
+   "user_agent_first_seen_for_user": false,
+   "result": "success"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0213",
+  "ts": "2026-10-27T09:47:12Z",
+  "source": {
+   "system": "Graph activity log",
+   "record_id": "GR-70066"
+  },
+  "kind": "resource_access",
+  "actor_node_ids": [],
+  "attributes": {
+   "upn": "user14@finance.example",
+   "resource": "Vendor master",
+   "request_count": 26,
+   "window_s": 240,
+   "via": "SharePoint"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0214",
+  "ts": "2026-10-27T09:47:16Z",
+  "source": {
+   "system": "Entra sign-in logs",
+   "record_id": "EN-70194"
+  },
+  "kind": "sign_in",
+  "actor_node_ids": [],
+  "attributes": {
+   "upn": "user09@finance.example",
+   "asn": 64497,
+   "asn_first_seen_for_user": false,
+   "user_agent": "Microsoft Outlook 16.0",
+   "user_agent_first_seen_for_user": false,
+   "result": "success"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0215",
+  "ts": "2026-10-27T09:47:18Z",
+  "source": {
+   "system": "Entra sign-in logs",
+   "record_id": "EN-70204"
+  },
+  "kind": "sign_in",
+  "actor_node_ids": [],
+  "attributes": {
+   "upn": "user41@finance.example",
+   "asn": 64497,
+   "asn_first_seen_for_user": false,
+   "user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 14_6) Safari/18.1",
+   "user_agent_first_seen_for_user": false,
+   "result": "success"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0216",
+  "ts": "2026-10-27T09:47:23Z",
+  "source": {
+   "system": "Mail gateway message trace",
+   "record_id": "MA-70072"
+  },
+  "kind": "mail_delivered",
+  "actor_node_ids": [],
+  "attributes": {
+   "recipient": "user14@finance.example",
+   "sender_domain": "intranet.example",
+   "sender_domain_age_days": 1698,
+   "link_type": "none"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0217",
+  "ts": "2026-10-27T09:47:29Z",
+  "source": {
+   "system": "Mail gateway message trace",
+   "record_id": "MA-70077"
+  },
+  "kind": "mail_delivered",
+  "actor_node_ids": [],
+  "attributes": {
+   "recipient": "user45@finance.example",
+   "sender_domain": "payroll-svc.example",
+   "sender_domain_age_days": 2124,
+   "link_type": "none"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0218",
+  "ts": "2026-10-27T09:47:30Z",
+  "source": {
+   "system": "Mail gateway message trace",
+   "record_id": "MA-70354"
+  },
+  "kind": "mail_delivered",
+  "actor_node_ids": [],
+  "attributes": {
+   "recipient": "user52@finance.example",
+   "sender_domain": "intranet.example",
+   "sender_domain_age_days": 1675,
+   "link_type": "none"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0219",
+  "ts": "2026-10-27T09:47:45Z",
+  "source": {
+   "system": "Entra sign-in logs",
+   "record_id": "EN-70136"
+  },
+  "kind": "sign_in",
+  "actor_node_ids": [],
+  "attributes": {
+   "upn": "user42@finance.example",
+   "asn": 64497,
+   "asn_first_seen_for_user": false,
+   "user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 14_6) Safari/18.1",
+   "user_agent_first_seen_for_user": false,
+   "result": "success"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0220",
+  "ts": "2026-10-27T09:47:45Z",
+  "source": {
+   "system": "Entra sign-in logs",
+   "record_id": "EN-70152"
+  },
+  "kind": "sign_in",
+  "actor_node_ids": [],
+  "attributes": {
+   "upn": "user40@finance.example",
+   "asn": 64498,
+   "asn_first_seen_for_user": false,
+   "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) Edge/141.0",
+   "user_agent_first_seen_for_user": false,
+   "result": "success"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0221",
+  "ts": "2026-10-27T09:47:46Z",
+  "source": {
+   "system": "Entra sign-in logs",
+   "record_id": "EN-70344"
+  },
+  "kind": "sign_in",
+  "actor_node_ids": [],
+  "attributes": {
+   "upn": "user27@finance.example",
+   "asn": 64496,
+   "asn_first_seen_for_user": false,
+   "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) Edge/141.0",
+   "user_agent_first_seen_for_user": false,
+   "result": "success"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0222",
+  "ts": "2026-10-27T09:47:51Z",
+  "source": {
+   "system": "Entra sign-in logs",
+   "record_id": "EN-70311"
+  },
+  "kind": "sign_in",
+  "actor_node_ids": [],
+  "attributes": {
+   "upn": "user49@finance.example",
+   "asn": 64498,
+   "asn_first_seen_for_user": false,
+   "user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 14_6) Safari/18.1",
+   "user_agent_first_seen_for_user": false,
+   "result": "success"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0223",
+  "ts": "2026-10-27T09:47:56Z",
+  "source": {
+   "system": "Entra sign-in logs",
+   "record_id": "EN-70278"
+  },
+  "kind": "sign_in",
+  "actor_node_ids": [],
+  "attributes": {
+   "upn": "user05@finance.example",
+   "asn": 64498,
+   "asn_first_seen_for_user": false,
+   "user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 14_6) Safari/18.1",
+   "user_agent_first_seen_for_user": false,
+   "result": "success"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0224",
+  "ts": "2026-10-27T09:47:59Z",
+  "source": {
+   "system": "Entra sign-in logs",
+   "record_id": "EN-70097"
+  },
+  "kind": "sign_in",
+  "actor_node_ids": [],
+  "attributes": {
+   "upn": "user49@finance.example",
+   "asn": 64498,
+   "asn_first_seen_for_user": false,
+   "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) Edge/141.0",
+   "user_agent_first_seen_for_user": true,
+   "result": "success"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0225",
+  "ts": "2026-10-27T09:48:02Z",
+  "source": {
+   "system": "Entra sign-in logs",
+   "record_id": "EN-70092"
+  },
+  "kind": "sign_in",
+  "actor_node_ids": [],
+  "attributes": {
+   "upn": "user60@finance.example",
+   "asn": 64497,
+   "asn_first_seen_for_user": false,
+   "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) Edge/141.0",
+   "user_agent_first_seen_for_user": false,
+   "result": "success"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0226",
+  "ts": "2026-10-27T09:48:07Z",
+  "source": {
+   "system": "Entra sign-in logs",
+   "record_id": "EN-70230"
+  },
+  "kind": "sign_in",
+  "actor_node_ids": [],
+  "attributes": {
+   "upn": "user59@finance.example",
+   "asn": 64498,
+   "asn_first_seen_for_user": false,
+   "user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 14_6) Safari/18.1",
+   "user_agent_first_seen_for_user": false,
+   "result": "success"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0227",
+  "ts": "2026-10-27T09:48:22Z",
+  "source": {
+   "system": "Entra sign-in logs",
+   "record_id": "EN-70004"
+  },
+  "kind": "sign_in",
+  "actor_node_ids": [],
+  "attributes": {
+   "upn": "user17@finance.example",
+   "asn": 64496,
+   "asn_first_seen_for_user": false,
+   "user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 14_6) Safari/18.1",
+   "user_agent_first_seen_for_user": false,
+   "result": "success"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0228",
+  "ts": "2026-10-27T09:48:25Z",
+  "source": {
+   "system": "Entra sign-in logs",
+   "record_id": "EN-70015"
+  },
+  "kind": "sign_in",
+  "actor_node_ids": [],
+  "attributes": {
+   "upn": "user19@finance.example",
+   "asn": 64496,
+   "asn_first_seen_for_user": false,
+   "user_agent": "Microsoft Outlook 16.0",
+   "user_agent_first_seen_for_user": false,
+   "result": "success"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0229",
+  "ts": "2026-10-27T09:48:26Z",
+  "source": {
+   "system": "Entra sign-in logs",
+   "record_id": "EN-70084"
+  },
+  "kind": "sign_in",
+  "actor_node_ids": [],
+  "attributes": {
+   "upn": "user08@finance.example",
+   "asn": 64496,
+   "asn_first_seen_for_user": false,
+   "user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 14_6) Safari/18.1",
+   "user_agent_first_seen_for_user": false,
+   "result": "success"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0230",
+  "ts": "2026-10-27T09:48:26Z",
+  "source": {
+   "system": "Entra sign-in logs",
+   "record_id": "EN-70307"
+  },
+  "kind": "sign_in",
+  "actor_node_ids": [],
+  "attributes": {
+   "upn": "user07@finance.example",
+   "asn": 64497,
+   "asn_first_seen_for_user": false,
+   "user_agent": "Microsoft Outlook 16.0",
+   "user_agent_first_seen_for_user": false,
+   "result": "success"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0231",
+  "ts": "2026-10-27T09:48:31Z",
+  "source": {
+   "system": "Entra audit log",
+   "record_id": "EN-70199"
+  },
+  "kind": "mfa_method_added",
+  "actor_node_ids": [],
+  "attributes": {
+   "upn": "user32@finance.example",
+   "method": "authenticator_push",
+   "asn": 64498,
+   "seconds_since_sign_in": 50825
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0232",
+  "ts": "2026-10-27T09:48:32Z",
+  "source": {
+   "system": "Graph activity log",
+   "record_id": "GR-70014"
+  },
+  "kind": "resource_access",
+  "actor_node_ids": [],
+  "attributes": {
+   "upn": "user03@finance.example",
+   "resource": "Vendor master",
+   "request_count": 8,
+   "window_s": 240,
+   "via": "SharePoint"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0233",
+  "ts": "2026-10-27T09:48:36Z",
+  "source": {
+   "system": "Entra sign-in logs",
+   "record_id": "EN-70242"
+  },
+  "kind": "sign_in",
+  "actor_node_ids": [],
+  "attributes": {
+   "upn": "user43@finance.example",
+   "asn": 64498,
+   "asn_first_seen_for_user": false,
+   "user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 14_6) Safari/18.1",
+   "user_agent_first_seen_for_user": false,
+   "result": "success"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0234",
+  "ts": "2026-10-27T09:48:38Z",
+  "source": {
+   "system": "Entra sign-in logs",
+   "record_id": "EN-70379"
+  },
+  "kind": "sign_in",
+  "actor_node_ids": [],
+  "attributes": {
+   "upn": "user58@finance.example",
+   "asn": 64496,
+   "asn_first_seen_for_user": false,
+   "user_agent": "Microsoft Outlook 16.0",
+   "user_agent_first_seen_for_user": false,
+   "result": "success"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0235",
+  "ts": "2026-10-27T09:48:56Z",
+  "source": {
+   "system": "Mail gateway message trace",
+   "record_id": "MA-70216"
+  },
+  "kind": "mail_delivered",
+  "actor_node_ids": [],
+  "attributes": {
+   "recipient": "user26@finance.example",
+   "sender_domain": "payroll-svc.example",
+   "sender_domain_age_days": 385,
+   "link_type": "none"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0236",
+  "ts": "2026-10-27T09:49:30Z",
+  "source": {
+   "system": "Entra sign-in logs",
+   "record_id": "EN-70007"
+  },
+  "kind": "sign_in",
+  "actor_node_ids": [],
+  "attributes": {
+   "upn": "user20@finance.example",
+   "asn": 64498,
+   "asn_first_seen_for_user": false,
+   "user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 14_6) Safari/18.1",
+   "user_agent_first_seen_for_user": false,
+   "result": "success"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0237",
+  "ts": "2026-10-27T09:49:30Z",
+  "source": {
+   "system": "Graph activity log",
+   "record_id": "GR-70255"
+  },
+  "kind": "resource_access",
+  "actor_node_ids": [],
+  "attributes": {
+   "upn": "user11@finance.example",
+   "resource": "Expense reports",
+   "request_count": 30,
+   "window_s": 240,
+   "via": "SharePoint"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0238",
+  "ts": "2026-10-27T09:49:49Z",
+  "source": {
+   "system": "Entra sign-in logs",
+   "record_id": "EN-70353"
+  },
+  "kind": "sign_in",
+  "actor_node_ids": [],
+  "attributes": {
+   "upn": "user23@finance.example",
+   "asn": 64497,
+   "asn_first_seen_for_user": false,
+   "user_agent": "Microsoft Outlook 16.0",
+   "user_agent_first_seen_for_user": false,
+   "result": "success"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0239",
+  "ts": "2026-10-27T09:49:51Z",
+  "source": {
+   "system": "Entra sign-in logs",
+   "record_id": "EN-70128"
+  },
+  "kind": "sign_in",
+  "actor_node_ids": [],
+  "attributes": {
+   "upn": "user59@finance.example",
+   "asn": 64496,
+   "asn_first_seen_for_user": false,
+   "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) Edge/141.0",
+   "user_agent_first_seen_for_user": false,
+   "result": "success"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0240",
+  "ts": "2026-10-27T09:50:40Z",
+  "source": {
+   "system": "Graph activity log",
+   "record_id": "GR-70295"
+  },
+  "kind": "resource_access",
+  "actor_node_ids": [],
+  "attributes": {
+   "upn": "user33@finance.example",
+   "resource": "Expense reports",
+   "request_count": 6,
+   "window_s": 240,
+   "via": "SharePoint"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0241",
+  "ts": "2026-10-27T09:50:45Z",
+  "source": {
+   "system": "Mail gateway message trace",
+   "record_id": "MA-70366"
+  },
+  "kind": "mail_delivered",
+  "actor_node_ids": [],
+  "attributes": {
+   "recipient": "user52@finance.example",
+   "sender_domain": "supplier-one.example",
+   "sender_domain_age_days": 3861,
+   "link_type": "none"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0242",
+  "ts": "2026-10-27T09:50:53Z",
+  "source": {
+   "system": "Entra sign-in logs",
+   "record_id": "EN-70277"
+  },
+  "kind": "sign_in",
+  "actor_node_ids": [],
+  "attributes": {
+   "upn": "user19@finance.example",
+   "asn": 64498,
+   "asn_first_seen_for_user": false,
+   "user_agent": "Microsoft Outlook 16.0",
+   "user_agent_first_seen_for_user": false,
+   "result": "success"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0243",
+  "ts": "2026-10-27T09:50:54Z",
+  "source": {
+   "system": "Mail gateway message trace",
+   "record_id": "MA-70251"
+  },
+  "kind": "mail_delivered",
+  "actor_node_ids": [],
+  "attributes": {
+   "recipient": "user58@finance.example",
+   "sender_domain": "intranet.example",
+   "sender_domain_age_days": 2448,
+   "link_type": "document"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0244",
+  "ts": "2026-10-27T09:50:55Z",
+  "source": {
+   "system": "Entra sign-in logs",
+   "record_id": "EN-70234"
+  },
+  "kind": "sign_in",
+  "actor_node_ids": [],
+  "attributes": {
+   "upn": "user08@finance.example",
+   "asn": 64496,
+   "asn_first_seen_for_user": false,
+   "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) Edge/141.0",
+   "user_agent_first_seen_for_user": false,
+   "result": "success"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0245",
+  "ts": "2026-10-27T09:51:03Z",
+  "source": {
+   "system": "Entra sign-in logs",
+   "record_id": "EN-70394"
+  },
+  "kind": "sign_in",
+  "actor_node_ids": [],
+  "attributes": {
+   "upn": "user34@finance.example",
+   "asn": 64498,
+   "asn_first_seen_for_user": false,
+   "user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 14_6) Safari/18.1",
+   "user_agent_first_seen_for_user": false,
+   "result": "success"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0246",
+  "ts": "2026-10-27T09:51:13Z",
+  "source": {
+   "system": "Graph activity log",
+   "record_id": "GR-70240"
+  },
+  "kind": "resource_access",
+  "actor_node_ids": [],
+  "attributes": {
+   "upn": "user57@finance.example",
+   "resource": "AP invoices",
+   "request_count": 24,
+   "window_s": 240,
+   "via": "SharePoint"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0247",
+  "ts": "2026-10-27T09:51:16Z",
+  "source": {
+   "system": "Graph activity log",
+   "record_id": "GR-70079"
+  },
+  "kind": "resource_access",
+  "actor_node_ids": [],
+  "attributes": {
+   "upn": "user22@finance.example",
+   "resource": "Expense reports",
+   "request_count": 15,
+   "window_s": 240,
+   "via": "Finance API"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0248",
+  "ts": "2026-10-27T09:51:24Z",
+  "source": {
+   "system": "Entra sign-in logs",
+   "record_id": "EN-70186"
+  },
+  "kind": "sign_in",
+  "actor_node_ids": [],
+  "attributes": {
+   "upn": "user58@finance.example",
+   "asn": 64498,
+   "asn_first_seen_for_user": false,
+   "user_agent": "Microsoft Outlook 16.0",
+   "user_agent_first_seen_for_user": false,
+   "result": "success"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0249",
+  "ts": "2026-10-27T09:51:40Z",
+  "source": {
+   "system": "Entra sign-in logs",
+   "record_id": "EN-70156"
+  },
+  "kind": "sign_in",
+  "actor_node_ids": [],
+  "attributes": {
+   "upn": "user29@finance.example",
+   "asn": 64498,
+   "asn_first_seen_for_user": false,
+   "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) Edge/141.0",
+   "user_agent_first_seen_for_user": false,
+   "result": "success"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0250",
+  "ts": "2026-10-27T09:52:01Z",
+  "source": {
+   "system": "Entra sign-in logs",
+   "record_id": "EN-70160"
+  },
+  "kind": "sign_in",
+  "actor_node_ids": [],
+  "attributes": {
+   "upn": "user40@finance.example",
+   "asn": 64497,
+   "asn_first_seen_for_user": false,
+   "user_agent": "Microsoft Outlook 16.0",
+   "user_agent_first_seen_for_user": false,
+   "result": "success"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0251",
+  "ts": "2026-10-27T09:52:30Z",
+  "source": {
+   "system": "Mail gateway message trace",
+   "record_id": "MA-70034"
+  },
+  "kind": "mail_delivered",
+  "actor_node_ids": [],
+  "attributes": {
+   "recipient": "user16@finance.example",
+   "sender_domain": "intranet.example",
+   "sender_domain_age_days": 1207,
+   "link_type": "none"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0252",
+  "ts": "2026-10-27T09:53:36Z",
+  "source": {
+   "system": "Entra sign-in logs",
+   "record_id": "EN-70337"
+  },
+  "kind": "sign_in",
+  "actor_node_ids": [],
+  "attributes": {
+   "upn": "user53@finance.example",
+   "asn": 64496,
+   "asn_first_seen_for_user": false,
+   "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) Edge/141.0",
+   "user_agent_first_seen_for_user": false,
+   "result": "success"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0253",
+  "ts": "2026-10-27T09:54:27Z",
+  "source": {
+   "system": "Graph activity log",
+   "record_id": "GR-70289"
+  },
+  "kind": "resource_access",
+  "actor_node_ids": [],
+  "attributes": {
+   "upn": "user44@finance.example",
+   "resource": "Expense reports",
+   "request_count": 14,
+   "window_s": 240,
+   "via": "Finance API"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0254",
+  "ts": "2026-10-27T09:54:57Z",
+  "source": {
+   "system": "Entra sign-in logs",
+   "record_id": "EN-70138"
+  },
+  "kind": "sign_in",
+  "actor_node_ids": [],
+  "attributes": {
+   "upn": "user07@finance.example",
+   "asn": 64497,
+   "asn_first_seen_for_user": false,
+   "user_agent": "Microsoft Outlook 16.0",
+   "user_agent_first_seen_for_user": false,
+   "result": "success"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0255",
+  "ts": "2026-10-27T09:54:59Z",
+  "source": {
+   "system": "Entra sign-in logs",
+   "record_id": "EN-70139"
+  },
+  "kind": "sign_in",
+  "actor_node_ids": [],
+  "attributes": {
+   "upn": "user49@finance.example",
+   "asn": 64498,
+   "asn_first_seen_for_user": false,
+   "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) Edge/141.0",
+   "user_agent_first_seen_for_user": false,
+   "result": "success"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0256",
+  "ts": "2026-10-27T09:55:11Z",
+  "source": {
+   "system": "Entra sign-in logs",
+   "record_id": "EN-70380"
+  },
+  "kind": "sign_in",
+  "actor_node_ids": [],
+  "attributes": {
+   "upn": "user27@finance.example",
+   "asn": 64496,
+   "asn_first_seen_for_user": false,
+   "user_agent": "Microsoft Outlook 16.0",
+   "user_agent_first_seen_for_user": false,
+   "result": "success"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0257",
+  "ts": "2026-10-27T09:55:12Z",
+  "source": {
+   "system": "Entra sign-in logs",
+   "record_id": "EN-70062"
+  },
+  "kind": "sign_in",
+  "actor_node_ids": [],
+  "attributes": {
+   "upn": "user39@finance.example",
+   "asn": 64498,
+   "asn_first_seen_for_user": false,
+   "user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 14_6) Safari/18.1",
+   "user_agent_first_seen_for_user": false,
+   "result": "success"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0258",
+  "ts": "2026-10-27T09:55:20Z",
+  "source": {
+   "system": "Graph activity log",
+   "record_id": "GR-70375"
+  },
+  "kind": "resource_access",
+  "actor_node_ids": [],
+  "attributes": {
+   "upn": "user30@finance.example",
+   "resource": "AP invoices",
+   "request_count": 18,
+   "window_s": 240,
+   "via": "Finance API"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0259",
+  "ts": "2026-10-27T09:56:06Z",
+  "source": {
+   "system": "Entra sign-in logs",
+   "record_id": "EN-70236"
+  },
+  "kind": "sign_in",
+  "actor_node_ids": [],
+  "attributes": {
+   "upn": "user06@finance.example",
+   "asn": 64496,
+   "asn_first_seen_for_user": false,
+   "user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 14_6) Safari/18.1",
+   "user_agent_first_seen_for_user": false,
+   "result": "success"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0260",
+  "ts": "2026-10-27T09:56:12Z",
+  "source": {
+   "system": "Graph activity log",
+   "record_id": "GR-70402"
+  },
+  "kind": "resource_access",
+  "actor_node_ids": [],
+  "attributes": {
+   "upn": "user12@finance.example",
+   "resource": "Finance-Close library",
+   "request_count": 180,
+   "window_s": 240,
+   "via": "Finance API"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0261",
+  "ts": "2026-10-27T09:56:15Z",
+  "source": {
+   "system": "Entra sign-in logs",
+   "record_id": "EN-70056"
+  },
+  "kind": "sign_in",
+  "actor_node_ids": [],
+  "attributes": {
+   "upn": "user47@finance.example",
+   "asn": 64497,
+   "asn_first_seen_for_user": false,
+   "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) Edge/141.0",
+   "user_agent_first_seen_for_user": false,
+   "result": "success"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0262",
+  "ts": "2026-10-27T09:56:23Z",
+  "source": {
+   "system": "Entra sign-in logs",
+   "record_id": "EN-70339"
+  },
+  "kind": "sign_in",
+  "actor_node_ids": [],
+  "attributes": {
+   "upn": "user40@finance.example",
+   "asn": 64497,
+   "asn_first_seen_for_user": false,
+   "user_agent": "Microsoft Outlook 16.0",
+   "user_agent_first_seen_for_user": false,
+   "result": "success"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0263",
+  "ts": "2026-10-27T09:56:29Z",
+  "source": {
+   "system": "Entra sign-in logs",
+   "record_id": "EN-70115"
+  },
+  "kind": "sign_in",
+  "actor_node_ids": [],
+  "attributes": {
+   "upn": "user27@finance.example",
+   "asn": 64498,
+   "asn_first_seen_for_user": false,
+   "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) Edge/141.0",
+   "user_agent_first_seen_for_user": false,
+   "result": "success"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0264",
+  "ts": "2026-10-27T09:56:51Z",
+  "source": {
+   "system": "Entra sign-in logs",
+   "record_id": "EN-70208"
+  },
+  "kind": "sign_in",
+  "actor_node_ids": [],
+  "attributes": {
+   "upn": "user16@finance.example",
+   "asn": 64496,
+   "asn_first_seen_for_user": false,
+   "user_agent": "Microsoft Outlook 16.0",
+   "user_agent_first_seen_for_user": false,
+   "result": "success"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0265",
+  "ts": "2026-10-27T09:56:54Z",
+  "source": {
+   "system": "Graph activity log",
+   "record_id": "GR-70374"
+  },
+  "kind": "resource_access",
+  "actor_node_ids": [],
+  "attributes": {
+   "upn": "user49@finance.example",
+   "resource": "AP invoices",
+   "request_count": 33,
+   "window_s": 240,
+   "via": "Finance API"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0266",
+  "ts": "2026-10-27T09:57:05Z",
+  "source": {
+   "system": "Entra sign-in logs",
+   "record_id": "EN-70310"
+  },
+  "kind": "sign_in",
+  "actor_node_ids": [],
+  "attributes": {
+   "upn": "user28@finance.example",
+   "asn": 64498,
+   "asn_first_seen_for_user": false,
+   "user_agent": "Microsoft Outlook 16.0",
+   "user_agent_first_seen_for_user": false,
+   "result": "success"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0267",
+  "ts": "2026-10-27T09:57:13Z",
+  "source": {
+   "system": "Entra sign-in logs",
+   "record_id": "EN-70082"
+  },
+  "kind": "sign_in",
+  "actor_node_ids": [],
+  "attributes": {
+   "upn": "user08@finance.example",
+   "asn": 64497,
+   "asn_first_seen_for_user": false,
+   "user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 14_6) Safari/18.1",
+   "user_agent_first_seen_for_user": false,
+   "result": "success"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0268",
+  "ts": "2026-10-27T09:57:43Z",
+  "source": {
+   "system": "Entra sign-in logs",
+   "record_id": "EN-70291"
+  },
+  "kind": "sign_in",
+  "actor_node_ids": [],
+  "attributes": {
+   "upn": "user05@finance.example",
+   "asn": 64496,
+   "asn_first_seen_for_user": false,
+   "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) Edge/141.0",
+   "user_agent_first_seen_for_user": false,
+   "result": "success"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0269",
+  "ts": "2026-10-27T09:57:48Z",
+  "source": {
+   "system": "Entra audit log",
+   "record_id": "EN-70323"
+  },
+  "kind": "mfa_method_added",
+  "actor_node_ids": [],
+  "attributes": {
+   "upn": "user23@finance.example",
+   "method": "fido2",
+   "asn": 64496,
+   "seconds_since_sign_in": 67886
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0270",
+  "ts": "2026-10-27T09:57:53Z",
+  "source": {
+   "system": "Entra sign-in logs",
+   "record_id": "EN-70341"
+  },
+  "kind": "sign_in",
+  "actor_node_ids": [],
+  "attributes": {
+   "upn": "user07@finance.example",
+   "asn": 64498,
+   "asn_first_seen_for_user": false,
+   "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) Edge/141.0",
+   "user_agent_first_seen_for_user": false,
+   "result": "success"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0271",
+  "ts": "2026-10-27T09:58:12Z",
+  "source": {
+   "system": "Entra sign-in logs",
+   "record_id": "EN-70181"
+  },
+  "kind": "sign_in",
+  "actor_node_ids": [],
+  "attributes": {
+   "upn": "user22@finance.example",
+   "asn": 64496,
+   "asn_first_seen_for_user": false,
+   "user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 14_6) Safari/18.1",
+   "user_agent_first_seen_for_user": false,
+   "result": "success"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0272",
+  "ts": "2026-10-27T09:58:30Z",
+  "source": {
+   "system": "Entra sign-in logs",
+   "record_id": "EN-70067"
+  },
+  "kind": "sign_in",
+  "actor_node_ids": [],
+  "attributes": {
+   "upn": "user50@finance.example",
+   "asn": 64497,
+   "asn_first_seen_for_user": false,
+   "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) Edge/141.0",
+   "user_agent_first_seen_for_user": false,
+   "result": "success"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0273",
+  "ts": "2026-10-27T09:58:45Z",
+  "source": {
+   "system": "Entra sign-in logs",
+   "record_id": "EN-70325"
+  },
+  "kind": "sign_in",
+  "actor_node_ids": [],
+  "attributes": {
+   "upn": "user58@finance.example",
+   "asn": 64496,
+   "asn_first_seen_for_user": false,
+   "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) Edge/141.0",
+   "user_agent_first_seen_for_user": false,
+   "result": "success"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0274",
+  "ts": "2026-10-27T09:58:53Z",
+  "source": {
+   "system": "Entra sign-in logs",
+   "record_id": "EN-70049"
+  },
+  "kind": "sign_in",
+  "actor_node_ids": [],
+  "attributes": {
+   "upn": "user04@finance.example",
+   "asn": 64498,
+   "asn_first_seen_for_user": false,
+   "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) Edge/141.0",
+   "user_agent_first_seen_for_user": false,
+   "result": "success"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0275",
+  "ts": "2026-10-27T09:58:59Z",
+  "source": {
+   "system": "Entra sign-in logs",
+   "record_id": "EN-70020"
+  },
+  "kind": "sign_in",
+  "actor_node_ids": [],
+  "attributes": {
+   "upn": "user57@finance.example",
+   "asn": 64497,
+   "asn_first_seen_for_user": false,
+   "user_agent": "Microsoft Outlook 16.0",
+   "user_agent_first_seen_for_user": false,
+   "result": "success"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0276",
+  "ts": "2026-10-27T09:59:12Z",
+  "source": {
+   "system": "Entra sign-in logs",
+   "record_id": "EN-70030"
+  },
+  "kind": "sign_in",
+  "actor_node_ids": [],
+  "attributes": {
+   "upn": "user29@finance.example",
+   "asn": 64498,
+   "asn_first_seen_for_user": false,
+   "user_agent": "Microsoft Outlook 16.0",
+   "user_agent_first_seen_for_user": false,
+   "result": "success"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0277",
+  "ts": "2026-10-27T09:59:25Z",
+  "source": {
+   "system": "Graph activity log",
+   "record_id": "GR-70340"
+  },
+  "kind": "resource_access",
+  "actor_node_ids": [],
+  "attributes": {
+   "upn": "user44@finance.example",
+   "resource": "AP invoices",
+   "request_count": 40,
+   "window_s": 240,
+   "via": "SharePoint"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0278",
+  "ts": "2026-10-27T09:59:31Z",
+  "source": {
+   "system": "Graph activity log",
+   "record_id": "GR-70023"
+  },
+  "kind": "resource_access",
+  "actor_node_ids": [],
+  "attributes": {
+   "upn": "user23@finance.example",
+   "resource": "Expense reports",
+   "request_count": 11,
+   "window_s": 240,
+   "via": "SharePoint"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0279",
+  "ts": "2026-10-27T09:59:39Z",
+  "source": {
+   "system": "Mail gateway message trace",
+   "record_id": "MA-70123"
+  },
+  "kind": "mail_delivered",
+  "actor_node_ids": [],
+  "attributes": {
+   "recipient": "user27@finance.example",
+   "sender_domain": "bank-notices.example",
+   "sender_domain_age_days": 2464,
+   "link_type": "none"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0280",
+  "ts": "2026-10-27T09:59:55Z",
+  "source": {
+   "system": "Entra sign-in logs",
+   "record_id": "EN-70249"
+  },
+  "kind": "sign_in",
+  "actor_node_ids": [],
+  "attributes": {
+   "upn": "user42@finance.example",
+   "asn": 64498,
+   "asn_first_seen_for_user": false,
+   "user_agent": "Microsoft Outlook 16.0",
+   "user_agent_first_seen_for_user": false,
+   "result": "success"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0281",
+  "ts": "2026-10-27T09:59:59Z",
+  "source": {
+   "system": "Graph activity log",
+   "record_id": "GR-70125"
+  },
+  "kind": "resource_access",
+  "actor_node_ids": [],
+  "attributes": {
+   "upn": "user19@finance.example",
+   "resource": "AP invoices",
+   "request_count": 22,
+   "window_s": 240,
+   "via": "Finance API"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0282",
+  "ts": "2026-10-27T10:00:03Z",
+  "source": {
+   "system": "Entra audit log",
+   "record_id": "EN-70292"
+  },
+  "kind": "oauth_consent",
+  "actor_node_ids": [],
+  "attributes": {
+   "upn": "user55@finance.example",
+   "app_name": "SignFlow",
+   "publisher_verified": true,
+   "app_age_days": 1451,
+   "scopes": "User.Read Files.Read",
+   "consent_type": "user"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0283",
+  "ts": "2026-10-27T10:00:06Z",
+  "source": {
+   "system": "Entra sign-in logs",
+   "record_id": "EN-70355"
+  },
+  "kind": "sign_in",
+  "actor_node_ids": [],
+  "attributes": {
+   "upn": "user13@finance.example",
+   "asn": 64497,
+   "asn_first_seen_for_user": false,
+   "user_agent": "Microsoft Outlook 16.0",
+   "user_agent_first_seen_for_user": false,
+   "result": "success"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0284",
+  "ts": "2026-10-27T10:00:17Z",
+  "source": {
+   "system": "Entra sign-in logs",
+   "record_id": "EN-70065"
+  },
+  "kind": "sign_in",
+  "actor_node_ids": [],
+  "attributes": {
+   "upn": "user12@finance.example",
+   "asn": 64498,
+   "asn_first_seen_for_user": false,
+   "user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 14_6) Safari/18.1",
+   "user_agent_first_seen_for_user": false,
+   "result": "success"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0285",
+  "ts": "2026-10-27T10:00:21Z",
+  "source": {
+   "system": "Graph activity log",
+   "record_id": "GR-70119"
+  },
+  "kind": "resource_access",
+  "actor_node_ids": [],
+  "attributes": {
+   "upn": "user22@finance.example",
+   "resource": "Finance-Close library",
+   "request_count": 39,
+   "window_s": 240,
+   "via": "Finance API"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0286",
+  "ts": "2026-10-27T10:00:25Z",
+  "source": {
+   "system": "Entra sign-in logs",
+   "record_id": "EN-70163"
+  },
+  "kind": "sign_in",
+  "actor_node_ids": [],
+  "attributes": {
+   "upn": "user20@finance.example",
+   "asn": 64497,
+   "asn_first_seen_for_user": false,
+   "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) Edge/141.0",
+   "user_agent_first_seen_for_user": false,
+   "result": "success"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0287",
+  "ts": "2026-10-27T10:00:29Z",
+  "source": {
+   "system": "Entra sign-in logs",
+   "record_id": "EN-70189"
+  },
+  "kind": "sign_in",
+  "actor_node_ids": [],
+  "attributes": {
+   "upn": "user38@finance.example",
+   "asn": 64498,
+   "asn_first_seen_for_user": false,
+   "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) Edge/141.0",
+   "user_agent_first_seen_for_user": false,
+   "result": "success"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0288",
+  "ts": "2026-10-27T10:00:30Z",
+  "source": {
+   "system": "Graph activity log",
+   "record_id": "GR-70172"
+  },
+  "kind": "resource_access",
+  "actor_node_ids": [],
+  "attributes": {
+   "upn": "user06@finance.example",
+   "resource": "Expense reports",
+   "request_count": 24,
+   "window_s": 240,
+   "via": "Finance API"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0289",
+  "ts": "2026-10-27T10:00:37Z",
+  "source": {
+   "system": "Graph activity log",
+   "record_id": "GR-70304"
+  },
+  "kind": "resource_access",
+  "actor_node_ids": [],
+  "attributes": {
+   "upn": "user56@finance.example",
+   "resource": "AP invoices",
+   "request_count": 37,
+   "window_s": 240,
+   "via": "SharePoint"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0290",
+  "ts": "2026-10-27T10:00:43Z",
+  "source": {
+   "system": "Entra sign-in logs",
+   "record_id": "EN-70021"
+  },
+  "kind": "sign_in",
+  "actor_node_ids": [],
+  "attributes": {
+   "upn": "user41@finance.example",
+   "asn": 64496,
+   "asn_first_seen_for_user": false,
+   "user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 14_6) Safari/18.1",
+   "user_agent_first_seen_for_user": false,
+   "result": "success"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0291",
+  "ts": "2026-10-27T10:00:44Z",
+  "source": {
+   "system": "Graph activity log",
+   "record_id": "GR-70195"
+  },
+  "kind": "resource_access",
+  "actor_node_ids": [],
+  "attributes": {
+   "upn": "user33@finance.example",
+   "resource": "Finance-Close library",
+   "request_count": 3,
+   "window_s": 240,
+   "via": "Finance API"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0292",
+  "ts": "2026-10-27T10:00:47Z",
+  "source": {
+   "system": "Mail gateway message trace",
+   "record_id": "MA-70147"
+  },
+  "kind": "mail_delivered",
+  "actor_node_ids": [],
+  "attributes": {
+   "recipient": "user20@finance.example",
+   "sender_domain": "supplier-one.example",
+   "sender_domain_age_days": 1860,
+   "link_type": "document"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0293",
+  "ts": "2026-10-27T10:00:56Z",
+  "source": {
+   "system": "Entra audit log",
+   "record_id": "EN-70154"
+  },
+  "kind": "oauth_consent",
+  "actor_node_ids": [],
+  "attributes": {
+   "upn": "user58@finance.example",
+   "app_name": "SignFlow",
+   "publisher_verified": true,
+   "app_age_days": 1813,
+   "scopes": "User.Read Files.Read",
+   "consent_type": "user"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0294",
+  "ts": "2026-10-27T10:01:13Z",
+  "source": {
+   "system": "Entra sign-in logs",
+   "record_id": "EN-70088"
+  },
+  "kind": "sign_in",
+  "actor_node_ids": [],
+  "attributes": {
+   "upn": "user42@finance.example",
+   "asn": 64497,
+   "asn_first_seen_for_user": false,
+   "user_agent": "Microsoft Outlook 16.0",
+   "user_agent_first_seen_for_user": false,
+   "result": "success"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0295",
+  "ts": "2026-10-27T10:01:25Z",
+  "source": {
+   "system": "Entra sign-in logs",
+   "record_id": "EN-70286"
+  },
+  "kind": "sign_in",
+  "actor_node_ids": [],
+  "attributes": {
+   "upn": "user58@finance.example",
+   "asn": 64498,
+   "asn_first_seen_for_user": false,
+   "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) Edge/141.0",
+   "user_agent_first_seen_for_user": false,
+   "result": "success"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0296",
+  "ts": "2026-10-27T10:01:32Z",
+  "source": {
+   "system": "Mail gateway message trace",
+   "record_id": "MA-70057"
+  },
+  "kind": "mail_delivered",
+  "actor_node_ids": [],
+  "attributes": {
+   "recipient": "user51@finance.example",
+   "sender_domain": "bank-notices.example",
+   "sender_domain_age_days": 1705,
+   "link_type": "none"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0297",
+  "ts": "2026-10-27T10:02:42Z",
+  "source": {
+   "system": "Graph activity log",
+   "record_id": "GR-70389"
+  },
+  "kind": "resource_access",
+  "actor_node_ids": [],
+  "attributes": {
+   "upn": "user17@finance.example",
+   "resource": "Expense reports",
+   "request_count": 8,
+   "window_s": 240,
+   "via": "SharePoint"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0298",
+  "ts": "2026-10-27T10:02:51Z",
+  "source": {
+   "system": "Mail gateway message trace",
+   "record_id": "MA-70266"
+  },
+  "kind": "mail_delivered",
+  "actor_node_ids": [],
+  "attributes": {
+   "recipient": "user40@finance.example",
+   "sender_domain": "payroll-svc.example",
+   "sender_domain_age_days": 3704,
+   "link_type": "document"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0299",
+  "ts": "2026-10-27T10:03:25Z",
+  "source": {
+   "system": "Graph activity log",
+   "record_id": "GR-70187"
+  },
+  "kind": "resource_access",
+  "actor_node_ids": [],
+  "attributes": {
+   "upn": "user07@finance.example",
+   "resource": "Finance-Close library",
+   "request_count": 12,
+   "window_s": 240,
+   "via": "SharePoint"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0300",
+  "ts": "2026-10-27T10:04:00Z",
+  "source": {
+   "system": "Graph activity log",
+   "record_id": "GR-70155"
+  },
+  "kind": "resource_access",
+  "actor_node_ids": [],
+  "attributes": {
+   "upn": "user38@finance.example",
+   "resource": "Expense reports",
+   "request_count": 3,
+   "window_s": 240,
+   "via": "Finance API"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0301",
+  "ts": "2026-10-27T10:04:25Z",
+  "source": {
+   "system": "Graph activity log",
+   "record_id": "GR-70381"
+  },
+  "kind": "resource_access",
+  "actor_node_ids": [],
+  "attributes": {
+   "upn": "user25@finance.example",
+   "resource": "Finance-Close library",
+   "request_count": 34,
+   "window_s": 240,
+   "via": "Finance API"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0302",
+  "ts": "2026-10-27T10:05:08Z",
+  "source": {
+   "system": "Graph activity log",
+   "record_id": "GR-70276"
+  },
+  "kind": "resource_access",
+  "actor_node_ids": [],
+  "attributes": {
+   "upn": "user04@finance.example",
+   "resource": "AP invoices",
+   "request_count": 29,
+   "window_s": 240,
+   "via": "SharePoint"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0303",
+  "ts": "2026-10-27T10:05:17Z",
+  "source": {
+   "system": "Entra sign-in logs",
+   "record_id": "EN-70303"
+  },
+  "kind": "sign_in",
+  "actor_node_ids": [],
+  "attributes": {
+   "upn": "user07@finance.example",
+   "asn": 64496,
+   "asn_first_seen_for_user": false,
+   "user_agent": "Microsoft Outlook 16.0",
+   "user_agent_first_seen_for_user": false,
+   "result": "success"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0304",
+  "ts": "2026-10-27T10:06:05Z",
+  "source": {
+   "system": "Entra sign-in logs",
+   "record_id": "EN-70229"
+  },
+  "kind": "sign_in",
+  "actor_node_ids": [],
+  "attributes": {
+   "upn": "user40@finance.example",
+   "asn": 64496,
+   "asn_first_seen_for_user": false,
+   "user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 14_6) Safari/18.1",
+   "user_agent_first_seen_for_user": false,
+   "result": "success"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0305",
+  "ts": "2026-10-27T10:06:12Z",
+  "source": {
+   "system": "Entra audit log",
+   "record_id": "EN-70404"
+  },
+  "kind": "oauth_consent",
+  "actor_node_ids": [],
+  "attributes": {
+   "upn": "user31@finance.example",
+   "app_name": "Ledger Export (internal)",
+   "publisher_verified": false,
+   "app_age_days": 900,
+   "scopes": "Files.Read",
+   "consent_type": "user"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0306",
+  "ts": "2026-10-27T10:07:00Z",
+  "source": {
+   "system": "Entra sign-in logs",
+   "record_id": "EN-70110"
+  },
+  "kind": "sign_in",
+  "actor_node_ids": [],
+  "attributes": {
+   "upn": "user38@finance.example",
+   "asn": 64496,
+   "asn_first_seen_for_user": false,
+   "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) Edge/141.0",
+   "user_agent_first_seen_for_user": false,
+   "result": "success"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0307",
+  "ts": "2026-10-27T10:07:22Z",
+  "source": {
+   "system": "Mail gateway message trace",
+   "record_id": "MA-70207"
+  },
+  "kind": "mail_delivered",
+  "actor_node_ids": [],
+  "attributes": {
+   "recipient": "user22@finance.example",
+   "sender_domain": "payroll-svc.example",
+   "sender_domain_age_days": 628,
+   "link_type": "document"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0308",
+  "ts": "2026-10-27T10:07:41Z",
+  "source": {
+   "system": "Entra sign-in logs",
+   "record_id": "EN-70140"
+  },
+  "kind": "sign_in",
+  "actor_node_ids": [],
+  "attributes": {
+   "upn": "user32@finance.example",
+   "asn": 64497,
+   "asn_first_seen_for_user": false,
+   "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) Edge/141.0",
+   "user_agent_first_seen_for_user": false,
+   "result": "success"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0309",
+  "ts": "2026-10-27T10:07:41Z",
+  "source": {
+   "system": "Graph activity log",
+   "record_id": "GR-70396"
+  },
+  "kind": "resource_access",
+  "actor_node_ids": [],
+  "attributes": {
+   "upn": "user08@finance.example",
+   "resource": "Finance-Close library",
+   "request_count": 18,
+   "window_s": 240,
+   "via": "Finance API"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0310",
+  "ts": "2026-10-27T10:08:23Z",
+  "source": {
+   "system": "Graph activity log",
+   "record_id": "GR-70117"
+  },
+  "kind": "resource_access",
+  "actor_node_ids": [],
+  "attributes": {
+   "upn": "user51@finance.example",
+   "resource": "Expense reports",
+   "request_count": 27,
+   "window_s": 240,
+   "via": "SharePoint"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0311",
+  "ts": "2026-10-27T10:08:27Z",
+  "source": {
+   "system": "Mail gateway message trace",
+   "record_id": "MA-70293"
+  },
+  "kind": "mail_delivered",
+  "actor_node_ids": [],
+  "attributes": {
+   "recipient": "user37@finance.example",
+   "sender_domain": "bank-notices.example",
+   "sender_domain_age_days": 2408,
+   "link_type": "document"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0312",
+  "ts": "2026-10-27T10:08:29Z",
+  "source": {
+   "system": "Entra sign-in logs",
+   "record_id": "EN-70041"
+  },
+  "kind": "sign_in",
+  "actor_node_ids": [],
+  "attributes": {
+   "upn": "user39@finance.example",
+   "asn": 64496,
+   "asn_first_seen_for_user": false,
+   "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) Edge/141.0",
+   "user_agent_first_seen_for_user": false,
+   "result": "success"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0313",
+  "ts": "2026-10-27T10:08:42Z",
+  "source": {
+   "system": "Entra sign-in logs",
+   "record_id": "EN-70011"
+  },
+  "kind": "sign_in",
+  "actor_node_ids": [],
+  "attributes": {
+   "upn": "user60@finance.example",
+   "asn": 64498,
+   "asn_first_seen_for_user": false,
+   "user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 14_6) Safari/18.1",
+   "user_agent_first_seen_for_user": false,
+   "result": "success"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0314",
+  "ts": "2026-10-27T10:08:48Z",
+  "source": {
+   "system": "Entra audit log",
+   "record_id": "EN-70046"
+  },
+  "kind": "mfa_method_added",
+  "actor_node_ids": [],
+  "attributes": {
+   "upn": "user02@finance.example",
+   "method": "authenticator_push",
+   "asn": 64497,
+   "seconds_since_sign_in": 70767
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0315",
+  "ts": "2026-10-27T10:09:27Z",
+  "source": {
+   "system": "Graph activity log",
+   "record_id": "GR-70038"
+  },
+  "kind": "resource_access",
+  "actor_node_ids": [],
+  "attributes": {
+   "upn": "user17@finance.example",
+   "resource": "Finance-Close library",
+   "request_count": 19,
+   "window_s": 240,
+   "via": "Finance API"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0316",
+  "ts": "2026-10-27T10:09:27Z",
+  "source": {
+   "system": "Graph activity log",
+   "record_id": "GR-70288"
+  },
+  "kind": "resource_access",
+  "actor_node_ids": [],
+  "attributes": {
+   "upn": "user12@finance.example",
+   "resource": "Expense reports",
+   "request_count": 24,
+   "window_s": 240,
+   "via": "SharePoint"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0317",
+  "ts": "2026-10-27T10:09:34Z",
+  "source": {
+   "system": "Entra sign-in logs",
+   "record_id": "EN-70040"
+  },
+  "kind": "sign_in",
+  "actor_node_ids": [],
+  "attributes": {
+   "upn": "user19@finance.example",
+   "asn": 64496,
+   "asn_first_seen_for_user": false,
+   "user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 14_6) Safari/18.1",
+   "user_agent_first_seen_for_user": false,
+   "result": "success"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0318",
+  "ts": "2026-10-27T10:09:46Z",
+  "source": {
+   "system": "Entra sign-in logs",
+   "record_id": "EN-70100"
+  },
+  "kind": "sign_in",
+  "actor_node_ids": [],
+  "attributes": {
+   "upn": "user20@finance.example",
+   "asn": 64496,
+   "asn_first_seen_for_user": false,
+   "user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 14_6) Safari/18.1",
+   "user_agent_first_seen_for_user": false,
+   "result": "success"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0319",
+  "ts": "2026-10-27T10:09:54Z",
+  "source": {
+   "system": "Graph activity log",
+   "record_id": "GR-70333"
+  },
+  "kind": "resource_access",
+  "actor_node_ids": [],
+  "attributes": {
+   "upn": "user43@finance.example",
+   "resource": "Expense reports",
+   "request_count": 30,
+   "window_s": 240,
+   "via": "SharePoint"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0320",
+  "ts": "2026-10-27T10:10:42Z",
+  "source": {
+   "system": "Mail gateway message trace",
+   "record_id": "MA-70096"
+  },
+  "kind": "mail_delivered",
+  "actor_node_ids": [],
+  "attributes": {
+   "recipient": "user08@finance.example",
+   "sender_domain": "bank-notices.example",
+   "sender_domain_age_days": 2133,
+   "link_type": "none"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0321",
+  "ts": "2026-10-27T10:10:49Z",
+  "source": {
+   "system": "Entra sign-in logs",
+   "record_id": "EN-70101"
+  },
+  "kind": "sign_in",
+  "actor_node_ids": [],
+  "attributes": {
+   "upn": "user56@finance.example",
+   "asn": 64496,
+   "asn_first_seen_for_user": false,
+   "user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 14_6) Safari/18.1",
+   "user_agent_first_seen_for_user": false,
+   "result": "success"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0322",
+  "ts": "2026-10-27T10:10:52Z",
+  "source": {
+   "system": "Entra sign-in logs",
+   "record_id": "EN-70112"
+  },
+  "kind": "sign_in",
+  "actor_node_ids": [],
+  "attributes": {
+   "upn": "user58@finance.example",
+   "asn": 64496,
+   "asn_first_seen_for_user": false,
+   "user_agent": "Microsoft Outlook 16.0",
+   "user_agent_first_seen_for_user": false,
+   "result": "success"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0323",
+  "ts": "2026-10-27T10:11:01Z",
+  "source": {
+   "system": "Entra sign-in logs",
+   "record_id": "EN-70376"
+  },
+  "kind": "sign_in",
+  "actor_node_ids": [],
+  "attributes": {
+   "upn": "user27@finance.example",
+   "asn": 64497,
+   "asn_first_seen_for_user": false,
+   "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) Edge/141.0",
+   "user_agent_first_seen_for_user": false,
+   "result": "success"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0324",
+  "ts": "2026-10-27T10:11:03Z",
+  "source": {
+   "system": "Graph activity log",
+   "record_id": "GR-70095"
+  },
+  "kind": "resource_access",
+  "actor_node_ids": [],
+  "attributes": {
+   "upn": "user26@finance.example",
+   "resource": "AP invoices",
+   "request_count": 13,
+   "window_s": 240,
+   "via": "Finance API"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0325",
+  "ts": "2026-10-27T10:11:27Z",
+  "source": {
+   "system": "Entra sign-in logs",
+   "record_id": "EN-70039"
+  },
+  "kind": "sign_in",
+  "actor_node_ids": [],
+  "attributes": {
+   "upn": "user08@finance.example",
+   "asn": 64497,
+   "asn_first_seen_for_user": false,
+   "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) Edge/141.0",
+   "user_agent_first_seen_for_user": false,
+   "result": "success"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0326",
+  "ts": "2026-10-27T10:11:28Z",
+  "source": {
+   "system": "Entra sign-in logs",
+   "record_id": "EN-70161"
+  },
+  "kind": "sign_in",
+  "actor_node_ids": [],
+  "attributes": {
+   "upn": "user35@finance.example",
+   "asn": 64498,
+   "asn_first_seen_for_user": false,
+   "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) Edge/141.0",
+   "user_agent_first_seen_for_user": false,
+   "result": "success"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0327",
+  "ts": "2026-10-27T10:11:41Z",
+  "source": {
+   "system": "Entra sign-in logs",
+   "record_id": "EN-70192"
+  },
+  "kind": "sign_in",
+  "actor_node_ids": [],
+  "attributes": {
+   "upn": "user36@finance.example",
+   "asn": 64497,
+   "asn_first_seen_for_user": false,
+   "user_agent": "Microsoft Outlook 16.0",
+   "user_agent_first_seen_for_user": false,
+   "result": "success"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0328",
+  "ts": "2026-10-27T10:11:50Z",
+  "source": {
+   "system": "Entra sign-in logs",
+   "record_id": "EN-70201"
+  },
+  "kind": "sign_in",
+  "actor_node_ids": [],
+  "attributes": {
+   "upn": "user17@finance.example",
+   "asn": 64497,
+   "asn_first_seen_for_user": false,
+   "user_agent": "Microsoft Outlook 16.0",
+   "user_agent_first_seen_for_user": false,
+   "result": "success"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0329",
+  "ts": "2026-10-27T10:12:02Z",
+  "source": {
+   "system": "Entra sign-in logs",
+   "record_id": "EN-70260"
+  },
+  "kind": "sign_in",
+  "actor_node_ids": [],
+  "attributes": {
+   "upn": "user30@finance.example",
+   "asn": 64498,
+   "asn_first_seen_for_user": false,
+   "user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 14_6) Safari/18.1",
+   "user_agent_first_seen_for_user": false,
+   "result": "success"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0330",
+  "ts": "2026-10-27T10:12:03Z",
+  "source": {
+   "system": "Mail gateway message trace",
+   "record_id": "MA-70176"
+  },
+  "kind": "mail_delivered",
+  "actor_node_ids": [],
+  "attributes": {
+   "recipient": "user27@finance.example",
+   "sender_domain": "payroll-svc.example",
+   "sender_domain_age_days": 485,
+   "link_type": "document"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0331",
+  "ts": "2026-10-27T10:12:26Z",
+  "source": {
+   "system": "Entra sign-in logs",
+   "record_id": "EN-70231"
+  },
+  "kind": "sign_in",
+  "actor_node_ids": [],
+  "attributes": {
+   "upn": "user56@finance.example",
+   "asn": 64498,
+   "asn_first_seen_for_user": false,
+   "user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 14_6) Safari/18.1",
+   "user_agent_first_seen_for_user": false,
+   "result": "success"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0332",
+  "ts": "2026-10-27T10:12:28Z",
+  "source": {
+   "system": "Graph activity log",
+   "record_id": "GR-70024"
+  },
+  "kind": "resource_access",
+  "actor_node_ids": [],
+  "attributes": {
+   "upn": "user49@finance.example",
+   "resource": "Expense reports",
+   "request_count": 3,
+   "window_s": 240,
+   "via": "SharePoint"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0333",
+  "ts": "2026-10-27T10:12:37Z",
+  "source": {
+   "system": "Entra sign-in logs",
+   "record_id": "EN-70221"
+  },
+  "kind": "sign_in",
+  "actor_node_ids": [],
+  "attributes": {
+   "upn": "user31@finance.example",
+   "asn": 64497,
+   "asn_first_seen_for_user": false,
+   "user_agent": "Microsoft Outlook 16.0",
+   "user_agent_first_seen_for_user": false,
+   "result": "success"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0334",
+  "ts": "2026-10-27T10:12:40Z",
+  "source": {
+   "system": "Entra sign-in logs",
+   "record_id": "EN-70247"
+  },
+  "kind": "sign_in",
+  "actor_node_ids": [],
+  "attributes": {
+   "upn": "user50@finance.example",
+   "asn": 64498,
+   "asn_first_seen_for_user": false,
+   "user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 14_6) Safari/18.1",
+   "user_agent_first_seen_for_user": false,
+   "result": "success"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0335",
+  "ts": "2026-10-27T10:12:52Z",
+  "source": {
+   "system": "Entra sign-in logs",
+   "record_id": "EN-70165"
+  },
+  "kind": "sign_in",
+  "actor_node_ids": [],
+  "attributes": {
+   "upn": "user37@finance.example",
+   "asn": 64496,
+   "asn_first_seen_for_user": false,
+   "user_agent": "Microsoft Outlook 16.0",
+   "user_agent_first_seen_for_user": false,
+   "result": "success"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0336",
+  "ts": "2026-10-27T10:12:53Z",
+  "source": {
+   "system": "Entra sign-in logs",
+   "record_id": "EN-70003"
+  },
+  "kind": "sign_in",
+  "actor_node_ids": [],
+  "attributes": {
+   "upn": "user28@finance.example",
+   "asn": 64496,
+   "asn_first_seen_for_user": false,
+   "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) Edge/141.0",
+   "user_agent_first_seen_for_user": false,
+   "result": "success"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0337",
+  "ts": "2026-10-27T10:13:00Z",
+  "source": {
+   "system": "Entra sign-in logs",
+   "record_id": "EN-70006"
+  },
+  "kind": "sign_in",
+  "actor_node_ids": [],
+  "attributes": {
+   "upn": "user43@finance.example",
+   "asn": 64497,
+   "asn_first_seen_for_user": false,
+   "user_agent": "Microsoft Outlook 16.0",
+   "user_agent_first_seen_for_user": false,
+   "result": "success"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0338",
+  "ts": "2026-10-27T10:13:16Z",
+  "source": {
+   "system": "Mail gateway message trace",
+   "record_id": "MA-70050"
+  },
+  "kind": "mail_delivered",
+  "actor_node_ids": [],
+  "attributes": {
+   "recipient": "user52@finance.example",
+   "sender_domain": "payroll-svc.example",
+   "sender_domain_age_days": 3877,
+   "link_type": "none"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0339",
+  "ts": "2026-10-27T10:13:18Z",
+  "source": {
+   "system": "Mail gateway message trace",
+   "record_id": "MA-70300"
+  },
+  "kind": "mail_delivered",
+  "actor_node_ids": [],
+  "attributes": {
+   "recipient": "user55@finance.example",
+   "sender_domain": "supplier-one.example",
+   "sender_domain_age_days": 1738,
+   "link_type": "none"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0340",
+  "ts": "2026-10-27T10:13:25Z",
+  "source": {
+   "system": "Graph activity log",
+   "record_id": "GR-70127"
+  },
+  "kind": "resource_access",
+  "actor_node_ids": [],
+  "attributes": {
+   "upn": "user33@finance.example",
+   "resource": "Finance-Close library",
+   "request_count": 29,
+   "window_s": 240,
+   "via": "Finance API"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0341",
+  "ts": "2026-10-27T10:13:27Z",
+  "source": {
+   "system": "Entra sign-in logs",
+   "record_id": "EN-70104"
+  },
+  "kind": "sign_in",
+  "actor_node_ids": [],
+  "attributes": {
+   "upn": "user20@finance.example",
+   "asn": 64496,
+   "asn_first_seen_for_user": false,
+   "user_agent": "Microsoft Outlook 16.0",
+   "user_agent_first_seen_for_user": false,
+   "result": "success"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0342",
+  "ts": "2026-10-27T10:14:17Z",
+  "source": {
+   "system": "Graph activity log",
+   "record_id": "GR-70137"
+  },
+  "kind": "resource_access",
+  "actor_node_ids": [],
+  "attributes": {
+   "upn": "user59@finance.example",
+   "resource": "Finance-Close library",
+   "request_count": 11,
+   "window_s": 240,
+   "via": "Finance API"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0343",
+  "ts": "2026-10-27T10:14:35Z",
+  "source": {
+   "system": "Graph activity log",
+   "record_id": "GR-70299"
+  },
+  "kind": "resource_access",
+  "actor_node_ids": [],
+  "attributes": {
+   "upn": "user45@finance.example",
+   "resource": "AP invoices",
+   "request_count": 18,
+   "window_s": 240,
+   "via": "SharePoint"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0344",
+  "ts": "2026-10-27T10:14:38Z",
+  "source": {
+   "system": "Entra sign-in logs",
+   "record_id": "EN-70225"
+  },
+  "kind": "sign_in",
+  "actor_node_ids": [],
+  "attributes": {
+   "upn": "user30@finance.example",
+   "asn": 64496,
+   "asn_first_seen_for_user": false,
+   "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) Edge/141.0",
+   "user_agent_first_seen_for_user": false,
+   "result": "success"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0345",
+  "ts": "2026-10-27T10:14:46Z",
+  "source": {
+   "system": "Entra audit log",
+   "record_id": "EN-70191"
+  },
+  "kind": "mfa_method_added",
+  "actor_node_ids": [],
+  "attributes": {
+   "upn": "user48@finance.example",
+   "method": "fido2",
+   "asn": 64497,
+   "seconds_since_sign_in": 47855
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0346",
+  "ts": "2026-10-27T10:14:57Z",
+  "source": {
+   "system": "Graph activity log",
+   "record_id": "GR-70371"
+  },
+  "kind": "resource_access",
+  "actor_node_ids": [],
+  "attributes": {
+   "upn": "user28@finance.example",
+   "resource": "Vendor master",
+   "request_count": 37,
+   "window_s": 240,
+   "via": "SharePoint"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0347",
+  "ts": "2026-10-27T10:15:03Z",
+  "source": {
+   "system": "Graph activity log",
+   "record_id": "GR-70179"
+  },
+  "kind": "resource_access",
+  "actor_node_ids": [],
+  "attributes": {
+   "upn": "user49@finance.example",
+   "resource": "Finance-Close library",
+   "request_count": 17,
+   "window_s": 240,
+   "via": "SharePoint"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0348",
+  "ts": "2026-10-27T10:15:22Z",
+  "source": {
+   "system": "Graph activity log",
+   "record_id": "GR-70362"
+  },
+  "kind": "resource_access",
+  "actor_node_ids": [],
+  "attributes": {
+   "upn": "user11@finance.example",
+   "resource": "Vendor master",
+   "request_count": 24,
+   "window_s": 240,
+   "via": "Finance API"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0349",
+  "ts": "2026-10-27T10:15:27Z",
+  "source": {
+   "system": "Entra sign-in logs",
+   "record_id": "EN-70107"
+  },
+  "kind": "sign_in",
+  "actor_node_ids": [],
+  "attributes": {
+   "upn": "user40@finance.example",
+   "asn": 64496,
+   "asn_first_seen_for_user": false,
+   "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) Edge/141.0",
+   "user_agent_first_seen_for_user": false,
+   "result": "success"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0350",
+  "ts": "2026-10-27T10:15:58Z",
+  "source": {
+   "system": "Mail gateway message trace",
+   "record_id": "MA-70358"
+  },
+  "kind": "mail_delivered",
+  "actor_node_ids": [],
+  "attributes": {
+   "recipient": "user01@finance.example",
+   "sender_domain": "payroll-svc.example",
+   "sender_domain_age_days": 209,
+   "link_type": "document"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0351",
+  "ts": "2026-10-27T10:16:11Z",
+  "source": {
+   "system": "Graph activity log",
+   "record_id": "GR-70363"
+  },
+  "kind": "resource_access",
+  "actor_node_ids": [],
+  "attributes": {
+   "upn": "user27@finance.example",
+   "resource": "Finance-Close library",
+   "request_count": 31,
+   "window_s": 240,
+   "via": "SharePoint"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0352",
+  "ts": "2026-10-27T10:16:14Z",
+  "source": {
+   "system": "Mail gateway message trace",
+   "record_id": "MA-70029"
+  },
+  "kind": "mail_delivered",
+  "actor_node_ids": [],
+  "attributes": {
+   "recipient": "user47@finance.example",
+   "sender_domain": "intranet.example",
+   "sender_domain_age_days": 2978,
+   "link_type": "none"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0353",
+  "ts": "2026-10-27T10:16:16Z",
+  "source": {
+   "system": "Mail gateway message trace",
+   "record_id": "MA-70052"
+  },
+  "kind": "mail_delivered",
+  "actor_node_ids": [],
+  "attributes": {
+   "recipient": "user35@finance.example",
+   "sender_domain": "payroll-svc.example",
+   "sender_domain_age_days": 1203,
+   "link_type": "none"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0354",
+  "ts": "2026-10-27T10:16:27Z",
+  "source": {
+   "system": "Mail gateway message trace",
+   "record_id": "MA-70198"
+  },
+  "kind": "mail_delivered",
+  "actor_node_ids": [],
+  "attributes": {
+   "recipient": "user54@finance.example",
+   "sender_domain": "payroll-svc.example",
+   "sender_domain_age_days": 3124,
+   "link_type": "none"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0355",
+  "ts": "2026-10-27T10:16:32Z",
+  "source": {
+   "system": "Entra sign-in logs",
+   "record_id": "EN-70093"
+  },
+  "kind": "sign_in",
+  "actor_node_ids": [],
+  "attributes": {
+   "upn": "user21@finance.example",
+   "asn": 64496,
+   "asn_first_seen_for_user": false,
+   "user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 14_6) Safari/18.1",
+   "user_agent_first_seen_for_user": false,
+   "result": "success"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0356",
+  "ts": "2026-10-27T10:16:40Z",
+  "source": {
+   "system": "Mail gateway message trace",
+   "record_id": "MA-70331"
+  },
+  "kind": "mail_delivered",
+  "actor_node_ids": [],
+  "attributes": {
+   "recipient": "user10@finance.example",
+   "sender_domain": "payroll-svc.example",
+   "sender_domain_age_days": 1213,
+   "link_type": "document"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0357",
+  "ts": "2026-10-27T10:16:54Z",
+  "source": {
+   "system": "Graph activity log",
+   "record_id": "GR-70267"
+  },
+  "kind": "resource_access",
+  "actor_node_ids": [],
+  "attributes": {
+   "upn": "user03@finance.example",
+   "resource": "Finance-Close library",
+   "request_count": 29,
+   "window_s": 240,
+   "via": "SharePoint"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0358",
+  "ts": "2026-10-27T10:17:07Z",
+  "source": {
+   "system": "Entra sign-in logs",
+   "record_id": "EN-70365"
+  },
+  "kind": "sign_in",
+  "actor_node_ids": [],
+  "attributes": {
+   "upn": "user28@finance.example",
+   "asn": 64498,
+   "asn_first_seen_for_user": false,
+   "user_agent": "Microsoft Outlook 16.0",
+   "user_agent_first_seen_for_user": false,
+   "result": "success"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0359",
+  "ts": "2026-10-27T10:17:26Z",
+  "source": {
+   "system": "Graph activity log",
+   "record_id": "GR-70281"
+  },
+  "kind": "resource_access",
+  "actor_node_ids": [],
+  "attributes": {
+   "upn": "user60@finance.example",
+   "resource": "Vendor master",
+   "request_count": 18,
+   "window_s": 240,
+   "via": "Finance API"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0360",
+  "ts": "2026-10-27T10:17:39Z",
+  "source": {
+   "system": "Entra sign-in logs",
+   "record_id": "EN-70102"
+  },
+  "kind": "sign_in",
+  "actor_node_ids": [],
+  "attributes": {
+   "upn": "user01@finance.example",
+   "asn": 64496,
+   "asn_first_seen_for_user": false,
+   "user_agent": "Microsoft Outlook 16.0",
+   "user_agent_first_seen_for_user": false,
+   "result": "success"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0361",
+  "ts": "2026-10-27T10:18:09Z",
+  "source": {
+   "system": "Entra sign-in logs",
+   "record_id": "EN-70309"
+  },
+  "kind": "sign_in",
+  "actor_node_ids": [],
+  "attributes": {
+   "upn": "user59@finance.example",
+   "asn": 64497,
+   "asn_first_seen_for_user": false,
+   "user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 14_6) Safari/18.1",
+   "user_agent_first_seen_for_user": false,
+   "result": "success"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0362",
+  "ts": "2026-10-27T10:18:18Z",
+  "source": {
+   "system": "Mail gateway message trace",
+   "record_id": "MA-70168"
+  },
+  "kind": "mail_delivered",
+  "actor_node_ids": [],
+  "attributes": {
+   "recipient": "user06@finance.example",
+   "sender_domain": "intranet.example",
+   "sender_domain_age_days": 2333,
+   "link_type": "none"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0363",
+  "ts": "2026-10-27T10:19:31Z",
+  "source": {
+   "system": "Entra sign-in logs",
+   "record_id": "EN-70259"
+  },
+  "kind": "sign_in",
+  "actor_node_ids": [],
+  "attributes": {
+   "upn": "user19@finance.example",
+   "asn": 64498,
+   "asn_first_seen_for_user": false,
+   "user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 14_6) Safari/18.1",
+   "user_agent_first_seen_for_user": true,
+   "result": "success"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0364",
+  "ts": "2026-10-27T10:19:35Z",
+  "source": {
+   "system": "Mail gateway message trace",
+   "record_id": "MA-70055"
+  },
+  "kind": "mail_delivered",
+  "actor_node_ids": [],
+  "attributes": {
+   "recipient": "user43@finance.example",
+   "sender_domain": "supplier-one.example",
+   "sender_domain_age_days": 3183,
+   "link_type": "document"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0365",
+  "ts": "2026-10-27T10:19:40Z",
+  "source": {
+   "system": "Graph activity log",
+   "record_id": "GR-70265"
+  },
+  "kind": "resource_access",
+  "actor_node_ids": [],
+  "attributes": {
+   "upn": "user07@finance.example",
+   "resource": "Expense reports",
+   "request_count": 23,
+   "window_s": 240,
+   "via": "SharePoint"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0366",
+  "ts": "2026-10-27T10:19:49Z",
+  "source": {
+   "system": "Entra sign-in logs",
+   "record_id": "EN-70025"
+  },
+  "kind": "sign_in",
+  "actor_node_ids": [],
+  "attributes": {
+   "upn": "user47@finance.example",
+   "asn": 64497,
+   "asn_first_seen_for_user": false,
+   "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) Edge/141.0",
+   "user_agent_first_seen_for_user": false,
+   "result": "success"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0367",
+  "ts": "2026-10-27T10:19:53Z",
+  "source": {
+   "system": "Entra sign-in logs",
+   "record_id": "EN-70222"
+  },
+  "kind": "sign_in",
+  "actor_node_ids": [],
+  "attributes": {
+   "upn": "user31@finance.example",
+   "asn": 64496,
+   "asn_first_seen_for_user": false,
+   "user_agent": "Microsoft Outlook 16.0",
+   "user_agent_first_seen_for_user": true,
+   "result": "success"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0368",
+  "ts": "2026-10-27T10:21:29Z",
+  "source": {
+   "system": "Entra sign-in logs",
+   "record_id": "EN-70070"
+  },
+  "kind": "sign_in",
+  "actor_node_ids": [],
+  "attributes": {
+   "upn": "user58@finance.example",
+   "asn": 64497,
+   "asn_first_seen_for_user": false,
+   "user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 14_6) Safari/18.1",
+   "user_agent_first_seen_for_user": false,
+   "result": "success"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0369",
+  "ts": "2026-10-27T10:22:27Z",
+  "source": {
+   "system": "Graph activity log",
+   "record_id": "GR-70324"
+  },
+  "kind": "resource_access",
+  "actor_node_ids": [],
+  "attributes": {
+   "upn": "user58@finance.example",
+   "resource": "Expense reports",
+   "request_count": 29,
+   "window_s": 240,
+   "via": "SharePoint"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0370",
+  "ts": "2026-10-27T10:23:01Z",
+  "source": {
+   "system": "Graph activity log",
+   "record_id": "GR-70351"
+  },
+  "kind": "resource_access",
+  "actor_node_ids": [],
+  "attributes": {
+   "upn": "user03@finance.example",
+   "resource": "Expense reports",
+   "request_count": 13,
+   "window_s": 240,
+   "via": "Finance API"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0371",
+  "ts": "2026-10-27T10:23:14Z",
+  "source": {
+   "system": "Entra sign-in logs",
+   "record_id": "EN-70335"
+  },
+  "kind": "sign_in",
+  "actor_node_ids": [],
+  "attributes": {
+   "upn": "user13@finance.example",
+   "asn": 64498,
+   "asn_first_seen_for_user": false,
+   "user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 14_6) Safari/18.1",
+   "user_agent_first_seen_for_user": false,
+   "result": "success"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0372",
+  "ts": "2026-10-27T10:23:25Z",
+  "source": {
+   "system": "Graph activity log",
+   "record_id": "GR-70120"
+  },
+  "kind": "resource_access",
+  "actor_node_ids": [],
+  "attributes": {
+   "upn": "user03@finance.example",
+   "resource": "Expense reports",
+   "request_count": 2,
+   "window_s": 240,
+   "via": "Finance API"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0373",
+  "ts": "2026-10-27T10:23:45Z",
+  "source": {
+   "system": "Entra audit log",
+   "record_id": "EN-70357"
+  },
+  "kind": "mfa_method_added",
+  "actor_node_ids": [],
+  "attributes": {
+   "upn": "user47@finance.example",
+   "method": "authenticator_push",
+   "asn": 64496,
+   "seconds_since_sign_in": 74352
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0374",
+  "ts": "2026-10-27T10:23:52Z",
+  "source": {
+   "system": "Entra sign-in logs",
+   "record_id": "EN-70157"
+  },
+  "kind": "sign_in",
+  "actor_node_ids": [],
+  "attributes": {
+   "upn": "user55@finance.example",
+   "asn": 64496,
+   "asn_first_seen_for_user": false,
+   "user_agent": "Microsoft Outlook 16.0",
+   "user_agent_first_seen_for_user": false,
+   "result": "success"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0375",
+  "ts": "2026-10-27T10:23:55Z",
+  "source": {
+   "system": "Entra sign-in logs",
+   "record_id": "EN-70133"
+  },
+  "kind": "sign_in",
+  "actor_node_ids": [],
+  "attributes": {
+   "upn": "user51@finance.example",
+   "asn": 64496,
+   "asn_first_seen_for_user": false,
+   "user_agent": "Microsoft Outlook 16.0",
+   "user_agent_first_seen_for_user": false,
+   "result": "success"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0376",
+  "ts": "2026-10-27T10:24:06Z",
+  "source": {
+   "system": "Graph activity log",
+   "record_id": "GR-70045"
+  },
+  "kind": "resource_access",
+  "actor_node_ids": [],
+  "attributes": {
+   "upn": "user23@finance.example",
+   "resource": "Finance-Close library",
+   "request_count": 23,
+   "window_s": 240,
+   "via": "Finance API"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0377",
+  "ts": "2026-10-27T10:24:18Z",
+  "source": {
+   "system": "Entra sign-in logs",
+   "record_id": "EN-70248"
+  },
+  "kind": "sign_in",
+  "actor_node_ids": [],
+  "attributes": {
+   "upn": "user34@finance.example",
+   "asn": 64497,
+   "asn_first_seen_for_user": false,
+   "user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 14_6) Safari/18.1",
+   "user_agent_first_seen_for_user": false,
+   "result": "success"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0378",
+  "ts": "2026-10-27T10:24:27Z",
+  "source": {
+   "system": "Graph activity log",
+   "record_id": "GR-70271"
+  },
+  "kind": "resource_access",
+  "actor_node_ids": [],
+  "attributes": {
+   "upn": "user34@finance.example",
+   "resource": "Vendor master",
+   "request_count": 19,
+   "window_s": 240,
+   "via": "SharePoint"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0379",
+  "ts": "2026-10-27T10:24:28Z",
+  "source": {
+   "system": "Graph activity log",
+   "record_id": "GR-70148"
+  },
+  "kind": "resource_access",
+  "actor_node_ids": [],
+  "attributes": {
+   "upn": "user03@finance.example",
+   "resource": "AP invoices",
+   "request_count": 39,
+   "window_s": 240,
+   "via": "SharePoint"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0380",
+  "ts": "2026-10-27T10:24:34Z",
+  "source": {
+   "system": "Mail gateway message trace",
+   "record_id": "MA-70022"
+  },
+  "kind": "mail_delivered",
+  "actor_node_ids": [],
+  "attributes": {
+   "recipient": "user28@finance.example",
+   "sender_domain": "bank-notices.example",
+   "sender_domain_age_days": 983,
+   "link_type": "document"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0381",
+  "ts": "2026-10-27T10:24:47Z",
+  "source": {
+   "system": "Entra sign-in logs",
+   "record_id": "EN-70316"
+  },
+  "kind": "sign_in",
+  "actor_node_ids": [],
+  "attributes": {
+   "upn": "user55@finance.example",
+   "asn": 64498,
+   "asn_first_seen_for_user": false,
+   "user_agent": "Microsoft Outlook 16.0",
+   "user_agent_first_seen_for_user": false,
+   "result": "success"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0382",
+  "ts": "2026-10-27T10:25:03Z",
+  "source": {
+   "system": "Graph activity log",
+   "record_id": "GR-70273"
+  },
+  "kind": "resource_access",
+  "actor_node_ids": [],
+  "attributes": {
+   "upn": "user06@finance.example",
+   "resource": "Expense reports",
+   "request_count": 8,
+   "window_s": 240,
+   "via": "Finance API"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0383",
+  "ts": "2026-10-27T10:25:56Z",
+  "source": {
+   "system": "Entra sign-in logs",
+   "record_id": "EN-70033"
+  },
+  "kind": "sign_in",
+  "actor_node_ids": [],
+  "attributes": {
+   "upn": "user33@finance.example",
+   "asn": 64497,
+   "asn_first_seen_for_user": false,
+   "user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 14_6) Safari/18.1",
+   "user_agent_first_seen_for_user": false,
+   "result": "success"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0384",
+  "ts": "2026-10-27T10:26:02Z",
+  "source": {
+   "system": "Mail gateway message trace",
+   "record_id": "MA-70001"
+  },
+  "kind": "mail_delivered",
+  "actor_node_ids": [],
+  "attributes": {
+   "recipient": "user26@finance.example",
+   "sender_domain": "payroll-svc.example",
+   "sender_domain_age_days": 1966,
+   "link_type": "document"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0385",
+  "ts": "2026-10-27T10:26:25Z",
+  "source": {
+   "system": "Graph activity log",
+   "record_id": "GR-70336"
+  },
+  "kind": "resource_access",
+  "actor_node_ids": [],
+  "attributes": {
+   "upn": "user43@finance.example",
+   "resource": "Expense reports",
+   "request_count": 19,
+   "window_s": 240,
+   "via": "SharePoint"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0386",
+  "ts": "2026-10-27T10:26:30Z",
+  "source": {
+   "system": "Entra sign-in logs",
+   "record_id": "EN-70135"
+  },
+  "kind": "sign_in",
+  "actor_node_ids": [],
+  "attributes": {
+   "upn": "user33@finance.example",
+   "asn": 64498,
+   "asn_first_seen_for_user": false,
+   "user_agent": "Microsoft Outlook 16.0",
+   "user_agent_first_seen_for_user": false,
+   "result": "success"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0387",
+  "ts": "2026-10-27T10:26:45Z",
+  "source": {
+   "system": "Entra sign-in logs",
+   "record_id": "EN-70330"
+  },
+  "kind": "sign_in",
+  "actor_node_ids": [],
+  "attributes": {
+   "upn": "user36@finance.example",
+   "asn": 64497,
+   "asn_first_seen_for_user": false,
+   "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) Edge/141.0",
+   "user_agent_first_seen_for_user": false,
+   "result": "success"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0388",
+  "ts": "2026-10-27T10:27:16Z",
+  "source": {
+   "system": "Entra sign-in logs",
+   "record_id": "EN-70166"
+  },
+  "kind": "sign_in",
+  "actor_node_ids": [],
+  "attributes": {
+   "upn": "user15@finance.example",
+   "asn": 64496,
+   "asn_first_seen_for_user": false,
+   "user_agent": "Microsoft Outlook 16.0",
+   "user_agent_first_seen_for_user": false,
+   "result": "success"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0389",
+  "ts": "2026-10-27T10:27:24Z",
+  "source": {
+   "system": "Entra sign-in logs",
+   "record_id": "EN-70113"
+  },
+  "kind": "sign_in",
+  "actor_node_ids": [],
+  "attributes": {
+   "upn": "user44@finance.example",
+   "asn": 64497,
+   "asn_first_seen_for_user": false,
+   "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) Edge/141.0",
+   "user_agent_first_seen_for_user": true,
+   "result": "success"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0390",
+  "ts": "2026-10-27T10:27:25Z",
+  "source": {
+   "system": "Entra audit log",
+   "record_id": "EN-70369"
+  },
+  "kind": "oauth_consent",
+  "actor_node_ids": [],
+  "attributes": {
+   "upn": "user43@finance.example",
+   "app_name": "MeetSpace",
+   "publisher_verified": true,
+   "app_age_days": 2498,
+   "scopes": "User.Read Calendars.Read",
+   "consent_type": "user"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0391",
+  "ts": "2026-10-27T10:28:03Z",
+  "source": {
+   "system": "Graph activity log",
+   "record_id": "GR-70386"
+  },
+  "kind": "resource_access",
+  "actor_node_ids": [],
+  "attributes": {
+   "upn": "user09@finance.example",
+   "resource": "AP invoices",
+   "request_count": 16,
+   "window_s": 240,
+   "via": "SharePoint"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0392",
+  "ts": "2026-10-27T10:28:44Z",
+  "source": {
+   "system": "Entra audit log",
+   "record_id": "EN-70169"
+  },
+  "kind": "mfa_method_added",
+  "actor_node_ids": [],
+  "attributes": {
+   "upn": "user14@finance.example",
+   "method": "authenticator_push",
+   "asn": 64498,
+   "seconds_since_sign_in": 42270
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0393",
+  "ts": "2026-10-27T10:28:47Z",
+  "source": {
+   "system": "Graph activity log",
+   "record_id": "GR-70164"
+  },
+  "kind": "resource_access",
+  "actor_node_ids": [],
+  "attributes": {
+   "upn": "user43@finance.example",
+   "resource": "Expense reports",
+   "request_count": 20,
+   "window_s": 240,
+   "via": "Finance API"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0394",
+  "ts": "2026-10-27T10:28:47Z",
+  "source": {
+   "system": "Entra sign-in logs",
+   "record_id": "EN-70213"
+  },
+  "kind": "sign_in",
+  "actor_node_ids": [],
+  "attributes": {
+   "upn": "user47@finance.example",
+   "asn": 64497,
+   "asn_first_seen_for_user": false,
+   "user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 14_6) Safari/18.1",
+   "user_agent_first_seen_for_user": false,
+   "result": "success"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0395",
+  "ts": "2026-10-27T10:28:48Z",
+  "source": {
+   "system": "Entra sign-in logs",
+   "record_id": "EN-70073"
+  },
+  "kind": "sign_in",
+  "actor_node_ids": [],
+  "attributes": {
+   "upn": "user24@finance.example",
+   "asn": 64496,
+   "asn_first_seen_for_user": false,
+   "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) Edge/141.0",
+   "user_agent_first_seen_for_user": false,
+   "result": "success"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0396",
+  "ts": "2026-10-27T10:29:25Z",
+  "source": {
+   "system": "Graph activity log",
+   "record_id": "GR-70190"
+  },
+  "kind": "resource_access",
+  "actor_node_ids": [],
+  "attributes": {
+   "upn": "user38@finance.example",
+   "resource": "AP invoices",
+   "request_count": 35,
+   "window_s": 240,
+   "via": "SharePoint"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0397",
+  "ts": "2026-10-27T10:29:34Z",
+  "source": {
+   "system": "Mail gateway message trace",
+   "record_id": "MA-70098"
+  },
+  "kind": "mail_delivered",
+  "actor_node_ids": [],
+  "attributes": {
+   "recipient": "user18@finance.example",
+   "sender_domain": "payroll-svc.example",
+   "sender_domain_age_days": 1733,
+   "link_type": "none"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0398",
+  "ts": "2026-10-27T10:29:38Z",
+  "source": {
+   "system": "Entra sign-in logs",
+   "record_id": "EN-70283"
+  },
+  "kind": "sign_in",
+  "actor_node_ids": [],
+  "attributes": {
+   "upn": "user24@finance.example",
+   "asn": 64498,
+   "asn_first_seen_for_user": false,
+   "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) Edge/141.0",
+   "user_agent_first_seen_for_user": false,
+   "result": "success"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0399",
+  "ts": "2026-10-27T10:29:44Z",
+  "source": {
+   "system": "Entra sign-in logs",
+   "record_id": "EN-70367"
+  },
+  "kind": "sign_in",
+  "actor_node_ids": [],
+  "attributes": {
+   "upn": "user15@finance.example",
+   "asn": 64497,
+   "asn_first_seen_for_user": false,
+   "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) Edge/141.0",
+   "user_agent_first_seen_for_user": false,
+   "result": "success"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0400",
+  "ts": "2026-10-27T10:29:50Z",
+  "source": {
+   "system": "Mail gateway message trace",
+   "record_id": "MA-70352"
+  },
+  "kind": "mail_delivered",
+  "actor_node_ids": [],
+  "attributes": {
+   "recipient": "user57@finance.example",
+   "sender_domain": "intranet.example",
+   "sender_domain_age_days": 2427,
+   "link_type": "document"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0401",
+  "ts": "2026-10-27T10:29:55Z",
+  "source": {
+   "system": "Entra audit log",
+   "record_id": "EN-70243"
+  },
+  "kind": "mfa_method_added",
+  "actor_node_ids": [],
+  "attributes": {
+   "upn": "user22@finance.example",
+   "method": "authenticator_push",
+   "asn": 64496,
+   "seconds_since_sign_in": 55411
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0402",
+  "ts": "2026-10-27T10:30:09Z",
+  "source": {
+   "system": "Mail gateway message trace",
+   "record_id": "MA-70196"
+  },
+  "kind": "mail_delivered",
+  "actor_node_ids": [],
+  "attributes": {
+   "recipient": "user22@finance.example",
+   "sender_domain": "supplier-one.example",
+   "sender_domain_age_days": 2074,
+   "link_type": "none"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0403",
+  "ts": "2026-10-27T10:30:13Z",
+  "source": {
+   "system": "Mail gateway message trace",
+   "record_id": "MA-70258"
+  },
+  "kind": "mail_delivered",
+  "actor_node_ids": [],
+  "attributes": {
+   "recipient": "user50@finance.example",
+   "sender_domain": "bank-notices.example",
+   "sender_domain_age_days": 741,
+   "link_type": "document"
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0404",
+  "ts": "2026-10-27T10:30:24Z",
+  "source": {
+   "system": "Entra audit log",
+   "record_id": "EN-70175"
+  },
+  "kind": "mfa_method_added",
+  "actor_node_ids": [],
+  "attributes": {
+   "upn": "user06@finance.example",
+   "method": "fido2",
+   "asn": 64498,
+   "seconds_since_sign_in": 37175
+  },
+  "attack": null,
+  "synthetic": true
+ },
+ {
+  "id": "BG-0405",
+  "ts": "2026-10-27T10:31:04Z",
+  "source": {
+   "system": "Entra sign-in logs",
+   "record_id": "EN-70061"
+  },
+  "kind": "sign_in",
+  "actor_node_ids": [],
+  "attributes": {
+   "upn": "user05@finance.example",
+   "asn": 64496,
+   "asn_first_seen_for_user": false,
+   "user_agent": "Microsoft Outlook 16.0",
+   "user_agent_first_seen_for_user": false,
+   "result": "success"
+  },
+  "attack": null,
+  "synthetic": true
+ }
+]

@@ -1,0 +1,97 @@
+[
+  {
+    "id": "EV-01",
+    "ts": "2026-10-27T09:41:12Z",
+    "source": { "system": "Mail gateway message trace", "record_id": "MT-88241" },
+    "kind": "mail_delivered",
+    "actor_node_ids": ["attacker.phish_sender", "user.m_verma"],
+    "attributes": {
+      "recipient": "m.verma@finance.example",
+      "sender_domain": "docusync-pro.example",
+      "sender_domain_age_days": 6,
+      "link_type": "oauth_consent"
+    },
+    "attack": null,
+    "synthetic": true
+  },
+  {
+    "id": "EV-02",
+    "ts": "2026-10-27T09:42:36Z",
+    "source": { "system": "Entra sign-in logs", "record_id": "SL-4471" },
+    "kind": "sign_in",
+    "actor_node_ids": ["attacker.as64500", "user.m_verma"],
+    "attributes": {
+      "upn": "m.verma@finance.example",
+      "asn": 64500,
+      "asn_first_seen_for_user": true,
+      "user_agent": "Mozilla/5.0 (X11; Linux x86_64) HeadlessChrome/131.0",
+      "user_agent_first_seen_for_user": true,
+      "result": "success"
+    },
+    "attack": null,
+    "synthetic": true
+  },
+  {
+    "id": "EV-03",
+    "ts": "2026-10-27T09:43:21Z",
+    "source": { "system": "Entra audit log", "record_id": "AU-9120" },
+    "kind": "mfa_method_added",
+    "actor_node_ids": ["user.m_verma"],
+    "attributes": {
+      "upn": "m.verma@finance.example",
+      "method": "software_totp",
+      "asn": 64500,
+      "seconds_since_sign_in": 45
+    },
+    "attack": null,
+    "synthetic": true
+  },
+  {
+    "id": "EV-04",
+    "ts": "2026-10-27T09:43:50Z",
+    "source": { "system": "Entra audit log", "record_id": "AU-9124" },
+    "kind": "oauth_consent",
+    "actor_node_ids": ["user.m_verma", "attacker.docusync_app", "token.grant_docusync"],
+    "attributes": {
+      "upn": "m.verma@finance.example",
+      "app_name": "DocuSync Pro",
+      "publisher_verified": false,
+      "app_age_days": 6,
+      "scopes": "Mail.Read Files.ReadWrite.All offline_access",
+      "consent_type": "user"
+    },
+    "attack": null,
+    "synthetic": true
+  },
+  {
+    "id": "EV-05",
+    "ts": "2026-10-27T09:47:03Z",
+    "source": { "system": "Entra sign-in logs", "record_id": "SL-4502" },
+    "kind": "token_replay",
+    "actor_node_ids": ["attacker.as64500", "session.s1", "session.s2"],
+    "attributes": {
+      "upn": "m.verma@finance.example",
+      "sessions": "S-1,S-2",
+      "asn": 64500,
+      "issued_asn": 64497,
+      "device_mismatch": true
+    },
+    "attack": null,
+    "synthetic": true
+  },
+  {
+    "id": "EV-06",
+    "ts": "2026-10-27T09:52:18Z",
+    "source": { "system": "Graph activity log", "record_id": "GA-30918" },
+    "kind": "resource_enumeration",
+    "actor_node_ids": ["session.s1", "session.s2", "api.finance", "process.payment"],
+    "attributes": {
+      "resource": "Finance-Close library",
+      "request_count": 214,
+      "window_s": 240,
+      "via": "Finance API"
+    },
+    "attack": null,
+    "synthetic": true
+  }
+]

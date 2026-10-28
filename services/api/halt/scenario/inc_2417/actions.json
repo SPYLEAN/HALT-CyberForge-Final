@@ -1,0 +1,117 @@
+[
+  {
+    "id": "C01", "type": "revoke_oauth_grant", "title": "Revoke DocuSync Pro OAuth grant",
+    "targets": ["token.grant_docusync"],
+    "cuts": [{ "ref": "token.grant_docusync", "ref_type": "node", "strength": "hard", "rationale": "Revoking the grant invalidates its refresh tokens, so the app can no longer call finance resources." }],
+    "impact": { "users": ["user.m_verma"], "description": "M. Verma loses DocuSync Pro access. No service interrupted." },
+    "reversibility": { "reversible": true, "rollback_id": "RB-1", "method": "Restore the grant from the sealed record", "seconds": 30 },
+    "authorisation": { "policy_ids": ["IR-OAUTH-02"], "required_roles": ["tier2_analyst"], "permission_scope": "DelegatedPermissionGrant.ReadWrite.All (simulated)" },
+    "evidence_preserving": true, "connector": "simulated"
+  },
+  {
+    "id": "C02", "type": "revoke_session", "title": "Revoke session S-1",
+    "targets": ["session.s1"],
+    "cuts": [{ "ref": "session.s1", "ref_type": "node", "strength": "hard", "rationale": "The replayed session token stops working everywhere, whatever network it is used from." }],
+    "impact": { "users": ["user.m_verma"], "description": "M. Verma signs in again." },
+    "reversibility": { "reversible": true, "rollback_id": "RB-2a", "method": "No restore needed; the user signs in again", "seconds": 60 },
+    "authorisation": { "policy_ids": ["IR-SESS-01"], "required_roles": ["tier2_analyst"], "permission_scope": "User.RevokeSessions.All (simulated)" },
+    "evidence_preserving": true, "connector": "simulated"
+  },
+  {
+    "id": "C03", "type": "revoke_session", "title": "Revoke session S-2",
+    "targets": ["session.s2"],
+    "cuts": [{ "ref": "session.s2", "ref_type": "node", "strength": "hard", "rationale": "The replayed session token stops working everywhere, whatever network it is used from." }],
+    "impact": { "users": ["user.m_verma"], "description": "M. Verma signs in again." },
+    "reversibility": { "reversible": true, "rollback_id": "RB-2b", "method": "No restore needed; the user signs in again", "seconds": 60 },
+    "authorisation": { "policy_ids": ["IR-SESS-01"], "required_roles": ["tier2_analyst"], "permission_scope": "User.RevokeSessions.All (simulated)" },
+    "evidence_preserving": true, "connector": "simulated"
+  },
+  {
+    "id": "C04", "type": "conditional_access_step_up", "title": "Require phishing-resistant step-up for finance apps (60 min)",
+    "targets": ["api.finance"],
+    "cuts": [{ "ref": "f.user-s3", "ref_type": "edge", "strength": "hard", "rationale": "New finance sessions need a phishing-resistant method. The software TOTP the attacker added (EV-03) does not satisfy it." }],
+    "impact": { "users": ["user.m_verma", "user.s_iyer", "user.j_okafor"], "description": "Finance users signing in during the next 60 minutes see one phishing-resistant prompt." },
+    "reversibility": { "reversible": true, "rollback_id": "RB-3", "method": "Disable the conditional-access policy", "seconds": 20 },
+    "authorisation": { "policy_ids": ["IR-CA-05", "IR-CHG-03"], "required_roles": ["tier2_analyst", "finance_ops_owner"], "permission_scope": "Policy.ReadWrite.ConditionalAccess (simulated)" },
+    "evidence_preserving": true, "connector": "simulated"
+  },
+  {
+    "id": "C05", "type": "isolate_api", "title": "Isolate Finance API",
+    "targets": ["api.finance"],
+    "cuts": [{ "ref": "api.finance", "ref_type": "node", "strength": "hard", "rationale": "No traffic reaches the Finance API." }],
+    "impact": { "groups": [{ "group_id": "finance_api_users", "users": 310 }], "description": "Every process that reads the Finance API stops." },
+    "reversibility": { "reversible": true, "rollback_id": "RB-5", "method": "Manual network re-enable and service checks", "seconds": 14400 },
+    "authorisation": { "policy_ids": ["IR-ISO-02"], "required_roles": ["soc_lead"], "permission_scope": "Network isolation (simulated)" },
+    "evidence_preserving": true, "connector": "simulated"
+  },
+  {
+    "id": "C06", "type": "isolate_database", "title": "Isolate finance ledger database",
+    "targets": ["db.finance_ledger"],
+    "cuts": [{ "ref": "db.finance_ledger", "ref_type": "node", "strength": "hard", "rationale": "No connection reaches the ledger database." }],
+    "impact": { "groups": [{ "group_id": "finance_all_users", "users": 412 }], "description": "All five finance processes lose their data store." },
+    "reversibility": { "reversible": true, "rollback_id": "RB-6", "method": "Manual reconnection and integrity checks", "seconds": 15600 },
+    "authorisation": { "policy_ids": ["IR-ISO-03"], "required_roles": ["soc_lead", "ciso"], "permission_scope": "Database isolation (simulated)" },
+    "evidence_preserving": true, "connector": "simulated"
+  },
+  {
+    "id": "C07", "type": "isolate_subnet", "title": "Network-isolate finance subnet",
+    "targets": ["api.finance", "db.finance_ledger"],
+    "cuts": [
+      { "ref": "api.finance", "ref_type": "node", "strength": "hard", "rationale": "The subnet hosting the Finance API is unreachable." },
+      { "ref": "db.finance_ledger", "ref_type": "node", "strength": "hard", "rationale": "The subnet hosting the ledger database is unreachable." }
+    ],
+    "impact": { "groups": [{ "group_id": "finance_subnet_users", "users": 412 }], "description": "Every finance service on the subnet stops." },
+    "reversibility": { "reversible": true, "rollback_id": "RB-7", "method": "Manual network re-enable and service checks", "seconds": 10800 },
+    "authorisation": { "policy_ids": ["IR-ISO-04"], "required_roles": ["soc_lead", "ciso"], "permission_scope": "Network isolation (simulated)" },
+    "evidence_preserving": true, "connector": "simulated"
+  },
+  {
+    "id": "C08", "type": "disable_account", "title": "Disable M. Verma account",
+    "targets": ["user.m_verma"],
+    "cuts": [{ "ref": "user.m_verma", "ref_type": "node", "strength": "hard", "rationale": "A disabled account cannot mint new sessions. Existing session tokens stay valid until revoked." }],
+    "impact": { "users": ["user.m_verma"], "description": "M. Verma is locked out until the account is re-enabled." },
+    "reversibility": { "reversible": true, "rollback_id": "RB-8", "method": "Re-enable the account", "seconds": 30 },
+    "authorisation": { "policy_ids": ["IR-ACCT-01"], "required_roles": ["tier2_analyst"], "permission_scope": "User.EnableDisableAccount.All (simulated)" },
+    "evidence_preserving": true, "connector": "simulated"
+  },
+  {
+    "id": "C09", "type": "block_asn", "title": "Block AS64500 at the edge",
+    "targets": ["attacker.as64500"],
+    "cuts": [
+      { "ref": "e.asn-s1", "ref_type": "edge", "strength": "soft", "rationale": "The attacker can replay the same token from another network." },
+      { "ref": "e.asn-s2", "ref_type": "edge", "strength": "soft", "rationale": "The attacker can replay the same token from another network." },
+      { "ref": "i.asn-support", "ref_type": "edge", "strength": "soft", "rationale": "The attacker can reach the SSO application from another network." }
+    ],
+    "impact": { "description": "No legitimate users sign in from AS64500." },
+    "reversibility": { "reversible": true, "rollback_id": "RB-9", "method": "Remove the edge block rule", "seconds": 10 },
+    "authorisation": { "policy_ids": ["IR-NET-01"], "required_roles": ["tier2_analyst"], "permission_scope": "Edge firewall rules (simulated)" },
+    "evidence_preserving": true, "connector": "simulated"
+  },
+  {
+    "id": "C10", "type": "revoke_all_consents", "title": "Revoke all third-party consents tenant-wide",
+    "targets": ["token.grant_docusync"],
+    "cuts": [{ "ref": "token.grant_docusync", "ref_type": "node", "strength": "hard", "rationale": "Every third-party delegated grant is revoked, this one included." }],
+    "impact": { "groups": [{ "group_id": "consenting_users", "users": 212 }], "description": "14 integrations stop working for 212 users." },
+    "reversibility": { "reversible": true, "rollback_id": "RB-10", "method": "Manual re-consent of 14 integrations", "seconds": 10800 },
+    "authorisation": { "policy_ids": ["IR-OAUTH-09"], "required_roles": ["soc_lead"], "permission_scope": "DelegatedPermissionGrant.ReadWrite.All (simulated)" },
+    "evidence_preserving": true, "connector": "simulated"
+  },
+  {
+    "id": "C11", "type": "force_password_reset", "title": "Force password reset for M. Verma",
+    "targets": ["user.m_verma"],
+    "cuts": [],
+    "impact": { "users": ["user.m_verma"], "description": "M. Verma sets a new password. Issued tokens and grants survive a password change." },
+    "reversibility": { "reversible": false, "rollback_id": null, "method": "A password change cannot be undone", "seconds": null },
+    "authorisation": { "policy_ids": ["IR-ACCT-02"], "required_roles": ["tier2_analyst"], "permission_scope": "User.ResetPassword (simulated)" },
+    "evidence_preserving": true, "connector": "simulated"
+  },
+  {
+    "id": "C12", "type": "quarantine_mailbox", "title": "Quarantine M. Verma mailbox",
+    "targets": ["user.m_verma"],
+    "cuts": [],
+    "impact": { "users": ["user.m_verma"], "description": "M. Verma cannot send or receive mail. The phishing delivery has already happened." },
+    "reversibility": { "reversible": true, "rollback_id": "RB-12", "method": "Release the mailbox", "seconds": 60 },
+    "authorisation": { "policy_ids": ["IR-MAIL-01"], "required_roles": ["tier2_analyst"], "permission_scope": "Mailbox quarantine (simulated)" },
+    "evidence_preserving": true, "connector": "simulated"
+  }
+]

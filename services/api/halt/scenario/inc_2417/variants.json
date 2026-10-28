@@ -1,0 +1,32 @@
+[
+  {
+    "key": "baseline",
+    "title": "Baseline",
+    "description": "The scenario as described in docs/DEMO_SCENARIO.md.",
+    "ops": []
+  },
+  {
+    "key": "verma_not_releaser",
+    "title": "M. Verma is not the supplier-run releaser",
+    "description": "Removes the runbook dependency, so disabling the account no longer stops Payment processing. The plan is expected to change.",
+    "ops": [{ "op": "remove_edge", "edge_id": "d.payment-verma" }]
+  },
+  {
+    "key": "approver_unavailable",
+    "title": "Finance Ops owner unavailable",
+    "description": "S. Iyer cannot approve and has no delegate, so the step-up cannot be authorised.",
+    "ops": [{ "op": "set_approver_availability", "approver_id": "s_iyer", "available": false }]
+  },
+  {
+    "key": "no_phish_resistant_mfa",
+    "title": "Finance users lack phishing-resistant methods",
+    "description": "Step-up falls back to methods the attacker controls, so its cut becomes soft.",
+    "ops": [{ "op": "set_cut_strength", "action_id": "C04", "ref": "f.user-s3", "strength": "soft" }]
+  },
+  {
+    "key": "relaxed_users_250",
+    "title": "User-impact limit raised to 250",
+    "description": "Guards against a plan that only wins because of the user limit.",
+    "ops": [{ "op": "set_constraint_limit", "constraint_id": "C-USERS", "limit": 250 }]
+  }
+]

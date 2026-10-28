@@ -1,0 +1,2855 @@
+{
+  "components": {
+    "schemas": {
+      "ApiError": {
+        "additionalProperties": false,
+        "properties": {
+          "code": {
+            "title": "Code",
+            "type": "string"
+          },
+          "detail": {
+            "anyOf": [
+              {},
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Detail"
+          },
+          "message": {
+            "title": "Message",
+            "type": "string"
+          },
+          "request_id": {
+            "title": "Request Id",
+            "type": "string"
+          }
+        },
+        "required": [
+          "code",
+          "message",
+          "request_id"
+        ],
+        "title": "ApiError",
+        "type": "object"
+      },
+      "Approval": {
+        "additionalProperties": false,
+        "properties": {
+          "approver_id": {
+            "title": "Approver Id",
+            "type": "string"
+          },
+          "at": {
+            "format": "date-time",
+            "title": "At",
+            "type": "string"
+          },
+          "decision": {
+            "enum": [
+              "approved",
+              "declined"
+            ],
+            "title": "Decision",
+            "type": "string"
+          },
+          "id": {
+            "title": "Id",
+            "type": "string"
+          },
+          "note": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Note"
+          },
+          "plan_id": {
+            "title": "Plan Id",
+            "type": "string"
+          },
+          "policy_id": {
+            "title": "Policy Id",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "plan_id",
+          "policy_id",
+          "approver_id",
+          "decision",
+          "at"
+        ],
+        "title": "Approval",
+        "type": "object"
+      },
+      "Approver": {
+        "additionalProperties": false,
+        "properties": {
+          "available": {
+            "title": "Available",
+            "type": "boolean"
+          },
+          "id": {
+            "title": "Id",
+            "type": "string"
+          },
+          "name": {
+            "title": "Name",
+            "type": "string"
+          },
+          "roles": {
+            "items": {
+              "type": "string"
+            },
+            "minItems": 1,
+            "title": "Roles",
+            "type": "array"
+          },
+          "user_node_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "User Node Id"
+          }
+        },
+        "required": [
+          "id",
+          "name",
+          "roles",
+          "available"
+        ],
+        "title": "Approver",
+        "type": "object"
+      },
+      "AttackPath": {
+        "additionalProperties": false,
+        "properties": {
+          "edge_ids": {
+            "items": {
+              "type": "string"
+            },
+            "minItems": 1,
+            "title": "Edge Ids",
+            "type": "array"
+          },
+          "high_risk": {
+            "title": "High Risk",
+            "type": "boolean"
+          },
+          "id": {
+            "pattern": "^(P|U)\\d+$",
+            "title": "Id",
+            "type": "string"
+          },
+          "node_ids": {
+            "items": {
+              "type": "string"
+            },
+            "minItems": 2,
+            "title": "Node Ids",
+            "type": "array"
+          },
+          "provenance": {
+            "enum": [
+              "observed",
+              "mixed",
+              "forecast"
+            ],
+            "title": "Provenance",
+            "type": "string"
+          },
+          "reach": {
+            "$ref": "#/components/schemas/Derivation"
+          },
+          "risk": {
+            "minimum": 0,
+            "title": "Risk",
+            "type": "number"
+          },
+          "target_id": {
+            "title": "Target Id",
+            "type": "string"
+          },
+          "uncertain": {
+            "title": "Uncertain",
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "id",
+          "node_ids",
+          "edge_ids",
+          "target_id",
+          "provenance",
+          "reach",
+          "risk",
+          "high_risk",
+          "uncertain"
+        ],
+        "title": "AttackPath",
+        "type": "object"
+      },
+      "AttackTechnique": {
+        "additionalProperties": false,
+        "properties": {
+          "technique_id": {
+            "pattern": "^T\\d{4}(\\.\\d{3})?$",
+            "title": "Technique Id",
+            "type": "string"
+          },
+          "technique_name": {
+            "title": "Technique Name",
+            "type": "string"
+          }
+        },
+        "required": [
+          "technique_id",
+          "technique_name"
+        ],
+        "title": "AttackTechnique",
+        "type": "object"
+      },
+      "AuditEntry": {
+        "additionalProperties": false,
+        "properties": {
+          "actor": {
+            "title": "Actor",
+            "type": "string"
+          },
+          "at": {
+            "format": "date-time",
+            "title": "At",
+            "type": "string"
+          },
+          "hash": {
+            "pattern": "^[0-9a-f]{64}$",
+            "title": "Hash",
+            "type": "string"
+          },
+          "kind": {
+            "title": "Kind",
+            "type": "string"
+          },
+          "payload": {
+            "title": "Payload"
+          },
+          "prev_hash": {
+            "pattern": "^[0-9a-f]{64}$",
+            "title": "Prev Hash",
+            "type": "string"
+          },
+          "seq": {
+            "title": "Seq",
+            "type": "integer"
+          },
+          "subject_id": {
+            "title": "Subject Id",
+            "type": "string"
+          }
+        },
+        "required": [
+          "seq",
+          "at",
+          "actor",
+          "kind",
+          "subject_id",
+          "payload",
+          "prev_hash",
+          "hash"
+        ],
+        "title": "AuditEntry",
+        "type": "object"
+      },
+      "Authorisation": {
+        "additionalProperties": false,
+        "properties": {
+          "permission_scope": {
+            "minLength": 1,
+            "title": "Permission Scope",
+            "type": "string"
+          },
+          "policy_ids": {
+            "items": {
+              "type": "string"
+            },
+            "minItems": 1,
+            "title": "Policy Ids",
+            "type": "array"
+          },
+          "required_roles": {
+            "items": {
+              "type": "string"
+            },
+            "minItems": 1,
+            "title": "Required Roles",
+            "type": "array"
+          }
+        },
+        "required": [
+          "policy_ids",
+          "required_roles",
+          "permission_scope"
+        ],
+        "title": "Authorisation",
+        "type": "object"
+      },
+      "BusinessInfo": {
+        "additionalProperties": false,
+        "properties": {
+          "deadline": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Deadline"
+          },
+          "owner": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Owner"
+          },
+          "users": {
+            "minimum": 0,
+            "title": "Users",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "users"
+        ],
+        "title": "BusinessInfo",
+        "type": "object"
+      },
+      "ClockMessage": {
+        "additionalProperties": false,
+        "properties": {
+          "playing": {
+            "title": "Playing",
+            "type": "boolean"
+          },
+          "seq": {
+            "minimum": 0,
+            "title": "Seq",
+            "type": "integer"
+          },
+          "speed": {
+            "enum": [
+              1,
+              4,
+              16
+            ],
+            "title": "Speed",
+            "type": "integer"
+          },
+          "t": {
+            "minimum": 0,
+            "title": "T",
+            "type": "number"
+          },
+          "type": {
+            "const": "clock",
+            "default": "clock",
+            "title": "Type",
+            "type": "string"
+          }
+        },
+        "required": [
+          "seq",
+          "t",
+          "playing",
+          "speed"
+        ],
+        "title": "ClockMessage",
+        "type": "object"
+      },
+      "ClosestOption": {
+        "additionalProperties": false,
+        "properties": {
+          "breaks": {
+            "items": {
+              "$ref": "#/components/schemas/ConstraintResult"
+            },
+            "title": "Breaks",
+            "type": "array"
+          },
+          "candidate_ids": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Candidate Ids",
+            "type": "array"
+          }
+        },
+        "required": [
+          "candidate_ids",
+          "breaks"
+        ],
+        "title": "ClosestOption",
+        "type": "object"
+      },
+      "Constraint": {
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "enum": [
+              "C-COVER",
+              "C-DOWNTIME",
+              "C-USERS",
+              "C-REVERSIBLE",
+              "C-AUTH",
+              "C-EVIDENCE"
+            ],
+            "title": "Id",
+            "type": "string"
+          },
+          "kind": {
+            "enum": [
+              "hard",
+              "soft"
+            ],
+            "title": "Kind",
+            "type": "string"
+          },
+          "label": {
+            "title": "Label",
+            "type": "string"
+          },
+          "limit": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Limit"
+          },
+          "unit": {
+            "anyOf": [
+              {
+                "enum": [
+                  "min",
+                  "users",
+                  "s",
+                  "paths"
+                ],
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Unit"
+          }
+        },
+        "required": [
+          "id",
+          "label",
+          "kind",
+          "limit"
+        ],
+        "title": "Constraint",
+        "type": "object"
+      },
+      "ConstraintResult": {
+        "additionalProperties": false,
+        "properties": {
+          "constraint_id": {
+            "enum": [
+              "C-COVER",
+              "C-DOWNTIME",
+              "C-USERS",
+              "C-REVERSIBLE",
+              "C-AUTH",
+              "C-EVIDENCE"
+            ],
+            "title": "Constraint Id",
+            "type": "string"
+          },
+          "derivation": {
+            "$ref": "#/components/schemas/Derivation"
+          },
+          "limit": {
+            "title": "Limit",
+            "type": "string"
+          },
+          "state": {
+            "enum": [
+              "met",
+              "binding",
+              "violated"
+            ],
+            "title": "State",
+            "type": "string"
+          },
+          "value": {
+            "title": "Value",
+            "type": "string"
+          }
+        },
+        "required": [
+          "constraint_id",
+          "state",
+          "value",
+          "limit",
+          "derivation"
+        ],
+        "title": "ConstraintResult",
+        "type": "object"
+      },
+      "Cut": {
+        "additionalProperties": false,
+        "properties": {
+          "rationale": {
+            "minLength": 1,
+            "title": "Rationale",
+            "type": "string"
+          },
+          "ref": {
+            "title": "Ref",
+            "type": "string"
+          },
+          "ref_type": {
+            "enum": [
+              "node",
+              "edge"
+            ],
+            "title": "Ref Type",
+            "type": "string"
+          },
+          "strength": {
+            "enum": [
+              "hard",
+              "soft"
+            ],
+            "title": "Strength",
+            "type": "string"
+          }
+        },
+        "required": [
+          "ref",
+          "ref_type",
+          "strength",
+          "rationale"
+        ],
+        "title": "Cut",
+        "type": "object"
+      },
+      "Derivation": {
+        "additionalProperties": false,
+        "description": "Required wherever a number is shown: counts with their denominator, never a bare score.",
+        "properties": {
+          "denominator": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Denominator"
+          },
+          "method": {
+            "minLength": 1,
+            "title": "Method",
+            "type": "string"
+          },
+          "numerator": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Numerator"
+          },
+          "source_ids": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Source Ids",
+            "type": "array"
+          }
+        },
+        "required": [
+          "method"
+        ],
+        "title": "Derivation",
+        "type": "object"
+      },
+      "DisplayAction": {
+        "additionalProperties": false,
+        "properties": {
+          "blocks_path_ids": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Blocks Path Ids",
+            "type": "array"
+          },
+          "candidate_ids": {
+            "items": {
+              "pattern": "^C\\d{2}$",
+              "type": "string"
+            },
+            "minItems": 1,
+            "title": "Candidate Ids",
+            "type": "array"
+          },
+          "id": {
+            "pattern": "^A\\d+$",
+            "title": "Id",
+            "type": "string"
+          },
+          "title": {
+            "title": "Title",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "candidate_ids",
+          "title",
+          "blocks_path_ids"
+        ],
+        "title": "DisplayAction",
+        "type": "object"
+      },
+      "Enumeration": {
+        "additionalProperties": false,
+        "properties": {
+          "feasible": {
+            "title": "Feasible",
+            "type": "integer"
+          },
+          "optimal_count": {
+            "title": "Optimal Count",
+            "type": "integer"
+          },
+          "subsets_checked": {
+            "title": "Subsets Checked",
+            "type": "integer"
+          },
+          "unique": {
+            "title": "Unique",
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "subsets_checked",
+          "feasible",
+          "optimal_count",
+          "unique"
+        ],
+        "title": "Enumeration",
+        "type": "object"
+      },
+      "EventMessage": {
+        "additionalProperties": false,
+        "properties": {
+          "event": {
+            "$ref": "#/components/schemas/SecurityEvent"
+          },
+          "seq": {
+            "minimum": 0,
+            "title": "Seq",
+            "type": "integer"
+          },
+          "t": {
+            "minimum": 0,
+            "title": "T",
+            "type": "number"
+          },
+          "type": {
+            "const": "event",
+            "default": "event",
+            "title": "Type",
+            "type": "string"
+          }
+        },
+        "required": [
+          "seq",
+          "t",
+          "event"
+        ],
+        "title": "EventMessage",
+        "type": "object"
+      },
+      "EventSource": {
+        "additionalProperties": false,
+        "properties": {
+          "record_id": {
+            "minLength": 1,
+            "title": "Record Id",
+            "type": "string"
+          },
+          "system": {
+            "minLength": 1,
+            "title": "System",
+            "type": "string"
+          }
+        },
+        "required": [
+          "system",
+          "record_id"
+        ],
+        "title": "EventSource",
+        "type": "object"
+      },
+      "Execution": {
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "title": "Id",
+            "type": "string"
+          },
+          "plan_id": {
+            "title": "Plan Id",
+            "type": "string"
+          },
+          "proof_id": {
+            "title": "Proof Id",
+            "type": "string"
+          },
+          "rollback_window_until": {
+            "anyOf": [
+              {
+                "format": "date-time",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Rollback Window Until"
+          },
+          "state": {
+            "enum": [
+              "review",
+              "blocked_by_policy",
+              "executing",
+              "applied",
+              "rolled"
+            ],
+            "title": "State",
+            "type": "string"
+          },
+          "steps": {
+            "items": {
+              "$ref": "#/components/schemas/ExecutionStep"
+            },
+            "title": "Steps",
+            "type": "array"
+          }
+        },
+        "required": [
+          "id",
+          "plan_id",
+          "proof_id",
+          "state",
+          "steps",
+          "rollback_window_until"
+        ],
+        "title": "Execution",
+        "type": "object"
+      },
+      "ExecutionStep": {
+        "additionalProperties": false,
+        "properties": {
+          "at": {
+            "anyOf": [
+              {
+                "format": "date-time",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "At"
+          },
+          "candidate_id": {
+            "title": "Candidate Id",
+            "type": "string"
+          },
+          "display_action_id": {
+            "title": "Display Action Id",
+            "type": "string"
+          },
+          "post_snapshot_hash": {
+            "anyOf": [
+              {
+                "pattern": "^[0-9a-f]{64}$",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Post Snapshot Hash"
+          },
+          "status": {
+            "enum": [
+              "pending",
+              "applied",
+              "rolled_back",
+              "failed"
+            ],
+            "title": "Status",
+            "type": "string"
+          }
+        },
+        "required": [
+          "display_action_id",
+          "candidate_id",
+          "status"
+        ],
+        "title": "ExecutionStep",
+        "type": "object"
+      },
+      "Finding": {
+        "additionalProperties": false,
+        "properties": {
+          "attack": {
+            "items": {
+              "$ref": "#/components/schemas/AttackTechnique"
+            },
+            "title": "Attack",
+            "type": "array"
+          },
+          "evidence_ids": {
+            "items": {
+              "pattern": "^EV-\\d{2}$",
+              "type": "string"
+            },
+            "minItems": 1,
+            "title": "Evidence Ids",
+            "type": "array"
+          },
+          "id": {
+            "pattern": "^F-\\d{2}$",
+            "title": "Id",
+            "type": "string"
+          },
+          "limits": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Limits",
+            "type": "array"
+          },
+          "score": {
+            "$ref": "#/components/schemas/FindingScore"
+          },
+          "stage": {
+            "enum": [
+              "initial_access",
+              "credential_persistence",
+              "token_abuse",
+              "discovery",
+              "collection",
+              "exfiltration"
+            ],
+            "title": "Stage",
+            "type": "string"
+          },
+          "title": {
+            "title": "Title",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "title",
+          "stage",
+          "evidence_ids",
+          "score"
+        ],
+        "title": "Finding",
+        "type": "object"
+      },
+      "FindingMessage": {
+        "additionalProperties": false,
+        "properties": {
+          "finding": {
+            "$ref": "#/components/schemas/Finding"
+          },
+          "seq": {
+            "minimum": 0,
+            "title": "Seq",
+            "type": "integer"
+          },
+          "t": {
+            "minimum": 0,
+            "title": "T",
+            "type": "number"
+          },
+          "type": {
+            "const": "finding",
+            "default": "finding",
+            "title": "Type",
+            "type": "string"
+          }
+        },
+        "required": [
+          "seq",
+          "t",
+          "finding"
+        ],
+        "title": "FindingMessage",
+        "type": "object"
+      },
+      "FindingScore": {
+        "additionalProperties": false,
+        "properties": {
+          "derivation": {
+            "$ref": "#/components/schemas/Derivation"
+          },
+          "method": {
+            "enum": [
+              "rule",
+              "logreg",
+              "gbm"
+            ],
+            "title": "Method",
+            "type": "string"
+          },
+          "value": {
+            "maximum": 1,
+            "minimum": 0,
+            "title": "Value",
+            "type": "number"
+          }
+        },
+        "required": [
+          "value",
+          "derivation",
+          "method"
+        ],
+        "title": "FindingScore",
+        "type": "object"
+      },
+      "FutureResult": {
+        "additionalProperties": false,
+        "properties": {
+          "action_ids": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Action Ids",
+            "type": "array"
+          },
+          "availability": {
+            "items": {
+              "$ref": "#/components/schemas/ProcessAvailability"
+            },
+            "title": "Availability",
+            "type": "array"
+          },
+          "downtime_min": {
+            "additionalProperties": {
+              "type": "integer"
+            },
+            "title": "Downtime Min",
+            "type": "object"
+          },
+          "evidence_preserved": {
+            "title": "Evidence Preserved",
+            "type": "boolean"
+          },
+          "label": {
+            "enum": [
+              "A",
+              "B",
+              "C"
+            ],
+            "title": "Label",
+            "type": "string"
+          },
+          "paths_blocked": {
+            "$ref": "#/components/schemas/Derivation"
+          },
+          "reversible": {
+            "title": "Reversible",
+            "type": "boolean"
+          },
+          "target_reached": {
+            "$ref": "#/components/schemas/Derivation"
+          },
+          "users_affected": {
+            "$ref": "#/components/schemas/Derivation"
+          }
+        },
+        "required": [
+          "label",
+          "action_ids",
+          "paths_blocked",
+          "target_reached",
+          "users_affected",
+          "downtime_min",
+          "availability",
+          "reversible",
+          "evidence_preserved"
+        ],
+        "title": "FutureResult",
+        "type": "object"
+      },
+      "GateMessage": {
+        "additionalProperties": false,
+        "properties": {
+          "execution": {
+            "$ref": "#/components/schemas/Execution"
+          },
+          "seq": {
+            "minimum": 0,
+            "title": "Seq",
+            "type": "integer"
+          },
+          "t": {
+            "minimum": 0,
+            "title": "T",
+            "type": "number"
+          },
+          "type": {
+            "const": "gate",
+            "default": "gate",
+            "title": "Type",
+            "type": "string"
+          }
+        },
+        "required": [
+          "seq",
+          "t",
+          "execution"
+        ],
+        "title": "GateMessage",
+        "type": "object"
+      },
+      "GraphDeltaMessage": {
+        "additionalProperties": false,
+        "properties": {
+          "add_edges": {
+            "items": {
+              "$ref": "#/components/schemas/GraphEdge"
+            },
+            "title": "Add Edges",
+            "type": "array"
+          },
+          "add_nodes": {
+            "items": {
+              "$ref": "#/components/schemas/GraphNode"
+            },
+            "title": "Add Nodes",
+            "type": "array"
+          },
+          "seq": {
+            "minimum": 0,
+            "title": "Seq",
+            "type": "integer"
+          },
+          "t": {
+            "minimum": 0,
+            "title": "T",
+            "type": "number"
+          },
+          "type": {
+            "const": "graph_delta",
+            "default": "graph_delta",
+            "title": "Type",
+            "type": "string"
+          }
+        },
+        "required": [
+          "seq",
+          "t",
+          "add_nodes",
+          "add_edges"
+        ],
+        "title": "GraphDeltaMessage",
+        "type": "object"
+      },
+      "GraphEdge": {
+        "additionalProperties": false,
+        "properties": {
+          "evidence_ids": {
+            "items": {
+              "pattern": "^EV-\\d{2}$",
+              "type": "string"
+            },
+            "title": "Evidence Ids",
+            "type": "array"
+          },
+          "first_seen": {
+            "anyOf": [
+              {
+                "format": "date-time",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "First Seen"
+          },
+          "historical": {
+            "default": false,
+            "title": "Historical",
+            "type": "boolean"
+          },
+          "id": {
+            "pattern": "^[a-z]\\.[a-z0-9-]+$",
+            "title": "Id",
+            "type": "string"
+          },
+          "inference": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/Inference"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null
+          },
+          "kind": {
+            "enum": [
+              "hostile",
+              "dependency",
+              "identity"
+            ],
+            "title": "Kind",
+            "type": "string"
+          },
+          "origin": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Origin"
+          },
+          "provenance": {
+            "enum": [
+              "observed",
+              "inferred",
+              "forecast",
+              "structural"
+            ],
+            "title": "Provenance",
+            "type": "string"
+          },
+          "relation": {
+            "minLength": 1,
+            "title": "Relation",
+            "type": "string"
+          },
+          "source": {
+            "pattern": "^[a-z]+\\.[a-z0-9_]+$",
+            "title": "Source",
+            "type": "string"
+          },
+          "target": {
+            "pattern": "^[a-z]+\\.[a-z0-9_]+$",
+            "title": "Target",
+            "type": "string"
+          },
+          "transition": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/Transition"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null
+          }
+        },
+        "required": [
+          "id",
+          "source",
+          "target",
+          "kind",
+          "relation",
+          "provenance"
+        ],
+        "title": "GraphEdge",
+        "type": "object"
+      },
+      "GraphNode": {
+        "additionalProperties": false,
+        "properties": {
+          "attacker_controlled": {
+            "default": false,
+            "title": "Attacker Controlled",
+            "type": "boolean"
+          },
+          "business": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/BusinessInfo"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null
+          },
+          "criticality": {
+            "default": "none",
+            "enum": [
+              "none",
+              "standard",
+              "critical"
+            ],
+            "title": "Criticality",
+            "type": "string"
+          },
+          "evidence_ids": {
+            "items": {
+              "pattern": "^EV-\\d{2}$",
+              "type": "string"
+            },
+            "title": "Evidence Ids",
+            "type": "array"
+          },
+          "first_seen": {
+            "anyOf": [
+              {
+                "format": "date-time",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "First Seen"
+          },
+          "id": {
+            "pattern": "^[a-z]+\\.[a-z0-9_]+$",
+            "title": "Id",
+            "type": "string"
+          },
+          "kind": {
+            "enum": [
+              "user",
+              "device",
+              "session",
+              "token",
+              "application",
+              "api",
+              "service",
+              "database",
+              "process",
+              "attacker"
+            ],
+            "title": "Kind",
+            "type": "string"
+          },
+          "label": {
+            "minLength": 1,
+            "title": "Label",
+            "type": "string"
+          },
+          "layout": {
+            "$ref": "#/components/schemas/Layout"
+          },
+          "origin": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Origin"
+          },
+          "provenance": {
+            "enum": [
+              "observed",
+              "inferred",
+              "forecast",
+              "structural"
+            ],
+            "title": "Provenance",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "kind",
+          "label",
+          "provenance",
+          "layout"
+        ],
+        "title": "GraphNode",
+        "type": "object"
+      },
+      "GraphSnapshot": {
+        "additionalProperties": false,
+        "properties": {
+          "at": {
+            "format": "date-time",
+            "title": "At",
+            "type": "string"
+          },
+          "edges": {
+            "items": {
+              "$ref": "#/components/schemas/GraphEdge"
+            },
+            "title": "Edges",
+            "type": "array"
+          },
+          "hash": {
+            "pattern": "^[0-9a-f]{64}$",
+            "title": "Hash",
+            "type": "string"
+          },
+          "id": {
+            "title": "Id",
+            "type": "string"
+          },
+          "meta": {
+            "$ref": "#/components/schemas/Meta"
+          },
+          "nodes": {
+            "items": {
+              "$ref": "#/components/schemas/GraphNode"
+            },
+            "title": "Nodes",
+            "type": "array"
+          },
+          "removed": {
+            "$ref": "#/components/schemas/Removed",
+            "default": {
+              "edge_ids": [],
+              "node_ids": []
+            }
+          }
+        },
+        "required": [
+          "id",
+          "hash",
+          "at",
+          "nodes",
+          "edges",
+          "meta"
+        ],
+        "title": "GraphSnapshot",
+        "type": "object"
+      },
+      "Health": {
+        "properties": {
+          "audit_enforcement": {
+            "enum": [
+              "db",
+              "app"
+            ],
+            "title": "Audit Enforcement",
+            "type": "string"
+          },
+          "db": {
+            "enum": [
+              "ok",
+              "unavailable"
+            ],
+            "title": "Db",
+            "type": "string"
+          },
+          "simulated": {
+            "const": true,
+            "default": true,
+            "title": "Simulated",
+            "type": "boolean"
+          },
+          "status": {
+            "enum": [
+              "ok",
+              "degraded"
+            ],
+            "title": "Status",
+            "type": "string"
+          },
+          "version": {
+            "title": "Version",
+            "type": "string"
+          }
+        },
+        "required": [
+          "status",
+          "db",
+          "audit_enforcement",
+          "version"
+        ],
+        "title": "Health",
+        "type": "object"
+      },
+      "Impact": {
+        "additionalProperties": false,
+        "properties": {
+          "description": {
+            "minLength": 1,
+            "title": "Description",
+            "type": "string"
+          },
+          "groups": {
+            "items": {
+              "$ref": "#/components/schemas/UserGroupImpact"
+            },
+            "title": "Groups",
+            "type": "array"
+          },
+          "processes": {
+            "items": {
+              "$ref": "#/components/schemas/ProcessDowntime"
+            },
+            "title": "Processes",
+            "type": "array"
+          },
+          "users": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Users",
+            "type": "array"
+          }
+        },
+        "required": [
+          "description"
+        ],
+        "title": "Impact",
+        "type": "object"
+      },
+      "Incident": {
+        "additionalProperties": false,
+        "properties": {
+          "confidence": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/Derivation"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "id": {
+            "pattern": "^INC-\\d{4}$",
+            "title": "Id",
+            "type": "string"
+          },
+          "meta": {
+            "$ref": "#/components/schemas/Meta"
+          },
+          "params": {
+            "$ref": "#/components/schemas/IncidentParams"
+          },
+          "state": {
+            "enum": [
+              "new",
+              "correlating",
+              "forecast_ready",
+              "simulating",
+              "plan_available",
+              "approval_pending",
+              "executing",
+              "contained",
+              "rollback_available",
+              "blocked_by_policy",
+              "no_safe_plan"
+            ],
+            "title": "State",
+            "type": "string"
+          },
+          "summary": {
+            "title": "Summary",
+            "type": "string"
+          },
+          "t0": {
+            "format": "date-time",
+            "title": "T0",
+            "type": "string"
+          },
+          "title": {
+            "title": "Title",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "title",
+          "summary",
+          "t0",
+          "params",
+          "state",
+          "confidence",
+          "meta"
+        ],
+        "title": "Incident",
+        "type": "object"
+      },
+      "IncidentParams": {
+        "additionalProperties": false,
+        "properties": {
+          "containment_window_min": {
+            "exclusiveMinimum": 0,
+            "title": "Containment Window Min",
+            "type": "integer"
+          },
+          "high_risk_threshold": {
+            "exclusiveMinimum": 0,
+            "maximum": 1,
+            "title": "High Risk Threshold",
+            "type": "number"
+          },
+          "horizon_s": {
+            "exclusiveMinimum": 0,
+            "title": "Horizon S",
+            "type": "integer"
+          },
+          "rollouts": {
+            "exclusiveMinimum": 0,
+            "title": "Rollouts",
+            "type": "integer"
+          },
+          "seed": {
+            "title": "Seed",
+            "type": "integer"
+          },
+          "target_id": {
+            "title": "Target Id",
+            "type": "string"
+          }
+        },
+        "required": [
+          "target_id",
+          "seed",
+          "horizon_s",
+          "rollouts",
+          "high_risk_threshold",
+          "containment_window_min"
+        ],
+        "title": "IncidentParams",
+        "type": "object"
+      },
+      "IncidentSpec": {
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "pattern": "^INC-\\d{4}$",
+            "title": "Id",
+            "type": "string"
+          },
+          "params": {
+            "$ref": "#/components/schemas/IncidentParams"
+          },
+          "summary": {
+            "title": "Summary",
+            "type": "string"
+          },
+          "synthetic": {
+            "const": true,
+            "default": true,
+            "title": "Synthetic",
+            "type": "boolean"
+          },
+          "t0": {
+            "format": "date-time",
+            "title": "T0",
+            "type": "string"
+          },
+          "title": {
+            "title": "Title",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "title",
+          "summary",
+          "t0",
+          "params"
+        ],
+        "title": "IncidentSpec",
+        "type": "object"
+      },
+      "IncidentSummary": {
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "pattern": "^INC-\\d{4}$",
+            "title": "Id",
+            "type": "string"
+          },
+          "state": {
+            "enum": [
+              "new",
+              "correlating",
+              "forecast_ready",
+              "simulating",
+              "plan_available",
+              "approval_pending",
+              "executing",
+              "contained",
+              "rollback_available",
+              "blocked_by_policy",
+              "no_safe_plan"
+            ],
+            "title": "State",
+            "type": "string"
+          },
+          "t0": {
+            "format": "date-time",
+            "title": "T0",
+            "type": "string"
+          },
+          "title": {
+            "title": "Title",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "title",
+          "state",
+          "t0"
+        ],
+        "title": "IncidentSummary",
+        "type": "object"
+      },
+      "Infeasibility": {
+        "additionalProperties": false,
+        "properties": {
+          "closest_options": {
+            "items": {
+              "$ref": "#/components/schemas/ClosestOption"
+            },
+            "maxItems": 3,
+            "title": "Closest Options",
+            "type": "array"
+          },
+          "violated_constraint_ids": {
+            "items": {
+              "enum": [
+                "C-COVER",
+                "C-DOWNTIME",
+                "C-USERS",
+                "C-REVERSIBLE",
+                "C-AUTH",
+                "C-EVIDENCE"
+              ],
+              "type": "string"
+            },
+            "minItems": 1,
+            "title": "Violated Constraint Ids",
+            "type": "array"
+          }
+        },
+        "required": [
+          "violated_constraint_ids",
+          "closest_options"
+        ],
+        "title": "Infeasibility",
+        "type": "object"
+      },
+      "Inference": {
+        "additionalProperties": false,
+        "properties": {
+          "confidence": {
+            "exclusiveMaximum": 1,
+            "exclusiveMinimum": 0,
+            "title": "Confidence",
+            "type": "number"
+          },
+          "rationale": {
+            "minLength": 1,
+            "title": "Rationale",
+            "type": "string"
+          }
+        },
+        "required": [
+          "confidence",
+          "rationale"
+        ],
+        "title": "Inference",
+        "type": "object"
+      },
+      "Layout": {
+        "additionalProperties": false,
+        "properties": {
+          "x": {
+            "title": "X",
+            "type": "number"
+          },
+          "y": {
+            "title": "Y",
+            "type": "number"
+          }
+        },
+        "required": [
+          "x",
+          "y"
+        ],
+        "title": "Layout",
+        "type": "object"
+      },
+      "Meta": {
+        "additionalProperties": false,
+        "properties": {
+          "generated_at": {
+            "format": "date-time",
+            "title": "Generated At",
+            "type": "string"
+          },
+          "incident_id": {
+            "title": "Incident Id",
+            "type": "string"
+          },
+          "input_hashes": {
+            "additionalProperties": {
+              "pattern": "^[0-9a-f]{64}$",
+              "type": "string"
+            },
+            "title": "Input Hashes",
+            "type": "object"
+          },
+          "schema_version": {
+            "const": "1.0",
+            "default": "1.0",
+            "title": "Schema Version",
+            "type": "string"
+          },
+          "seed": {
+            "title": "Seed",
+            "type": "integer"
+          },
+          "simulated": {
+            "const": true,
+            "default": true,
+            "title": "Simulated",
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "incident_id",
+          "seed",
+          "generated_at"
+        ],
+        "title": "Meta",
+        "type": "object"
+      },
+      "Objective": {
+        "additionalProperties": false,
+        "properties": {
+          "terms": {
+            "additionalProperties": {
+              "type": "integer"
+            },
+            "title": "Terms",
+            "type": "object"
+          },
+          "value": {
+            "title": "Value",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "value",
+          "terms"
+        ],
+        "title": "Objective",
+        "type": "object"
+      },
+      "Plan": {
+        "additionalProperties": false,
+        "properties": {
+          "constraints": {
+            "items": {
+              "$ref": "#/components/schemas/ConstraintResult"
+            },
+            "title": "Constraints",
+            "type": "array"
+          },
+          "display_actions": {
+            "items": {
+              "$ref": "#/components/schemas/DisplayAction"
+            },
+            "title": "Display Actions",
+            "type": "array"
+          },
+          "id": {
+            "title": "Id",
+            "type": "string"
+          },
+          "infeasibility": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/Infeasibility"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null
+          },
+          "input_hashes": {
+            "$ref": "#/components/schemas/PlanInputHashes"
+          },
+          "meta": {
+            "$ref": "#/components/schemas/Meta"
+          },
+          "objective": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/Objective"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "rejected": {
+            "items": {
+              "$ref": "#/components/schemas/Rejection"
+            },
+            "title": "Rejected",
+            "type": "array"
+          },
+          "selected_candidate_ids": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Selected Candidate Ids",
+            "type": "array"
+          },
+          "solver": {
+            "$ref": "#/components/schemas/SolverInfo"
+          },
+          "status": {
+            "enum": [
+              "optimal",
+              "infeasible"
+            ],
+            "title": "Status",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "status",
+          "selected_candidate_ids",
+          "display_actions",
+          "objective",
+          "constraints",
+          "rejected",
+          "solver",
+          "input_hashes",
+          "meta"
+        ],
+        "title": "Plan",
+        "type": "object"
+      },
+      "PlanInputHashes": {
+        "additionalProperties": false,
+        "properties": {
+          "actions": {
+            "pattern": "^[0-9a-f]{64}$",
+            "title": "Actions",
+            "type": "string"
+          },
+          "graph": {
+            "pattern": "^[0-9a-f]{64}$",
+            "title": "Graph",
+            "type": "string"
+          },
+          "paths": {
+            "pattern": "^[0-9a-f]{64}$",
+            "title": "Paths",
+            "type": "string"
+          },
+          "policies": {
+            "pattern": "^[0-9a-f]{64}$",
+            "title": "Policies",
+            "type": "string"
+          }
+        },
+        "required": [
+          "graph",
+          "paths",
+          "actions",
+          "policies"
+        ],
+        "title": "PlanInputHashes",
+        "type": "object"
+      },
+      "PlanRef": {
+        "additionalProperties": false,
+        "properties": {
+          "label": {
+            "enum": [
+              "A",
+              "B",
+              "C"
+            ],
+            "title": "Label",
+            "type": "string"
+          },
+          "plan_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Plan Id"
+          },
+          "source": {
+            "enum": [
+              "preset_aggressive",
+              "preset_passive",
+              "plan"
+            ],
+            "title": "Source",
+            "type": "string"
+          }
+        },
+        "required": [
+          "label",
+          "source"
+        ],
+        "title": "PlanRef",
+        "type": "object"
+      },
+      "PlayCommand": {
+        "additionalProperties": false,
+        "properties": {
+          "speed": {
+            "default": 1,
+            "enum": [
+              1,
+              4,
+              16
+            ],
+            "title": "Speed",
+            "type": "integer"
+          },
+          "type": {
+            "enum": [
+              "play",
+              "pause"
+            ],
+            "title": "Type",
+            "type": "string"
+          }
+        },
+        "required": [
+          "type"
+        ],
+        "title": "PlayCommand",
+        "type": "object"
+      },
+      "Policy": {
+        "additionalProperties": false,
+        "properties": {
+          "applies_to_action_types": {
+            "items": {
+              "enum": [
+                "revoke_oauth_grant",
+                "revoke_session",
+                "conditional_access_step_up",
+                "isolate_api",
+                "isolate_database",
+                "isolate_subnet",
+                "disable_account",
+                "block_asn",
+                "revoke_all_consents",
+                "force_password_reset",
+                "quarantine_mailbox"
+              ],
+              "type": "string"
+            },
+            "title": "Applies To Action Types",
+            "type": "array"
+          },
+          "id": {
+            "pattern": "^IR-[A-Z]+-\\d{2}$",
+            "title": "Id",
+            "type": "string"
+          },
+          "rationale": {
+            "title": "Rationale",
+            "type": "string"
+          },
+          "required_roles": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Required Roles",
+            "type": "array"
+          },
+          "title": {
+            "title": "Title",
+            "type": "string"
+          },
+          "window": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/PolicyWindow"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null
+          }
+        },
+        "required": [
+          "id",
+          "title",
+          "rationale"
+        ],
+        "title": "Policy",
+        "type": "object"
+      },
+      "PolicyWindow": {
+        "additionalProperties": false,
+        "description": "A UTC window (e.g. a change freeze) during which the exception role must also approve.",
+        "properties": {
+          "end": {
+            "format": "time",
+            "title": "End",
+            "type": "string"
+          },
+          "exception_role": {
+            "title": "Exception Role",
+            "type": "string"
+          },
+          "start": {
+            "format": "time",
+            "title": "Start",
+            "type": "string"
+          }
+        },
+        "required": [
+          "start",
+          "end",
+          "exception_role"
+        ],
+        "title": "PolicyWindow",
+        "type": "object"
+      },
+      "ProcessAvailability": {
+        "additionalProperties": false,
+        "properties": {
+          "down_from_s": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Down From S"
+          },
+          "process_id": {
+            "title": "Process Id",
+            "type": "string"
+          }
+        },
+        "required": [
+          "process_id",
+          "down_from_s"
+        ],
+        "title": "ProcessAvailability",
+        "type": "object"
+      },
+      "ProcessDowntime": {
+        "additionalProperties": false,
+        "properties": {
+          "downtime_min": {
+            "minimum": 0,
+            "title": "Downtime Min",
+            "type": "integer"
+          },
+          "process_id": {
+            "title": "Process Id",
+            "type": "string"
+          }
+        },
+        "required": [
+          "process_id",
+          "downtime_min"
+        ],
+        "title": "ProcessDowntime",
+        "type": "object"
+      },
+      "Proof": {
+        "additionalProperties": false,
+        "properties": {
+          "certificate": {
+            "pattern": "^[0-9a-f]{64}$",
+            "title": "Certificate",
+            "type": "string"
+          },
+          "claims": {
+            "items": {
+              "$ref": "#/components/schemas/ProofClaim"
+            },
+            "title": "Claims",
+            "type": "array"
+          },
+          "enumeration": {
+            "$ref": "#/components/schemas/Enumeration"
+          },
+          "id": {
+            "title": "Id",
+            "type": "string"
+          },
+          "meta": {
+            "$ref": "#/components/schemas/Meta"
+          },
+          "not_covered": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Not Covered",
+            "type": "array"
+          },
+          "plan_id": {
+            "title": "Plan Id",
+            "type": "string"
+          },
+          "post_snapshot_hash": {
+            "pattern": "^[0-9a-f]{64}$",
+            "title": "Post Snapshot Hash",
+            "type": "string"
+          },
+          "sealed_at": {
+            "format": "date-time",
+            "title": "Sealed At",
+            "type": "string"
+          },
+          "signature": {
+            "$ref": "#/components/schemas/Signature"
+          },
+          "snapshot_hash": {
+            "pattern": "^[0-9a-f]{64}$",
+            "title": "Snapshot Hash",
+            "type": "string"
+          },
+          "valid_until": {
+            "anyOf": [
+              {
+                "format": "date-time",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Valid Until"
+          },
+          "versions": {
+            "additionalProperties": {
+              "type": "string"
+            },
+            "title": "Versions",
+            "type": "object"
+          }
+        },
+        "required": [
+          "id",
+          "plan_id",
+          "snapshot_hash",
+          "post_snapshot_hash",
+          "claims",
+          "enumeration",
+          "not_covered",
+          "versions",
+          "certificate",
+          "signature",
+          "sealed_at",
+          "valid_until",
+          "meta"
+        ],
+        "title": "Proof",
+        "type": "object"
+      },
+      "ProofClaim": {
+        "additionalProperties": false,
+        "properties": {
+          "evidence_ids": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Evidence Ids",
+            "type": "array"
+          },
+          "id": {
+            "pattern": "^CHK-\\d{2}$",
+            "title": "Id",
+            "type": "string"
+          },
+          "method": {
+            "title": "Method",
+            "type": "string"
+          },
+          "result": {
+            "$ref": "#/components/schemas/Derivation"
+          },
+          "status": {
+            "enum": [
+              "verified",
+              "failed",
+              "stale",
+              "not_run"
+            ],
+            "title": "Status",
+            "type": "string"
+          },
+          "text": {
+            "title": "Text",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "text",
+          "method",
+          "evidence_ids",
+          "result",
+          "status"
+        ],
+        "title": "ProofClaim",
+        "type": "object"
+      },
+      "Rejection": {
+        "additionalProperties": false,
+        "properties": {
+          "candidate_id": {
+            "title": "Candidate Id",
+            "type": "string"
+          },
+          "reasons": {
+            "items": {
+              "type": "string"
+            },
+            "minItems": 1,
+            "title": "Reasons",
+            "type": "array"
+          }
+        },
+        "required": [
+          "candidate_id",
+          "reasons"
+        ],
+        "title": "Rejection",
+        "type": "object"
+      },
+      "Removed": {
+        "additionalProperties": false,
+        "properties": {
+          "edge_ids": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Edge Ids",
+            "type": "array"
+          },
+          "node_ids": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Node Ids",
+            "type": "array"
+          }
+        },
+        "title": "Removed",
+        "type": "object"
+      },
+      "ResponseAction": {
+        "additionalProperties": false,
+        "properties": {
+          "authorisation": {
+            "$ref": "#/components/schemas/Authorisation"
+          },
+          "connector": {
+            "const": "simulated",
+            "default": "simulated",
+            "title": "Connector",
+            "type": "string"
+          },
+          "cuts": {
+            "items": {
+              "$ref": "#/components/schemas/Cut"
+            },
+            "title": "Cuts",
+            "type": "array"
+          },
+          "evidence_preserving": {
+            "title": "Evidence Preserving",
+            "type": "boolean"
+          },
+          "id": {
+            "pattern": "^C\\d{2}$",
+            "title": "Id",
+            "type": "string"
+          },
+          "impact": {
+            "$ref": "#/components/schemas/Impact"
+          },
+          "reversibility": {
+            "$ref": "#/components/schemas/Reversibility"
+          },
+          "targets": {
+            "items": {
+              "type": "string"
+            },
+            "minItems": 1,
+            "title": "Targets",
+            "type": "array"
+          },
+          "title": {
+            "minLength": 1,
+            "title": "Title",
+            "type": "string"
+          },
+          "type": {
+            "enum": [
+              "revoke_oauth_grant",
+              "revoke_session",
+              "conditional_access_step_up",
+              "isolate_api",
+              "isolate_database",
+              "isolate_subnet",
+              "disable_account",
+              "block_asn",
+              "revoke_all_consents",
+              "force_password_reset",
+              "quarantine_mailbox"
+            ],
+            "title": "Type",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "type",
+          "title",
+          "targets",
+          "impact",
+          "reversibility",
+          "authorisation",
+          "evidence_preserving"
+        ],
+        "title": "ResponseAction",
+        "type": "object"
+      },
+      "Reversibility": {
+        "additionalProperties": false,
+        "properties": {
+          "method": {
+            "minLength": 1,
+            "title": "Method",
+            "type": "string"
+          },
+          "reversible": {
+            "title": "Reversible",
+            "type": "boolean"
+          },
+          "rollback_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Rollback Id"
+          },
+          "seconds": {
+            "anyOf": [
+              {
+                "minimum": 0,
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Seconds"
+          }
+        },
+        "required": [
+          "reversible",
+          "rollback_id",
+          "method"
+        ],
+        "title": "Reversibility",
+        "type": "object"
+      },
+      "SecurityEvent": {
+        "additionalProperties": false,
+        "properties": {
+          "actor_node_ids": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Actor Node Ids",
+            "type": "array"
+          },
+          "attack": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/AttackTechnique"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null
+          },
+          "attributes": {
+            "additionalProperties": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "integer"
+                },
+                {
+                  "type": "number"
+                },
+                {
+                  "type": "boolean"
+                }
+              ]
+            },
+            "title": "Attributes",
+            "type": "object"
+          },
+          "id": {
+            "pattern": "^(EV-\\d{2}|BG-\\d{4})$",
+            "title": "Id",
+            "type": "string"
+          },
+          "kind": {
+            "enum": [
+              "mail_delivered",
+              "sign_in",
+              "mfa_method_added",
+              "oauth_consent",
+              "token_replay",
+              "resource_enumeration",
+              "resource_access"
+            ],
+            "title": "Kind",
+            "type": "string"
+          },
+          "source": {
+            "$ref": "#/components/schemas/EventSource"
+          },
+          "synthetic": {
+            "const": true,
+            "default": true,
+            "title": "Synthetic",
+            "type": "boolean"
+          },
+          "ts": {
+            "format": "date-time",
+            "title": "Ts",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "ts",
+          "source",
+          "kind"
+        ],
+        "title": "SecurityEvent",
+        "type": "object"
+      },
+      "SeekCommand": {
+        "additionalProperties": false,
+        "properties": {
+          "t": {
+            "minimum": 0,
+            "title": "T",
+            "type": "number"
+          },
+          "type": {
+            "const": "seek",
+            "title": "Type",
+            "type": "string"
+          }
+        },
+        "required": [
+          "type",
+          "t"
+        ],
+        "title": "SeekCommand",
+        "type": "object"
+      },
+      "Signature": {
+        "additionalProperties": false,
+        "properties": {
+          "alg": {
+            "const": "Ed25519",
+            "default": "Ed25519",
+            "title": "Alg",
+            "type": "string"
+          },
+          "demo_key": {
+            "const": true,
+            "default": true,
+            "title": "Demo Key",
+            "type": "boolean"
+          },
+          "key_id": {
+            "title": "Key Id",
+            "type": "string"
+          },
+          "value": {
+            "title": "Value",
+            "type": "string"
+          }
+        },
+        "required": [
+          "key_id",
+          "value"
+        ],
+        "title": "Signature",
+        "type": "object"
+      },
+      "SimulationRequest": {
+        "additionalProperties": false,
+        "properties": {
+          "horizon_s": {
+            "default": 600,
+            "exclusiveMinimum": 0,
+            "title": "Horizon S",
+            "type": "integer"
+          },
+          "plans": {
+            "items": {
+              "$ref": "#/components/schemas/PlanRef"
+            },
+            "maxItems": 3,
+            "minItems": 1,
+            "title": "Plans",
+            "type": "array"
+          },
+          "rollouts": {
+            "default": 6000,
+            "maximum": 20000,
+            "minimum": 100,
+            "title": "Rollouts",
+            "type": "integer"
+          },
+          "seed": {
+            "default": 2417,
+            "title": "Seed",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "plans"
+        ],
+        "title": "SimulationRequest",
+        "type": "object"
+      },
+      "SimulationRun": {
+        "additionalProperties": false,
+        "properties": {
+          "futures": {
+            "items": {
+              "$ref": "#/components/schemas/FutureResult"
+            },
+            "title": "Futures",
+            "type": "array"
+          },
+          "hash": {
+            "pattern": "^[0-9a-f]{64}$",
+            "title": "Hash",
+            "type": "string"
+          },
+          "id": {
+            "title": "Id",
+            "type": "string"
+          },
+          "meta": {
+            "$ref": "#/components/schemas/Meta"
+          },
+          "request": {
+            "$ref": "#/components/schemas/SimulationRequest"
+          }
+        },
+        "required": [
+          "id",
+          "request",
+          "futures",
+          "hash",
+          "meta"
+        ],
+        "title": "SimulationRun",
+        "type": "object"
+      },
+      "SolverInfo": {
+        "additionalProperties": false,
+        "properties": {
+          "engine": {
+            "const": "ortools-cp-sat",
+            "default": "ortools-cp-sat",
+            "title": "Engine",
+            "type": "string"
+          },
+          "status_raw": {
+            "title": "Status Raw",
+            "type": "string"
+          },
+          "version": {
+            "title": "Version",
+            "type": "string"
+          },
+          "wall_ms": {
+            "title": "Wall Ms",
+            "type": "number"
+          }
+        },
+        "required": [
+          "version",
+          "wall_ms",
+          "status_raw"
+        ],
+        "title": "SolverInfo",
+        "type": "object"
+      },
+      "StageMessage": {
+        "additionalProperties": false,
+        "properties": {
+          "seq": {
+            "minimum": 0,
+            "title": "Seq",
+            "type": "integer"
+          },
+          "state": {
+            "enum": [
+              "new",
+              "correlating",
+              "forecast_ready",
+              "simulating",
+              "plan_available",
+              "approval_pending",
+              "executing",
+              "contained",
+              "rollback_available",
+              "blocked_by_policy",
+              "no_safe_plan"
+            ],
+            "title": "State",
+            "type": "string"
+          },
+          "t": {
+            "minimum": 0,
+            "title": "T",
+            "type": "number"
+          },
+          "type": {
+            "const": "stage",
+            "default": "stage",
+            "title": "Type",
+            "type": "string"
+          }
+        },
+        "required": [
+          "seq",
+          "t",
+          "state"
+        ],
+        "title": "StageMessage",
+        "type": "object"
+      },
+      "StaleMessage": {
+        "additionalProperties": false,
+        "properties": {
+          "reason": {
+            "title": "Reason",
+            "type": "string"
+          },
+          "seq": {
+            "minimum": 0,
+            "title": "Seq",
+            "type": "integer"
+          },
+          "t": {
+            "minimum": 0,
+            "title": "T",
+            "type": "number"
+          },
+          "type": {
+            "const": "stale",
+            "default": "stale",
+            "title": "Type",
+            "type": "string"
+          }
+        },
+        "required": [
+          "seq",
+          "t",
+          "reason"
+        ],
+        "title": "StaleMessage",
+        "type": "object"
+      },
+      "SubscribeCommand": {
+        "additionalProperties": false,
+        "properties": {
+          "type": {
+            "const": "subscribe",
+            "title": "Type",
+            "type": "string"
+          }
+        },
+        "required": [
+          "type"
+        ],
+        "title": "SubscribeCommand",
+        "type": "object"
+      },
+      "Transition": {
+        "additionalProperties": false,
+        "description": "EchoLab input: per rollout the hop succeeds with probability p after a uniform delay.",
+        "properties": {
+          "delay_s": {
+            "maxItems": 2,
+            "minItems": 2,
+            "prefixItems": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "integer"
+              }
+            ],
+            "title": "Delay S",
+            "type": "array"
+          },
+          "p": {
+            "exclusiveMinimum": 0,
+            "maximum": 1,
+            "title": "P",
+            "type": "number"
+          }
+        },
+        "required": [
+          "p",
+          "delay_s"
+        ],
+        "title": "Transition",
+        "type": "object"
+      },
+      "UserGroupImpact": {
+        "additionalProperties": false,
+        "properties": {
+          "group_id": {
+            "title": "Group Id",
+            "type": "string"
+          },
+          "users": {
+            "exclusiveMinimum": 0,
+            "title": "Users",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "group_id",
+          "users"
+        ],
+        "title": "UserGroupImpact",
+        "type": "object"
+      }
+    }
+  },
+  "info": {
+    "description": "Proof-Carrying Cyber Response. All data is synthetic (SIMULATED).",
+    "title": "HALT API",
+    "version": "0.1.0"
+  },
+  "openapi": "3.1.0",
+  "paths": {
+    "/api/v1/health": {
+      "get": {
+        "operationId": "health_api_v1_health_get",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Health"
+                }
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "summary": "Health"
+      }
+    }
+  }
+}

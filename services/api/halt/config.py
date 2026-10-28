@@ -3,10 +3,13 @@
 from __future__ import annotations
 
 from functools import lru_cache
+from pathlib import Path
 from typing import Literal
 
 from pydantic import Field, ValidationError, field_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
+
+from halt.scenario.loader import DEFAULT_SCENARIO_DIR
 
 ALLOWED_DB_SCHEMES = ("postgresql+psycopg://", "sqlite+pysqlite://")
 
@@ -20,6 +23,8 @@ class Settings(BaseSettings):
     llm_enabled: bool = False
     cors_origins: list[str] = ["http://localhost:3000"]
     log_level: Literal["DEBUG", "INFO", "WARNING", "ERROR"] = "INFO"
+    scenario_dir: Path = DEFAULT_SCENARIO_DIR
+    scenario_variant: str = "baseline"
 
     @field_validator("db_url")
     @classmethod

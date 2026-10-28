@@ -7,7 +7,8 @@ Notation below is TypeScript-style for readability. All timestamps are ISO-8601 
 ## 0. Common
 
 ```ts
-type Provenance = "observed" | "inferred" | "forecast";
+type Provenance = "observed" | "inferred" | "forecast" | "structural";
+// structural = a directory, inventory or dependency-map fact (has `origin`), not an incident event
 type Strength   = "hard" | "soft";             // hard = removes capability; soft = evadable
 type Sha256     = string;                      // 64 hex chars
 
@@ -38,10 +39,10 @@ interface SecurityEvent {
   ts: string;
   source: { system: string; record_id: string };   // { system: "Entra sign-in logs", record_id: "SL-4471" }
   kind: "mail_delivered" | "sign_in" | "mfa_method_added" | "oauth_consent"
-      | "token_replay" | "resource_enumeration" | "benign";
-  actor_node_ids: string[];       // graph nodes referenced
+      | "token_replay" | "resource_enumeration" | "resource_access";   // background events use the same kinds
+  actor_node_ids: string[];       // graph nodes referenced; always [] for background events
   attributes: Record<string, string | number | boolean>;   // asn, user_agent, scopes, request_count...
-  attack: { technique_id: string; technique_name: string } | null;  // MITRE ATT&CK
+  attack: { technique_id: string; technique_name: string } | null;  // filled by HALT-R1; null in the fixture
   synthetic: true;
 }
 ```
@@ -59,9 +60,10 @@ interface GraphNode {
   provenance: Provenance;         // forecast nodes (session.s3) do not exist yet
   attacker_controlled: boolean;
   criticality: "none" | "standard" | "critical";
-  business?: { process_id?: string; users: number; deadline?: string; owner?: string };
-  evidence_ids: string[];         // non-empty iff provenance = observed
-  first_seen?: string;            // replay visibility
+  business?: { users: number; deadline?: string; owner?: string };
+  evidence_ids: string[];         // observed: ≥ 1; forecast: []; structural: optional
+  origin?: string;                // required when structural, e.g. "Dependency map v14"
+  first_seen?: string;            // replay visibility; absent = visible from t0
   layout: { x: number; y: number };   // preset coordinates (scenario data, not computed in UI)
 }
 
@@ -74,11 +76,15 @@ interface GraphEdge {
   relation: string;               // "consented_to", "replayed_as", "calls", "reads", "requires_human"
   provenance: Provenance;
   evidence_ids: string[];         // observed hostile edges: ≥1 EV id; forecast: []
-  inference?: { confidence: number; rationale: string };       // inferred only
-  transition?: { p: number; delay_s: [number, number] };       // hostile, used by EchoLab
-  historical: boolean;            // true = already happened; cannot be cut
+  origin?: string;                // required when structural
+  inference?: { confidence: number; rationale: string };       // required iff inferred
+  transition?: { p: number; delay_s: [number, number] };       // required iff hostile and not historical
+  historical: boolean;            // true = already happened; cannot be cut; hostile edges only
   first_seen?: string;
 }
+// Dependency edges point from dependent to dependency: process.payment → api.finance ("requires").
+// Transition semantics (EchoLab): in each rollout every live hostile edge independently succeeds with
+// probability p after a delay drawn uniformly from delay_s.
 
 interface GraphSnapshot {
   id: string; hash: Sha256; at: string;           // replay time the snapshot represents
@@ -125,15 +131,16 @@ interface ResponseAction {
   targets: string[];              // node ids
   cuts: { ref: string; ref_type: "node" | "edge"; strength: Strength; rationale: string }[];
   impact: {                       // REQUIRED
-    users: string[];              // user ids affected (distinct counting happens in SafeCut)
-    processes: { process_id: string; downtime_min: number }[];   // computed, then stored
+    users: string[];              // named user node ids (distinct counting happens in SafeCut)
+    groups: { group_id: string; users: number }[];   // bulk impact, counted as disjoint
+    processes: { process_id: string; downtime_min: number }[];   // computed by SafeCut; [] in the fixture
     description: string;
   };
   reversibility: {                // REQUIRED
     reversible: boolean;
-    rollback_id: string;          // "RB-1"
+    rollback_id: string | null;   // "RB-1"; required when reversible
     method: string;
-    seconds: number;
+    seconds: number | null;       // required when reversible
   };
   authorisation: {                // REQUIRED
     policy_ids: string[];         // "IR-OAUTH-02"
@@ -178,11 +185,12 @@ interface Policy {
   title: string;
   applies_to_action_types: ResponseAction["type"][];
   required_roles: string[];
-  window?: { start: string; end: string; exception_role: string };   // IR-CHG-03 change freeze
+  window?: { start: string; end: string; exception_role: string };   // UTC times; IR-CHG-03 change freeze
   rationale: string;
 }
+// Loader rule: an action's required_roles ⊇ the roles of its policies plus their window exception roles.
 
-interface Approver { id: string; name: string; roles: string[]; available: boolean }
+interface Approver { id: string; name: string; roles: string[]; available: boolean; user_node_id?: string }
 ```
 
 ## 6. Simulation (EchoLab)
@@ -333,3 +341,21 @@ Replay is server-authoritative and deterministic: the same `seek(t)` yields the 
 ## 12. Scenario fixture format
 
 `services/api/halt/scenario/inc_2417/`: `incident.json`, `events.json`, `background_events.json` (generated, seeded), `topology.json` (nodes, edges, layout), `actions.json` (12 candidates), `policies.json`, `approvers.json`, `constraints.json`, `variants.json`. Validated against the contract models at load time; a malformed fixture stops the API from starting.
+
+```ts
+interface IncidentSpec {
+  id: "INC-2417"; title: string; summary: string; t0: string; synthetic: true;
+  params: { target_id: string; seed: number; horizon_s: number; rollouts: number;
+            high_risk_threshold: number;        // 0.2
+            containment_window_min: number };   // 240: how long actions stay in force
+}
+
+interface Variant { key: string; title: string; description: string; ops: VariantOp[] }
+type VariantOp =
+  | { op: "remove_edge"; edge_id: string }
+  | { op: "set_approver_availability"; approver_id: string; available: boolean }
+  | { op: "set_cut_strength"; action_id: string; ref: string; strength: Strength }
+  | { op: "set_constraint_limit"; constraint_id: Constraint["id"]; limit: number | boolean | null };
+```
+
+Loader cross-checks (`halt/scenario/loader.py`): unique ids; edge endpoints, actor nodes, evidence ids, action targets, cut refs and impact users exist; no cut on a historical edge; every policy applies to its action's type; the six constraints appear once; variant ops reference real ids. Regenerate background events with `python -m halt.scenario.background`, OpenAPI with `python scripts/export_openapi.py`, TS types with `npm run gen:api`; CI fails on drift.

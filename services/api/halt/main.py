@@ -13,6 +13,8 @@ from halt.api import health
 from halt.config import Settings, get_settings
 from halt.db import make_engine
 from halt.logging import configure_logging, get_logger, request_id_var
+from halt.openapi import build_openapi
+from halt.scenario.loader import load_scenario
 
 API_PREFIX = "/api/v1"
 
@@ -30,6 +32,8 @@ def create_app(settings: Settings | None = None) -> FastAPI:
     )
     app.state.settings = settings
     app.state.engine = make_engine(settings.db_url)
+    # A malformed fixture raises ScenarioError here and the API does not start (AT-1.1).
+    app.state.scenario = load_scenario(settings.scenario_dir, settings.scenario_variant)
 
     app.add_middleware(
         CORSMiddleware,
@@ -55,4 +59,5 @@ def create_app(settings: Settings | None = None) -> FastAPI:
         return response
 
     app.include_router(health.router, prefix=API_PREFIX)
+    app.openapi = lambda: build_openapi(app)  # type: ignore[method-assign]
     return app

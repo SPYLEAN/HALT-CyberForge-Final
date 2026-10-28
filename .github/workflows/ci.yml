@@ -53,6 +53,32 @@ jobs:
       - run: npm test
       - run: npm run build
 
+  contracts:
+    name: Contract drift (AT-1.4, AT-1.5)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+          cache-dependency-path: services/api/pyproject.toml
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "24"
+          cache: npm
+      - run: pip install -e "services/api[dev]"
+      - run: npm ci
+      - name: Regenerate fixtures, OpenAPI and TS types
+        run: |
+          cd services/api
+          python -m halt.scenario.background
+          python scripts/export_openapi.py
+          cd ../..
+          npm run gen:api
+      - name: Fail if anything generated is out of date
+        run: git diff --exit-code -- services/api/openapi.json services/api/halt/scenario/inc_2417/background_events.json apps/web/src/lib/api/schema.d.ts
+
   compose:
     name: Compose stack health (AT-0.4)
     runs-on: ubuntu-latest
