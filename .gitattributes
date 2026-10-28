@@ -6,3 +6,8 @@
 
 # vendored package: keep bytes exactly as supplied
 assets/halt-package/** -text
+
+# copies of the vendored package: keep bytes identical (tests/unit/brand.test.ts)
+apps/web/public/brand/** -text
+apps/web/public/3d/** -text
+apps/web/src/components/halt/mark-paths.json -text

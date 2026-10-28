@@ -239,14 +239,14 @@ tests/test_pg_audit.py                    [new] AT-6.7 (runs when HALT_TEST_PG_U
 
 ```
 package.json, tsconfig.json, next.config.ts, postcss.config.mjs   [new]
-tailwind.config.ts                        [new] default palette disabled; theme → CSS vars
 eslint.config.mjs                         [new] incl. no-hex-literal rule
-vitest.config.ts, playwright.config.ts    [new]
+vitest.config.mts                         [new] jsdom, React plugin, @ alias
 Dockerfile                                [new]
-scripts/build-tokens.mjs                  [new] tokens.json → tokens.css + tokens.ts
+scripts/build-tokens.mjs                  [new] tokens.json → tokens.css + tailwind-theme.css (default palette off) + tokens.ts
 scripts/copy-brand.mjs                    [new] copy + checksum brand assets and 3D exports
 src/env.ts                                [new] zod-validated public env
-src/styles/tokens.css, src/styles/tokens.ts      [gen]
+src/styles/tokens.css, tailwind-theme.css, tokens.ts   [gen]
+src/components/halt/mark-paths.json       [copy] 01-brand-assets/paths.json
 src/styles/halt-components.css            [copy] from bundle.css minus font @import
 src/styles/globals.css                    [new]
 public/brand/**                           [copy] 01-brand-assets
@@ -260,9 +260,12 @@ src/lib/api/client.ts                     [new] openapi-fetch client
 src/lib/api/ws.ts                         [new] reconnecting WS + zod validation
 src/lib/state/incident-store.tsx          [new] context + reducer (incident, cursor, view, selection, gate)
 src/lib/format.ts                         [new] derivation/UTC/T+ formatting
-src/components/shell/{AppRail,TopBar,SimulatedChip,EvidenceRail,ReplayTimeline}.tsx   [new]
+src/components/shell/{AppRail,TopBar,SimulatedChip,EvidenceRail,ReplayTimeline,CommandCenterShell}.tsx   [new]
+src/app/incidents/[incidentId]/page.tsx   [new] shell with a loading workspace until Phase 8
 tests/unit/tokens.test.ts                 [new] AT-7.1 contrast + drift
-tests/unit/halt/*.test.tsx                [new] AT-7.3 (17 files)
+tests/unit/components.test.tsx            [new] AT-7.3 (one describe per component, 17)
+tests/unit/no-hex.test.ts                 [new] AT-7.2
+tests/unit/store.test.ts                  [new] reducer, WS envelope, env
 tests/unit/brand.test.ts                  [new] AT-7.4
 tests/unit/shell.test.tsx                 [new] AT-7.5
 tests/fixtures/api/*.json                 [gen] recorded API responses for MSW

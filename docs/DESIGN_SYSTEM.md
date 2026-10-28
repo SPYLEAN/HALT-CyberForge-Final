@@ -43,9 +43,11 @@ Note: `tokens.json` and the package README describe the palette and fonts as pro
 
 - `src/styles/tokens.css`: `:root[data-theme="dark"]` (default) and `:root[data-theme="light"]` custom properties, resolving `{alias}` references; spacing, radius, border, z-index, durations, easings, layout sizes.
 - `src/styles/tokens.ts`: typed constants for JS consumers (Cytoscape style, motion durations).
-- Tailwind `theme.extend` maps `colors.threat.observed → var(--threat-observed)` etc.; Tailwind's default palette is **disabled** so no stray hue can be used.
+- `src/styles/tailwind-theme.css`: a Tailwind v4 `@theme inline` block that sets `--color-*: initial` (the default palette is gone) and exposes only HALT roles (`bg-surface`, `text-threat-text`, `border-business` …), radii, breakpoints, `font-ui` and `font-data`. Theme keys never reuse a token's variable name, so nothing refers to itself.
 
-Guards: an ESLint rule (`no-restricted-syntax` on hex literals) plus a CI grep forbidding `#[0-9a-fA-F]{3,8}` in `src/components/**` and `src/app/**`. Generated files are committed and CI checks they are up to date.
+Guards: an ESLint rule (`no-restricted-syntax` on hex literals in `src/components/**` and `src/app/**`) plus a unit test that scans the same folders, CSS included (AT-7.2). Generated files are committed; `tests/unit/tokens.test.ts` fails if they are stale and recomputes contrast for both themes (AT-7.1).
+
+`src/styles/halt-components.css` is `bundle.css` with only its Google Fonts `@import` removed. `scripts/copy-brand.mjs` copies the brand files, the 3D exports, the app icons and `paths.json` (as `src/components/halt/mark-paths.json`, so the Docker build has it); `tests/unit/brand.test.ts` checks every copy byte-for-byte (AT-7.4).
 
 Fonts: Archivo (variable, wdth 100–125, wght 400–800) and IBM Plex Mono (400, 500) via `next/font/google`, exposed as `--font-sans` / `--font-mono`.
 

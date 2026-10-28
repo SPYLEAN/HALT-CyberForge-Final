@@ -157,7 +157,7 @@ The live incident runtime (`halt/service.py`) is held in memory and written thro
 
 - `structlog` JSON logs with `request_id`, `incident_id`, `stage`, `duration_ms`, `seed`.
 - Backend config via `pydantic-settings`; the app refuses to start on invalid env (`HALT_DB_URL`, `HALT_SEED`, `HALT_SIGNING_KEY_PATH`, `HALT_LLM_ENABLED=false`, `HALT_CORS_ORIGINS`).
-- Frontend config validated with zod at build/start (`NEXT_PUBLIC_API_URL`, `NEXT_PUBLIC_WS_URL`, `NEXT_PUBLIC_DEMO_MODE=simulated`).
+- Frontend config validated with zod (`src/env.ts`): `NEXT_PUBLIC_API_ORIGIN`, `NEXT_PUBLIC_WS_ORIGIN` (origins only), `NEXT_PUBLIC_DEMO_MODE=simulated`.
 
 ## 11. Security posture (MVP)
 
