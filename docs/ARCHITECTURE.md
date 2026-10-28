@@ -85,7 +85,9 @@ Rule: domain packages never import `api/` or `db/`; they take and return contrac
 
 Sets: candidate actions `A` (12), high-risk paths `P` (6), users `U`, critical processes `B`.
 
-Variables: `x_a ∈ {0,1}` select action; `u_k ∈ {0,1}` user k affected.
+Variables: `x_a ∈ {0,1}` select action; `broken_b` process b loses a dependency; `u_k` named user k affected; `g_j` bulk group j affected.
+
+Coverage, breakage and impact are derived per candidate in `safecut/instance.py` from the graph (hard cuts ∩ live routes; dependency closures), never listed by hand. Plan time defaults to t0 + 15 min (09:56Z), which is inside the IR-CHG-03 freeze, so its exception role is required.
 
 Hard constraints:
 
@@ -99,10 +101,12 @@ Hard constraints:
 Objective (single weighted sum, integer weights so ties are impossible by construction except true ties):
 
 ```
-minimise 1000·Σ downtime_min + 100·Σ u_k + 10·Σ x_a + 1·Σ approvals_required(a)·x_a
+minimise 1000·window·Σ_b broken_b + 100·(Σ u_k + Σ size_j·g_j) + 10·Σ x_a + 1·Σ approvals_required(a)·x_a
 ```
 
-Infeasible → re-solve with each hard constraint family relaxed in turn (soft with large penalty) to produce up to 3 "closest options", each naming the constraints it breaks. SafeCut never returns a partial plan as `optimal`.
+The downtime constraint covers critical processes; the objective counts downtime of every process. CP-SAT runs single-worker with `random_seed = seed`, so plans are deterministic.
+
+Infeasible → re-solve once per constraint family with that family dropped (C-COVER becomes soft with a 10,000,000 penalty per open path, so coverage is maximised first). The families whose relaxation alone restores feasibility are reported as `violated_constraint_ids`, and the distinct solutions (up to 3, fewest broken constraints first) are the "closest options", each listing the constraints it breaks. SafeCut never returns a partial plan as `optimal`.
 
 ## 6. ProofSeal independence
 

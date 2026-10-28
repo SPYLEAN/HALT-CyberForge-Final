@@ -129,12 +129,12 @@ Residual risk: a plan that cuts only the six high-risk paths leaves U1 open. Wit
 | C-AUTH | every required role has an available approver (incl. change-freeze exception, IR-CHG-03 09:00–11:00Z) |
 | C-EVIDENCE | every selected action evidence-preserving; seal before execution |
 
-### What the solver should derive (reasoning, to be confirmed by tests — not hardcoded)
+### What the solver derives (reasoning confirmed by tests: AT-4.1, brute force over 4,096 subsets)
 
 - P6 (grant → Payroll) is hard-cut only by C01, C10, C06, C07. C10 breaks C-USERS; C06–C07 break C-DOWNTIME → **C01 required**. C01 also covers P2 and P5.
 - P1 (S-1) is hard-cut by C02, C05, C06, C07 (C09 is soft) → **C02 required**. P3 (S-2) likewise by C03, C06, C07 → **C03 required**.
 - P4 (S-3) is hard-cut by C04, C08, C06, C07. C08 breaks C-DOWNTIME (M. Verma releases the 16:00 run) → **C04 required**.
-- {C01, C02, C03, C04}: 6/6 covered, 0 min downtime, 3 users, max rollback 60 s, approvals A. Rahman (tier2) + S. Iyer (finance_ops_owner). Any superset only adds cost → expected **unique optimum**.
+- {C01, C02, C03, C04}: 6/6 covered, 0 min downtime, 3 users, max rollback 60 s, approvals A. Rahman (tier2) + S. Iyer (finance_ops_owner). Any superset only adds cost → **unique optimum** (objective 345 = 3 users × 100 + 4 actions × 10 + 5 approvals; confirmed by brute force).
 - Displayed as A1 = C01, A2 = C02 + C03 (same type, target user and policy), A3 = C04.
 
 If the implementation produces a different answer, the scenario or the code is wrong; tests decide, the UI does not.
@@ -155,11 +155,13 @@ If the implementation produces a different answer, the scenario or the code is w
 
 | Variant key | Change | Expected behaviour (asserted by tests) |
 |---|---|---|
-| `baseline` | — | optimal {C01,C02,C03,C04}, unique |
+| `baseline` | — | optimal {C01,C02,C03,C04}, unique ✓ |
 | `verma_not_releaser` | remove `d.payment-verma` | C08 becomes feasible with fewer users → plan changes to {C01,C02,C03,C08} |
 | `approver_unavailable` | S. Iyer and delegates unavailable | C04 fails C-AUTH → `infeasible`; Gate state `blocked_by_policy`; closest options include "5 of 6 covered (P4 open)" |
 | `no_phish_resistant_mfa` | C04 cut strength becomes soft | P4 only coverable by C06/C07/C08 → `infeasible`; closest options name the downtime each breaks |
-| `relaxed_users_250` | C-USERS limit 250 | Optimum unchanged (objective still prefers fewer users) — guards against constraint-driven artefacts |
+| `relaxed_users_250` | C-USERS limit 250 | Optimum unchanged (objective still prefers fewer users) — guards against constraint-driven artefacts ✓ |
+
+✓ = asserted by `tests/test_safecut.py`. Measured closest options: `approver_unavailable` → {C01–C04} breaking C-AUTH (C04 needs finance_ops_owner), {C01,C02,C03,C08} breaking C-DOWNTIME (240 min), {C01,C02,C03} breaking C-COVER (5 of 6, P4 open). `no_phish_resistant_mfa` → the last two. `verma_not_releaser` → {C01,C02,C03,C08} ✓, objective 144.
 
 ## 8. Replay script (presenter beats)
 

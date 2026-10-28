@@ -25,6 +25,8 @@ Phase 0 (2026-10-27). Lockfile: `package-lock.json`. Python is not lock-filed ye
 | networkx | 3.7 (Phase 2) |
 | numpy | 2.5.4 (Phase 2) |
 | scikit-learn | 1.9.1 (Phase 2) |
+| ortools | 9.15.6755 (Phase 4) |
+| hypothesis | 6.170.12 (dev, Phase 4) |
 | types-networkx | latest (dev, Phase 2) |
 
 npm 11 blocked the `unrs-resolver` postinstall script (used by ESLint import resolution). Lint passes without it. Approve it with `npm approve-scripts unrs-resolver` only if import-resolution errors appear.

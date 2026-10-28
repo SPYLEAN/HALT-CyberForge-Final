@@ -188,11 +188,10 @@ tests/test_echolab.py                     [new] AT-3.1..3.6
 ### Phase 4 — SafeCut
 
 ```
-halt/safecut/coverage.py                  [new] hardcut(p) from graph ∩ cut sets
-halt/safecut/impact.py                    [new] downtime(a,b), users(a) from graph + business model
+halt/safecut/instance.py                  [new] per-candidate coverage, breakage, impact, eligibility; shared evaluate/feasible
 halt/safecut/model.py                     [new] CP-SAT variables, constraints, objective
-halt/safecut/solve.py                     [new] solve, status mapping, rejection reasons
-halt/safecut/relax.py                     [new] infeasibility: per-family relaxation → closest options
+halt/safecut/solve.py                     [new] Plan report, constraint results, rejection reasons, per-family relaxation → closest options
+tests/_brute.py                           [new] brute-force reference used by AT-4.7 and the 4,096-subset cross-check
 halt/safecut/group.py                     [new] candidates → display actions (type + target user + policy)
 tests/test_safecut.py                     [new] AT-4.1, 4.3..4.6, 4.8
 tests/test_safecut_property.py            [new] AT-4.7 (hypothesis vs brute force)

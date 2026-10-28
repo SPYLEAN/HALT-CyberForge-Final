@@ -233,7 +233,7 @@ interface Plan {
   constraints: ConstraintResult[];
   rejected: { candidate_id: string; reasons: string[] }[];   // every unselected candidate explained
   infeasibility?: {
-    violated_constraint_ids: Constraint["id"][];
+    violated_constraint_ids: Constraint["id"][];   // families whose relaxation alone restores feasibility
     closest_options: { candidate_ids: string[]; breaks: ConstraintResult[] }[];   // ≤ 3
   };
   solver: { engine: "ortools-cp-sat"; version: string; wall_ms: number; status_raw: string };
