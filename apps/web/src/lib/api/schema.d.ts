@@ -354,6 +354,8 @@ export interface components {
             id: string;
             /** Limits */
             limits?: string[];
+            /** @default null */
+            model_score: components["schemas"]["FindingScore"] | null;
             score: components["schemas"]["FindingScore"];
             /**
              * Stage

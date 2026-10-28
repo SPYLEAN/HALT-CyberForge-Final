@@ -11,6 +11,9 @@ dependencies = [
   "sqlalchemy>=2.0.30",
   "psycopg[binary]>=3.2",
   "structlog>=24.1",
+  "networkx>=3.3",
+  "numpy>=2.0",
+  "scikit-learn>=1.5",
 ]
 
 [project.optional-dependencies]
@@ -19,6 +22,7 @@ dev = [
   "httpx>=0.27",
   "ruff>=0.6",
   "mypy>=1.11",
+  "types-networkx",
 ]
 
 [build-system]
@@ -30,6 +34,7 @@ include = ["halt*"]
 
 [tool.setuptools.package-data]
 "halt.scenario" = ["inc_2417/*.json"]
+"halt.r1" = ["r1_model.json"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
@@ -47,3 +52,7 @@ python_version = "3.12"
 strict = true
 plugins = ["pydantic.mypy"]
 packages = ["halt"]
+
+[[tool.mypy.overrides]]
+module = ["sklearn.*"]
+ignore_missing_imports = true

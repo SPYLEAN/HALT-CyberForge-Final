@@ -165,8 +165,10 @@ halt/threadgraph/cuts.py                  [new] apply cut sets; post-action reac
 halt/r1/features.py                       [new] per-event features (new ASN, new UA, MFA-after-signin Δt, unverified publisher...)
 halt/r1/rules.py                          [new] deterministic correlation rules → entity linking
 halt/r1/correlate.py                      [new] events → incident clusters → Findings
-halt/r1/model.py                          [new] LogisticRegression baseline; optional GBM behind AT-2.6 gate
-halt/r1/train_eval.py                     [new] synthetic labelled set (seeded), PR-AUC report → reports/r1_eval.json
+halt/r1/model.py                          [new] runtime scorer from r1_model.json (plain coefficients, no pickle)
+halt/r1/r1_model.json                     [gen] configured model artefact
+halt/r1/train_eval.py                     [new] synthetic labelled set (seeded), rule vs LR vs GBM PR-AUC
+reports/r1_eval.json                      [gen] AT-2.6 report
 halt/r1/attack_map.py                     [new] event kind → ATT&CK technique + stage
 tests/test_threadgraph.py                 [new] AT-2.1..2.3
 tests/test_r1.py                          [new] AT-2.4..2.6

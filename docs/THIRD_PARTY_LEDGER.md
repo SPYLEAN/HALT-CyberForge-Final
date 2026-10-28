@@ -22,6 +22,10 @@ Phase 0 (2026-10-27). Lockfile: `package-lock.json`. Python is not lock-filed ye
 | psycopg (binary) | 3.3.6 |
 | structlog | 26.1.0 |
 | pytest / ruff / mypy | 9.1.1 / 0.17.3 / 2.4.0 |
+| networkx | 3.7 (Phase 2) |
+| numpy | 2.5.4 (Phase 2) |
+| scikit-learn | 1.9.1 (Phase 2) |
+| types-networkx | latest (dev, Phase 2) |
 
 npm 11 blocked the `unrs-resolver` postinstall script (used by ESLint import resolution). Lint passes without it. Approve it with `npm approve-scripts unrs-resolver` only if import-resolution errors appear.
 
@@ -76,7 +80,7 @@ npm 11 blocked the `unrs-resolver` postinstall script (used by ESLint import res
 | ortools | CP-SAT solver | Apache-2.0 | Required |
 | numpy | Seeded simulation | BSD-3 | Required |
 | scikit-learn | Baseline model (logistic regression) | BSD-3 | Required |
-| lightgbm / xgboost | Gradient boosting | MIT / Apache-2.0 | **Conditional** on AT-2.6 |
+| lightgbm / xgboost | Gradient boosting | MIT / Apache-2.0 | **Not added.** The AT-2.6 candidate is scikit-learn's HistGradientBoosting (no new dependency); it beat logistic regression by 0.0064 PR-AUC, short of the 0.02 margin, so logistic regression is configured (`services/api/reports/r1_eval.json`) |
 | torch | — | BSD-3 | **Not planned**; only if a model beats GBM and LR |
 | cryptography | Ed25519 signing | Apache-2.0 / BSD | Required |
 | structlog | JSON logs | MIT / Apache-2.0 | Required |

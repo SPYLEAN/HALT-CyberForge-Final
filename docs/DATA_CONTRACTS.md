@@ -102,13 +102,14 @@ interface Finding {
   title: string;
   stage: "initial_access" | "credential_persistence" | "token_abuse" | "discovery" | "collection" | "exfiltration";
   evidence_ids: string[];         // ≥ 1, validator enforces
-  score: { value: number; derivation: Derivation; method: "rule" | "logreg" | "gbm" };
+  score: { value: number; derivation: Derivation; method: "rule" };              // explainable primary
+  model_score?: { value: number; derivation: Derivation; method: "logreg" | "gbm" };  // configured model (AT-2.6)
   attack: { technique_id: string; technique_name: string }[];
   limits: string[];               // what would raise / lower this
 }
 
 interface AttackPath {
-  id: string;                     // "P1".."P6"; "U1" for below-threshold
+  id: string;                     // assigned after EchoLab: "P1".. by descending risk; "U1".. below threshold
   node_ids: string[]; edge_ids: string[];
   target_id: string;              // "db.finance_ledger"
   provenance: "observed" | "mixed" | "forecast";

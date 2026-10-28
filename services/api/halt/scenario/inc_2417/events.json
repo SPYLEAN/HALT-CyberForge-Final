@@ -83,9 +83,11 @@
     "id": "EV-06",
     "ts": "2026-10-27T09:52:18Z",
     "source": { "system": "Graph activity log", "record_id": "GA-30918" },
-    "kind": "resource_enumeration",
+    "kind": "resource_access",
     "actor_node_ids": ["session.s1", "session.s2", "api.finance", "process.payment"],
     "attributes": {
+      "upn": "m.verma@finance.example",
+      "sessions": "S-1,S-2",
       "resource": "Finance-Close library",
       "request_count": 214,
       "window_s": 240,

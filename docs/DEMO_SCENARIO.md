@@ -17,9 +17,9 @@ At 09:41 UTC a consent-phishing message reaches M. Verma in Finance Ops. Within 
 | EV-03 | 09:43:21 | mfa_method_added | Entra audit AU-9120 | T1556.006 | Second authenticator (software TOTP) added |
 | EV-04 | 09:43:50 | oauth_consent | Entra audit AU-9124 | T1528 | DocuSync Pro granted Mail.Read, Files.ReadWrite.All, offline_access |
 | EV-05 | 09:47:03 | token_replay | Entra sign-in SL-4502 | T1550.004 | Sessions S-1 and S-2 replayed from AS64500 |
-| EV-06 | 09:52:18 | resource_enumeration | Graph activity GA-30918 | T1213.002 | 214 requests to Finance-Close library in 4 min |
+| EV-06 | 09:52:18 | resource_access | Graph activity GA-30918 | T1213.002 | 214 requests to Finance-Close library in 4 min |
 
-Background: 405 benign events (`BG-xxxx`) generated with seed 2417 across 60 synthetic users so correlation has noise to reject. They use the same kinds and attribute keys as the incident, and include hard negatives: a travel sign-in followed by an MFA change, a 180-request quarter-end export, a VPN session hop and an unverified internal app. Detection must not depend on reading the `EV-` prefix.
+Background: 405 benign events (`BG-xxxx`) generated with seed 2417 across 60 synthetic users so correlation has noise to reject. They use the same kinds and attribute keys as the incident, and include hard negatives: a travel sign-in followed by an MFA change, a 180-request quarter-end export, a VPN session hop and an unverified internal app. Detection must not depend on reading the `EV-` prefix (a test renames every id and checks the result is unchanged). EV-06 uses the ordinary `resource_access` kind, like background traffic; enumeration is concluded from its rate and the user's history.
 
 ## 3. ThreadGraph
 
@@ -78,10 +78,12 @@ Path rule (Phase 2): take simple paths over **live** hostile edges, starting fro
 | P1 | DocuSync Pro → grant → Finance API → ledger | phish → M. Verma → consent | mixed |
 | P2 | DocuSync Pro → grant → Reconciliation → ledger | same | mixed |
 | P3 | M. Verma → new session S-3 → Payment processing → ledger | AS64500 sign-in | forecast |
-| P4 | AS64500 → S-1 → Finance API → ledger | — | mixed |
-| P5 | AS64500 → S-2 → Payment processing → ledger | — | mixed |
+| P4 | AS64500 → S-1 → Finance API → ledger | phish ⇢ AS64500 (inferred) | mixed |
+| P5 | AS64500 → S-2 → Payment processing → ledger | phish ⇢ AS64500 (inferred) | mixed |
 | P6 | DocuSync Pro → grant → Payroll → ledger | phish → M. Verma → consent | mixed |
-| U1 | AS64500 ⇢ Customer support → Finance API → ledger | — | inferred, **below threshold**, drawn as uncertain |
+| U1 | AS64500 ⇢ Customer support → Finance API → ledger | phish ⇢ AS64500 (inferred) | forecast + inferred, uncertain; expected **below threshold** |
+
+The P/U numbers above are labels for this document. At runtime ThreadGraph identifies a path by its live edge sequence, and ids are assigned in Phase 3 after EchoLab ranks the paths: high-risk paths become P1.. in descending risk, the rest U1... The labels here will be updated to that order.
 
 High-risk threshold: `reach_rate × criticality ≥ 0.20` with ledger criticality 1.0. Acceptance requires exactly P1–P6 high-risk and U1 not. A cut blocks a path only when it hits a node or edge on the **live** route.
 

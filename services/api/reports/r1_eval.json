@@ -1,0 +1,17 @@
+{
+  "metric": "average_precision (PR-AUC) on the held-out synthetic split",
+  "pr_auc": {
+    "rule": 0.916,
+    "logreg": 0.9758,
+    "gbm": 0.9822
+  },
+  "gbm_margin_required": 0.02,
+  "selected": "logreg",
+  "rows": {
+    "train": 9796,
+    "train_positive": 1696,
+    "test": 4894,
+    "test_positive": 844
+  },
+  "note": "Synthetic-on-synthetic: measures pipeline correctness, not real-world detection efficacy."
+}

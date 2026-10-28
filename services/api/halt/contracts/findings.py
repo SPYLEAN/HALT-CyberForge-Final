@@ -25,7 +25,8 @@ class Finding(Contract):
     title: str
     stage: Stage
     evidence_ids: list[EvidenceId] = Field(min_length=1)
-    score: FindingScore
+    score: FindingScore  # deterministic rule score: the explainable primary
+    model_score: FindingScore | None = None  # configured baseline model (AT-2.6), shown alongside
     attack: list[AttackTechnique] = Field(default_factory=list)
     limits: list[str] = Field(default_factory=list)
 

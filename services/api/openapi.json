@@ -877,6 +877,17 @@
             "title": "Limits",
             "type": "array"
           },
+          "model_score": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/FindingScore"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null
+          },
           "score": {
             "$ref": "#/components/schemas/FindingScore"
           },

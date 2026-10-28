@@ -10,16 +10,13 @@ import hashlib
 import json
 from typing import Any
 
-from pydantic import BaseModel
+from pydantic_core import to_jsonable_python
 
 
 def canonical_json(value: Any) -> bytes:
-    if isinstance(value, BaseModel):
-        value = value.model_dump(mode="json")
-    elif isinstance(value, list | tuple):
-        value = [v.model_dump(mode="json") if isinstance(v, BaseModel) else v for v in value]
+    """Models may appear at any depth (inside dicts and lists)."""
     return json.dumps(
-        value, sort_keys=True, separators=(",", ":"), ensure_ascii=False, allow_nan=False
+        to_jsonable_python(value), sort_keys=True, separators=(",", ":"), ensure_ascii=False, allow_nan=False
     ).encode()
 
 
