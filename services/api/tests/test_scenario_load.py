@@ -125,6 +125,8 @@ def test_AT_1_1_api_refuses_to_start_on_bad_fixture(fixture_copy: Any) -> None:
             "attack must be null",
         ),
         ("constraints.json", lambda c: c.pop(), "constraints must define each"),
+        ("presets.json", lambda p: p[0]["action_ids"].append("C99"), "unknown action C99"),
+        ("presets.json", lambda p: p.pop(), "presets must define"),
         ("variants.json", lambda v: v[1]["ops"][0].update(edge_id="d.nope"), "unknown edge d.nope"),
     ],
 )

@@ -55,6 +55,15 @@ class Variant(Contract):
     ops: list[VariantOp]
 
 
+class Preset(Contract):
+    """A fixed comparison response for EchoLab (futures A and B); never an input to SafeCut."""
+
+    key: Literal["preset_aggressive", "preset_passive"]
+    title: str
+    description: str
+    action_ids: list[str]
+
+
 class Scenario(Contract):
     incident: IncidentSpec
     events: list[SecurityEvent]
@@ -65,4 +74,5 @@ class Scenario(Contract):
     approvers: list[Approver]
     constraints: list[Constraint]
     variants: list[Variant]
+    presets: list[Preset]
     variant: str = "baseline"

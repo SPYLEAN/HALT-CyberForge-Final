@@ -7,11 +7,11 @@ from __future__ import annotations
 
 from collections.abc import Iterable
 from dataclasses import dataclass, field
+from typing import Protocol
 
 from halt.contracts.actions import ResponseAction
 from halt.contracts.common import Strength
 from halt.contracts.graph import GraphEdge, GraphNode
-from halt.threadgraph.paths import PathCandidate
 
 
 @dataclass(frozen=True)
@@ -34,7 +34,16 @@ def removal_for(actions: Iterable[ResponseAction], strengths: Iterable[Strength]
     return Removal(frozenset(nodes), frozenset(edge_ids))
 
 
-def blocks(path: PathCandidate, removal: Removal) -> bool:
+class Route(Protocol):
+    """Anything with a live route: PathCandidate or the AttackPath contract."""
+
+    @property
+    def node_ids(self) -> list[str]: ...
+    @property
+    def edge_ids(self) -> list[str]: ...
+
+
+def blocks(path: Route, removal: Removal) -> bool:
     """A cut blocks a path only when it hits a node or edge on the live route."""
     return bool(removal.node_ids.intersection(path.node_ids) or removal.edge_ids.intersection(path.edge_ids))
 

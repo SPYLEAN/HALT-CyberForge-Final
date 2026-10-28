@@ -33,6 +33,8 @@ class IncidentParams(Contract):
     high_risk_threshold: float = Field(gt=0, le=1)
     # How long actions stay in force; a process whose dependencies they break is down this long.
     containment_window_min: int = Field(gt=0)
+    # EchoLab: chance the attacker gets round a soft cut (e.g. replays from another network).
+    soft_cut_evasion_p: float = Field(ge=0, le=1)
 
 
 class IncidentSpec(Contract):

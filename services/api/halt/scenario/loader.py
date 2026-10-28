@@ -35,6 +35,7 @@ FILES = {
     "approvers": "approvers.json",
     "constraints": "constraints.json",
     "variants": "variants.json",
+    "presets": "presets.json",
 }
 
 
@@ -154,6 +155,14 @@ def check(s: Scenario, *, variants: bool = True) -> None:
     got = sorted(c.id for c in s.constraints)
     if got != sorted(get_args(ConstraintId)):
         errors.append(f"constraints must define each of {sorted(get_args(ConstraintId))} once, got {got}")
+
+    # presets
+    if sorted(p.key for p in s.presets) != ["preset_aggressive", "preset_passive"]:
+        errors.append("presets must define preset_aggressive and preset_passive once each")
+    for p in s.presets:
+        for aid in p.action_ids:
+            if aid not in {a.id for a in s.actions}:
+                errors.append(f"preset {p.key}: unknown action {aid}")
 
     # variants
     if "baseline" not in {v.key for v in s.variants}:

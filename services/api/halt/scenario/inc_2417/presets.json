@@ -1,0 +1,14 @@
+[
+  {
+    "key": "preset_aggressive",
+    "title": "Aggressive isolation",
+    "description": "Isolate the finance subnet and disable the compromised account. The strongest response in the catalogue.",
+    "action_ids": ["C07", "C08"]
+  },
+  {
+    "key": "preset_passive",
+    "title": "Passive monitoring",
+    "description": "Watch and wait. No response action is taken.",
+    "action_ids": []
+  }
+]

@@ -179,7 +179,7 @@ tests/test_r1.py                          [new] AT-2.4..2.6
 ```
 halt/echolab/attacker.py                  [new] seeded walk; delays; soft-cut evasion (egress switch p=0.6)
 halt/echolab/business.py                  [new] availability timeline per process given removed refs
-halt/echolab/presets.py                   [new] future A (aggressive), B (passive) definitions (from catalogue IDs in fixture)
+halt/scenario/inc_2417/presets.json       [new] future A (aggressive), B (passive) action lists (data, not code)
 halt/echolab/simulate.py                  [new] run futures → SimulationRun with integer counts
 halt/echolab/risk.py                      [new] per-path reach → risk → high_risk flag
 tests/test_echolab.py                     [new] AT-3.1..3.6

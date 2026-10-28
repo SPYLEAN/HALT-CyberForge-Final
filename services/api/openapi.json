@@ -147,6 +147,13 @@
             "title": "Edge Ids",
             "type": "array"
           },
+          "entry_edge_ids": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Entry Edge Ids",
+            "type": "array"
+          },
           "high_risk": {
             "title": "High Risk",
             "type": "boolean"
@@ -1016,6 +1023,13 @@
             "title": "Label",
             "type": "string"
           },
+          "path_reached": {
+            "additionalProperties": {
+              "type": "integer"
+            },
+            "title": "Path Reached",
+            "type": "object"
+          },
           "paths_blocked": {
             "$ref": "#/components/schemas/Derivation"
           },
@@ -1035,6 +1049,7 @@
           "action_ids",
           "paths_blocked",
           "target_reached",
+          "path_reached",
           "users_affected",
           "downtime_min",
           "availability",
@@ -1575,6 +1590,12 @@
             "title": "Seed",
             "type": "integer"
           },
+          "soft_cut_evasion_p": {
+            "maximum": 1,
+            "minimum": 0,
+            "title": "Soft Cut Evasion P",
+            "type": "number"
+          },
           "target_id": {
             "title": "Target Id",
             "type": "string"
@@ -1586,7 +1607,8 @@
           "horizon_s",
           "rollouts",
           "high_risk_threshold",
-          "containment_window_min"
+          "containment_window_min",
+          "soft_cut_evasion_p"
         ],
         "title": "IncidentParams",
         "type": "object"

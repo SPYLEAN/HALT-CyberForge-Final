@@ -33,8 +33,9 @@ class Finding(Contract):
 
 class AttackPath(Contract):
     id: Annotated[str, StringConstraints(pattern=r"^(P|U)\d+$")]
-    node_ids: list[str] = Field(min_length=2)
-    edge_ids: list[str] = Field(min_length=1)
+    node_ids: list[str] = Field(min_length=2)  # live route
+    edge_ids: list[str] = Field(min_length=1)  # live route; only these can be cut
+    entry_edge_ids: list[str] = Field(default_factory=list)  # historical edges leading in, for display
     target_id: str
     provenance: Literal["observed", "mixed", "forecast"]
     reach: Derivation

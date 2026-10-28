@@ -34,6 +34,7 @@ class FutureResult(Contract):
     action_ids: list[str]
     paths_blocked: Derivation
     target_reached: Derivation
+    path_reached: dict[str, int]  # path id -> rollouts that reached the target along it
     users_affected: Derivation
     downtime_min: dict[str, int]
     availability: list[ProcessAvailability]

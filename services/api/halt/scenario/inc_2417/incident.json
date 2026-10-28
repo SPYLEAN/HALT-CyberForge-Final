@@ -9,7 +9,8 @@
     "horizon_s": 600,
     "rollouts": 6000,
     "high_risk_threshold": 0.2,
-    "containment_window_min": 240
+    "containment_window_min": 240,
+    "soft_cut_evasion_p": 0.6
   },
   "synthetic": true
 }

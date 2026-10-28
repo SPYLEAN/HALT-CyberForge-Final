@@ -85,6 +85,8 @@ export interface components {
         AttackPath: {
             /** Edge Ids */
             edge_ids: string[];
+            /** Entry Edge Ids */
+            entry_edge_ids?: string[];
             /** High Risk */
             high_risk: boolean;
             /** Id */
@@ -407,6 +409,10 @@ export interface components {
              * @enum {string}
              */
             label: "A" | "B" | "C";
+            /** Path Reached */
+            path_reached: {
+                [key: string]: number;
+            };
             paths_blocked: components["schemas"]["Derivation"];
             /** Reversible */
             reversible: boolean;
@@ -624,6 +630,8 @@ export interface components {
             rollouts: number;
             /** Seed */
             seed: number;
+            /** Soft Cut Evasion P */
+            soft_cut_evasion_p: number;
             /** Target Id */
             target_id: string;
         };

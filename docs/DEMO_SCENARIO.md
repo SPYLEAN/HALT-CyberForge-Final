@@ -67,23 +67,23 @@ Live hostile edges (EchoLab inputs; each succeeds independently with probability
 
 Identity edges: `e.user-s1`, `e.user-s2` (EV-05), `e.user-device`. Dependency edges point from dependent to dependency: processes and support → `api.finance`; `api.finance` and processes → ledger; `user.finance_staff` → processes (business thread); **`d.payment-verma`**: payment → m_verma (`requires_human`, runbook FR-12).
 
-Transition probabilities are scenario **inputs**. Path risks are **outputs** of EchoLab over those inputs. With every delay chain inside the 600 s horizon, the expected reach per path is roughly the product of its p values. These are approximate design targets, not asserted results: P1 0.68, P2 0.33, P3 0.34, P4 0.73, P5 0.56, P6 0.25, U1 0.09.
+Transition probabilities are scenario **inputs**. Path risks are **outputs** of EchoLab over those inputs (see the measured table below).
 
 ### Paths ThreadGraph must enumerate (→ `db.finance_ledger`)
 
 Path rule (Phase 2): take simple paths over **live** hostile edges, starting from a foothold (an attacker-controlled node, or a node the attacker reached through historical edges) and ending at the target. Keep only maximal paths, dropping any path that is a suffix of another. Historical prefixes are kept as entry routes for display.
 
-| ID | Live route | Entry route (historical) | Provenance |
-|---|---|---|---|
-| P1 | DocuSync Pro → grant → Finance API → ledger | phish → M. Verma → consent | mixed |
-| P2 | DocuSync Pro → grant → Reconciliation → ledger | same | mixed |
-| P3 | M. Verma → new session S-3 → Payment processing → ledger | AS64500 sign-in | forecast |
-| P4 | AS64500 → S-1 → Finance API → ledger | phish ⇢ AS64500 (inferred) | mixed |
-| P5 | AS64500 → S-2 → Payment processing → ledger | phish ⇢ AS64500 (inferred) | mixed |
-| P6 | DocuSync Pro → grant → Payroll → ledger | phish → M. Verma → consent | mixed |
-| U1 | AS64500 ⇢ Customer support → Finance API → ledger | phish ⇢ AS64500 (inferred) | forecast + inferred, uncertain; expected **below threshold** |
+| ID | Live route | Entry route (historical) | Provenance | Reach, seed 2417 (of 6,000) | Risk |
+|---|---|---|---|---|---|
+| P1 | AS64500 → S-1 → Finance API → ledger | phish ⇢ AS64500 (inferred) | mixed | 4,335 | 0.7225 |
+| P2 | DocuSync Pro → grant → Finance API → ledger | phish/AS64500 → M. Verma → consent | mixed | 4,050 | 0.675 |
+| P3 | AS64500 → S-2 → Payment processing → ledger | phish ⇢ AS64500 (inferred) | mixed | 3,431 | 0.5718 |
+| P4 | M. Verma → new session S-3 → Payment processing → ledger | phish/AS64500 → M. Verma | forecast | 2,068 | 0.3447 |
+| P5 | DocuSync Pro → grant → Reconciliation → ledger | phish/AS64500 → M. Verma → consent | mixed | 1,884 | 0.314 |
+| P6 | DocuSync Pro → grant → Payroll → ledger | phish/AS64500 → M. Verma → consent | mixed | 1,480 | 0.2467 |
+| U1 | AS64500 ⇢ Customer support → Finance API → ledger | phish ⇢ AS64500 (inferred) | forecast + inferred, uncertain | 502 | 0.0837 |
 
-The P/U numbers above are labels for this document. At runtime ThreadGraph identifies a path by its live edge sequence, and ids are assigned in Phase 3 after EchoLab ranks the paths: high-risk paths become P1.. in descending risk, the rest U1... The labels here will be updated to that order.
+Ids are derived, not chosen: ThreadGraph identifies a path by its live edge sequence, and EchoLab (Phase 3) ranks them with no response. High-risk paths become P1.. in descending risk, the rest U1... The reach counts above are measured by `tests/test_echolab.py` (AT-3.2) with seed 2417 and 6,000 rollouts.
 
 High-risk threshold: `reach_rate × criticality ≥ 0.20` with ledger criticality 1.0. Acceptance requires exactly P1–P6 high-risk and U1 not. A cut blocks a path only when it hits a node or edge on the **live** route.
 
@@ -108,6 +108,16 @@ Cut strength `hard` removes a capability; `soft` can be evaded by the modelled a
 
 `blocks` is never hand-listed: coverage is computed by intersecting each action's hard cuts with each path's nodes and edges.
 
+### EchoLab comparison futures (`presets.json`)
+
+| Future | Actions | Measured, seed 2417 (AT-3.4) |
+|---|---|---|
+| A · Aggressive isolation | C07 + C08 | 6 of 6 blocked; ledger reached in 0 of 6,000; 4 processes down 240 min; 413 users; not reversible within 5 min |
+| B · Passive monitoring | none | 0 of 6 blocked; ledger reached in 5,782 of 6,000 |
+| C · SafeCut plan | derived in Phase 4 | — |
+
+Residual risk: a plan that cuts only the six high-risk paths leaves U1 open. With C01–C04 applied, the ledger is still reached in 502 of 6,000 rollouts, all via U1. ProofSeal must state this under `not_covered`; it is not hidden.
+
 ## 5. Hard constraints (baseline variant)
 
 | ID | Rule |
@@ -121,9 +131,9 @@ Cut strength `hard` removes a capability; `soft` can be evaded by the modelled a
 
 ### What the solver should derive (reasoning, to be confirmed by tests — not hardcoded)
 
-- P6 (grant → Payroll) is hard-cut only by C01, C10, C05, C06, C07. C10 breaks C-USERS; C05–C07 break C-DOWNTIME → **C01 required**. C01 also covers P1, P2.
-- P4 is hard-cut by C02, C05, C06, C07 (C09 is soft) → **C02 required**. P5 likewise → **C03 required**.
-- P3 is hard-cut by C04, C08, C06, C07. C08 breaks C-DOWNTIME (M. Verma releases the 16:00 run) → **C04 required**.
+- P6 (grant → Payroll) is hard-cut only by C01, C10, C06, C07. C10 breaks C-USERS; C06–C07 break C-DOWNTIME → **C01 required**. C01 also covers P2 and P5.
+- P1 (S-1) is hard-cut by C02, C05, C06, C07 (C09 is soft) → **C02 required**. P3 (S-2) likewise by C03, C06, C07 → **C03 required**.
+- P4 (S-3) is hard-cut by C04, C08, C06, C07. C08 breaks C-DOWNTIME (M. Verma releases the 16:00 run) → **C04 required**.
 - {C01, C02, C03, C04}: 6/6 covered, 0 min downtime, 3 users, max rollback 60 s, approvals A. Rahman (tier2) + S. Iyer (finance_ops_owner). Any superset only adds cost → expected **unique optimum**.
 - Displayed as A1 = C01, A2 = C02 + C03 (same type, target user and policy), A3 = C04.
 
@@ -134,9 +144,9 @@ If the implementation produces a different answer, the scenario or the code is w
 | Prototype | Issue | Resolution here |
 |---|---|---|
 | Paths carry a hardcoded `a:'A1'` and actions a hardcoded `blocks:'P1, P2'` | Winning plan baked into data | Coverage computed from cut sets |
-| A3 "blocks P3, P6" | A1 already cuts P6; step-up does not affect a grant's refresh tokens in this model | ProofSeal reports every cutting action per path; A3 shown as covering P3 |
+| A3 "blocks P3, P6" (prototype numbering) | A1 already cuts the Payroll path; step-up does not affect a grant's refresh tokens in this model | ProofSeal reports every cutting action per path; A3 shown as covering the S-3 path (P4 here) |
 | A3 "step-up authentication" | Attacker registered an authenticator in EV-03, so ordinary step-up is satisfiable by the attacker | C04 requires a phishing-resistant method (flagged for approval) |
-| "Disable account" rejected as "leaves the grant alive" | Does not explain why it loses for P3 | Rejected by C-DOWNTIME (releaser dependency `d.payment-verma`) |
+| "Disable account" rejected as "leaves the grant alive" | Does not explain why it loses for the S-3 path | Rejected by C-DOWNTIME (releaser dependency `d.payment-verma`) |
 | "Block ASN" rejected as "blocks 2 of 6" | Not a reason in a set cover | Its cuts are soft (attacker can change egress) |
 | Fixed figures (4,912 of 6,000, 82 %, 2,280 rollouts) | Not computed | Replaced by EchoLab output; prototype values are not asserted |
 | Incident ID HLT-2047 in Command Center, INC-2417 elsewhere | Inconsistent | INC-2417 (pending approval) |
@@ -147,8 +157,8 @@ If the implementation produces a different answer, the scenario or the code is w
 |---|---|---|
 | `baseline` | — | optimal {C01,C02,C03,C04}, unique |
 | `verma_not_releaser` | remove `d.payment-verma` | C08 becomes feasible with fewer users → plan changes to {C01,C02,C03,C08} |
-| `approver_unavailable` | S. Iyer and delegates unavailable | C04 fails C-AUTH → `infeasible`; Gate state `blocked_by_policy`; closest options include "5 of 6 covered (P3 open)" |
-| `no_phish_resistant_mfa` | C04 cut strength becomes soft | P3 only coverable by C06/C07/C08 → `infeasible`; closest options name the downtime each breaks |
+| `approver_unavailable` | S. Iyer and delegates unavailable | C04 fails C-AUTH → `infeasible`; Gate state `blocked_by_policy`; closest options include "5 of 6 covered (P4 open)" |
+| `no_phish_resistant_mfa` | C04 cut strength becomes soft | P4 only coverable by C06/C07/C08 → `infeasible`; closest options name the downtime each breaks |
 | `relaxed_users_250` | C-USERS limit 250 | Optimum unchanged (objective still prefers fewer users) — guards against constraint-driven artefacts |
 
 ## 8. Replay script (presenter beats)

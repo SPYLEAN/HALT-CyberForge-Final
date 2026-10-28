@@ -110,7 +110,8 @@ interface Finding {
 
 interface AttackPath {
   id: string;                     // assigned after EchoLab: "P1".. by descending risk; "U1".. below threshold
-  node_ids: string[]; edge_ids: string[];
+  node_ids: string[]; edge_ids: string[];   // live route; only these can be cut
+  entry_edge_ids: string[];       // historical edges leading in (display only)
   target_id: string;              // "db.finance_ledger"
   provenance: "observed" | "mixed" | "forecast";
   reach: Derivation;              // numerator = rollouts reaching target via this path
@@ -208,7 +209,8 @@ interface FutureResult {
   label: "A" | "B" | "C";
   action_ids: string[];
   paths_blocked: Derivation;      // "6 of 6"
-  target_reached: Derivation;     // rollouts reaching db within horizon
+  target_reached: Derivation;     // rollouts reaching db within horizon, by any route
+  path_reached: Record<string, number>;   // path id -> rollouts reaching db along it
   users_affected: Derivation;
   downtime_min: Record<string, number>;   // per process
   availability: { process_id: string; down_from_s: number | null }[];
@@ -341,14 +343,15 @@ Replay is server-authoritative and deterministic: the same `seek(t)` yields the 
 
 ## 12. Scenario fixture format
 
-`services/api/halt/scenario/inc_2417/`: `incident.json`, `events.json`, `background_events.json` (generated, seeded), `topology.json` (nodes, edges, layout), `actions.json` (12 candidates), `policies.json`, `approvers.json`, `constraints.json`, `variants.json`. Validated against the contract models at load time; a malformed fixture stops the API from starting.
+`services/api/halt/scenario/inc_2417/`: `incident.json`, `events.json`, `background_events.json` (generated, seeded), `topology.json` (nodes, edges, layout), `actions.json` (12 candidates), `policies.json`, `approvers.json`, `constraints.json`, `variants.json`, `presets.json` (EchoLab futures A and B; never a SafeCut input). Validated against the contract models at load time; a malformed fixture stops the API from starting.
 
 ```ts
 interface IncidentSpec {
   id: "INC-2417"; title: string; summary: string; t0: string; synthetic: true;
   params: { target_id: string; seed: number; horizon_s: number; rollouts: number;
             high_risk_threshold: number;        // 0.2
-            containment_window_min: number };   // 240: how long actions stay in force
+            containment_window_min: number;     // 240: how long actions stay in force
+            soft_cut_evasion_p: number };       // 0.6: chance the attacker gets round a soft cut
 }
 
 interface Variant { key: string; title: string; description: string; ops: VariantOp[] }
