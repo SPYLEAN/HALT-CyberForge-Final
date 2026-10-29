@@ -42,6 +42,14 @@ describe("AT-8.1 views render recorded API data", () => {
     expect(screen.getByRole("group", { name: "Paths reachable after plan" })).toHaveTextContent("0 of 6");
   });
 
+  it("Overview states the residual reach the plan leaves open, by route", async () => {
+    useStage("contained");
+    render(<Providers><OverviewView onOpenGate={noop} /></Providers>);
+    const residual = await screen.findByRole("group", { name: "Residual reach under the plan" });
+    expect(residual).toHaveTextContent("502 of 6,000");
+    expect(residual).toHaveTextContent("Via U1 (502, below threshold)");
+  });
+
   it("Overview states the risk threshold and rollouts from the API, not literals", async () => {
     useStage("contained");
     render(<Providers><OverviewView onOpenGate={noop} /></Providers>);

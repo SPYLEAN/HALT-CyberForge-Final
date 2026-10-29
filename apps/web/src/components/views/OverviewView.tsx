@@ -2,6 +2,7 @@
 
 import { MetricBlock, Skeleton } from "@/components/halt";
 import { useOps } from "@/lib/api/ops";
+import { count } from "@/lib/format";
 import { useIncident } from "@/lib/state/incident-store";
 
 import { grid, Panel, ViewHeader } from "./common";
@@ -16,6 +17,13 @@ export function OverviewView({ onOpenGate }: { onOpenGate: () => void }) {
   const high = ops.paths.filter((p) => p.high_risk);
   const users = ops.plan?.constraints.find((c) => c.constraint_id === "C-USERS");
   const coverage = ops.proof?.claims.find((c) => c.id === "CHK-01");
+  // What the plan leaves open: EchoLab future C's rollouts that still reach the target, by route.
+  const planned = ops.simulation?.futures.find((f) => f.label === "C");
+  const residualRoutes = planned
+    ? Object.entries(planned.path_reached)
+        .filter(([, n]) => n > 0)
+        .map(([id, n]) => ({ id, n, high: ops.paths.find((p) => p.id === id)?.high_risk ?? false }))
+    : [];
 
   return (
     <>
@@ -30,7 +38,7 @@ export function OverviewView({ onOpenGate }: { onOpenGate: () => void }) {
         <Skeleton lines={2} label="Loading incident" />
       )}
       <GraphPanel height={320} />
-      <div style={{ ...grid(4), marginTop: "var(--space-5)" }}>
+      <div style={{ ...grid(5), marginTop: "var(--space-5)" }}>
         {incident?.confidence ? (
           <MetricBlock label="Incident confidence" value={`${incident.confidence.numerator} of ${incident.confidence.denominator}`} derivation={incident.confidence.method} />
         ) : (
@@ -56,6 +64,21 @@ export function OverviewView({ onOpenGate }: { onOpenGate: () => void }) {
           <MetricBlock label="Paths reachable after plan" value={`${coverage.result.numerator} of ${coverage.result.denominator}`} derivation={coverage.method} />
         ) : (
           <MetricBlock label="Paths reachable after plan" value="—" derivation="Not sealed by ProofSeal yet." />
+        )}
+        {planned ? (
+          <MetricBlock
+            label="Residual reach under the plan"
+            value={count(planned.target_reached)}
+            derivation={
+              residualRoutes.length
+                ? `Via ${residualRoutes.map((r) => `${r.id} (${r.n.toLocaleString("en-GB")}${r.high ? ", high-risk" : ", below threshold"})`).join(", ")}. Stated in the proof as not covered.`
+                : planned.target_reached.method
+            }
+            simulated
+            tone="threat"
+          />
+        ) : (
+          <MetricBlock label="Residual reach under the plan" value="—" derivation="Run EchoLab once SafeCut has a plan." />
         )}
       </div>
       <Panel title="HALT-R1 findings">
