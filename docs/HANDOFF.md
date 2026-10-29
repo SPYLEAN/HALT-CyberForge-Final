@@ -1,4 +1,6 @@
-# HALT — Project Handoff (state after Phase 10)
+# HALT — Project Handoff (state after Phase 10 and the finalization P0/P1 rows)
+
+> **Update, 2026-10-29:** work continues on the branch `stabilization/god-mode` (baseline tag `phase10-complete`). Rows 1–11 of [FINALIZATION_AUDIT.md](FINALIZATION_AUDIT.md) are done there; `main` is unchanged. This document describes the branch.
 
 Use this document to continue the build. It describes what HALT is, what has been built, how it works, how to run and test it, the decisions already made, and everything still pending. The repository is the source of truth; the other docs in `docs/` go deeper.
 
@@ -50,8 +52,8 @@ Use this document to continue the build. It describes what HALT is, what has bee
 │  ├─ src/styles/           tokens.css / tailwind-theme.css / tokens.ts (generated), halt-components.css (copied)
 │  ├─ public/brand, public/3d, public/vendor   copied supplied assets, three r128, 3D scene scripts (unmodified)
 │  ├─ scripts/              build-tokens.mjs, copy-brand.mjs
-│  ├─ tests/unit/           Vitest (67 tests) + fixtures/api/stages.json (recorded from the real API)
-│  └─ e2e/                  Playwright (25 tests)
+│  ├─ tests/unit/           Vitest (80 tests) + fixtures/api/stages.json (recorded from the real API)
+│  └─ e2e/                  Playwright (27 tests)
 ├─ services/api/            FastAPI service
 │  ├─ halt/contracts/       Pydantic models = single schema source (→ OpenAPI → TS)
 │  ├─ halt/scenario/        loader + inc_2417 fixture (incident, events, background, topology, actions, policies, approvers, constraints, variants, presets)
@@ -61,7 +63,7 @@ Use this document to continue the build. It describes what HALT is, what has bee
 │  ├─ halt/db/              engine, tables, PostgreSQL append-only triggers, repository
 │  ├─ scripts/              export_openapi.py, record_fixtures.py
 │  ├─ reports/r1_eval.json  model selection report
-│  └─ tests/                pytest (121 + 1 skipped)
+│  └─ tests/                pytest (121 passed + 1 skipped)
 ├─ assets/halt-package/     supplied package, vendored unmodified (checksummed)
 ├─ docs/                    PRODUCT_RFC, ARCHITECTURE, DATA_CONTRACTS, DEMO_SCENARIO, DESIGN_SYSTEM, ACCEPTANCE_TESTS, THIRD_PARTY_LEDGER, DEMO_SCRIPT, HANDOFF (this)
 ├─ IMPLEMENTATION_PLAN.md   phase plan + file-by-file list (kept in sync)
@@ -140,8 +142,8 @@ The high-risk threshold is 0.20, so P1–P6 are high-risk and U1 is not.
 ## 6. API (FastAPI, `/api/v1`, OpenAPI at `/api/v1/openapi.json`)
 
 - **Incident and data:**
-  - `GET /health`, `GET /incidents`, `GET /incidents/{id}`. The incident includes `state`, `confidence`, `replay_end_s`, and `latest` (`{plan_id, simulation_id, proof_id, execution_id}`) for rehydration.
-  - `GET /incidents/{id}/events?until=`, `POST /correlate`, `GET /findings`, `GET /graph?at=&plan_id=`, `GET /paths` (409 before correlation), `GET /actions`, `GET /policies`.
+  - `GET /health`, `GET /incidents`, `GET /incidents/{id}`. The incident includes `state`, `confidence`, `replay_end_s`, `variant` (the active demo variant) and `latest` (`{plan_id, simulation_id, proof_id, execution_id}`) for rehydration.
+  - `GET /incidents/{id}/events?until=`, `POST /correlate`, `GET /findings`, `GET /graph?at=&plan_id=`, `GET /paths` (409 before correlation), `GET /actions`, `GET /policies`, `GET /variants` (key, title, description of each demo variant, plus the active one).
 - **Analysis:** `POST /incidents/{id}/simulations`, `GET /simulations/{id}`, `POST /incidents/{id}/plans`, `GET /plans/{id}`, `POST /plans/{id}/proof` (409 if infeasible), `GET /proofs/{id}`, `POST /proofs/{id}/verify`.
 - **Action Gate:** `GET` and `POST /plans/{id}/approvals`, `POST /plans/{id}/execute`, `GET /executions/{id}`, `POST /executions/{id}/rollback`. The POST calls on approvals, execute and rollback need the header `X-Halt-Actor` (demo identity, not authentication).
 - **Audit and other:** `GET /incidents/{id}/audit`, `GET /audit/verify`, `POST /replay/reset {variant}`, `POST /explain {subject_id}`.
@@ -158,12 +160,15 @@ The high-risk threshold is 0.20, so P1–P6 are high-risk and U1 is not.
   - The 3D scene is the supplied procedural three.js r128 scene, loaded unmodified as classic scripts. With reduced motion or no WebGL it shows the supplied SVG poster.
 - **Hand-off:** a client-side link to `/incidents/INC-2417?view=overview&t=<cursor>`. Both providers live in the root layout, so the incident, cursor, plan and proof carry over with no reload.
 - **Command Center (`/incidents/INC-2417`):**
-  - Layout: rail (7 views), top bar (stage chip + SIMULATED), workspace, evidence rail, replay timeline. `?view=` and `?t=` are synced to the URL.
+  - Layout: rail (7 views), top bar (stage chip, SIMULATED, operator persona labelled as a demo identity), workspace, evidence rail, replay timeline. `?view=` and `?t=` are synced to the URL.
+  - Overview shows five metrics, including the residual reach the plan leaves open (502 of 6,000, via U1, below threshold).
   - Reloading rehydrates everything from the API.
   - The ThreadGraph runs on Cytoscape with preset coordinates and the supplied node glyphs, rendered as SVG data URIs. Line styles follow the graph spec.
   - An SVG overlay draws the continuous 8px business thread and the proof rings in the cut gaps. A text table of the paths sits alongside the graph.
+  - Motion: the cut opens and held edges fade to 30 %, the proof ring draws clockwise, and graph-mode switches cross-fade the hostile layer. Reduced motion shows end states (DESIGN_SYSTEM §6 lists what is and is not animated).
+  - The ThreadGraph view has a Business dependencies toggle; the business thread is always drawn.
   - The Action Gate drawer handles approvals per role, Execute (disabled with a stated reason until allowed), and rollback.
-  - A demo variant switcher is in Policies.
+  - A demo variant switcher is in Policies. Its list and the running variant come from the API, so a reload shows what is really running.
 - **Design system:**
   - Tokens are generated from `tokens.json` for dark and light themes. Only the brand roles exist as colours, and a lint rule plus a test forbid hex colours.
   - Archivo and IBM Plex Mono load through `next/font`. The 17 components are faithful ports.
@@ -189,9 +194,9 @@ Presenter walkthrough: `docs/DEMO_SCRIPT.md`.
 
 | Suite | Command | Status |
 |---|---|---|
-| API (AT-1 to AT-6) | `cd services/api && .venv/Scripts/python -m pytest` | 121 pass, 1 skipped (PostgreSQL) |
-| Web unit (AT-7, AT-8) | `npm test` | 67 pass |
-| E2E + axe (AT-8 to AT-10) | `npm run e2e -w @halt/web` (starts the API and a production build) | 25 pass |
+| API (AT-1 to AT-6) | `cd services/api && .venv/Scripts/python -m pytest` | 121 passed, 1 skipped (PostgreSQL) |
+| Web unit (AT-7, AT-8) | `npm test` | 80 passed |
+| E2E + axe (AT-8 to AT-10) | `npm run e2e -w @halt/web` (starts the API and a production build) | 27 passed |
 | Static | `npm run lint`, `npm run typecheck`, `ruff check`, `mypy` | clean |
 
 **Regenerate when contracts or data change** (CI fails on drift):
@@ -244,24 +249,18 @@ Presenter walkthrough: `docs/DEMO_SCRIPT.md`.
 7. **One incident only.** INC-2417 is hardcoded in the root layout and the page guard. Supporting more needs incident selection and per-incident providers.
 8. **Demo identity only.** `X-Halt-Actor` is not authentication: there is no RBAC and no login.
 9. **No language-model provider connected.** The adapter interface exists, so a Claude or other client could be added. The rule that output with unknown IDs is rejected must stay.
-10. **The `motion` animation library was not added.** The design doc planned it, and the ledger lists it as required, but animations are done with CSS and Cytoscape. Either add it for the motion spec (approach, cut 900 ms, proof 600 ms, approval) or update the ledger.
-11. **Motion spec only partly implemented.** The forecast "march", the business pulse and the CSS transitions are done. These are not:
-    - the animated cut, where a gap opens and the ring lands;
-    - the proof ring drawing clockwise;
-    - the cross-fade when switching futures.
-12. **Visual polish to do:**
-    - Graph node labels are small.
-    - The highlight for a proposed (not yet applied) cut is subtle.
-    - On the landing page, the 3D scene's business path crosses the hero text, and the scene's HTML labels can overlap the copy panels.
-13. **No business-dependency overlay toggle.** Dependencies are always drawn; the brief mentions an overlay.
-14. **U1 residual risk is an open product decision.** The plan leaves U1 open (502 of 6,000 rollouts reach the ledger). The proof states this. You could keep it as is, lower the threshold, or add a residual-reach constraint; the last two would change the plan.
+10. ~~`motion` library~~ **Resolved:** not used; the ledger now says so (F-13).
+11. **Motion spec mostly implemented** (F-14): cut, proof ring and mode cross-fade are done. Still not animated: rollback (the gap closing), threat propagation, graph expansion, and the approval tint fill.
+12. ~~Visual polish~~ **Resolved** (F-15): larger labels on bg chips, a visible proposed-cut halo, and a landing hero panel that keeps the scene's lines out of the copy without covering the containment ring. The scene's own HTML labels were not re-checked at every section.
+13. ~~Dependency overlay toggle~~ **Resolved** (F-16).
+14. ~~U1 decision~~ **Decided:** U1 stays open as stated residual risk; Overview now shows it as "Residual reach under the plan" (F-17).
 15. **Alembic migrations deferred.** The schema is created with `create_all`. Add Alembic before the first schema change.
 16. **Dev-only noise:** React StrictMode opens the replay WebSocket twice in dev (one "closed before established" warning), and uvicorn logs `ConnectionResetError` when sockets close during tests. Both are harmless.
 
 ### C. Housekeeping
 
-17. **`apps/web/AGENTS.md`** is generated by `next dev` and uncommitted. Commit it, delete it, or add it to `.gitignore`.
-18. **`.claude/launch.json`** is a local dev-server config, uncommitted.
+17. ~~`apps/web/AGENTS.md`~~ **Resolved:** gitignored (`next dev` regenerates it).
+18. ~~`.claude/launch.json`~~ **Resolved:** kept local through `.git/info/exclude`.
 19. **The project lives in OneDrive.** That makes npm installs (up to 6 minutes) and dev compiles slow; Next warns about a slow filesystem. Move the project to a local folder such as `C:\dev\halt`.
 20. **npm 12 is available.** It isn't needed; npm 11 works.
 
@@ -269,6 +268,6 @@ Presenter walkthrough: `docs/DEMO_SCRIPT.md`.
 
 1. Push to GitHub; get CI green, including the Postgres and E2E jobs.
 2. Install Docker; verify the compose stack and AT-10.3.
-3. Decide on U1 (item 14).
-4. Motion polish (items 10–12) and the light-theme toggle (4).
+3. Merge `stabilization/god-mode` into `main` once you have reviewed it.
+4. The rest of the motion spec (item 11) and the light-theme toggle (4).
 5. Server-side rehydration (6), then multiple incidents (7) and real authentication (8), if the project goes beyond the demo.

@@ -4,7 +4,7 @@ About 6 minutes. Every number on screen comes from the API; nothing below needs 
 
 ## Before you start
 
-1. Start the API and the web app (README → *Run it locally*), or `docker compose up --build -d --wait`.
+1. Start the API and a **production build** of the web app: the API as in README → *Run it locally*, then `npm run build -w @halt/web` and `npm run start -w @halt/web`. This is the path the end-to-end suite exercises. `docker compose up --build -d --wait` has not been run yet, so don't rely on it for the live demo.
 2. Open http://localhost:3000 once and scroll to the bottom, then reload: this warms the build so the live run is instant.
 3. Reset the incident so the audience sees it from the start: Command Center → **Policies** → *Demo variant* `Baseline` → **RESET INCIDENT**, then go back to http://localhost:3000.
 4. Browser at 1440 × 900 or larger. Turn off OS "reduce motion" if you want the live 3D scene (with it on, HALT shows the static poster, which is fine).
@@ -26,10 +26,10 @@ About 6 minutes. Every number on screen comes from the API; nothing below needs 
 
 | Beat | Do | Say |
 |---|---|---|
-| 9 · Overview | Point at the four metrics | Confidence 16 of 16 rule conditions, 6 high-risk paths, 3 users, 0 of 6 reachable after the plan. |
+| 9 · Overview | Point at the five metrics | Confidence 16 of 16 rule conditions, 6 high-risk paths, 3 users, 0 of 6 reachable after the plan. "And this is what we don't claim: 502 of 6,000 rollouts still reach the ledger through U1, a below-threshold route. HALT says so instead of hiding it." The top bar names who is acting: A. Rahman, a demo identity. |
 | 10 · ThreadGraph | Rail → **ThreadGraph**, click a path in the table | "Solid is observed, dashed is inferred, dotted is forecast. The thick Verdigris line is the business, and it is never broken." The evidence rail shows events, policies and an **EXPLAIN** button. |
 | 11 · Action Gate | Overview → **OPEN ACTION GATE** | "Execute is disabled, and it says why: two humans must approve." Approve as **tier2 analyst**, then **Finance Ops owner** (the change freeze needs her). |
-| 12 · Execute | **EXECUTE 3 ACTIONS** | Top bar turns CONTAINED. Close the drawer → **ThreadGraph**: six proof rings sit in the cut gaps; the business thread keeps pulsing. |
+| 12 · Execute | **EXECUTE 3 ACTIONS** | Top bar turns CONTAINED. Close the drawer → **ThreadGraph**: each cut opens, its proof ring draws in the gap, and the business thread keeps pulsing. Untick **Business dependencies** to show that the business thread stays. |
 | 13 · Rollback | Overview → **REVIEW ROLLBACK** → **ROLL BACK ALL** | "Every action is reversible inside the window; the snapshot is restored exactly." |
 | 14 · Not scripted (optional) | **Policies** → variant `Finance Ops owner unavailable` → **RESET INCIDENT** → Overview → correlate → derive | "Take one approver away and HALT refuses: BLOCKED BY POLICY, with the closest options and what each would break. No execute button exists." |
 
@@ -40,5 +40,5 @@ About 6 minutes. Every number on screen comes from the API; nothing below needs 
 | Red "Request failed" toast or "Connecting to the HALT API" | The API is down: restart it (in-memory data resets; reset the incident from Policies). |
 | Top bar stays CONNECTING | The WebSocket can't reach `ws://localhost:8000`: check the API is on port 8000. |
 | Landing figures show loading bars | The analysis is still running or failed: open the Command Center and use the next-step button instead. |
-| Plan or approvals look stale after switching variant | Use **RESET INCIDENT** again, then reload the page. |
+| Plan or approvals look stale after switching variant | Use **RESET INCIDENT** again, then reload the page. The selector shows the variant the API is running, marked "(running)". |
 | Need to restart mid-demo | Policies → `Baseline` → **RESET INCIDENT**, then reopen http://localhost:3000. |

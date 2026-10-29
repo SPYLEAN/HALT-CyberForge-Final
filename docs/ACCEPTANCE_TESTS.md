@@ -126,3 +126,19 @@ Tooling: `pytest` (+ `hypothesis` for properties) for the API; Vitest + Testing 
 | AT-10.2 | Three consecutive runs produce identical proof certificates |
 | AT-10.3 | `docker compose up` from a clean clone to working demo in ≤ 10 min (documented, timed once). **Not yet run**: Docker is unavailable on the development machine; see README → Verification status |
 | AT-10.4 | Variant switcher (`approver_unavailable`) shows "Blocked by policy" and no Execute path |
+
+## Finalization (FINALIZATION_AUDIT rows 1–10)
+
+| ID | Criterion | Test |
+|---|---|---|
+| AT-F.1 | Evidence-rail sections have unique ids with a selection active; no serious axe violations | `shell.test.tsx`, `e2e/a11y.spec.ts` |
+| AT-F.2 | EchoLab requests use `incident.params`; captions read the threshold and the C-REVERSIBLE limit from the API | `views.test.tsx` |
+| AT-F.3 | Landing copy counts events and names outstanding approvers from the API; the enumeration is credited to ProofSeal; infeasible plans promise no approval | `landing.test.tsx` |
+| AT-F.4 | "Every action" appears only when a policy covers every action type | `views.test.tsx` |
+| AT-F.5 | `GET /variants` matches `variants.json`; `Incident.variant` follows a reset; a reload keeps the running variant selected | `test_api_contract.py`, `views.test.tsx`, `e2e/demo-flow.spec.ts` (AT-10.4) |
+| AT-F.6 | The top bar names the operator persona as a demo identity | `shell.test.tsx` |
+| AT-F.7 | Overview shows the residual reach under the plan, by route | `views.test.tsx` |
+| AT-F.8 | Under reduced motion the cut renders finished: six rings, no running animation | `e2e/command-center.spec.ts` |
+| AT-F.9 | Hiding business dependencies never hides the business thread or the rings | `graph-model.test.ts` |
+
+Not covered by an automated test: a missing users count rendering "—" (F-06), the canvas cut fade and mode cross-fade (checked by hand in the browser), and the landing hero not covering the containment ring (checked by hand at 1440 × 900).

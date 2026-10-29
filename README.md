@@ -80,13 +80,13 @@ docker compose up --build -d --wait
 
 ## Verification status
 
-What has actually been run, and what has not (as of Phase 10):
+What has actually been run, and what has not (2026-10-29, branch `stabilization/god-mode`; see [docs/FINALIZATION_AUDIT.md](docs/FINALIZATION_AUDIT.md)):
 
 | Check | Status |
 |---|---|
-| API tests | 121 passing locally; 1 skipped (PostgreSQL trigger, AT-6.7) |
-| Web unit tests | 67 passing locally |
-| E2E + accessibility | 25 passing locally against a production build (Chromium) |
+| API tests | 121 passed locally; 1 skipped (PostgreSQL trigger, AT-6.7) |
+| Web unit tests | 80 passed locally |
+| E2E + accessibility | 27 passed locally against a production build (Chromium) |
 | Determinism | Plan, simulation, proof certificate and audit hashes identical across runs (tested) |
 | Measured | SafeCut solve p95 ≈ 22 ms; 3 futures × 6,000 rollouts ≈ 15 ms; landing LCP 152–560 ms |
 | Docker Compose stack (AT-0.4, AT-10.3) | **Not run**: Docker is not installed on the development machine. The web image's runtime layout was checked by running the standalone server with the same copy steps |

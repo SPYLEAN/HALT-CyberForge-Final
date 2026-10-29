@@ -285,3 +285,46 @@ cd services/api && .venv/Scripts/python -m pytest && .venv/Scripts/python -m ruf
 - Each row in §6 is one commit. To undo one item, revert its commit with `git revert <sha>`. Row 6 contains the contract change together with its regenerated files, so reverting it restores the API, types and fixtures in one step.
 - If the branch is abandoned, delete it with `git branch -D stabilization/god-mode`. `main` and the tag stay untouched.
 - Once a remote exists, push the tag and protect `main` and `phase10-complete` with branch and tag protection rules (B-3).
+
+---
+
+## 9. Progress (2026-10-29)
+
+Rows 1–11 are done on `stabilization/god-mode`, one commit per row (row 9 includes its ledger and design-doc corrections). `main` and the tag `phase10-complete` are unchanged.
+
+| Row | Findings | Commit |
+|---|---|---|
+| 1 | Housekeeping | `1eaf52f` |
+| 2 | F-01 | `b310e61`, plus E2E `c7754d8` |
+| 3 | F-05, F-06, F-08, F-12 | `7134d80` |
+| 4 | F-02, F-03, F-06, F-09, F-11 | `6b9814a` |
+| 5 | F-07 | `1435ac9` |
+| 6 | F-04 (contract change, regenerated files) | `02e8353` |
+| 7 | F-10 | `992b60b` |
+| 8 | F-17 (U1 kept as stated residual risk) | `36a1a6f` |
+| 9 | F-13, F-14 | `36f3de1` |
+| 10 | F-15, F-16 | `5190253` |
+| 11 | Docs | this commit |
+
+**Checks run after row 10, all passing:**
+
+| Check | Result |
+|---|---|
+| `verify_repo.py` | ✅ |
+| API tests | ✅ 121 passed, 1 skipped (PostgreSQL) |
+| ruff, mypy (strict), OpenAPI drift | ✅ |
+| Web lint, typecheck | ✅ |
+| Web unit tests | ✅ 80 passed |
+| Token drift | ✅ |
+| E2E + axe, production build | ✅ 27 passed |
+
+**Found while doing the work:**
+- Cytoscape steps its animations on animation frames, and a hidden tab gets none. Without a guard, a stalled cross-fade left hostile edges at opacity 0. Every canvas animation now also settles on a timer.
+- The first version of the landing hero panel covered half of the containment ring. It was narrowed to 520 px.
+
+**Still open:**
+- B-1 to B-3: Docker, the PostgreSQL trigger test (AT-6.7) and CI.
+- Rollback, threat-propagation and graph-expansion motion.
+- No automated test that a missing users count renders "—".
+- The EchoLab preset IDs (`preset_aggressive`, `preset_passive`) are still named in the client.
+- All the P2 items.
