@@ -39,7 +39,11 @@ export function stylesheet(theme: Theme = "dark"): StylesheetJson {
         label: "data(label)",
         color: c["text-secondary"],
         "font-family": "IBM Plex Mono, ui-monospace, monospace",
-        "font-size": 9,
+        "font-size": 11,
+        // Labels sit on a bg chip so crossing edges never run through the text.
+        "text-background-color": c.bg,
+        "text-background-opacity": 0.9,
+        "text-background-padding": "2px",
         "text-valign": "bottom",
         "text-margin-y": 4,
         "text-wrap": "wrap",
@@ -47,7 +51,9 @@ export function stylesheet(theme: Theme = "dark"): StylesheetJson {
       },
     },
     ...glyphs,
-    { selector: "node.cut-proposed", style: { "underlay-color": c["proof-ring"], "underlay-opacity": 0.12, "underlay-padding": 6, "underlay-shape": "ellipse" } },
+    // Proposed (not yet applied) cut: a Bone halo, clearly visible but unlike the proof ring, which only
+    // appears once ProofSeal and the Gate have done their part.
+    { selector: "node.cut-proposed", style: { "underlay-color": c["proof-ring"], "underlay-opacity": 0.3, "underlay-padding": 8, "underlay-shape": "ellipse" } },
     { selector: "edge", style: { "curve-style": "bezier", "target-arrow-shape": "none", width: 1, "line-color": c["border-strong"], opacity: 1 } },
     // Observed hostile: solid Ember 3px
     { selector: "edge.hostile.observed", style: { "line-style": "solid", width: borderWidth["edge-threat-observed"], "line-color": c["threat-observed"] } },
@@ -72,7 +78,7 @@ export function stylesheet(theme: Theme = "dark"): StylesheetJson {
     { selector: "edge.historical", style: { opacity: 0.55 } },
     // Held: downstream of a cut, Ember at 30%; stays visible so the cut can be audited
     { selector: "edge.held", style: { "line-color": c["threat-held"], "line-style": "solid" } },
-    { selector: "edge.cut-proposed", style: { "underlay-color": c["proof-ring"], "underlay-opacity": 0.15, "underlay-padding": 4 } },
+    { selector: "edge.cut-proposed", style: { "underlay-color": c["proof-ring"], "underlay-opacity": 0.3, "underlay-padding": 5 } },
     // Focus: dim everything else to 14%, never hide it
     { selector: ".dimmed", style: { opacity: 0.14 } },
   ];

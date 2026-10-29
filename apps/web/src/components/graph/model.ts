@@ -14,6 +14,8 @@ export interface GraphInput {
   execution: Execution | null;
   mode: GraphMode;
   focusPath: string | null;
+  /** Business-dependency overlay; the business thread itself is always drawn. Default true. */
+  showDependencies?: boolean;
 }
 
 export interface RingPlacement {
@@ -122,6 +124,7 @@ export function buildModel(input: GraphInput): GraphModel {
   for (const e of input.edges) {
     if (!visible.has(e.source) || !visible.has(e.target)) continue;
     if (!showForecast && e.provenance === "forecast") continue;
+    if (input.showDependencies === false && e.kind === "dependency" && !isThread(e, byId)) continue;
     const classes: string[] = [e.kind];
     if (e.kind === "hostile") classes.push(e.provenance === "observed" ? "observed" : e.provenance === "inferred" ? "inferred" : "forecast");
     if (e.historical) classes.push("historical");

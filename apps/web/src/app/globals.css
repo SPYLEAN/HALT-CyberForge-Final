@@ -168,10 +168,14 @@ body {
   border-radius: var(--radius-md);
   padding: var(--space-6);
 }
+/* The hero sits on a solid bg panel (no border, no glass) so the scene's lines pass behind the copy,
+   never through the text or the buttons. It is narrow enough to end before the scene's containment ring,
+   which no panel may cover. The scene itself stays unmodified. */
 .landing-hero .landing-copy {
-  background: transparent;
+  max-width: 520px;
+  background: var(--bg);
   border-color: transparent;
-  padding-left: 0;
+  padding: var(--space-5) 0;
 }
 /* Not-yet-replayed events are marked by form (dashed rail), never by dimming text below 4.5:1. */
 .landing-event {

@@ -75,6 +75,16 @@ describe("AT-8.4 containment", () => {
     }
   });
 
+  it("hiding business dependencies never hides the business thread (F-16)", () => {
+    const shown = model("cut", true);
+    const hidden = buildModel({ nodes: graph.nodes, edges: graph.edges, paths, plan, actions, execution, mode: "cut", focusPath: null, showDependencies: false });
+    const deps = (m: typeof shown) => m.elements.filter((e) => e.classes.includes("dependency")).map((e) => e.data.id);
+    expect(deps(hidden).length).toBeLessThan(deps(shown).length);
+    expect(hidden.threadEdgeIds).toEqual(shown.threadEdgeIds);
+    expect(deps(hidden).sort()).toEqual([...hidden.threadEdgeIds].sort());
+    expect(hidden.rings).toEqual(shown.rings);
+  });
+
   it("never draws a business node as held", () => {
     const m = model("cut", true);
     for (const id of ["api.finance", "process.payment", "process.payroll", "process.reconciliation", "db.finance_ledger"]) {
