@@ -1,8 +1,8 @@
 import type { ReactNode } from "react";
 
-/** Right rail: observed evidence, model findings, confidence, source event ids, policy requirements. */
+/** Right rail: observed evidence, model findings, confidence, source event ids, policy requirements, explanation. */
 export interface EvidenceSection {
-  id: "evidence" | "findings" | "confidence" | "sources" | "policy";
+  id: "evidence" | "findings" | "confidence" | "sources" | "policy" | "explain";
   title: string;
   content: ReactNode | null;
 }
@@ -13,6 +13,7 @@ export const EMPTY_TEXT: Record<EvidenceSection["id"], string> = {
   confidence: "No confidence without evidence.",
   sources: "No source records referenced.",
   policy: "No policy applies to this selection.",
+  explain: "Select something to explain.",
 };
 
 export function EvidenceRail({ sections, subject }: { sections: EvidenceSection[]; subject?: string | null }) {

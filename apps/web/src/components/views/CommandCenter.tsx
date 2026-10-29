@@ -58,7 +58,7 @@ function Workspace() {
 
   const evidence = evidenceFor(state.selection, state, ops);
   if (state.selection) {
-    evidence.push({ id: "policy", title: "Explanation", content: <ExplainButton key={state.selection} subject={state.selection} ops={ops} /> });
+    evidence.push({ id: "explain", title: "Explanation", content: <ExplainButton key={state.selection} subject={state.selection} ops={ops} /> });
   }
 
   return (

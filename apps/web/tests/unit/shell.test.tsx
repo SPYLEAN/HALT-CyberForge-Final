@@ -9,6 +9,7 @@ import { IncidentProvider } from "@/lib/state/incident-store";
 const evidence = [
   { id: "evidence" as const, title: "Observed evidence", content: null },
   { id: "policy" as const, title: "Policy requirements", content: null },
+  { id: "explain" as const, title: "Explanation", content: <p>explanation</p> },
 ];
 
 function shell(simulated = true) {
@@ -50,6 +51,13 @@ describe("Command Center shell", () => {
     expect(screen.getByRole("complementary", { name: "Evidence" })).toHaveTextContent("Select a node, path or action");
     expect(screen.getByRole("slider", { name: "Replay position" })).toHaveAttribute("max", "666");
     expect(screen.getByText("workspace")).toBeInTheDocument();
+  });
+
+  it("gives every evidence section its own heading id", () => {
+    const { container } = shell();
+    const ids = Array.from(container.querySelectorAll(".cc-inspector [id]")).map((el) => el.id);
+    expect(ids).toEqual(["ev-evidence", "ev-policy", "ev-explain"]);
+    expect(screen.getByRole("region", { name: "Explanation" })).toHaveTextContent("explanation");
   });
 
   it("switches view through the rail without a page load", () => {
