@@ -2,7 +2,6 @@
 
 import { MetricBlock, Skeleton } from "@/components/halt";
 import { useOps } from "@/lib/api/ops";
-import { count } from "@/lib/format";
 import { useIncident } from "@/lib/state/incident-store";
 
 import { grid, Panel, ViewHeader } from "./common";
@@ -38,7 +37,13 @@ export function OverviewView({ onOpenGate }: { onOpenGate: () => void }) {
           <MetricBlock label="Incident confidence" value="—" derivation="Not correlated yet: run HALT-R1." />
         )}
         {high.length ? (
-          <MetricBlock label="High-risk paths" value={high.length} derivation={`Risk ≥ 0.20 over ${count(high[0]!.reach).split(" of ")[1]} rollouts`} simulated tone="threat" />
+          <MetricBlock
+            label="High-risk paths"
+            value={high.length}
+            derivation={`Risk ≥ ${incident?.params.high_risk_threshold ?? "the incident threshold"} over ${high[0]!.reach.denominator?.toLocaleString("en-GB") ?? "—"} rollouts`}
+            simulated
+            tone="threat"
+          />
         ) : (
           <MetricBlock label="High-risk paths" value="—" derivation="Forecast appears after correlation." />
         )}

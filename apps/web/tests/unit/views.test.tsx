@@ -42,6 +42,29 @@ describe("AT-8.1 views render recorded API data", () => {
     expect(screen.getByRole("group", { name: "Paths reachable after plan" })).toHaveTextContent("0 of 6");
   });
 
+  it("Overview states the risk threshold and rollouts from the API, not literals", async () => {
+    useStage("contained");
+    render(<Providers><OverviewView onOpenGate={noop} /></Providers>);
+    expect(await screen.findByRole("group", { name: "High-risk paths" })).toHaveTextContent("Risk ≥ 0.2 over 6,000 rollouts");
+  });
+
+  it("EchoLab runs with the incident's own parameters", async () => {
+    const responses = useStage("forecast");
+    const incident = responses["GET /api/v1/incidents/INC-2417"]!.body as { params: { rollouts: number; horizon_s: number; seed: number } };
+    const recordedFetch = globalThis.fetch;
+    let sent: Record<string, unknown> | null = null;
+    vi.stubGlobal("fetch", async (request: Request) => {
+      if (request.method === "POST" && request.url.endsWith("/simulations")) sent = (await request.clone().json()) as Record<string, unknown>;
+      return recordedFetch(request);
+    });
+    render(<Providers view="echolab"><EchoLabView /></Providers>);
+    // The button is re-rendered once the paths arrive, so query it again until it is enabled.
+    await waitFor(() => expect(screen.getByRole("button", { name: /RUN ECHOLAB/ })).toBeEnabled());
+    screen.getByRole("button", { name: /RUN ECHOLAB/ }).click();
+    await waitFor(() => expect(sent).not.toBeNull());
+    expect(sent).toMatchObject({ rollouts: incident.params.rollouts, horizon_s: incident.params.horizon_s, seed: incident.params.seed });
+  });
+
   it("ThreadGraph lists every path with simulated reach counts and the cut status", async () => {
     useStage("contained");
     render(<Providers view="graph"><ThreadGraphView /></Providers>);
@@ -58,7 +81,7 @@ describe("AT-8.1 views render recorded API data", () => {
     render(<Providers view="echolab"><EchoLabView /></Providers>);
     const passive = await screen.findByRole("article", { name: "B · Passive monitoring" });
     expect(passive).toHaveTextContent("5,782 of 6,000");
-    expect(screen.getByRole("article", { name: "A · Aggressive isolation" })).toHaveTextContent("NOT REVERSIBLE IN 5 MIN");
+    expect(screen.getByRole("article", { name: "A · Aggressive isolation" })).toHaveTextContent("NOT REVERSIBLE IN 300 S");
     expect(screen.getByRole("article", { name: "C · SafeCut plan" })).toHaveTextContent("6 of 6");
   });
 

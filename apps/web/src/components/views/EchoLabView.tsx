@@ -47,6 +47,8 @@ export function EchoLabView() {
   const sim = ops.simulation;
   const labels = Object.fromEntries(Object.values(state.nodes).map((n) => [n.id, n.label]));
   const window = ops.incident?.params.containment_window_min ?? 0;
+  const reversibleLimit = ops.policySet?.constraints.find((c) => c.id === "C-REVERSIBLE");
+  const within = typeof reversibleLimit?.limit === "number" ? `${reversibleLimit.limit} ${reversibleLimit.unit?.toUpperCase() ?? ""}`.trim() : "THE LIMIT";
 
   return (
     <>
@@ -79,10 +81,10 @@ export function EchoLabView() {
                 </p>
                 <MetricBlock label="High-risk paths blocked" value={count(f.paths_blocked)} derivation={f.paths_blocked.method} simulated />
                 <MetricBlock label="Rollouts reaching the ledger" value={count(f.target_reached)} derivation={f.target_reached.method} simulated tone="threat" />
-                <MetricBlock label="Users affected" value={f.users_affected.numerator ?? 0} derivation={f.users_affected.method} />
+                <MetricBlock label="Users affected" value={f.users_affected.numerator ?? "—"} derivation={f.users_affected.method} />
                 <AvailabilityStrip future={f} labels={labels} window={window} />
                 <div style={{ display: "flex", gap: "var(--space-2)", flexWrap: "wrap", marginTop: "var(--space-3)" }}>
-                  <StatusChip kind={f.reversible ? "success" : "caution"}>{f.reversible ? "REVERSIBLE ≤ 5 MIN" : "NOT REVERSIBLE IN 5 MIN"}</StatusChip>
+                  <StatusChip kind={f.reversible ? "success" : "caution"}>{f.reversible ? `REVERSIBLE ≤ ${within}` : `NOT REVERSIBLE IN ${within}`}</StatusChip>
                   <StatusChip kind={f.evidence_preserved ? "success" : "caution"}>{f.evidence_preserved ? "EVIDENCE PRESERVED" : "EVIDENCE AT RISK"}</StatusChip>
                 </div>
               </article>

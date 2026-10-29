@@ -8,20 +8,19 @@ import { useIncident } from "@/lib/state/incident-store";
 import { grid, Panel, RunButton, ViewHeader } from "./common";
 import { GraphPanel } from "./GraphPanel";
 
-const CONSTRAINT_NAMES: Record<string, string> = {
-  "C-COVER": "Every high-risk path cut",
-  "C-DOWNTIME": "Critical-process downtime",
-  "C-USERS": "Users affected",
-  "C-REVERSIBLE": "Reversible in time",
-  "C-AUTH": "Authorisation available",
-  "C-EVIDENCE": "Evidence preserved",
-};
-
+/** Constraint results named by the incident's own constraint labels (GET /policies). */
 function Constraints({ results }: { results: Plan["constraints"] }) {
+  const labels = Object.fromEntries((useOps().policySet?.constraints ?? []).map((c) => [c.id, c.label]));
   return (
     <div role="table" aria-label="Constraints">
       {results.map((c) => (
-        <ConstraintIndicator key={c.constraint_id} name={`${c.constraint_id} · ${CONSTRAINT_NAMES[c.constraint_id]}`} rule={c.limit} value={c.value} state={c.state} />
+        <ConstraintIndicator
+          key={c.constraint_id}
+          name={labels[c.constraint_id] ? `${c.constraint_id} · ${labels[c.constraint_id]}` : c.constraint_id}
+          rule={c.limit}
+          value={c.value}
+          state={c.state}
+        />
       ))}
     </div>
   );

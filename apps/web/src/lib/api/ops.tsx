@@ -186,8 +186,11 @@ export function OpsProvider({ incidentId, children }: { incidentId: string; chil
             { label: "B", source: "preset_passive", plan_id: null },
           ];
           if (state.plan?.status === "optimal") plans.push({ label: "C", source: "plan", plan_id: state.plan.id });
+          const incident = state.incident ?? (await incidentNow());
+          // The run uses the incident's own parameters, so the UI can never drift from the engine's defaults.
+          const { rollouts, horizon_s, seed } = incident.params;
           const simulation = unwrap(
-            await api.POST("/api/v1/incidents/{incident_id}/simulations", { ...path, body: { plans, rollouts: 6000, horizon_s: 600, seed: 2417 } }),
+            await api.POST("/api/v1/incidents/{incident_id}/simulations", { ...path, body: { plans, rollouts, horizon_s, seed } }),
           );
           return { simulation, audit: await loadAudit() };
         }),

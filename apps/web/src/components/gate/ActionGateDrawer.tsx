@@ -44,8 +44,9 @@ export function ActionGateDrawer({ open, onClose }: { open: boolean; onClose: ()
   const outstanding = ops.outstandingRoles ?? reqs.map((r) => r.role);
   const proofOk = ops.proof?.claims.every((c) => c.status === "verified") ?? false;
   const applied = ops.execution?.state === "applied";
+  const sealRule = ops.policySet?.constraints.find((c) => c.id === "C-EVIDENCE");
   const executeReason = !ops.proof
-    ? "Disabled until ProofSeal has sealed the plan (IR-DATA-07)."
+    ? `Disabled until ProofSeal has sealed the plan${sealRule ? ` (${sealRule.id} · ${sealRule.label})` : ""}.`
     : !proofOk
       ? "Disabled: a ProofSeal claim failed."
       : outstanding.length
