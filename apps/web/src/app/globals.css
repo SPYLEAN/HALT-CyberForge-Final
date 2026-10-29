@@ -128,3 +128,93 @@ body {
   outline: none;
   box-shadow: inset var(--focus-ring);
 }
+
+/* Landing: the 3D scene sits fixed behind the story; copy sits on solid panels (no glass). */
+.landing-scene {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  background: var(--bg);
+}
+.landing-bar {
+  position: sticky;
+  top: 0;
+  z-index: var(--z-topbar);
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  height: var(--app-topbar-height);
+  padding: 0 var(--marketing-margin);
+  background: var(--bg);
+  border-bottom: var(--border-hairline) solid var(--line);
+}
+.landing-content {
+  position: relative;
+  z-index: 1;
+  max-width: var(--max-marketing);
+  margin: 0 auto;
+  padding: 0 var(--marketing-margin);
+}
+.landing-section {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  padding: var(--space-8) 0;
+}
+.landing-copy {
+  max-width: 600px;
+  background: var(--surface);
+  border: var(--border-hairline) solid var(--line);
+  border-radius: var(--radius-md);
+  padding: var(--space-6);
+}
+.landing-hero .landing-copy {
+  background: transparent;
+  border-color: transparent;
+  padding-left: 0;
+}
+/* Not-yet-replayed events are marked by form (dashed rail), never by dimming text below 4.5:1. */
+.landing-event {
+  min-height: 40vh;
+  padding: var(--space-4) 0 var(--space-4) var(--space-4);
+  border-top: var(--border-hairline) solid var(--line);
+  border-left: var(--border-focus) dashed var(--neutral-evidence);
+  transition: border-color var(--duration-evidence) var(--ease-out);
+}
+.landing-event[data-arrived="true"] {
+  border-left-style: solid;
+  border-left-color: var(--text);
+}
+.landing-two,
+.landing-three {
+  display: grid;
+  gap: var(--space-4);
+  margin: var(--space-4) 0;
+}
+.landing-two {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+.landing-three {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+@media (max-width: 959px) {
+  .landing-bar,
+  .landing-content {
+    padding-left: var(--space-6);
+    padding-right: var(--space-6);
+  }
+}
+@media (max-width: 639px) {
+  .landing-bar,
+  .landing-content {
+    padding-left: var(--space-4);
+    padding-right: var(--space-4);
+  }
+  .landing-two,
+  .landing-three {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .landing-copy {
+    padding: var(--space-4);
+  }
+}

@@ -11,6 +11,17 @@ test.beforeAll(async ({ request }) => {
   await approveThroughApi(request, await sealThroughApi(request));
 });
 
+test("landing page · dark", async ({ page }) => {
+  await page.goto("/");
+  await expect(page.getByRole("heading", { level: 1 })).toHaveText("Stop the attack. Not the business.");
+  await expect(page.getByRole("list", { name: "Proof claims" })).toBeAttached();
+  const results = await new AxeBuilder({ page }).withTags(["wcag2a", "wcag2aa", "wcag21a", "wcag21aa"]).analyze();
+  const blocking = results.violations
+    .filter((v) => v.impact === "serious" || v.impact === "critical")
+    .map((v) => `${v.id} (${v.impact}): ${v.nodes.slice(0, 3).map((n) => n.target.join(" ")).join(" | ")}`);
+  expect(blocking).toEqual([]);
+});
+
 for (const theme of ["dark", "light"] as const) {
   for (const view of VIEWS) {
     test(`${view} · ${theme}`, async ({ page }) => {

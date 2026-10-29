@@ -19,7 +19,8 @@ const config = [
   ...nextTypescript,
   noHex,
   {
-    ignores: [".next/**", "node_modules/**", "next-env.d.ts", "src/lib/api/schema.d.ts"],
+    // public/vendor holds unmodified third-party and supplied scripts (three.js r128, the 3D scene).
+    ignores: [".next/**", "node_modules/**", "next-env.d.ts", "src/lib/api/schema.d.ts", "public/vendor/**", "playwright-report/**", "test-results/**"],
   },
 ];
 

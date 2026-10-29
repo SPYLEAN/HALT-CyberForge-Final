@@ -6,7 +6,7 @@ import { useEffect, useRef, useState } from "react";
 import { ActionGateDrawer } from "@/components/gate/ActionGateDrawer";
 import { Skeleton, Toast } from "@/components/halt";
 import { CommandCenterShell } from "@/components/shell/CommandCenterShell";
-import { OpsProvider, useOps } from "@/lib/api/ops";
+import { useOps } from "@/lib/api/ops";
 import { useIncident, VIEWS, type ViewId } from "@/lib/state/incident-store";
 
 import { EchoLabView } from "./EchoLabView";
@@ -82,10 +82,7 @@ function Workspace() {
   );
 }
 
-export function CommandCenter({ incidentId }: { incidentId: string }) {
-  return (
-    <OpsProvider incidentId={incidentId}>
-      <Workspace />
-    </OpsProvider>
-  );
+/** The Command Center for the incident held by the root layout providers. */
+export function CommandCenter() {
+  return <Workspace />;
 }

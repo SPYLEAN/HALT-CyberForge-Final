@@ -302,12 +302,12 @@ e2e/a11y.spec.ts                          [new] AT-8.8
 
 ```
 src/app/page.tsx                          [new] landing composition
-src/components/landing/{Hero,Paradox,IncidentSection,ContextSection,EchoSection,SafeCutSection,
-  ProofSection,CommandHandoff}.tsx        [new] ported from 04-marketing-site; numbers from API
-src/components/landing/useScrollCursor.ts [new] scroll → shared replay cursor
-src/vendor/halt-3d/halt-spec.js, halt-scene-a.js, halt-scene-b.js   [copy]
-src/vendor/halt-3d/index.ts               [new] ESM shim exporting HaltScene (no edits to vendored files)
-src/components/landing/HaltScene3D.tsx    [new] dynamic ssr:false island; poster fallback
+src/components/landing/Landing.tsx        [new] fixed 3D scene, replay chip, sections
+src/components/landing/sections.tsx       [new] Hero, Paradox, Incident, Context, EchoLab, SafeCut, ProofSeal, hand-off (copy from 04-marketing-site, figures from the API)
+src/components/landing/hooks.ts           [new] useLandingAnalysis (read-only analysis via the API), useScrollCursor (scroll → shared replay cursor + 3D state)
+src/components/landing/HaltScene3D.tsx    [new] loads three r128 + the supplied scene as classic scripts; SVG poster for reduced motion / no WebGL
+public/vendor/three/three.min.js          [copy] npm three@0.128.0
+public/vendor/halt-3d/*.js                [copy] 06-3d-motion-system spec + scene a/b, unmodified
 e2e/landing-transition.spec.ts            [new] AT-9.1..9.4
 ```
 

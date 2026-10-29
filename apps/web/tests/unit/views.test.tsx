@@ -104,7 +104,7 @@ describe("AT-8.1 views render recorded API data", () => {
 describe("AT-8.2 no invented numbers when the API is down", () => {
   it("shows an error and no figures", async () => {
     failingApi();
-    render(<Providers view="overview"><CommandCenter incidentId="INC-2417" /></Providers>);
+    render(<Providers view="overview"><CommandCenter /></Providers>);
     expect(await screen.findByText(/could not be reached/)).toBeInTheDocument();
     expect(screen.queryByText(/of 6,000/)).toBeNull();
     expect(screen.queryByText("16 of 16")).toBeNull();

@@ -5,7 +5,7 @@ import { resolve } from "node:path";
 
 import { describe, expect, it } from "vitest";
 
-import { COPIES, ICONS } from "../../scripts/copy-brand.mjs";
+import { COPIES, ICONS, THREE_SOURCE, THREE_TARGET } from "../../scripts/copy-brand.mjs";
 
 const web = resolve(__dirname, "../..");
 const pkg = resolve(web, "../../assets/halt-package");
@@ -20,7 +20,12 @@ describe("brand assets", () => {
     });
   }
 
-  it("app icons and mark geometry are the supplied files", () => {
+  it("serves three.js r128, the version the supplied scene targets", () => {
+    expect(sha(resolve(web, THREE_TARGET))).toBe(sha(resolve(web, "../..", THREE_SOURCE)));
+    expect(readFileSync(resolve(web, "../..", "node_modules/three/package.json"), "utf8")).toContain('"version": "0.128.0"');
+  });
+
+  it("app icons, mark geometry and 3D scene scripts are the supplied files", () => {
     for (const { from, to } of ICONS) {
       expect(sha(resolve(web, to)), to).toBe(sha(resolve(pkg, from)));
     }

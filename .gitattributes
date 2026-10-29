@@ -11,3 +11,4 @@ assets/halt-package/** -text
 apps/web/public/brand/** -text
 apps/web/public/3d/** -text
 apps/web/src/components/halt/mark-paths.json -text
+apps/web/public/vendor/** -text

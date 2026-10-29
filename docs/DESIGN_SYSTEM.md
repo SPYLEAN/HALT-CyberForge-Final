@@ -32,7 +32,7 @@ Note: `tokens.json` and the package README describe the palette and fonts as pro
 | `03-product-boards-source/*.dc.html` | 18 | Reference only; they need a missing `support.js` canvas runtime | Screen layouts per system |
 | `04-marketing-site/index.html` | 1 | Reference for landing sections, copy and scroll choreography | Ported into React sections |
 | `05-command-center/index.html` + `source-parts/` | 1 + 15 | Reference for views, copy, state list; **data and hardcoded results discarded** | Ported into views |
-| `06-3d-motion-system/halt-spec.js`, `halt-scene-a.js`, `halt-scene-b.js` | 3 | `apps/web/src/vendor/halt-3d/` verbatim + ESM shim | Landing hero 3D island |
+| `06-3d-motion-system/halt-spec.js`, `halt-scene-a.js`, `halt-scene-b.js` | 3 | `apps/web/public/vendor/halt-3d/` verbatim, loaded as classic scripts (no shim needed) | Landing 3D scene |
 | `06-3d-motion-system/halt-scene.js` | 1 | Not used (appears to be a + b concatenated) | — |
 | `06-3d-motion-system/out/png|svg|glb` | 7 + 7 + 2 | `apps/web/public/3d/` | SVG posters = reduced-motion / no-WebGL fallback and OG image |
 | `SentinelRoute shield emblem.png` (repo root, pre-existing) | 1 | Untouched, unused | Off-brand (shield imagery, old name) |
