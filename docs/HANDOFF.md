@@ -1,0 +1,274 @@
+# HALT — Project Handoff (state after Phase 10)
+
+Use this document to continue the build. It describes what HALT is, what has been built, how it works, how to run and test it, the decisions already made, and everything still pending. The repository is the source of truth; the other docs in `docs/` go deeper.
+
+---
+
+## 1. Product in one paragraph
+
+**HALT — Proof-Carrying Cyber Response.** Tagline: *Stop the attack. Not the business.* HALT calculates and proves the smallest reversible response that blocks every high-risk attack path while preserving critical business operations. The core invention is the **Minimum Safe Containment Envelope**: the smallest set of authorised, reversible response actions that interrupts every high-risk attack path while satisfying business-availability, downtime, user-impact, reversibility, evidence-preservation and approval constraints. It is a hackathon MVP with **one synthetic incident (INC-2417)**. All data is synthetic and labelled SIMULATED, and no real systems are touched: execution is simulated against a copy of the graph.
+
+## 2. The six systems (all built)
+
+| System | What it does | Code |
+|---|---|---|
+| **HALT-R1** | Detection and correlation. Per-event features plus deterministic rules link the 6 incident events out of 405 benign background events, produce 4 stage findings with evidence IDs and ATT&CK techniques, and add a logistic-regression score next to each rule score. | `services/api/halt/r1/` |
+| **ThreadGraph** | Typed graph of users, devices, sessions, tokens, apps, APIs, processes and the database. Enumerates attack paths over live hostile edges from attacker footholds, keeping maximal paths only. | `services/api/halt/threadgraph/` |
+| **EchoLab** | Deterministic Monte Carlo (seed 2417, 6,000 rollouts, 600 s horizon) using the same random draws for every future. Ranks paths by risk (P1–P6 high-risk, U1 below the threshold) and compares futures A (aggressive isolation), B (passive) and C (SafeCut plan). | `services/api/halt/echolab/` |
+| **SafeCut** | OR-Tools CP-SAT optimiser. Coverage, breakage and impact are derived from the graph, never hand-listed. Hard constraints plus an integer objective. If no plan is feasible, it reports the closest options. | `services/api/halt/safecut/` |
+| **ProofSeal** | Independent verifier that never imports SafeCut. 9 claims, enumeration of all 4,096 subsets, a "not covered" list, a SHA-256 certificate and an Ed25519 demo-key signature. | `services/api/halt/proofseal/` |
+| **Action Gate** | Per-role human approvals, including a change-freeze exception; execution refused unless the plan is sealed, verified, fresh and approved; simulated connectors; exact rollback inside a 40-minute window; a hash-chained append-only audit log. | `services/api/halt/gate/`, `halt/audit/` |
+
+## 3. Tech stack (resolved versions)
+
+- **Frontend:** Next.js 16.4.3 (App Router), React 19.3.1, TypeScript 5.9.3, Tailwind 4.3.3 (CSS-first `@theme`, default palette removed), Cytoscape 3.34.4, three.js 0.128.0 (r128, for the supplied 3D scene), zod 4.6.7, openapi-fetch 0.17.0 with types from openapi-typescript 7.13.0.
+  - Tests: Vitest 5.0.5 with Testing Library and jsdom; Playwright 1.64.1 with @axe-core/playwright 4.14.0.
+- **Backend:** Python 3.12, FastAPI 0.162, Pydantic 2.14, SQLAlchemy 2.1, psycopg 3, NetworkX 3.7, NumPy 2.5, scikit-learn 1.9, OR-Tools 9.15, cryptography 50, structlog.
+  - Tests and tooling: pytest, hypothesis, ruff, mypy (strict).
+- **Infrastructure:** Docker Compose (Postgres 16, api, web) and GitHub Actions. **Neither has been run yet** (see §11).
+- **Not used, with the reason:**
+  - **React Three Fiber:** the supplied scene requires three r128.
+  - **LightGBM/XGBoost:** gradient boosting beat logistic regression by only 0.0064 PR-AUC, short of the required 0.02.
+  - **PyTorch:** not needed.
+  - **MSW:** recorded real-API fixtures replace it.
+  - **Alembic:** deferred because there is only one schema version.
+
+## 4. Repository layout
+
+```
+/
+├─ apps/web/                Next.js app: landing story + Command Center
+│  ├─ src/app/              layout (shared providers), / (landing), /incidents/[id] (Command Center), /healthz
+│  ├─ src/components/halt/  17 design-system components ported from the supplied bundle (typed TSX)
+│  ├─ src/components/graph/ model.ts (pure), cy-style.ts, glyphs.ts, ThreadGraphCanvas.tsx (+ SVG overlay), GraphA11y.tsx
+│  ├─ src/components/views/ Overview, ThreadGraph, EchoLab, SafeCut, ProofSeal, Timeline, Policies, CommandCenter, evidence, NextStep
+│  ├─ src/components/gate/  ActionGateDrawer
+│  ├─ src/components/landing/ Landing, sections, hooks (analysis + scroll cursor), HaltScene3D
+│  ├─ src/components/shell/ AppRail, TopBar, EvidenceRail, ReplayTimeline, CommandCenterShell
+│  ├─ src/lib/api/          client.ts, ops.tsx (operator data layer), ws.ts (zod-validated), schema.d.ts (generated), types.ts
+│  ├─ src/lib/state/        incident-store.tsx (replay store, shared)
+│  ├─ src/styles/           tokens.css / tailwind-theme.css / tokens.ts (generated), halt-components.css (copied)
+│  ├─ public/brand, public/3d, public/vendor   copied supplied assets, three r128, 3D scene scripts (unmodified)
+│  ├─ scripts/              build-tokens.mjs, copy-brand.mjs
+│  ├─ tests/unit/           Vitest (67 tests) + fixtures/api/stages.json (recorded from the real API)
+│  └─ e2e/                  Playwright (25 tests)
+├─ services/api/            FastAPI service
+│  ├─ halt/contracts/       Pydantic models = single schema source (→ OpenAPI → TS)
+│  ├─ halt/scenario/        loader + inc_2417 fixture (incident, events, background, topology, actions, policies, approvers, constraints, variants, presets)
+│  ├─ halt/{r1,threadgraph,echolab,safecut,proofseal,gate,audit,replay,explain}/
+│  ├─ halt/service.py       incident runtime orchestrating every engine
+│  ├─ halt/api/             routes.py, ws.py, errors.py, health.py
+│  ├─ halt/db/              engine, tables, PostgreSQL append-only triggers, repository
+│  ├─ scripts/              export_openapi.py, record_fixtures.py
+│  ├─ reports/r1_eval.json  model selection report
+│  └─ tests/                pytest (121 + 1 skipped)
+├─ assets/halt-package/     supplied package, vendored unmodified (checksummed)
+├─ docs/                    PRODUCT_RFC, ARCHITECTURE, DATA_CONTRACTS, DEMO_SCENARIO, DESIGN_SYSTEM, ACCEPTANCE_TESTS, THIRD_PARTY_LEDGER, DEMO_SCRIPT, HANDOFF (this)
+├─ IMPLEMENTATION_PLAN.md   phase plan + file-by-file list (kept in sync)
+├─ docker-compose.yml, .github/workflows/ci.yml, .dockerignore, .env.example
+└─ SentinelRoute shield emblem.png   pre-existing legacy file (off-brand); untouched, unused
+```
+
+Git: local repository on `main` with 12 commits, Phase 0 to Phase 10. **No remote yet.**
+
+## 5. The scenario and its results (all derived; tests assert them)
+
+**Incident INC-2417**, OAuth consent phishing against Finance Ops. The six events:
+
+| Event | Time (UTC) | What happened |
+|---|---|---|
+| EV-01 | 09:41:12 | Consent-phishing mail |
+| EV-02 | 09:42:36 | Sign-in from AS64500 |
+| EV-03 | 09:43:21 | Attacker adds an authenticator (software TOTP) |
+| EV-04 | 09:43:50 | DocuSync Pro OAuth grant |
+| EV-05 | 09:47:03 | Sessions S-1 and S-2 replayed |
+| EV-06 | 09:52:18 | 214 requests to the Finance-Close library |
+
+**Paths (EchoLab, seed 2417, 6,000 rollouts):**
+
+| Path | Route | Reach | Risk |
+|---|---|---|---|
+| P1 | S-1 → Finance API → ledger | 4,335 | 0.7225 |
+| P2 | grant → Finance API → ledger | 4,050 | 0.675 |
+| P3 | S-2 → Payment processing → ledger | 3,431 | 0.572 |
+| P4 | M. Verma → new session S-3 → Payment processing → ledger | 2,068 | 0.345 |
+| P5 | grant → Reconciliation → ledger | 1,884 | 0.314 |
+| P6 | grant → Payroll → ledger | 1,480 | 0.247 |
+| U1 | AS64500 ⇢ Customer support → Finance API → ledger (uncertain) | 502 | 0.084 |
+
+The high-risk threshold is 0.20, so P1–P6 are high-risk and U1 is not.
+
+**Candidate actions (12):**
+
+| ID | Action |
+|---|---|
+| C01 | Revoke the OAuth grant |
+| C02, C03 | Revoke session S-1 / S-2 |
+| C04 | Phishing-resistant step-up |
+| C05–C07 | Isolate the API / the database / the subnet |
+| C08 | Disable the account |
+| C09 | Block the ASN (cuts are soft, so the attacker can evade them) |
+| C10 | Revoke all third-party consents |
+| C11 | Force a password reset |
+| C12 | Quarantine the mailbox |
+
+**SafeCut result:** C01 + C02 + C03 + C04, displayed as three actions (A1 revoke grant; A2 revoke 2 sessions; A3 step-up). Objective 345 (3 users × 100 + 4 actions × 10 + 5 approvals). It is the unique optimum among the 4,096 subsets, and ProofSeal confirms that independently.
+
+**Constraints:** every high-risk path cut; 0 minutes of critical downtime; ≤ 5 users affected; every action reversible within 300 s; every required role has an available approver; evidence preserved and sealed before execution.
+
+**Approvals needed:** A. Rahman (tier-2 analyst) and S. Iyer (Finance Ops owner, needed because the IR-CHG-03 change freeze is active).
+
+**Variants (proving the answer isn't scripted):**
+
+| Variant | Result |
+|---|---|
+| `verma_not_releaser` | The plan switches to C08 instead of C04 (objective 144) |
+| `approver_unavailable` | Infeasible; shows BLOCKED BY POLICY with the closest options |
+| `no_phish_resistant_mfa` | Infeasible |
+| `relaxed_users_250` | Plan unchanged |
+
+**Futures:**
+
+| Future | Paths blocked | Rollouts reaching the ledger | Other effects |
+|---|---|---|---|
+| A · aggressive isolation | 6 of 6 | 0 | 4 processes down for 240 min; 413 users; not reversible within 5 min |
+| B · passive monitoring | 0 of 6 | 5,782 | — |
+| C · SafeCut plan | 6 of 6 | 502, all via U1 | 3 users |
+
+**Proof:** `PS-2417-d7c66ecf`, certificate `f857dd40…`. It is deterministic across runs and across signing keys.
+
+## 6. API (FastAPI, `/api/v1`, OpenAPI at `/api/v1/openapi.json`)
+
+- **Incident and data:**
+  - `GET /health`, `GET /incidents`, `GET /incidents/{id}`. The incident includes `state`, `confidence`, `replay_end_s`, and `latest` (`{plan_id, simulation_id, proof_id, execution_id}`) for rehydration.
+  - `GET /incidents/{id}/events?until=`, `POST /correlate`, `GET /findings`, `GET /graph?at=&plan_id=`, `GET /paths` (409 before correlation), `GET /actions`, `GET /policies`.
+- **Analysis:** `POST /incidents/{id}/simulations`, `GET /simulations/{id}`, `POST /incidents/{id}/plans`, `GET /plans/{id}`, `POST /plans/{id}/proof` (409 if infeasible), `GET /proofs/{id}`, `POST /proofs/{id}/verify`.
+- **Action Gate:** `GET` and `POST /plans/{id}/approvals`, `POST /plans/{id}/execute`, `GET /executions/{id}`, `POST /executions/{id}/rollback`. The POST calls on approvals, execute and rollback need the header `X-Halt-Actor` (demo identity, not authentication).
+- **Audit and other:** `GET /incidents/{id}/audit`, `GET /audit/verify`, `POST /replay/reset {variant}`, `POST /explain {subject_id}`.
+- **WebSocket `/ws/incidents/{id}`:** commands are seek, play, pause and subscribe. It sends a deterministic replay timeline (stage `new` → `correlating` at EV-03 (129 s) → `forecast_ready` at EV-06 (666 s)) and pushes live stage, gate and stale messages.
+- **Responses:** every response except `/health` and errors carries `meta.simulated = true` and `meta.seed = 2417`. Errors are `ApiError {code, message, request_id}`.
+- **Operator clock:** logical. It starts at t0 + 15 min and advances 15 s per action, so plan IDs, simulation hashes, proof certificates and audit hashes are identical across runs.
+
+## 7. Frontend
+
+- **Landing (`/`):**
+  - Eight sections ported from the supplied marketing site: Hero, Paradox, Incident, Context, EchoLab, SafeCut, ProofSeal, Hand-off. Every figure comes from the API.
+  - Scrolling drives the shared replay cursor and the 3D scene state (dormant → intrusion → reconstruction → business → futures → contained → verified).
+  - It runs only the missing read-only analysis steps (correlate, plan, simulate, seal). It never approves or executes anything.
+  - The 3D scene is the supplied procedural three.js r128 scene, loaded unmodified as classic scripts. With reduced motion or no WebGL it shows the supplied SVG poster.
+- **Hand-off:** a client-side link to `/incidents/INC-2417?view=overview&t=<cursor>`. Both providers live in the root layout, so the incident, cursor, plan and proof carry over with no reload.
+- **Command Center (`/incidents/INC-2417`):**
+  - Layout: rail (7 views), top bar (stage chip + SIMULATED), workspace, evidence rail, replay timeline. `?view=` and `?t=` are synced to the URL.
+  - Reloading rehydrates everything from the API.
+  - The ThreadGraph runs on Cytoscape with preset coordinates and the supplied node glyphs, rendered as SVG data URIs. Line styles follow the graph spec.
+  - An SVG overlay draws the continuous 8px business thread and the proof rings in the cut gaps. A text table of the paths sits alongside the graph.
+  - The Action Gate drawer handles approvals per role, Execute (disabled with a stated reason until allowed), and rollback.
+  - A demo variant switcher is in Policies.
+- **Design system:**
+  - Tokens are generated from `tokens.json` for dark and light themes. Only the brand roles exist as colours, and a lint rule plus a test forbid hex colours.
+  - Archivo and IBM Plex Mono load through `next/font`. The 17 components are faithful ports.
+  - Brand and asset copies are checksum-tested against the supplied package.
+
+## 8. How to run
+
+```bash
+# API (Python 3.12)
+cd services/api && py -3.12 -m venv .venv && .venv/Scripts/python -m pip install -e ".[dev]"
+HALT_DB_URL="sqlite+pysqlite:///:memory:" .venv/Scripts/python -m uvicorn halt.main:create_app --factory --port 8000
+
+# Web (Node 22+), from the repo root
+npm install && npm run dev        # http://localhost:3000
+
+# Docker (not yet verified)
+docker compose up --build -d --wait
+```
+
+Presenter walkthrough: `docs/DEMO_SCRIPT.md`.
+
+## 9. Tests and generated files
+
+| Suite | Command | Status |
+|---|---|---|
+| API (AT-1 to AT-6) | `cd services/api && .venv/Scripts/python -m pytest` | 121 pass, 1 skipped (PostgreSQL) |
+| Web unit (AT-7, AT-8) | `npm test` | 67 pass |
+| E2E + axe (AT-8 to AT-10) | `npm run e2e -w @halt/web` (starts the API and a production build) | 25 pass |
+| Static | `npm run lint`, `npm run typecheck`, `ruff check`, `mypy` | clean |
+
+**Regenerate when contracts or data change** (CI fails on drift):
+
+| What changed | Command |
+|---|---|
+| Contracts (OpenAPI) | `python scripts/export_openapi.py` |
+| TypeScript types | `npm run gen:api` |
+| Recorded API fixtures | `python scripts/record_fixtures.py` |
+| Background events | `python -m halt.scenario.background` |
+| Design tokens | `npm run gen:tokens` |
+| Copied assets | `npm run copy:brand` |
+| R1 model | `python -m halt.r1.train_eval` |
+
+**Measured:**
+- SafeCut solve p95 ≈ 22 ms.
+- 3 futures × 6,000 rollouts ≈ 15 ms.
+- Landing LCP 140–560 ms across runs.
+- PR-AUC on held-out synthetic data: rules 0.916, logistic regression 0.9758, gradient boosting 0.9822. Logistic regression is selected.
+
+## 10. Rules to keep when continuing
+
+- **No fabricated numbers in the UI.** Every figure comes from an API response and shows its derivation. If the API is down, show an error, never placeholder numbers.
+- **Never hardcode the winning plan.** A test forbids candidate IDs (`C01`…) in application code. The variants must keep flipping the answer.
+- **Keep the language model out of decisions.** An optional LLM may only reword template explanations, and anything it returns with unknown IDs is rejected. Its adapter exists but is off, with no provider connected.
+- **Every action carries impact, reversibility and authorisation.** Nothing executes without the recorded human approvals and a sealed, fresh proof.
+- **Use deterministic seeds everywhere (2417).** Forecasts are labelled SIMULATED and expressed as counts, never bare probabilities.
+- **Follow the brand rules:**
+  - Ember means hostile only; Verdigris means business only; no third hue.
+  - No shields, glass or shadows.
+  - The business line is never broken, and attack lines are never thicker than 3px.
+  - Text must meet 4.5:1 contrast. Mark state by form (solid, dashed or dotted), never by dimming text.
+- **Never modify the vendored package or the legacy PNG.** `scripts/verify_repo.py` checks both.
+
+## 11. Pending work
+
+### A. Never run, but needed
+
+1. **Docker Compose stack (AT-0.4, AT-10.3).** Docker isn't installed on the development machine.
+   - The web image's run stage was checked by serving the standalone build with the same copy steps, and every asset returned 200.
+   - Still to do: install Docker, run `docker compose up --build -d --wait`, check `/api/v1/health` reports `db: ok` and `audit_enforcement: db`, and time a clean clone against the ≤ 10 min target.
+2. **PostgreSQL append-only triggers (AT-6.7).** The test is skipped locally. Run it with `HALT_TEST_PG_URL=postgresql+psycopg://…` or in CI.
+3. **GitHub Actions CI.** There is no remote. Create one and push to run the jobs: repo, api (with Postgres), web, contracts drift, e2e and compose.
+
+### B. Known gaps and limitations
+
+4. **No light-theme toggle.** The light tokens exist and pass axe, but the app is fixed to the dark theme.
+5. **Phone layout of the Command Center not visually checked.** The CSS breakpoints exist; desktop and tablet were checked.
+6. **The runtime lives in memory.** Artefacts and audit are written to the database, but the server does not rehydrate its runtime from the database after a restart; you have to reset the incident.
+7. **One incident only.** INC-2417 is hardcoded in the root layout and the page guard. Supporting more needs incident selection and per-incident providers.
+8. **Demo identity only.** `X-Halt-Actor` is not authentication: there is no RBAC and no login.
+9. **No language-model provider connected.** The adapter interface exists, so a Claude or other client could be added. The rule that output with unknown IDs is rejected must stay.
+10. **The `motion` animation library was not added.** The design doc planned it, and the ledger lists it as required, but animations are done with CSS and Cytoscape. Either add it for the motion spec (approach, cut 900 ms, proof 600 ms, approval) or update the ledger.
+11. **Motion spec only partly implemented.** The forecast "march", the business pulse and the CSS transitions are done. These are not:
+    - the animated cut, where a gap opens and the ring lands;
+    - the proof ring drawing clockwise;
+    - the cross-fade when switching futures.
+12. **Visual polish to do:**
+    - Graph node labels are small.
+    - The highlight for a proposed (not yet applied) cut is subtle.
+    - On the landing page, the 3D scene's business path crosses the hero text, and the scene's HTML labels can overlap the copy panels.
+13. **No business-dependency overlay toggle.** Dependencies are always drawn; the brief mentions an overlay.
+14. **U1 residual risk is an open product decision.** The plan leaves U1 open (502 of 6,000 rollouts reach the ledger). The proof states this. You could keep it as is, lower the threshold, or add a residual-reach constraint; the last two would change the plan.
+15. **Alembic migrations deferred.** The schema is created with `create_all`. Add Alembic before the first schema change.
+16. **Dev-only noise:** React StrictMode opens the replay WebSocket twice in dev (one "closed before established" warning), and uvicorn logs `ConnectionResetError` when sockets close during tests. Both are harmless.
+
+### C. Housekeeping
+
+17. **`apps/web/AGENTS.md`** is generated by `next dev` and uncommitted. Commit it, delete it, or add it to `.gitignore`.
+18. **`.claude/launch.json`** is a local dev-server config, uncommitted.
+19. **The project lives in OneDrive.** That makes npm installs (up to 6 minutes) and dev compiles slow; Next warns about a slow filesystem. Move the project to a local folder such as `C:\dev\halt`.
+20. **npm 12 is available.** It isn't needed; npm 11 works.
+
+### D. Natural next steps (suggested order)
+
+1. Push to GitHub; get CI green, including the Postgres and E2E jobs.
+2. Install Docker; verify the compose stack and AT-10.3.
+3. Decide on U1 (item 14).
+4. Motion polish (items 10–12) and the light-theme toggle (4).
+5. Server-side rehydration (6), then multiple incidents (7) and real authentication (8), if the project goes beyond the demo.
