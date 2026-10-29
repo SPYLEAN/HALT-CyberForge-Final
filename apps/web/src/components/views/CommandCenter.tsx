@@ -3,7 +3,7 @@
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 
-import { ActionGateDrawer } from "@/components/gate/ActionGateDrawer";
+import { ActionGateDrawer, OPERATOR_ID } from "@/components/gate/ActionGateDrawer";
 import { Skeleton, Toast } from "@/components/halt";
 import { CommandCenterShell } from "@/components/shell/CommandCenterShell";
 import { useOps } from "@/lib/api/ops";
@@ -46,6 +46,7 @@ function Workspace() {
   }, [state.view, params, router]);
 
   const openGate = () => setGateOpen(true);
+  const operator = ops.policySet?.approvers.find((a) => a.id === OPERATOR_ID);
   const views: Record<ViewId, React.ReactNode> = {
     overview: <OverviewView onOpenGate={openGate} />,
     graph: <ThreadGraphView />,
@@ -67,6 +68,7 @@ function Workspace() {
       end={ops.incident?.replay_end_s ?? 0}
       title={ops.incident?.title}
       apiStage={ops.incident?.state}
+      actor={operator ? `${operator.name} (${operator.roles.join(", ").replaceAll("_", " ")})` : undefined}
       evidence={evidence}
     >
       {ops.error ? (

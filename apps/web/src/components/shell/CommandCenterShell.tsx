@@ -23,17 +23,19 @@ export interface CommandCenterShellProps {
   title?: string;
   /** Incident state from the API, when loaded. */
   apiStage?: Stage | null;
+  /** Who executes and rolls back in this demo (a named persona, not authentication). */
+  actor?: string;
   evidence: EvidenceSection[];
   children: ReactNode;
 }
 
 /** Rail · top bar · workspace · evidence rail · replay timeline, all driven by the shared incident store. */
-export function CommandCenterShell({ t0, end, title, apiStage, evidence, children }: CommandCenterShellProps) {
+export function CommandCenterShell({ t0, end, title, apiStage, actor, evidence, children }: CommandCenterShellProps) {
   const { state, seek, play, pause, setView } = useIncident();
   return (
     <div className="cc-shell">
       <AppRail active={state.view} onSelect={setView} />
-      <TopBar incidentId={state.incidentId} title={title} stage={displayStage(state.stage, apiStage)} simulated={state.simulated} />
+      <TopBar incidentId={state.incidentId} title={title} stage={displayStage(state.stage, apiStage)} simulated={state.simulated} actor={actor} />
       {/* Focusable so keyboard users can scroll the workspace (axe scrollable-region-focusable). */}
       <main className="cc-main" id="workspace" tabIndex={0} aria-label="Workspace">
         {children}

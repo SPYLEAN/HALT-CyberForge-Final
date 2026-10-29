@@ -33,7 +33,11 @@ export function TopBar({ incidentId, title, stage, simulated, actor }: TopBarPro
           <StatusChip kind={kind}>{word}</StatusChip>
         </span>
         <SimulatedChip simulated={simulated} />
-        {actor ? <span className="label">Operator · {actor}</span> : null}
+        {actor ? (
+          <span className="label" title="Demo identity: the X-Halt-Actor header, not authentication">
+            Operator · {actor} · demo identity
+          </span>
+        ) : null}
       </div>
     </header>
   );

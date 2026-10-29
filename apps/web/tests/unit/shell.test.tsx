@@ -33,6 +33,11 @@ describe("top bar", () => {
     expect(screen.queryByTestId("simulated-chip")).toBeNull();
   });
 
+  it("names the operator persona as a demo identity", () => {
+    render(<TopBar incidentId="INC-2417" stage="new" simulated actor="A. Rahman (tier2 analyst)" />);
+    expect(screen.getByText(/Operator · A\. Rahman \(tier2 analyst\) · demo identity/)).toBeInTheDocument();
+  });
+
   it("uses the supplied horizontal lockup and names the stage in words", () => {
     render(<TopBar incidentId="INC-2417" stage="blocked_by_policy" simulated />);
     expect(screen.getByAltText("HALT")).toHaveAttribute("src", "/brand/halt-horizontal-bone.svg");
