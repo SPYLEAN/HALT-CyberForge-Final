@@ -42,6 +42,7 @@ DOCUMENTED = {
     ("get", "/incidents/{incident_id}/audit"),
     ("get", "/incidents/{incident_id}/audit/verify"),
     ("post", "/incidents/{incident_id}/replay/reset"),
+    ("get", "/incidents/{incident_id}/variants"),
     ("post", "/incidents/{incident_id}/explain"),
 }
 
@@ -216,6 +217,22 @@ def test_AT_6_1_error_codes(client: TestClient) -> None:
         headers=actor("x"),
     )
     assert r.status_code == 403
+
+
+def test_variants_listed_and_active_variant_follows_reset(client: TestClient) -> None:
+    import json
+
+    from halt.scenario.loader import DEFAULT_SCENARIO_DIR
+
+    fixture = json.loads((DEFAULT_SCENARIO_DIR / "variants.json").read_text(encoding="utf-8"))
+    listed = client.get(f"{I}/variants").json()
+    assert [v["key"] for v in listed["items"]] == [v["key"] for v in fixture]
+    assert [v["title"] for v in listed["items"]] == [v["title"] for v in fixture]
+    assert "ops" not in listed["items"][0]
+    assert listed["active"] == "baseline" and client.get(I).json()["variant"] == "baseline"
+    assert client.post(f"{I}/replay/reset", json={"variant": "approver_unavailable"}).status_code == 200
+    assert client.get(I).json()["variant"] == "approver_unavailable"
+    assert client.get(f"{I}/variants").json()["active"] == "approver_unavailable"
 
 
 def test_AT_6_4_every_response_is_simulated_with_seed(

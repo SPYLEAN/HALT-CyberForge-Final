@@ -1021,7 +1021,8 @@
      "state": "blocked_by_policy",
      "summary": "A consent-phishing message leads to a suspicious sign-in, an added authenticator, a malicious OAuth grant, replayed sessions and enumeration of the Finance-Close library. Synthetic scenario.",
      "t0": "2026-10-27T09:41:12Z",
-     "title": "OAuth consent phishing against Finance Ops"
+     "title": "OAuth consent phishing against Finance Ops",
+     "variant": "approver_unavailable"
     },
     "status": 200
    },
@@ -2512,6 +2513,53 @@
     },
     "status": 200
    },
+   "GET /api/v1/incidents/INC-2417/variants": {
+    "body": {
+     "active": "approver_unavailable",
+     "items": [
+      {
+       "description": "The scenario as described in docs/DEMO_SCENARIO.md.",
+       "key": "baseline",
+       "title": "Baseline"
+      },
+      {
+       "description": "Removes the runbook dependency, so disabling the account no longer stops Payment processing. The plan is expected to change.",
+       "key": "verma_not_releaser",
+       "title": "M. Verma is not the supplier-run releaser"
+      },
+      {
+       "description": "S. Iyer cannot approve and has no delegate, so the step-up cannot be authorised.",
+       "key": "approver_unavailable",
+       "title": "Finance Ops owner unavailable"
+      },
+      {
+       "description": "Step-up falls back to methods the attacker controls, so its cut becomes soft.",
+       "key": "no_phish_resistant_mfa",
+       "title": "Finance users lack phishing-resistant methods"
+      },
+      {
+       "description": "Guards against a plan that only wins because of the user limit.",
+       "key": "relaxed_users_250",
+       "title": "User-impact limit raised to 250"
+      }
+     ],
+     "meta": {
+      "generated_at": "2026-10-27T09:58:57Z",
+      "incident_id": "INC-2417",
+      "input_hashes": {
+       "actions": "4801e6cdc3ddf4e7aaa783cacb6d55bda3de3f0487364bfed5e0b6b78faad0fc",
+       "constraints": "13016acc0bb505e2e0e0fc80bdabf7a9e0ae62e5437c9e505152598631133fe7",
+       "events": "6139e6ddf6a5359a9e64a5394eefdbb7f3fe7935c472ea3270e3a6c1bf8ffc68",
+       "graph": "fe4dcf26cdf686f0a8b1c6918e89c7dabeebab5b86670e5f18363c717f8ffc6a",
+       "policies": "c4fd34bea5179bd436a2d72d86d53f8b20b80a839d88e2ad38b79a1ac55dd346"
+      },
+      "schema_version": "1.0",
+      "seed": 2417,
+      "simulated": true
+     }
+    },
+    "status": 200
+   },
    "GET /api/v1/plans/PLAN-b8f4c3db575e": {
     "body": {
      "constraints": [
@@ -2918,7 +2966,8 @@
      "state": "contained",
      "summary": "A consent-phishing message leads to a suspicious sign-in, an added authenticator, a malicious OAuth grant, replayed sessions and enumeration of the Finance-Close library. Synthetic scenario.",
      "t0": "2026-10-27T09:41:12Z",
-     "title": "OAuth consent phishing against Finance Ops"
+     "title": "OAuth consent phishing against Finance Ops",
+     "variant": "baseline"
     },
     "status": 200
    },
@@ -4366,6 +4415,53 @@
     },
     "status": 200
    },
+   "GET /api/v1/incidents/INC-2417/variants": {
+    "body": {
+     "active": "baseline",
+     "items": [
+      {
+       "description": "The scenario as described in docs/DEMO_SCENARIO.md.",
+       "key": "baseline",
+       "title": "Baseline"
+      },
+      {
+       "description": "Removes the runbook dependency, so disabling the account no longer stops Payment processing. The plan is expected to change.",
+       "key": "verma_not_releaser",
+       "title": "M. Verma is not the supplier-run releaser"
+      },
+      {
+       "description": "S. Iyer cannot approve and has no delegate, so the step-up cannot be authorised.",
+       "key": "approver_unavailable",
+       "title": "Finance Ops owner unavailable"
+      },
+      {
+       "description": "Step-up falls back to methods the attacker controls, so its cut becomes soft.",
+       "key": "no_phish_resistant_mfa",
+       "title": "Finance users lack phishing-resistant methods"
+      },
+      {
+       "description": "Guards against a plan that only wins because of the user limit.",
+       "key": "relaxed_users_250",
+       "title": "User-impact limit raised to 250"
+      }
+     ],
+     "meta": {
+      "generated_at": "2026-10-27T09:58:12Z",
+      "incident_id": "INC-2417",
+      "input_hashes": {
+       "actions": "4801e6cdc3ddf4e7aaa783cacb6d55bda3de3f0487364bfed5e0b6b78faad0fc",
+       "constraints": "13016acc0bb505e2e0e0fc80bdabf7a9e0ae62e5437c9e505152598631133fe7",
+       "events": "6139e6ddf6a5359a9e64a5394eefdbb7f3fe7935c472ea3270e3a6c1bf8ffc68",
+       "graph": "fe4dcf26cdf686f0a8b1c6918e89c7dabeebab5b86670e5f18363c717f8ffc6a",
+       "policies": "d36e570c27b1cf94583cb037bf7e1ba4f1efe3501b9a6554c52f6494683cf4a4"
+      },
+      "schema_version": "1.0",
+      "seed": 2417,
+      "simulated": true
+     }
+    },
+    "status": 200
+   },
    "GET /api/v1/plans/PLAN-10e634719283": {
     "body": {
      "constraints": [
@@ -5122,7 +5218,8 @@
      "state": "forecast_ready",
      "summary": "A consent-phishing message leads to a suspicious sign-in, an added authenticator, a malicious OAuth grant, replayed sessions and enumeration of the Finance-Close library. Synthetic scenario.",
      "t0": "2026-10-27T09:41:12Z",
-     "title": "OAuth consent phishing against Finance Ops"
+     "title": "OAuth consent phishing against Finance Ops",
+     "variant": "baseline"
     },
     "status": 200
    },
@@ -6432,6 +6529,53 @@
      ]
     },
     "status": 200
+   },
+   "GET /api/v1/incidents/INC-2417/variants": {
+    "body": {
+     "active": "baseline",
+     "items": [
+      {
+       "description": "The scenario as described in docs/DEMO_SCENARIO.md.",
+       "key": "baseline",
+       "title": "Baseline"
+      },
+      {
+       "description": "Removes the runbook dependency, so disabling the account no longer stops Payment processing. The plan is expected to change.",
+       "key": "verma_not_releaser",
+       "title": "M. Verma is not the supplier-run releaser"
+      },
+      {
+       "description": "S. Iyer cannot approve and has no delegate, so the step-up cannot be authorised.",
+       "key": "approver_unavailable",
+       "title": "Finance Ops owner unavailable"
+      },
+      {
+       "description": "Step-up falls back to methods the attacker controls, so its cut becomes soft.",
+       "key": "no_phish_resistant_mfa",
+       "title": "Finance users lack phishing-resistant methods"
+      },
+      {
+       "description": "Guards against a plan that only wins because of the user limit.",
+       "key": "relaxed_users_250",
+       "title": "User-impact limit raised to 250"
+      }
+     ],
+     "meta": {
+      "generated_at": "2026-10-27T09:56:42Z",
+      "incident_id": "INC-2417",
+      "input_hashes": {
+       "actions": "4801e6cdc3ddf4e7aaa783cacb6d55bda3de3f0487364bfed5e0b6b78faad0fc",
+       "constraints": "13016acc0bb505e2e0e0fc80bdabf7a9e0ae62e5437c9e505152598631133fe7",
+       "events": "6139e6ddf6a5359a9e64a5394eefdbb7f3fe7935c472ea3270e3a6c1bf8ffc68",
+       "graph": "fe4dcf26cdf686f0a8b1c6918e89c7dabeebab5b86670e5f18363c717f8ffc6a",
+       "policies": "d36e570c27b1cf94583cb037bf7e1ba4f1efe3501b9a6554c52f6494683cf4a4"
+      },
+      "schema_version": "1.0",
+      "seed": 2417,
+      "simulated": true
+     }
+    },
+    "status": 200
    }
   },
   "new": {
@@ -6472,7 +6616,8 @@
      "state": "new",
      "summary": "A consent-phishing message leads to a suspicious sign-in, an added authenticator, a malicious OAuth grant, replayed sessions and enumeration of the Finance-Close library. Synthetic scenario.",
      "t0": "2026-10-27T09:41:12Z",
-     "title": "OAuth consent phishing against Finance Ops"
+     "title": "OAuth consent phishing against Finance Ops",
+     "variant": "baseline"
     },
     "status": 200
    },
@@ -7354,6 +7499,53 @@
      ]
     },
     "status": 200
+   },
+   "GET /api/v1/incidents/INC-2417/variants": {
+    "body": {
+     "active": "baseline",
+     "items": [
+      {
+       "description": "The scenario as described in docs/DEMO_SCENARIO.md.",
+       "key": "baseline",
+       "title": "Baseline"
+      },
+      {
+       "description": "Removes the runbook dependency, so disabling the account no longer stops Payment processing. The plan is expected to change.",
+       "key": "verma_not_releaser",
+       "title": "M. Verma is not the supplier-run releaser"
+      },
+      {
+       "description": "S. Iyer cannot approve and has no delegate, so the step-up cannot be authorised.",
+       "key": "approver_unavailable",
+       "title": "Finance Ops owner unavailable"
+      },
+      {
+       "description": "Step-up falls back to methods the attacker controls, so its cut becomes soft.",
+       "key": "no_phish_resistant_mfa",
+       "title": "Finance users lack phishing-resistant methods"
+      },
+      {
+       "description": "Guards against a plan that only wins because of the user limit.",
+       "key": "relaxed_users_250",
+       "title": "User-impact limit raised to 250"
+      }
+     ],
+     "meta": {
+      "generated_at": "2026-10-27T09:56:27Z",
+      "incident_id": "INC-2417",
+      "input_hashes": {
+       "actions": "4801e6cdc3ddf4e7aaa783cacb6d55bda3de3f0487364bfed5e0b6b78faad0fc",
+       "constraints": "13016acc0bb505e2e0e0fc80bdabf7a9e0ae62e5437c9e505152598631133fe7",
+       "events": "6139e6ddf6a5359a9e64a5394eefdbb7f3fe7935c472ea3270e3a6c1bf8ffc68",
+       "graph": "fe4dcf26cdf686f0a8b1c6918e89c7dabeebab5b86670e5f18363c717f8ffc6a",
+       "policies": "d36e570c27b1cf94583cb037bf7e1ba4f1efe3501b9a6554c52f6494683cf4a4"
+      },
+      "schema_version": "1.0",
+      "seed": 2417,
+      "simulated": true
+     }
+    },
+    "status": 200
    }
   },
   "sealed": {
@@ -7406,7 +7598,8 @@
      "state": "approval_pending",
      "summary": "A consent-phishing message leads to a suspicious sign-in, an added authenticator, a malicious OAuth grant, replayed sessions and enumeration of the Finance-Close library. Synthetic scenario.",
      "t0": "2026-10-27T09:41:12Z",
-     "title": "OAuth consent phishing against Finance Ops"
+     "title": "OAuth consent phishing against Finance Ops",
+     "variant": "baseline"
     },
     "status": 200
    },
@@ -8755,6 +8948,53 @@
        "window": null
       }
      ]
+    },
+    "status": 200
+   },
+   "GET /api/v1/incidents/INC-2417/variants": {
+    "body": {
+     "active": "baseline",
+     "items": [
+      {
+       "description": "The scenario as described in docs/DEMO_SCENARIO.md.",
+       "key": "baseline",
+       "title": "Baseline"
+      },
+      {
+       "description": "Removes the runbook dependency, so disabling the account no longer stops Payment processing. The plan is expected to change.",
+       "key": "verma_not_releaser",
+       "title": "M. Verma is not the supplier-run releaser"
+      },
+      {
+       "description": "S. Iyer cannot approve and has no delegate, so the step-up cannot be authorised.",
+       "key": "approver_unavailable",
+       "title": "Finance Ops owner unavailable"
+      },
+      {
+       "description": "Step-up falls back to methods the attacker controls, so its cut becomes soft.",
+       "key": "no_phish_resistant_mfa",
+       "title": "Finance users lack phishing-resistant methods"
+      },
+      {
+       "description": "Guards against a plan that only wins because of the user limit.",
+       "key": "relaxed_users_250",
+       "title": "User-impact limit raised to 250"
+      }
+     ],
+     "meta": {
+      "generated_at": "2026-10-27T09:57:27Z",
+      "incident_id": "INC-2417",
+      "input_hashes": {
+       "actions": "4801e6cdc3ddf4e7aaa783cacb6d55bda3de3f0487364bfed5e0b6b78faad0fc",
+       "constraints": "13016acc0bb505e2e0e0fc80bdabf7a9e0ae62e5437c9e505152598631133fe7",
+       "events": "6139e6ddf6a5359a9e64a5394eefdbb7f3fe7935c472ea3270e3a6c1bf8ffc68",
+       "graph": "fe4dcf26cdf686f0a8b1c6918e89c7dabeebab5b86670e5f18363c717f8ffc6a",
+       "policies": "d36e570c27b1cf94583cb037bf7e1ba4f1efe3501b9a6554c52f6494683cf4a4"
+      },
+      "schema_version": "1.0",
+      "seed": 2417,
+      "simulated": true
+     }
     },
     "status": 200
    },

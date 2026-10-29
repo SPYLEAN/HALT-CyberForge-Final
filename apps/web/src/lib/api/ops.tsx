@@ -20,6 +20,7 @@ import type {
 import type { components } from "./schema";
 
 type PolicySet = components["schemas"]["PolicySet"];
+type VariantList = components["schemas"]["VariantList"];
 type ProofVerify = components["schemas"]["ProofVerify"];
 type ExplainResult = components["schemas"]["ExplainResult"];
 
@@ -30,6 +31,7 @@ type ExplainResult = components["schemas"]["ExplainResult"];
 export interface OpsState {
   incident: Incident | null;
   policySet: PolicySet | null;
+  variants: VariantList | null;
   actions: ResponseAction[];
   findings: Finding[];
   paths: AttackPath[];
@@ -63,6 +65,7 @@ export interface OpsApi extends OpsState {
 const EMPTY: OpsState = {
   incident: null,
   policySet: null,
+  variants: null,
   actions: [],
   findings: [],
   paths: [],
@@ -103,10 +106,11 @@ export function OpsProvider({ incidentId, children }: { incidentId: string; chil
   const loadAudit = useCallback(async () => unwrap(await api.GET("/api/v1/incidents/{incident_id}/audit", path)).items, [path]);
 
   const fetchBase = useCallback(async (): Promise<Partial<OpsState>> => {
-    const [incident, policySet, actions] = await Promise.all([
+    const [incident, policySet, actions, variants] = await Promise.all([
       api.GET("/api/v1/incidents/{incident_id}", path).then(unwrap),
       api.GET("/api/v1/incidents/{incident_id}/policies", path).then(unwrap),
       api.GET("/api/v1/incidents/{incident_id}/actions", path).then(unwrap),
+      api.GET("/api/v1/incidents/{incident_id}/variants", path).then(unwrap),
     ]);
     dispatch({ type: "simulated", value: incident.meta.simulated });
     // Rehydrate whatever the incident already has, so a reload or a hand-off resumes the same state.
@@ -131,6 +135,7 @@ export function OpsProvider({ incidentId, children }: { incidentId: string; chil
       outstandingRoles: approvals?.outstanding_roles ?? null,
       incident,
       policySet,
+      variants,
       actions: actions.items,
       findings: findings.items,
       paths: paths?.items ?? [],

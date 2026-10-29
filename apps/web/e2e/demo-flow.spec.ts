@@ -74,6 +74,9 @@ test("AT-10.4 the approver-unavailable variant is blocked by policy with no exec
   await page.getByLabel("Variant", { exact: true }).selectOption("approver_unavailable");
   await page.getByRole("button", { name: /RESET INCIDENT/ }).click();
   await expect(page.getByText("UNAVAILABLE", { exact: true })).toBeVisible(); // S. Iyer, reloaded with the variant
+  // A reload shows the variant the API is running, not a default.
+  await page.reload();
+  await expect(page.getByLabel("Variant", { exact: true })).toHaveValue("approver_unavailable");
 
   await page.getByRole("link", { name: /Incident Overview/ }).click();
   await page.getByRole("button", { name: /CORRELATE WITH HALT-R1/ }).click();

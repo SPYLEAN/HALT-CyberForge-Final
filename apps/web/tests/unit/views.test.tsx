@@ -123,6 +123,17 @@ describe("AT-8.1 views render recorded API data", () => {
     expect(screen.getByText("UNAVAILABLE")).toBeInTheDocument(); // S. Iyer in this variant
   });
 
+  it("Policies shows the variants and the running one from the API", async () => {
+    const responses = useStage("blocked");
+    const listed = responses["GET /api/v1/incidents/INC-2417/variants"]!.body as { items: Array<{ key: string; title: string }>; active: string };
+    render(<Providers view="policies"><PoliciesView /></Providers>);
+    const select = (await screen.findByLabelText("Variant")) as HTMLSelectElement;
+    await waitFor(() => expect(select.value).toBe("approver_unavailable"));
+    expect(listed.active).toBe("approver_unavailable");
+    expect(Array.from(select.options).map((o) => o.value)).toEqual(listed.items.map((v) => v.key));
+    expect(screen.getByRole("option", { name: /\(running\)/ })).toHaveValue("approver_unavailable");
+  });
+
   it("Policies says 'Every action' only when a policy covers the whole catalogue", async () => {
     useStage("blocked");
     const recordedFetch = globalThis.fetch;

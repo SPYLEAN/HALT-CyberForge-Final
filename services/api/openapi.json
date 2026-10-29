@@ -1965,6 +1965,10 @@
           "title": {
             "title": "Title",
             "type": "string"
+          },
+          "variant": {
+            "title": "Variant",
+            "type": "string"
           }
         },
         "required": [
@@ -1977,6 +1981,7 @@
           "confidence",
           "replay_end_s",
           "latest",
+          "variant",
           "meta"
         ],
         "title": "Incident",
@@ -3692,6 +3697,57 @@
         ],
         "title": "ValidationError",
         "type": "object"
+      },
+      "VariantInfo": {
+        "additionalProperties": false,
+        "description": "A demo scenario variant: one changed input that shows the plan is derived, not scripted.",
+        "properties": {
+          "description": {
+            "title": "Description",
+            "type": "string"
+          },
+          "key": {
+            "title": "Key",
+            "type": "string"
+          },
+          "title": {
+            "title": "Title",
+            "type": "string"
+          }
+        },
+        "required": [
+          "key",
+          "title",
+          "description"
+        ],
+        "title": "VariantInfo",
+        "type": "object"
+      },
+      "VariantList": {
+        "additionalProperties": false,
+        "properties": {
+          "active": {
+            "title": "Active",
+            "type": "string"
+          },
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/VariantInfo"
+            },
+            "title": "Items",
+            "type": "array"
+          },
+          "meta": {
+            "$ref": "#/components/schemas/Meta"
+          }
+        },
+        "required": [
+          "items",
+          "active",
+          "meta"
+        ],
+        "title": "VariantList",
+        "type": "object"
       }
     }
   },
@@ -4471,6 +4527,45 @@
           }
         },
         "summary": "Create Simulation"
+      }
+    },
+    "/api/v1/incidents/{incident_id}/variants": {
+      "get": {
+        "operationId": "variants_api_v1_incidents__incident_id__variants_get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "incident_id",
+            "required": true,
+            "schema": {
+              "title": "Incident Id",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/VariantList"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Variants"
       }
     },
     "/api/v1/plans/{plan_id}": {

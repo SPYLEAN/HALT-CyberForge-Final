@@ -48,7 +48,7 @@ def normalise(value: Any) -> Any:
 
 def snapshot(client: TestClient, extra: list[str]) -> dict[str, Any]:
     """GET everything the Command Center loads, plus the stage's artefacts."""
-    paths = [I, f"{I}/policies", f"{I}/actions", f"{I}/audit", f"{I}/findings", *extra]
+    paths = [I, f"{I}/policies", f"{I}/actions", f"{I}/audit", f"{I}/findings", f"{I}/variants", *extra]
     out: dict[str, Any] = {}
     for p in paths:
         r = client.get(p)

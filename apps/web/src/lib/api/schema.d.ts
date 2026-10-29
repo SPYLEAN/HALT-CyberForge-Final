@@ -310,6 +310,23 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/v1/incidents/{incident_id}/variants": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Variants */
+        get: operations["variants_api_v1_incidents__incident_id__variants_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/v1/plans/{plan_id}": {
         parameters: {
             query?: never;
@@ -1108,6 +1125,8 @@ export interface components {
             t0: string;
             /** Title */
             title: string;
+            /** Variant */
+            variant: string;
         };
         /** IncidentList */
         IncidentList: {
@@ -1741,6 +1760,26 @@ export interface components {
             /** Error Type */
             type: string;
         };
+        /**
+         * VariantInfo
+         * @description A demo scenario variant: one changed input that shows the plan is derived, not scripted.
+         */
+        VariantInfo: {
+            /** Description */
+            description: string;
+            /** Key */
+            key: string;
+            /** Title */
+            title: string;
+        };
+        /** VariantList */
+        VariantList: {
+            /** Active */
+            active: string;
+            /** Items */
+            items: components["schemas"]["VariantInfo"][];
+            meta: components["schemas"]["Meta"];
+        };
     };
     responses: never;
     parameters: never;
@@ -2301,6 +2340,37 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["SimulationRun"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    variants_api_v1_incidents__incident_id__variants_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                incident_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["VariantList"];
                 };
             };
             /** @description Validation Error */

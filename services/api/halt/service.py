@@ -174,6 +174,7 @@ class IncidentService:
             confidence=self.confidence(rt),
             replay_end_s=end_t(rt.scenario),
             latest=self.latest(rt),
+            variant=rt.scenario.variant,
             meta=self.meta(rt),
         )
 

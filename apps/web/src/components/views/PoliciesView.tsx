@@ -9,18 +9,14 @@ import { useIncident } from "@/lib/state/incident-store";
 import { Panel, ViewHeader } from "./common";
 import { GraphPanel } from "./GraphPanel";
 
-const VARIANTS = [
-  ["baseline", "Baseline"],
-  ["verma_not_releaser", "M. Verma is not the supplier-run releaser"],
-  ["approver_unavailable", "Finance Ops owner unavailable"],
-  ["no_phish_resistant_mfa", "No phishing-resistant MFA"],
-  ["relaxed_users_250", "User-impact limit 250"],
-] as const;
-
 function VariantSwitcher() {
   const ops = useOps();
   const { state, seek } = useIncident();
-  const [variant, setVariant] = useState<string>("baseline");
+  // The variant list and the active variant both come from the API, so a reload shows what is really running.
+  const active = ops.variants?.active ?? null;
+  const [picked, setPicked] = useState<string | null>(null); // the operator's pending choice, if any
+  const variant = picked ?? active;
+  const chosen = ops.variants?.items.find((v) => v.key === variant);
   return (
     <Panel title="Demo variant" chip={<StatusChip kind="simulated">DEMO ONLY</StatusChip>}>
       <p className="evidence-text" style={{ marginTop: 0 }}>
@@ -32,28 +28,42 @@ function VariantSwitcher() {
         </label>
         <select
           id="variant"
-          value={variant}
-          onChange={(e) => setVariant(e.target.value)}
+          value={variant ?? ""}
+          disabled={!ops.variants}
+          onChange={(e) => setPicked(e.target.value)}
           className="body"
           style={{ minHeight: "var(--hit-target)", background: "var(--surface)", color: "var(--text)", border: "var(--border-hairline) solid var(--border-strong)", borderRadius: "var(--radius-md)", padding: "0 var(--space-3)" }}
         >
-          {VARIANTS.map(([key, label]) => (
-            <option key={key} value={key}>
-              {label}
+          {ops.variants?.items.map((v) => (
+            <option key={v.key} value={v.key}>
+              {v.title}
+              {v.key === active ? " (running)" : ""}
             </option>
           ))}
         </select>
-        <Button
-          variant="secondary"
-          onClick={async () => {
-            await ops.reset(variant);
-            seek(state.cursor); // a variant can change the graph: rebuild the replayed state
-          }}
-          trailing="↺"
-        >
-          RESET INCIDENT
-        </Button>
+        {variant ? (
+          <Button
+            variant="secondary"
+            onClick={async () => {
+              await ops.reset(variant);
+              setPicked(null); // the API now reports this variant as active
+              seek(state.cursor); // a variant can change the graph: rebuild the replayed state
+            }}
+            trailing="↺"
+          >
+            RESET INCIDENT
+          </Button>
+        ) : (
+          <Button variant="secondary" disabled reason="Waiting for the variant list from the API." trailing="↺">
+            RESET INCIDENT
+          </Button>
+        )}
       </div>
+      {chosen ? (
+        <p className="evidence-text" style={{ color: "var(--text-secondary)" }}>
+          {chosen.description}
+        </p>
+      ) : null}
     </Panel>
   );
 }

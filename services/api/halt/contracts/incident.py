@@ -73,4 +73,5 @@ class Incident(Contract):
     confidence: Derivation | None
     replay_end_s: float  # last timeline message (replay seconds); the scrubber's range
     latest: LatestArtefacts
+    variant: str  # active demo variant key (scenario variants.json); "baseline" unless reset to another
     meta: Meta

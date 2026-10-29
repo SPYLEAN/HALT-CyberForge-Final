@@ -26,6 +26,8 @@ from halt.contracts.api import (
     PolicySet,
     ProofVerify,
     ResetRequest,
+    VariantInfo,
+    VariantList,
 )
 from halt.contracts.common import Meta
 from halt.contracts.graph import GraphSnapshot
@@ -140,6 +142,18 @@ def policies(request: Request, incident_id: str) -> PolicySet:
     s = rt.scenario
     return PolicySet(
         policies=s.policies, approvers=s.approvers, constraints=s.constraints, meta=service.meta(rt)
+    )
+
+
+@router.get("/incidents/{incident_id}/variants", response_model=VariantList)
+def variants(request: Request, incident_id: str) -> VariantList:
+    service = svc(request)
+    rt = service.runtime(incident_id)
+    s = rt.scenario
+    return VariantList(
+        items=[VariantInfo(key=v.key, title=v.title, description=v.description) for v in s.variants],
+        active=s.variant,
+        meta=service.meta(rt),
     )
 
 

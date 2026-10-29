@@ -86,6 +86,20 @@ class PolicySet(Contract):
     meta: Meta
 
 
+class VariantInfo(Contract):
+    """A demo scenario variant: one changed input that shows the plan is derived, not scripted."""
+
+    key: str
+    title: str
+    description: str
+
+
+class VariantList(Contract):
+    items: list[VariantInfo]
+    active: str
+    meta: Meta
+
+
 class ApprovalResult(Contract):
     approval: Approval
     outstanding_roles: list[str]
