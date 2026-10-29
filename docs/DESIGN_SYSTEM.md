@@ -89,7 +89,19 @@ Layout uses `preset` coordinates from `GraphNode.layout`; no force layout (deter
 
 ## 6. Motion
 
-Durations and easings come from `tokens.ts` (`duration-approach` 2200, `-evidence` 240, `-expand` 480/60 stagger, `-cut` 900, `-proof` 600, `-switch` 360, `-approval` 240, `-march` 1800, `-pulse` 3000, `-loop` 8000). Every animation is authored from-state → end-state; `prefers-reduced-motion` and the in-app motion toggle render end states. The cut never animates before the Gate reports `applied`.
+Durations and easings come from `tokens.ts` (`duration-approach` 2200, `-evidence` 240, `-expand` 480/60 stagger, `-cut` 900, `-proof` 600, `-switch` 360, `-approval` 240, `-march` 1800, `-pulse` 3000, `-loop` 8000). Every animation is authored from-state → end-state, and `prefers-reduced-motion` renders end states (there is no in-app motion toggle). The cut never animates before the Gate reports `applied`.
+
+| Motion (4-motion.md) | Where | Status |
+|---|---|---|
+| Path interruption | `ThreadGraphCanvas.tsx`: the gap disc scales open (`-cut`, `ease-cut`); downstream held edges fade from Ember to the 30 % held tone | Implemented |
+| Proof verification | `globals.css` `.proof-ring-enter`: Bone ring draws clockwise from 12 o'clock (`-proof`), Verdigris core lands 420 ms in | Implemented |
+| Simulation switching | Graph mode tabs cross-fade the hostile layer (`-switch`, `ease-standard`); the business thread (SVG overlay) never restarts | Implemented (futures A/B/C sit side by side, so the cross-fade is on the graph modes) |
+| Forecast march, business pulse | Cytoscape dash offset; `.halt-edge-pulse` | Implemented |
+| Rollback (gap closes) | — | Not implemented: rings are removed in one step |
+| Human approval | `.halt-approval-approved` turns the border Verdigris | Partly: no left-to-right tint fill |
+| Threat propagation, graph expansion | — | Not implemented |
+
+A cut animates once per session: `animatedCuts` stops a view switch from replaying it. Canvas animations end on a timer as well as on animation frames, so a hidden tab (no frames) still settles on the end state.
 
 ## 7. Layout
 

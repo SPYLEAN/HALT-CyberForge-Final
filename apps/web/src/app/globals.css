@@ -218,3 +218,44 @@ body {
     padding: var(--space-4);
   }
 }
+
+/* Path interruption and proof verification (4-motion.md), authored onto the end state. The ring's
+   stroke always starts at 12 o'clock so it draws clockwise; reduced motion shows the finished ring. */
+.proof-ring .ring-stroke,
+.proof-ring .ring-gap,
+.proof-ring .ring-core {
+  transform-box: fill-box;
+  transform-origin: center;
+}
+.proof-ring .ring-stroke {
+  transform: rotate(-90deg);
+  stroke-dasharray: 1;
+}
+.proof-ring-enter .ring-gap {
+  animation: halt-gap-open var(--duration-cut) var(--ease-cut) both;
+}
+.proof-ring-enter .ring-stroke {
+  animation: halt-ring-draw var(--duration-proof) var(--ease-out) 300ms both;
+}
+.proof-ring-enter .ring-core {
+  animation: halt-core-in var(--duration-fast) var(--ease-out) 720ms both; /* centre lands 420 ms into the proof */
+}
+@keyframes halt-gap-open {
+  from { transform: scale(0); }
+  to { transform: scale(1); }
+}
+@keyframes halt-ring-draw {
+  from { stroke-dashoffset: 1; }
+  to { stroke-dashoffset: 0; }
+}
+@keyframes halt-core-in {
+  from { transform: scale(0); }
+  to { transform: scale(1); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .proof-ring-enter .ring-gap,
+  .proof-ring-enter .ring-stroke,
+  .proof-ring-enter .ring-core {
+    animation: none !important;
+  }
+}

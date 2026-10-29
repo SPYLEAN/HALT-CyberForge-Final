@@ -34,6 +34,7 @@ export interface GraphModel {
   rings: RingPlacement[];
   threadEdgeIds: string[];
   applied: boolean;
+  mode: GraphMode;
   summary: string;
 }
 
@@ -144,5 +145,5 @@ export function buildModel(input: GraphInput): GraphModel {
         ? `${high.length} high-risk paths toward ${high[0]!.target_id}; business thread running.`
         : `${nodes.length} entities observed so far; no forecast yet.`;
 
-  return { elements, rings, threadEdgeIds, applied, summary };
+  return { elements, rings, threadEdgeIds, applied, mode: input.mode, summary };
 }

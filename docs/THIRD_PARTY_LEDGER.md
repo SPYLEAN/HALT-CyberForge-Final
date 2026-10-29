@@ -57,7 +57,7 @@ npm 11 blocked the `unrs-resolver` postinstall script (used by ESLint import res
 | react, react-dom | UI | MIT | Required (version set by Next major) |
 | typescript | Types | Apache-2.0 | Required |
 | tailwindcss (+ postcss, autoprefixer) | Styling mapped to tokens | MIT | Required |
-| motion | Animation | MIT | Required |
+| ~~motion~~ | Animation | MIT | **Not used.** CSS keyframes (overlay, chips, pulse) and Cytoscape `animate` cover the motion spec without an extra dependency (FINALIZATION_AUDIT F-13) |
 | cytoscape (+ @types/cytoscape) | Graph rendering | MIT | Required |
 | three@0.128.0 | Supplied 3D scene (r128 API) | MIT | Required for landing hero only |
 | openapi-typescript, openapi-fetch | Generated types + typed client | MIT | Required |

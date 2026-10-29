@@ -1,10 +1,12 @@
 "use client";
 
-import cytoscape, { type Core, type ElementDefinition } from "cytoscape";
+import cytoscape, { type Core, type EdgeCollection, type EdgeSingular, type ElementDefinition } from "cytoscape";
 import { useEffect, useRef, useState } from "react";
 
-import { stylesheet } from "./cy-style";
-import type { GraphModel } from "./model";
+import { color, duration, easing } from "@/styles/tokens";
+
+import { canvasColor, stylesheet } from "./cy-style";
+import type { GraphModel, GraphMode } from "./model";
 
 interface Point {
   x: number;
@@ -17,6 +19,29 @@ interface OverlayGeometry {
 
 const EMPTY: OverlayGeometry = { thread: [], rings: [] };
 const MARCH_MS = 100;
+
+const bezier = (e: readonly number[]) => `cubic-bezier(${e.join(", ")})` as never; // Cytoscape's typings omit cubic-bezier()
+
+/**
+ * Animate from a bypass style onto the stylesheet's end state. Cytoscape steps animations on animation
+ * frames, which a hidden or background tab never delivers; the timer guarantees the end state anyway, so a
+ * stalled animation can never leave an edge invisible.
+ */
+function settleInto(cy: Core, eles: EdgeCollection, props: string, animate: (e: EdgeSingular) => void, ms: number): void {
+  eles.forEach(animate);
+  window.setTimeout(() => {
+    if (cy.destroyed()) return;
+    eles.stop(true, false); // a stalled animation must not resume later and re-apply its bypass
+    eles.removeStyle(props);
+  }, ms + 120);
+}
+const reducedMotion = () => typeof window !== "undefined" && Boolean(window.matchMedia?.("(prefers-reduced-motion: reduce)").matches);
+
+/**
+ * Cuts already shown animating in this session (edge ids and ring ids). Every view mounts its own canvas, so
+ * without this a view switch would replay the cut; ids leave the set when the cut is rolled back.
+ */
+const animatedCuts = new Set<string>();
 
 function geometry(cy: Core, model: GraphModel): OverlayGeometry {
   const thread = model.threadEdgeIds.flatMap((id) => {
@@ -50,7 +75,9 @@ export function ThreadGraphCanvas({
   const container = useRef<HTMLDivElement>(null);
   const cyRef = useRef<Core | null>(null);
   const modelRef = useRef(model);
+  const modeRef = useRef<GraphMode | null>(null);
   const [overlay, setOverlay] = useState<OverlayGeometry>(EMPTY);
+  const [enteringRings, setEnteringRings] = useState<ReadonlySet<string>>(new Set());
 
   useEffect(() => {
     modelRef.current = model;
@@ -109,6 +136,46 @@ export function ThreadGraphCanvas({
     });
     cy.fit(undefined, 36);
     setOverlay(geometry(cy, model));
+
+    // Motion (4-motion.md). Each animation runs from a bypass style onto the stylesheet's end state, then
+    // removes the bypass, so reduced motion (no animation) shows exactly the same final graph.
+    const reduced = reducedMotion();
+    const held = cy.edges(".held");
+    const ringIds = model.rings.map((r) => `${r.pathId}:${r.edgeId}`);
+    const current = new Set([...held.map((e) => e.id()), ...ringIds]);
+    for (const id of [...animatedCuts]) if (!current.has(id)) animatedCuts.delete(id); // rolled back
+    const fresh = new Set(ringIds.filter((id) => !animatedCuts.has(id)));
+    if (!reduced) {
+      // Path interruption: the downstream of each new cut drops from full Ember to its held 30 %.
+      // threat-held is Ember at 30 % alpha: start from opaque Ember and fade the line to the same 30 %.
+      settleInto(
+        cy,
+        held.filter((e) => !animatedCuts.has(e.id())),
+        "line-color line-opacity",
+        (e) => {
+          e.style({ "line-color": canvasColor(color.dark["threat-observed"]), "line-opacity": 1 });
+          e.animate({ style: { "line-opacity": 0.3 } }, { duration: duration.cut, easing: bezier(easing.cut) });
+        },
+        duration.cut,
+      );
+      // Simulation switching: the hostile layer cross-fades; the business thread (SVG overlay) never restarts.
+      if (modeRef.current && modeRef.current !== model.mode) {
+        settleInto(
+          cy,
+          cy.edges(".hostile"),
+          "opacity",
+          (e) => {
+            const end = e.numericStyle("opacity");
+            e.style("opacity", 0);
+            e.animate({ style: { opacity: end } }, { duration: duration.switch, easing: bezier(easing.standard) });
+          },
+          duration.switch,
+        );
+      }
+    }
+    for (const id of current) animatedCuts.add(id);
+    modeRef.current = model.mode;
+    setEnteringRings(reduced ? new Set() : fresh);
   }, [model]);
 
   return (
@@ -124,9 +191,11 @@ export function ThreadGraphCanvas({
           </g>
         ))}
         {overlay.rings.map((r) => (
-          <g key={r.id} data-proof-ring={r.id} className="proof-ring">
-            <circle cx={r.at.x} cy={r.at.y} r={10} fill="var(--bg)" stroke="var(--proof-ring)" strokeWidth={3} />
-            <circle cx={r.at.x} cy={r.at.y} r={3.5} fill="var(--proof-core)" />
+          <g key={r.id} data-proof-ring={r.id} className={enteringRings.has(r.id) ? "proof-ring proof-ring-enter" : "proof-ring"}>
+            {/* The gap opens, the Bone ring draws clockwise from 12 o'clock, the Verdigris core lands last. */}
+            <circle className="ring-gap" cx={r.at.x} cy={r.at.y} r={11.5} fill="var(--bg)" />
+            <circle className="ring-stroke" cx={r.at.x} cy={r.at.y} r={10} fill="none" stroke="var(--proof-ring)" strokeWidth={3} pathLength={1} />
+            <circle className="ring-core" cx={r.at.x} cy={r.at.y} r={3.5} fill="var(--proof-core)" />
           </g>
         ))}
       </svg>

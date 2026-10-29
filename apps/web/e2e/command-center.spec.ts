@@ -1,7 +1,7 @@
 // AT-8.1 (real API), AT-8.4, AT-8.7: the operator flow end to end in the Command Center.
 import { expect, test } from "@playwright/test";
 
-import { INCIDENT, collectConsoleErrors, resetIncident, seekTo } from "./support";
+import { API, INCIDENT, approveThroughApi, collectConsoleErrors, resetIncident, sealThroughApi, seekTo } from "./support";
 
 const topBar = (page: import("@playwright/test").Page) => page.getByRole("banner", { name: "Incident" });
 
@@ -66,4 +66,25 @@ test("AT-8.7 seeking the replay shows the same graph as GET /graph?at=t", async 
     const expected = (rest.nodes as Array<{ id: string }>).map((n) => n.id).sort().join(" ");
     await expect(page.getByTestId("threadgraph")).toHaveAttribute("data-node-ids", expected);
   }
+});
+
+test("the cut renders in its final state under reduced motion (FINALIZATION_AUDIT F-14)", async ({ page, request }) => {
+  await resetIncident(request);
+  const planId = await sealThroughApi(request);
+  await approveThroughApi(request, planId);
+  const proof = (await (await request.get(INCIDENT)).json()).latest.proof_id as string;
+  expect((await request.post(`${API}/plans/${planId}/execute`, { data: { proof_id: proof }, headers: { "X-Halt-Actor": "a_rahman" } })).ok()).toBe(true);
+
+  await page.emulateMedia({ reducedMotion: "reduce" });
+  await page.goto("/incidents/INC-2417?view=graph");
+  const rings = page.locator("[data-proof-ring]");
+  await expect(rings).toHaveCount(6);
+  const states = await rings.evaluateAll((gs) =>
+    gs.map((g) => ({
+      running: g.getAnimations({ subtree: true }).length,
+      dash: getComputedStyle(g.querySelector(".ring-stroke")!).strokeDashoffset,
+      core: getComputedStyle(g.querySelector(".ring-core")!).transform,
+    })),
+  );
+  expect(states.every((s) => s.running === 0 && s.dash === "0px" && (s.core === "none" || s.core === "matrix(1, 0, 0, 1, 0, 0)"))).toBe(true);
 });
