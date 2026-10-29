@@ -1017,6 +1017,7 @@
       "soft_cut_evasion_p": 0.6,
       "target_id": "db.finance_ledger"
      },
+     "replay_cursor_s": null,
      "replay_end_s": 666.0,
      "state": "blocked_by_policy",
      "summary": "A consent-phishing message leads to a suspicious sign-in, an added authenticator, a malicious OAuth grant, replayed sessions and enumeration of the Finance-Close library. Synthetic scenario.",
@@ -2962,6 +2963,7 @@
       "soft_cut_evasion_p": 0.6,
       "target_id": "db.finance_ledger"
      },
+     "replay_cursor_s": null,
      "replay_end_s": 666.0,
      "state": "contained",
      "summary": "A consent-phishing message leads to a suspicious sign-in, an added authenticator, a malicious OAuth grant, replayed sessions and enumeration of the Finance-Close library. Synthetic scenario.",
@@ -5214,6 +5216,7 @@
       "soft_cut_evasion_p": 0.6,
       "target_id": "db.finance_ledger"
      },
+     "replay_cursor_s": null,
      "replay_end_s": 666.0,
      "state": "forecast_ready",
      "summary": "A consent-phishing message leads to a suspicious sign-in, an added authenticator, a malicious OAuth grant, replayed sessions and enumeration of the Finance-Close library. Synthetic scenario.",
@@ -6612,6 +6615,7 @@
       "soft_cut_evasion_p": 0.6,
       "target_id": "db.finance_ledger"
      },
+     "replay_cursor_s": null,
      "replay_end_s": 666.0,
      "state": "new",
      "summary": "A consent-phishing message leads to a suspicious sign-in, an added authenticator, a malicious OAuth grant, replayed sessions and enumeration of the Finance-Close library. Synthetic scenario.",
@@ -7594,6 +7598,7 @@
       "soft_cut_evasion_p": 0.6,
       "target_id": "db.finance_ledger"
      },
+     "replay_cursor_s": null,
      "replay_end_s": 666.0,
      "state": "approval_pending",
      "summary": "A consent-phishing message leads to a suspicious sign-in, an added authenticator, a malicious OAuth grant, replayed sessions and enumeration of the Finance-Close library. Synthetic scenario.",

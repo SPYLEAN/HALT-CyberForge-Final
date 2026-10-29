@@ -9,11 +9,17 @@
     "node": ">=22"
   },
   "scripts": {
-    "dev": "npm run dev -w @halt/web",
+    "setup": "node scripts/halt.mjs setup",
+    "dev": "node scripts/halt.mjs dev",
+    "dev:web": "npm run dev -w @halt/web",
+    "demo": "node scripts/halt.mjs demo",
+    "demo:reset": "node scripts/halt.mjs reset",
     "build": "npm run build -w @halt/web",
+    "check": "node scripts/halt.mjs check",
     "lint": "npm run lint -w @halt/web",
     "typecheck": "npm run typecheck -w @halt/web",
     "test": "npm run test -w @halt/web",
+    "test:e2e": "npm run e2e -w @halt/web",
     "gen:api": "npm run gen:api -w @halt/web",
     "verify:repo": "python -I scripts/verify_repo.py",
     "compose:up": "docker compose up --build -d --wait",

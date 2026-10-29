@@ -294,7 +294,8 @@ interface AuditEntry { seq: number; at: string; actor: string; kind: string; sub
 
 | Method | Path | Body | Response | Errors |
 |---|---|---|---|---|
-| GET | `/health` | — | `{status, db, version}` | — |
+| GET | `/health` | — | `Health {status: ok\|degraded, db, service: ready\|unavailable, audit_enforcement, version}` (liveness: always 200) | — |
+| GET | `/ready` | — | `Readiness {ready, db, reason, incidents: [{id, status: seeded\|restored\|restoring\|dropped\|failed, detail}]}` | 503 (same body) when not ready |
 | GET | `/incidents` | — | `IncidentSummary[]` | — |
 | GET | `/incidents/{id}` | — | `Incident` (summary, state, confidence `Derivation`) | 404 |
 | GET | `/incidents/{id}/events?until=<s>` | — | `SecurityEvent[]` | 404 |
@@ -318,12 +319,15 @@ interface AuditEntry { seq: number; at: string; actor: string; kind: string; sub
 | POST | `/executions/{exec_id}/rollback` | — | `Execution` | 409 window closed |
 | GET | `/incidents/{id}/audit` | — | `AuditEntry[]` | — |
 | GET | `/incidents/{id}/audit/verify` | — | `{valid, length, head_hash}` | — |
-| POST | `/incidents/{id}/replay/reset` | `{variant?}` | `Incident` | — |
+| POST | `/incidents/{id}/replay/reset` | `{variant?}` | `Incident` | 404, 422 unknown variant |
+| POST | `/incidents/{id}/reset-to-seed` | — | `Incident` (baseline, replay from the start) | 404 |
 | POST | `/incidents/{id}/explain` | `{subject_id}` | `{text, cited_ids[], engine: "template" \| "llm"}` | 422 if citations invalid |
+
+Any incident route can also answer **503** `dependency_unavailable` (the database is unreachable; nothing was changed) or **503** `restore_inconsistent` (after a restart the journal did not reproduce the record; the message names the disagreement and points at `reset-to-seed`). Unexpected errors answer 500 `internal_error` as `ApiError`.
 
 Approvals, execute and rollback require header `X-Halt-Actor: <approver_id>` (demo identity, recorded in audit; not authentication). An unknown actor gets 403; an approval must be given by the approver themselves (actor = approver_id), otherwise 403.
 
-List and action responses are envelopes carrying `meta` (`halt/contracts/api.py`): `IncidentList`, `EventList`, `FindingList` (+ incident `confidence`), `PathList`, `ActionList`, `PolicySet` (policies, approvers, constraints), `ApprovalResult` (+ `outstanding_roles`), `ExecutionResult`, `AuditList`, `AuditVerify` (+ `enforcement: db | app`), `ProofVerify`, `ExplainResult`, `VariantList` (`items: VariantInfo{key, title, description}`, `active`; variant ops stay server-side). `Incident`, `GraphSnapshot`, `SimulationRun`, `Plan` and `Proof` carry `meta` themselves. `Incident` also carries `replay_end_s` (the replay scrubber's range) `latest` (`plan_id`, `simulation_id`, `proof_id`, `execution_id`), so a client rehydrates after a reload, and `variant`, the active demo variant key. Fields with defaults are marked required in response schemas (`json_schema_serialization_defaults_required`), so generated TypeScript never sees them as optional. Every response except `/health` and errors has `meta.simulated = true` and `meta.seed` (AT-6.4). Errors are `ApiError` with `request_id`. Incident states add `rolled_back`.
+List and action responses are envelopes carrying `meta` (`halt/contracts/api.py`): `IncidentList`, `EventList`, `FindingList` (+ incident `confidence`), `PathList`, `ActionList`, `PolicySet` (policies, approvers, constraints), `ApprovalResult` (+ `outstanding_roles`), `ExecutionResult`, `AuditList`, `AuditVerify` (+ `enforcement: db | app`), `ProofVerify`, `ExplainResult`, `VariantList` (`items: VariantInfo{key, title, description}`, `active`; variant ops stay server-side). `Incident`, `GraphSnapshot`, `SimulationRun`, `Plan` and `Proof` carry `meta` themselves. `Incident` also carries `replay_end_s` (the replay scrubber's range), `replay_cursor_s` (the last position a client sought to, persisted; null after a reset), `latest` (`plan_id`, `simulation_id`, `proof_id`, `execution_id`), so a client rehydrates after a reload, and `variant`, the active demo variant key. Fields with defaults are marked required in response schemas (`json_schema_serialization_defaults_required`), so generated TypeScript never sees them as optional. Every response except `/health` and errors has `meta.simulated = true` and `meta.seed` (AT-6.4). Errors are `ApiError` with `request_id`. Incident states add `rolled_back`.
 
 ## 11. WebSocket `/ws/incidents/{id}`
 
@@ -344,6 +348,10 @@ Server → client (every message carries `seq` and `t`, replay seconds since `09
 ```
 
 Replay is deterministic and per connection: each socket has its own cursor, so the landing page and the Command Center can replay independently. `seek(t)` sends a clock message then every timeline message with time ≤ t; the same seek always yields the same messages (seq aside, which strictly increases per connection). Timeline: stage `new` and the structural graph at 0; each incident event with its graph delta and any new or changed finding; `correlating` when HALT-R1 first forms the incident (EV-03, t = 129 s); `forecast_ready` and the forecast layer at the last event (EV-06, t = 666 s). Stage, gate and stale messages caused by API calls are broadcast live to every socket of the incident. The client may also rebuild state at any `t` from REST (`/events?until=t`, `/graph?at=t`), which the landing → Command Center handoff uses.
+
+Every `seek` is persisted as the incident's replay position (`Incident.replay_cursor_s`), so a reload or a restart resumes there; the Command Center uses it when the URL has no `?t=`. Close codes: `4404` unknown incident and `1003` invalid command (final: the client does not retry); `1013` the incident or its database is unavailable (try again later). On any other close the client reconnects with exponential backoff (0.5 s doubling to 8 s), seeks back to its own cursor (each new connection starts at t = 0) and refetches the REST state (`apps/web/src/lib/api/ws.ts`, `incident-store.tsx`, `ops.tsx`).
+
+`stale` is defined, and `Gate.new_telemetry` marks a proof stale (AT-5.10), but no route feeds new telemetry in the MVP, so no `stale` message is sent today. The unused service-level `new_telemetry` was removed.
 
 ## 12. Scenario fixture format
 

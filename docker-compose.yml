@@ -13,6 +13,8 @@ services:
       - "5432:5432"
     volumes:
       - pgdata:/var/lib/postgresql/data
+      # Creates the halt_app role on first start (demo credentials; see the file).
+      - ./services/api/db-init:/docker-entrypoint-initdb.d:ro
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U halt -d halt"]
       interval: 3s
@@ -22,7 +24,11 @@ services:
   api:
     build: ./services/api
     environment:
-      HALT_DB_URL: postgresql+psycopg://halt:halt@db:5432/halt
+      # The owner creates the schema and grants; the API then runs as halt_app, which may only read and
+      # append to the audit log and the operation journal.
+      HALT_DB_MIGRATE_URL: postgresql+psycopg://halt:halt@db:5432/halt
+      HALT_DB_URL: postgresql+psycopg://halt_app:halt_app@db:5432/halt
+      HALT_DB_APP_ROLE: halt_app
       HALT_SEED: "2417"
       HALT_LLM_ENABLED: "false"
       HALT_SIGNING_KEY_PATH: /home/halt/secrets/demo-signing-key.pem
@@ -33,7 +39,8 @@ services:
       db:
         condition: service_healthy
     healthcheck:
-      test: ["CMD", "python", "-c", "import json,urllib.request;b=json.load(urllib.request.urlopen('http://localhost:8000/api/v1/health'));exit(0 if b['db']=='ok' else 1)"]
+      # /ready answers 200 only when the database is up and every incident is seeded or restored.
+      test: ["CMD", "python", "-c", "import urllib.request;urllib.request.urlopen('http://localhost:8000/api/v1/ready')"]
       interval: 3s
       timeout: 3s
       retries: 20

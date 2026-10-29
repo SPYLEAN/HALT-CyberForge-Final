@@ -85,7 +85,7 @@ const OpsContext = createContext<OpsApi | null>(null);
 
 export function OpsProvider({ incidentId, children }: { incidentId: string; children: ReactNode }) {
   const [state, setState] = useState<OpsState>(EMPTY);
-  const { dispatch } = useIncident();
+  const { dispatch, state: replay } = useIncident();
   const path = useMemo(() => ({ params: { path: { incident_id: incidentId } } }), [incidentId]);
 
   const patch = useCallback((update: Partial<OpsState>) => setState((s) => ({ ...s, ...update })), []);
@@ -160,6 +160,20 @@ export function OpsProvider({ incidentId, children }: { incidentId: string; chil
       live = false;
     };
   }, [fetchBase]);
+
+  // The replay socket came back after a drop (an API restart, a database outage): the API may have restored or
+  // rebuilt the incident, so reload what this page shows instead of trusting what it held before.
+  useEffect(() => {
+    if (replay.reconnects === 0) return;
+    let live = true;
+    fetchBase().then(
+      (update) => live && setState((s) => ({ ...s, ...update, error: null })),
+      (error: unknown) => live && setState((s) => ({ ...s, error: error instanceof ApiFailure ? error : new ApiFailure(0, undefined) })),
+    );
+    return () => {
+      live = false;
+    };
+  }, [replay.reconnects, fetchBase]);
 
   const incidentNow = useCallback(async () => unwrap(await api.GET("/api/v1/incidents/{incident_id}", path)), [path]);
 

@@ -83,7 +83,7 @@ Tooling: `pytest` (+ `hypothesis` for properties) for the API; Vitest + Testing 
 | AT-6.3 | REST state at `t` equals WS-accumulated state at `t` (graph hash compare) |
 | AT-6.4 | Every response has `meta.simulated = true` and `meta.seed = 2417` |
 | AT-6.5 | Logs are valid JSON lines with `request_id` |
-| AT-6.7 | On PostgreSQL, a direct SQL `UPDATE` or `DELETE` on `audit_log` raises (migration trigger); runs in the CI postgres job |
+| AT-6.7 | On PostgreSQL, a direct SQL `UPDATE` or `DELETE` on `audit_log` raises (migration trigger); runs in the CI postgres job, and was run locally on 2026-10-29 against PostgreSQL 16 (pgserver) |
 | AT-6.6 | `/explain` with LLM disabled returns `engine = "template"`; with a stub LLM returning an unknown evidence ID → 422 |
 
 ## Phase 7 — Frontend foundations
@@ -142,3 +142,19 @@ Tooling: `pytest` (+ `hypothesis` for properties) for the API; Vitest + Testing 
 | AT-F.9 | Hiding business dependencies never hides the business thread or the rings | `graph-model.test.ts` |
 
 Not covered by an automated test: a missing users count rendering "—" (F-06), the canvas cut fade and mode cross-fade (checked by hand in the browser), and the landing hero not covering the containment ring (checked by hand at 1440 × 900).
+
+## Stabilization (restart safety, audit integrity, dependency failures)
+
+| ID | Criterion | Test |
+|---|---|---|
+| AT-S.1 | After an API restart the incident is restored exactly: state, latest artefacts, approvals, audit chain, operator clock; it can carry on (approve, execute, roll back) and survives a second restart | `test_restart.py::test_restart_restores_the_incident_exactly` |
+| AT-S.2 | A journal that disagrees with the record is refused: 503 `restore_inconsistent` with the reason, `/ready` 503; `reset-to-seed` recovers | `test_restart.py::test_restore_refuses_a_journal_that_disagrees_with_the_record` |
+| AT-S.3 | `reset-to-seed` is deterministic: same plan, simulation and proof ids and certificate; the audit chain stays valid | `test_restart.py::test_reset_to_seed_is_deterministic` |
+| AT-S.4 | The replay position survives a restart; a reset clears it | `test_restart.py::test_replay_position_survives_a_restart` |
+| AT-S.5 | With PostgreSQL unreachable the API starts; `/health` degraded, `/ready` 503, routes 503 `dependency_unavailable`, the socket closes | `test_restart.py::test_unreachable_database_answers_503_not_a_crash` |
+| AT-S.6 | A database failure part-way through a call rolls the whole call back; the next request rebuilds the incident from the journal | `test_restart.py::test_database_failure_mid_call_is_rebuilt_from_the_journal` |
+| AT-S.7 | The API recovers on its own when the database comes back | `test_restart.py::test_api_recovers_on_its_own_when_the_database_comes_back` |
+| AT-S.8 | On PostgreSQL the application role can read and append but cannot UPDATE, DELETE, TRUNCATE or disable triggers on `audit_log` or `operations`; the owner is refused by the trigger | `test_pg_audit.py::test_app_role_can_read_and_append_but_never_change_the_record` (needs `HALT_TEST_PG_URL`) |
+| AT-S.9 | Restore works on PostgreSQL | `test_pg_audit.py::test_restart_restores_from_postgres` (needs `HALT_TEST_PG_URL`) |
+| AT-S.10 | The replay socket reconnects with backoff, never after a final close or a page close, and re-seeks to the client's cursor | `tests/unit/ws-recovery.test.tsx` |
+| AT-S.11 | A 503 from the API shows its reason and no figures | `views.test.tsx` (AT-8.2 block) |

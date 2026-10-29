@@ -1837,6 +1837,14 @@
             "title": "Db",
             "type": "string"
           },
+          "service": {
+            "enum": [
+              "ready",
+              "unavailable"
+            ],
+            "title": "Service",
+            "type": "string"
+          },
           "simulated": {
             "const": true,
             "default": true,
@@ -1859,6 +1867,7 @@
         "required": [
           "status",
           "db",
+          "service",
           "audit_enforcement",
           "version"
         ],
@@ -1931,6 +1940,17 @@
           "params": {
             "$ref": "#/components/schemas/IncidentParams"
           },
+          "replay_cursor_s": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Replay Cursor S"
+          },
           "replay_end_s": {
             "title": "Replay End S",
             "type": "number"
@@ -1980,6 +2000,7 @@
           "state",
           "confidence",
           "replay_end_s",
+          "replay_cursor_s",
           "latest",
           "variant",
           "meta"
@@ -2057,6 +2078,43 @@
           "soft_cut_evasion_p"
         ],
         "title": "IncidentParams",
+        "type": "object"
+      },
+      "IncidentReadiness": {
+        "properties": {
+          "detail": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Detail"
+          },
+          "id": {
+            "title": "Id",
+            "type": "string"
+          },
+          "status": {
+            "enum": [
+              "seeded",
+              "restored",
+              "restoring",
+              "dropped",
+              "failed"
+            ],
+            "title": "Status",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "status",
+          "detail"
+        ],
+        "title": "IncidentReadiness",
         "type": "object"
       },
       "IncidentSpec": {
@@ -3002,6 +3060,48 @@
         "title": "ProofVerify",
         "type": "object"
       },
+      "Readiness": {
+        "properties": {
+          "db": {
+            "enum": [
+              "ok",
+              "unavailable"
+            ],
+            "title": "Db",
+            "type": "string"
+          },
+          "incidents": {
+            "items": {
+              "$ref": "#/components/schemas/IncidentReadiness"
+            },
+            "title": "Incidents",
+            "type": "array"
+          },
+          "ready": {
+            "title": "Ready",
+            "type": "boolean"
+          },
+          "reason": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Reason"
+          }
+        },
+        "required": [
+          "ready",
+          "db",
+          "reason",
+          "incidents"
+        ],
+        "title": "Readiness",
+        "type": "object"
+      },
       "Rejection": {
         "additionalProperties": false,
         "properties": {
@@ -3849,6 +3949,7 @@
     },
     "/api/v1/health": {
       "get": {
+        "description": "Fast: while the service has not started, the failed start already says the database is down, so it\nis not pinged again (an unreachable host can take seconds to time out).",
         "operationId": "health_api_v1_health_get",
         "responses": {
           "200": {
@@ -4480,6 +4581,46 @@
         "summary": "Reset"
       }
     },
+    "/api/v1/incidents/{incident_id}/reset-to-seed": {
+      "post": {
+        "description": "The demo's deterministic restart: baseline variant, replay from the start, no plan, no approvals.\nWorks after a failed restore. The audit log is append-only, so its history is kept (with this reset\nrecorded); everything derived afterwards is identical to a fresh start.",
+        "operationId": "reset_to_seed_api_v1_incidents__incident_id__reset_to_seed_post",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "incident_id",
+            "required": true,
+            "schema": {
+              "title": "Incident Id",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Incident"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Reset To Seed"
+      }
+    },
     "/api/v1/incidents/{incident_id}/simulations": {
       "post": {
         "operationId": "create_simulation_api_v1_incidents__incident_id__simulations_post",
@@ -4879,6 +5020,35 @@
           }
         },
         "summary": "Verify"
+      }
+    },
+    "/api/v1/ready": {
+      "get": {
+        "description": "Ready = the database answers and every known incident is being served (seeded or restored).",
+        "operationId": "ready_api_v1_ready_get",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Readiness"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Readiness"
+                }
+              }
+            },
+            "description": "Service Unavailable"
+          }
+        },
+        "summary": "Ready"
       }
     },
     "/api/v1/simulations/{sim_id}": {

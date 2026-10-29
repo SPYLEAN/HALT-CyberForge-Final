@@ -7,7 +7,7 @@ Companion docs: `docs/PRODUCT_RFC.md`, `docs/ARCHITECTURE.md`, `docs/DATA_CONTRA
 
 ### 1.1 Repository
 
-`C:\Users\tanvi\OneDrive\Documents\sentinal route ai`
+The repository root (a folder synced by OneDrive on the development machine).
 
 | Finding | Detail |
 |---|---|

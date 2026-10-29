@@ -1,7 +1,13 @@
-"""Tables. Artefacts are stored as canonical JSON documents keyed by id; the audit log is append-only.
+"""Tables. Artefacts are stored as canonical JSON documents keyed by id; the audit log and the operation
+journal are append-only.
 
-On PostgreSQL, triggers reject UPDATE, DELETE and TRUNCATE on audit_log (AT-6.7). On SQLite the guarantee
-is application-enforced only, and /health reports audit_enforcement "app".
+On PostgreSQL, triggers reject UPDATE, DELETE and TRUNCATE on audit_log and operations for every role,
+including the owner (AT-6.7); `grant_app_role` additionally limits a separate application role to SELECT and
+INSERT on them. On SQLite the guarantee is application-enforced only, and /health reports audit_enforcement
+"app".
+
+The operation journal records every state-changing call in order (with its outcome), so a restarted API can
+rebuild an incident by re-running it deterministically (service.restore).
 """
 
 from __future__ import annotations
@@ -11,6 +17,7 @@ from sqlalchemy import (
     JSON,
     Column,
     DateTime,
+    Float,
     Integer,
     MetaData,
     String,
@@ -54,18 +61,50 @@ audit_log = Table(
     Column("hash", String(64), nullable=False),
 )
 
-_APPEND_ONLY = DDL(  # type: ignore[no-untyped-call]
+operations = Table(
+    "operations",
+    metadata,
+    Column("incident_id", String(32), primary_key=True),
+    Column("seq", Integer, primary_key=True, autoincrement=False),
+    Column("kind", String(32), nullable=False),  # reset | correlate | plan | simulate | seal | approve | ...
+    Column("args", JSON, nullable=False),
+    Column("outcome", String(64), nullable=False),  # "ok" or the domain error code the call raised
+    Column("at", DateTime(timezone=True), nullable=False),  # operator clock after the call
+)
+
+replay_positions = Table(
+    "replay_positions",
+    metadata,
+    Column("incident_id", String(32), primary_key=True),
+    Column("t", Float, nullable=True),  # null after a reset: clients start at the end of the replay
+)
+
+_APPEND_ONLY_FN = DDL(  # type: ignore[no-untyped-call]
     """
-    CREATE OR REPLACE FUNCTION halt_audit_append_only() RETURNS trigger AS $$
+    CREATE OR REPLACE FUNCTION halt_append_only() RETURNS trigger AS $$
     BEGIN
-      RAISE EXCEPTION 'audit_log is append-only';
+      RAISE EXCEPTION '%% is append-only', TG_TABLE_NAME;  -- doubled: SQLAlchemy formats DDL text
     END
     $$ LANGUAGE plpgsql;
-    CREATE TRIGGER audit_log_no_update_delete BEFORE UPDATE OR DELETE ON audit_log
-      FOR EACH ROW EXECUTE FUNCTION halt_audit_append_only();
-    CREATE TRIGGER audit_log_no_truncate BEFORE TRUNCATE ON audit_log
-      FOR EACH STATEMENT EXECUTE FUNCTION halt_audit_append_only();
     """
 ).execute_if(dialect="postgresql")
 
-event.listen(audit_log, "after_create", _APPEND_ONLY)
+
+def _append_only(table: Table) -> DDL:
+    name = table.name
+    return DDL(  # type: ignore[no-untyped-call]
+        f"""
+        CREATE TRIGGER {name}_no_update_delete BEFORE UPDATE OR DELETE ON {name}
+          FOR EACH ROW EXECUTE FUNCTION halt_append_only();
+        CREATE TRIGGER {name}_no_truncate BEFORE TRUNCATE ON {name}
+          FOR EACH STATEMENT EXECUTE FUNCTION halt_append_only();
+        """
+    ).execute_if(dialect="postgresql")
+
+
+event.listen(metadata, "before_create", _APPEND_ONLY_FN)
+for _table in (audit_log, operations):
+    event.listen(_table, "after_create", _append_only(_table))
+
+APPEND_ONLY_TABLES = ("audit_log", "operations")
+MUTABLE_TABLES = ("incidents", "artefacts", "replay_positions")

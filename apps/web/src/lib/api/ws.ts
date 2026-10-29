@@ -43,12 +43,27 @@ export interface ReplaySocketHandlers {
   onMessage: (message: ServerMessage) => void;
   onStatus: (status: SocketStatus) => void;
   onInvalid?: (error: unknown) => void;
+  /** Called when the socket reconnects after a drop (not on the first open). */
+  onReconnect?: () => void;
 }
 
-/** Thin wrapper over the browser WebSocket for /ws/incidents/{id}. */
+/** Close codes after which reconnecting cannot help: rejected command, unknown incident. */
+const FINAL_CLOSE = new Set([1003, 4404]);
+export const RETRY_BASE_MS = 500;
+export const RETRY_MAX_MS = 8000;
+
+/**
+ * Thin wrapper over the browser WebSocket for /ws/incidents/{id}. If the connection drops (an API restart,
+ * a database outage answered with 1013, a network blip) it reconnects with exponential backoff and then
+ * calls onReconnect, so the caller can seek again: the server starts every connection at t = 0.
+ */
 export class ReplaySocket {
   private socket: WebSocket | null = null;
   private queue: ClientMessage[] = [];
+  private stopped = false;
+  private opened = false;
+  private attempts = 0;
+  private retry: ReturnType<typeof setTimeout> | null = null;
 
   constructor(
     private readonly incidentId: string,
@@ -57,14 +72,35 @@ export class ReplaySocket {
   ) {}
 
   connect(): void {
+    this.stopped = false;
+    this.open();
+  }
+
+  private open(): void {
+    this.retry = null;
     this.handlers.onStatus("connecting");
     const socket = new WebSocket(`${this.origin}/ws/incidents/${encodeURIComponent(this.incidentId)}`);
     this.socket = socket;
     socket.onopen = () => {
+      this.attempts = 0;
       this.handlers.onStatus("open");
-      for (const message of this.queue.splice(0)) socket.send(JSON.stringify(message));
+      if (this.opened) {
+        // A new server-side connection: commands queued while down are stale; the caller seeks again instead.
+        this.queue = [];
+        this.handlers.onReconnect?.();
+      } else {
+        for (const message of this.queue.splice(0)) socket.send(JSON.stringify(message));
+      }
+      this.opened = true;
     };
-    socket.onclose = () => this.handlers.onStatus("closed");
+    socket.onclose = (event) => {
+      if (this.socket !== socket) return;
+      this.handlers.onStatus("closed");
+      if (!this.stopped && !FINAL_CLOSE.has(event.code)) {
+        const delay = Math.min(RETRY_MAX_MS, RETRY_BASE_MS * 2 ** this.attempts++);
+        this.retry = setTimeout(() => this.open(), delay);
+      }
+    };
     socket.onerror = () => this.handlers.onStatus("error");
     socket.onmessage = (event) => {
       try {
@@ -81,7 +117,11 @@ export class ReplaySocket {
   }
 
   close(): void {
-    this.socket?.close();
+    this.stopped = true;
+    if (this.retry) clearTimeout(this.retry);
+    this.retry = null;
+    const socket = this.socket;
     this.socket = null;
+    socket?.close();
   }
 }

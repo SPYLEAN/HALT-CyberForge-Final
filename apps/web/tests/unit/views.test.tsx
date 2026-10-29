@@ -162,6 +162,20 @@ describe("AT-8.1 views render recorded API data", () => {
 });
 
 describe("AT-8.2 no invented numbers when the API is down", () => {
+  it("shows the API's 503 reason when the database is unavailable, and no figures", async () => {
+    vi.stubGlobal("fetch", async () =>
+      new Response(
+        JSON.stringify({ code: "dependency_unavailable", message: "The HALT database is unavailable (OperationalError: connection refused). Nothing was changed; retry shortly.", detail: null, request_id: "t" }),
+        { status: 503, headers: { "content-type": "application/json" } },
+      ),
+    );
+    render(<Providers view="overview"><CommandCenter /></Providers>);
+    expect(await screen.findByText(/Request failed \(503\)/)).toBeInTheDocument();
+    expect(screen.getByText(/database is unavailable/)).toBeInTheDocument();
+    expect(screen.queryByText(/of 6,000/)).toBeNull();
+    expect(screen.queryByText("16 of 16")).toBeNull();
+  });
+
   it("shows an error and no figures", async () => {
     failingApi();
     render(<Providers view="overview"><CommandCenter /></Providers>);

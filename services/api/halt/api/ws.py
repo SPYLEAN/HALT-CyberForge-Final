@@ -4,6 +4,10 @@ Client commands: {"type":"seek","t":..}, {"type":"play","speed":1|4|16}, {"type"
 {"type":"subscribe"}.
 `seek` sends a clock message and every timeline message up to t; `play` advances this connection's cursor
 in real time x speed. Stage/gate/stale messages from API calls are forwarded as they happen.
+
+A seek is persisted as the incident's replay position (Incident.replay_cursor_s), so it survives a restart.
+When the incident or its database is unavailable the socket closes with 1013 (try again later); clients
+reconnect and seek again (apps/web/src/lib/api/ws.ts).
 """
 
 from __future__ import annotations
@@ -14,23 +18,30 @@ from typing import Any
 
 from fastapi import APIRouter, WebSocket, WebSocketDisconnect
 from pydantic import TypeAdapter, ValidationError
+from sqlalchemy.exc import SQLAlchemyError
 
+from halt.api.state import service_of
 from halt.contracts.ws import ClientMessage, PlayCommand, SeekCommand
+from halt.logging import get_logger
 from halt.replay import stream
-from halt.service import IncidentService, NotFound
+from halt.service import IncidentService, NotFound, Unavailable
 
 router = APIRouter()
 _commands: TypeAdapter[Any] = TypeAdapter(ClientMessage)
 TICK_S = 0.1
+TRY_AGAIN_LATER = 1013
 
 
 @router.websocket("/ws/incidents/{incident_id}")
 async def replay_socket(ws: WebSocket, incident_id: str) -> None:
-    service: IncidentService = ws.app.state.service
     try:
+        service: IncidentService = service_of(ws.app)
         service.runtime(incident_id)
     except NotFound:
         await ws.close(code=4404)
+        return
+    except (Unavailable, SQLAlchemyError):
+        await ws.close(code=TRY_AGAIN_LATER)
         return
     await ws.accept()
 
@@ -58,7 +69,11 @@ async def replay_socket(ws: WebSocket, incident_id: str) -> None:
                 timeout=TICK_S if playing else None,
                 return_when=asyncio.FIRST_COMPLETED,
             )
-            scenario = service.runtime(incident_id).scenario
+            try:
+                scenario = service.runtime(incident_id).scenario
+            except (Unavailable, SQLAlchemyError):
+                await ws.close(code=TRY_AGAIN_LATER)
+                break
             if playing:
                 now = loop.time()
                 end = stream.end_t(scenario)
@@ -84,6 +99,10 @@ async def replay_socket(ws: WebSocket, incident_id: str) -> None:
                     break
                 if isinstance(command, SeekCommand):
                     cursor, playing = command.t, False
+                    try:
+                        service.save_cursor(incident_id, cursor)
+                    except (Unavailable, SQLAlchemyError):  # the replay itself does not need the database
+                        get_logger().warning("replay_cursor_not_saved", incident_id=incident_id)
                     for message in stream.seek(scenario, cursor, start_seq=seq):
                         await ws.send_json(message)
                         seq += 1

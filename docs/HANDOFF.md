@@ -1,6 +1,6 @@
-# HALT — Project Handoff (state after Phase 10 and the finalization P0/P1 rows)
+# HALT — Project Handoff (state after Phase 10, the finalization rows and technical stabilization)
 
-> **Update, 2026-10-29:** work continues on the branch `stabilization/god-mode` (baseline tag `phase10-complete`). Rows 1–11 of [FINALIZATION_AUDIT.md](FINALIZATION_AUDIT.md) are done there; `main` is unchanged. This document describes the branch.
+> **Update, 2026-10-29:** `main` holds Phase 10 plus finalization rows 1–11 ([FINALIZATION_AUDIT.md](FINALIZATION_AUDIT.md)). Technical stabilization (restart safety, audit integrity, dependency failures, one-command operation) is committed on `stabilization/god-mode` and **not yet merged to `main`**. This document describes that branch. The baseline tag `phase10-complete` marks the Phase 10 demo.
 
 Use this document to continue the build. It describes what HALT is, what has been built, how it works, how to run and test it, the decisions already made, and everything still pending. The repository is the source of truth; the other docs in `docs/` go deeper.
 
@@ -52,21 +52,23 @@ Use this document to continue the build. It describes what HALT is, what has bee
 │  ├─ src/styles/           tokens.css / tailwind-theme.css / tokens.ts (generated), halt-components.css (copied)
 │  ├─ public/brand, public/3d, public/vendor   copied supplied assets, three r128, 3D scene scripts (unmodified)
 │  ├─ scripts/              build-tokens.mjs, copy-brand.mjs
-│  ├─ tests/unit/           Vitest (80 tests) + fixtures/api/stages.json (recorded from the real API)
+│  ├─ tests/unit/           Vitest (86 tests) + fixtures/api/stages.json (recorded from the real API)
 │  └─ e2e/                  Playwright (27 tests)
 ├─ services/api/            FastAPI service
 │  ├─ halt/contracts/       Pydantic models = single schema source (→ OpenAPI → TS)
 │  ├─ halt/scenario/        loader + inc_2417 fixture (incident, events, background, topology, actions, policies, approvers, constraints, variants, presets)
 │  ├─ halt/{r1,threadgraph,echolab,safecut,proofseal,gate,audit,replay,explain}/
-│  ├─ halt/service.py       incident runtime orchestrating every engine
-│  ├─ halt/api/             routes.py, ws.py, errors.py, health.py
-│  ├─ halt/db/              engine, tables, PostgreSQL append-only triggers, repository
+│  ├─ halt/service.py       incident runtime orchestrating every engine; operation journal and restore
+│  ├─ halt/api/             routes.py, ws.py, errors.py, health.py (/health, /ready), state.py (lazy start)
+│  ├─ halt/db/              engine, tables, append-only triggers, app-role grants, repository (unit of work)
+│  ├─ db-init/              Compose only: creates the halt_app role (demo credentials)
 │  ├─ scripts/              export_openapi.py, record_fixtures.py
 │  ├─ reports/r1_eval.json  model selection report
-│  └─ tests/                pytest (121 passed + 1 skipped)
+│  └─ tests/                pytest (131 with PostgreSQL; without it 3 PostgreSQL tests skip)
 ├─ assets/halt-package/     supplied package, vendored unmodified (checksummed)
 ├─ docs/                    PRODUCT_RFC, ARCHITECTURE, DATA_CONTRACTS, DEMO_SCENARIO, DESIGN_SYSTEM, ACCEPTANCE_TESTS, THIRD_PARTY_LEDGER, DEMO_SCRIPT, HANDOFF (this)
 ├─ IMPLEMENTATION_PLAN.md   phase plan + file-by-file list (kept in sync)
+├─ scripts/halt.mjs        setup, dev, demo, reset, check (wired to npm run …; no extra task runner)
 ├─ docker-compose.yml, .github/workflows/ci.yml, .dockerignore, .env.example
 └─ SentinelRoute shield emblem.png   pre-existing legacy file (off-brand); untouched, unused
 ```
@@ -146,10 +148,13 @@ The high-risk threshold is 0.20, so P1–P6 are high-risk and U1 is not.
   - `GET /incidents/{id}/events?until=`, `POST /correlate`, `GET /findings`, `GET /graph?at=&plan_id=`, `GET /paths` (409 before correlation), `GET /actions`, `GET /policies`, `GET /variants` (key, title, description of each demo variant, plus the active one).
 - **Analysis:** `POST /incidents/{id}/simulations`, `GET /simulations/{id}`, `POST /incidents/{id}/plans`, `GET /plans/{id}`, `POST /plans/{id}/proof` (409 if infeasible), `GET /proofs/{id}`, `POST /proofs/{id}/verify`.
 - **Action Gate:** `GET` and `POST /plans/{id}/approvals`, `POST /plans/{id}/execute`, `GET /executions/{id}`, `POST /executions/{id}/rollback`. The POST calls on approvals, execute and rollback need the header `X-Halt-Actor` (demo identity, not authentication).
-- **Audit and other:** `GET /incidents/{id}/audit`, `GET /audit/verify`, `POST /replay/reset {variant}`, `POST /explain {subject_id}`.
+- **Audit and other:** `GET /incidents/{id}/audit`, `GET /audit/verify`, `POST /replay/reset {variant}`, `POST /reset-to-seed` (baseline, from the start; works after a failed restore), `POST /explain {subject_id}`.
+- **Health:** `GET /health` is liveness (always 200; `status: degraded`, `db`, `service`). `GET /ready` is 200 only when the database answers and every incident is seeded or restored, else 503 with the reason.
+- **Failures:** any incident route can answer 503 `dependency_unavailable` (database unreachable; nothing changed; the API retries its start every 2 s and recovers on its own) or 503 `restore_inconsistent` (after a restart the journal did not reproduce the record; reset to seed). Unexpected errors are 500 `internal_error`, still as `ApiError`.
 - **WebSocket `/ws/incidents/{id}`:** commands are seek, play, pause and subscribe. It sends a deterministic replay timeline (stage `new` → `correlating` at EV-03 (129 s) → `forecast_ready` at EV-06 (666 s)) and pushes live stage, gate and stale messages.
 - **Responses:** every response except `/health` and errors carries `meta.simulated = true` and `meta.seed = 2417`. Errors are `ApiError {code, message, request_id}`.
 - **Operator clock:** logical. It starts at t0 + 15 min and advances 15 s per action, so plan IDs, simulation hashes, proof certificates and audit hashes are identical across runs.
+- **Restart safety:** every state-changing call is journaled (table `operations`, append-only) with its outcome, and each call's audit entries, artefacts and journal entry commit in one transaction. On start, and after a call that failed part-way, `IncidentService.restore` re-runs the journal since the last reset and checks it against the record: identical audit hashes, the same operator clock, the same refusals, and identical artefacts. Any difference is refused (503 `restore_inconsistent`), never patched over. The last replay position is persisted too (`Incident.replay_cursor_s`). Details: ARCHITECTURE §9.
 
 ## 7. Frontend
 
@@ -176,17 +181,20 @@ The high-risk threshold is 0.20, so P1–P6 are high-risk and U1 is not.
 
 ## 8. How to run
 
-```bash
-# API (Python 3.12)
-cd services/api && py -3.12 -m venv .venv && .venv/Scripts/python -m pip install -e ".[dev]"
-HALT_DB_URL="sqlite+pysqlite:///:memory:" .venv/Scripts/python -m uvicorn halt.main:create_app --factory --port 8000
+From the repository root (Python 3.12 and Node 22+):
 
-# Web (Node 22+), from the repo root
-npm install && npm run dev        # http://localhost:3000
+| Task | Command |
+|---|---|
+| Install | `npm run setup` |
+| Develop (API hot reload + Next dev; state in `.halt/halt-dev.db`) | `npm run dev` |
+| Deterministic demo (production build, API, reset to seed) | `npm run demo` (`-- --keep` restores instead of resetting) |
+| Reset the running demo | `npm run demo:reset` |
+| All checks except E2E, including contract drift | `npm run check` |
+| End-to-end | `npm run test:e2e` |
+| Production build | `npm run build` |
+| Docker (not yet run) | `docker compose up --build -d --wait` |
 
-# Docker (not yet verified)
-docker compose up --build -d --wait
-```
+`scripts/halt.mjs` implements these. `.claude/` is excluded through `.git/info/exclude` and holds this machine's preview configurations; nothing there is needed to run the project.
 
 Presenter walkthrough: `docs/DEMO_SCRIPT.md`.
 
@@ -194,10 +202,11 @@ Presenter walkthrough: `docs/DEMO_SCRIPT.md`.
 
 | Suite | Command | Status |
 |---|---|---|
-| API (AT-1 to AT-6) | `cd services/api && .venv/Scripts/python -m pytest` | 121 passed, 1 skipped (PostgreSQL) |
-| Web unit (AT-7, AT-8) | `npm test` | 80 passed |
-| E2E + axe (AT-8 to AT-10) | `npm run e2e -w @halt/web` (starts the API and a production build) | 27 passed |
-| Static | `npm run lint`, `npm run typecheck`, `ruff check`, `mypy` | clean |
+| API (AT-1 to AT-6, AT-S) | `cd services/api && .venv/Scripts/python -m pytest` | 131 passed with `HALT_TEST_PG_URL` (PostgreSQL 16 via pgserver); 128 passed and 3 skipped without it |
+| Web unit (AT-7, AT-8, AT-S.10–11) | `npm test` | 86 passed |
+| E2E + axe (AT-8 to AT-10) | `npm run test:e2e` (starts the API and a production build) | 27 passed |
+| Static | `npm run lint`, `npm run typecheck`, `ruff check`, `ruff format --check`, `mypy` | clean |
+| Everything except E2E | `npm run check` | passed (exit 0) |
 
 **Regenerate when contracts or data change** (CI fails on drift):
 
@@ -235,17 +244,17 @@ Presenter walkthrough: `docs/DEMO_SCRIPT.md`.
 
 ### A. Never run, but needed
 
-1. **Docker Compose stack (AT-0.4, AT-10.3).** Docker isn't installed on the development machine.
-   - The web image's run stage was checked by serving the standalone build with the same copy steps, and every asset returned 200.
-   - Still to do: install Docker, run `docker compose up --build -d --wait`, check `/api/v1/health` reports `db: ok` and `audit_enforcement: db`, and time a clean clone against the ≤ 10 min target.
-2. **PostgreSQL append-only triggers (AT-6.7).** The test is skipped locally. Run it with `HALT_TEST_PG_URL=postgresql+psycopg://…` or in CI.
-3. **GitHub Actions CI.** There is no remote. Create one and push to run the jobs: repo, api (with Postgres), web, contracts drift, e2e and compose.
+1. **Docker Compose stack (AT-0.4, AT-10.3).** Docker isn't installed on the development machine. The compose file was validated against the Compose specification schema, nothing more.
+   - The API now runs as `halt_app` with `HALT_DB_MIGRATE_URL` for the owner; `services/api/db-init/01-app-role.sql` creates the role on first start. This wiring has **not** run in Docker.
+   - Still to do: install Docker, run `docker compose up --build -d --wait`, check `/api/v1/ready` is 200 and `/api/v1/health` reports `audit_enforcement: db`, and time a clean clone against the ≤ 10 min target.
+2. ~~PostgreSQL append-only triggers (AT-6.7)~~ **Run locally on 2026-10-29** against PostgreSQL 16 (the pip package `pgserver`, outside the project), together with the app-role and restore tests: 3 passed. They need `HALT_TEST_PG_URL`; CI provides it.
+3. **GitHub Actions CI.** There is no remote, so it has never run. The workflow validates against the GitHub workflow schema. Create a remote and push to run the jobs: repo, api (with Postgres), web, contracts drift, e2e and compose (which now also checks `/ready`, that `halt_app` cannot delete audit rows, and that a restart restores the incident).
 
 ### B. Known gaps and limitations
 
 4. **No light-theme toggle.** The light tokens exist and pass axe, but the app is fixed to the dark theme.
 5. **Phone layout of the Command Center not visually checked.** The CSS breakpoints exist; desktop and tablet were checked.
-6. **The runtime lives in memory.** Artefacts and audit are written to the database, but the server does not rehydrate its runtime from the database after a restart; you have to reset the incident.
+6. ~~Runtime lives in memory~~ **Resolved:** restart-safe restore from the operation journal (§6). Limits: there is no schema migration tool, so a database created by the Phase 10 build has no journal and restores as `failed` until it is reset to seed. Re-running the journal costs about as much as the original calls (well under a second for the demo).
 7. **One incident only.** INC-2417 is hardcoded in the root layout and the page guard. Supporting more needs incident selection and per-incident providers.
 8. **Demo identity only.** `X-Halt-Actor` is not authentication: there is no RBAC and no login.
 9. **No language-model provider connected.** The adapter interface exists, so a Claude or other client could be added. The rule that output with unknown IDs is rejected must stay.
@@ -255,7 +264,10 @@ Presenter walkthrough: `docs/DEMO_SCRIPT.md`.
 13. ~~Dependency overlay toggle~~ **Resolved** (F-16).
 14. ~~U1 decision~~ **Decided:** U1 stays open as stated residual risk; Overview now shows it as "Residual reach under the plan" (F-17).
 15. **Alembic migrations deferred.** The schema is created with `create_all`. Add Alembic before the first schema change.
-16. **Dev-only noise:** React StrictMode opens the replay WebSocket twice in dev (one "closed before established" warning), and uvicorn logs `ConnectionResetError` when sockets close during tests. Both are harmless.
+16. **Dev-only noise:** React StrictMode opens the replay WebSocket twice in dev (one "closed before established" warning), and uvicorn logs `ConnectionResetError` / `WebSocketDisconnect` when sockets close during tests. Both are harmless. `next start` warns that it "does not work with output: standalone"; it does work, and the Docker image uses `server.js` as Next recommends.
+21. **On Windows an unreachable PostgreSQL times out instead of refusing**, so while the database is down each start retry takes about 3 s (`connect_timeout`). `/health` stays fast (it does not ping while the service is down); requests queued behind a retry fail fast.
+22. **OneDrive** briefly locked a regenerated fixture file once during `npm run check` (`OSError: [Errno 22]`); the rerun passed. Another reason to move the repository (item 19).
+23. **`HALT_SEED` is read but unused**: the seed comes from the scenario fixture. `.env.example` now says so.
 
 ### C. Housekeeping
 
@@ -266,8 +278,8 @@ Presenter walkthrough: `docs/DEMO_SCRIPT.md`.
 
 ### D. Natural next steps (suggested order)
 
-1. Push to GitHub; get CI green, including the Postgres and E2E jobs.
-2. Install Docker; verify the compose stack and AT-10.3.
-3. Merge `stabilization/god-mode` into `main` once you have reviewed it.
+1. Review and merge `stabilization/god-mode` into `main`.
+2. Push to GitHub; get CI green, including the Postgres, E2E and compose jobs.
+3. Install Docker; verify the compose stack, the `halt_app` role, and AT-10.3.
 4. The rest of the motion spec (item 11) and the light-theme toggle (4).
 5. Server-side rehydration (6), then multiple incidents (7) and real authentication (8), if the project goes beyond the demo.

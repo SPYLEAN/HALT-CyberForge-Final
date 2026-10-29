@@ -25,9 +25,11 @@ Browser ──HTTP/JSON──▶ FastAPI /api/v1 ──▶ domain engines (pure 
 
 - **web** (port 3000): Next.js. Server components fetch incident metadata; client components hold the live incident store and the WebSocket.
 - **api** (port 8000): FastAPI. Stateless request handlers over pure domain modules. OpenAPI at `/api/v1/openapi.json`.
-- **db** (port 5432): PostgreSQL 16. Append-only audit table enforced by trigger.
+- **db** (port 5432): PostgreSQL 16. The audit log and the operation journal are append-only: triggers refuse UPDATE/DELETE/TRUNCATE for every role, and the API's own role (`halt_app` in Compose) holds only SELECT and INSERT on them.
 
-Docker Compose runs all three. For a no-Docker fallback the API can run with `HALT_DB_URL=sqlite+pysqlite:///./halt.db`; the append-only guarantee is then enforced in the repository layer only and the UI shows `AUDIT: APP-ENFORCED` instead of `AUDIT: DB-ENFORCED`.
+Docker Compose runs all three (not yet run: Docker is unavailable on the development machine). Without Docker, `npm run dev` / `npm run demo` run the API on a SQLite file under `.halt/`; the append-only guarantee is then enforced by the application only, and `/api/v1/health` reports `audit_enforcement: "app"` (the UI does not display it).
+
+**Health and readiness.** `/api/v1/health` is liveness: always 200, `status: degraded` when the database or the incident service is down. `/api/v1/ready` is 200 only when the database answers and every incident is seeded or restored; otherwise 503 with the reason. If the database is unreachable at start, the API still starts: incident routes answer 503 `dependency_unavailable` and the start is retried at most every 2 s, so the API recovers on its own (`halt/api/state.py`).
 
 ## 3. Pipeline
 
@@ -149,9 +151,13 @@ Simulated connectors mutate a copy of the graph snapshot. Each step writes an au
 
 Tables (as built, `halt/db/models.py`): `incidents`; `artefacts` (simulation, plan, proof, approval and execution documents stored as canonical JSON with their hash, keyed by id); `audit_log` (one hash chain per incident). Events, graph and policies come from the versioned fixture and are not copied into the database. The schema is created with `metadata.create_all`; on PostgreSQL the same step installs the append-only triggers. Alembic is deferred until the schema needs a second version.
 
-The live incident runtime (`halt/service.py`) is held in memory and written through: a restart keeps artefacts and audit but starts a fresh runtime (use `replay/reset`). The operator clock is logical: it starts at plan time (t0 + 15 min) and advances 15 s per state-changing call, so repeated demo runs produce identical plan ids, simulation hashes, proof certificates and audit hashes (tested).
+Two more tables: `operations`, the append-only journal of every state-changing call with its arguments and outcome (`reset`, `correlate`, `plan`, `simulate`, `seal`, `approve`, `execute`, `rollback`), and `replay_positions`, the last replay position a client sought to (exposed as `Incident.replay_cursor_s`). Each call's audit entries, artefacts and journal entry are written in **one transaction** (`Repository.transaction`), so a failure part-way leaves none of them.
 
-`audit_log(incident_id, seq, at, actor, kind, subject_id, payload, prev_hash, hash)` with `BEFORE UPDATE OR DELETE` (row) and `BEFORE TRUNCATE` (statement) triggers that raise. `hash = sha256(prev_hash || JCS(row_without_hash))`. `GET /audit/verify` walks the chain.
+The live incident runtime (`halt/service.py`) is held in memory and written through. **On start, and after any call that failed part-way, it is rebuilt from the journal:** the engines are deterministic, so `restore` re-runs the calls since the last reset and checks each one against the record. Every audit entry must come out with the same hash, the operator clock must agree, refusals must refuse again with the same code, and every re-derived plan, simulation, proof, approval and execution must match the stored one. Any difference stops the restore: the incident answers 503 `restore_inconsistent` with the reason, `/ready` reports it, and `POST /incidents/{id}/reset-to-seed` is the explicit way out. HALT never substitutes a state it cannot prove matches the record.
+
+The operator clock is logical: it starts at plan time (t0 + 15 min) and advances 15 s per state-changing call, so repeated demo runs produce identical plan ids, simulation hashes, proof certificates and audit hashes (tested). A reset continues the audit chain (it is append-only), so after `reset-to-seed` the audit timestamps continue from where they were while every derived artefact is identical to a fresh start.
+
+`audit_log(incident_id, seq, at, actor, kind, subject_id, payload, prev_hash, hash)` and `operations` each have `BEFORE UPDATE OR DELETE` (row) and `BEFORE TRUNCATE` (statement) triggers that raise. `hash = sha256(prev_hash || JCS(row_without_hash))`. `GET /audit/verify` walks the chain. With `HALT_DB_MIGRATE_URL` (owner) and `HALT_DB_APP_ROLE`, schema creation also revokes everything on those two tables from PUBLIC and the app role and grants the app role SELECT and INSERT only; the app role cannot drop the triggers either (that needs ownership). Tested on PostgreSQL 16 (`tests/test_pg_audit.py`). The owner can still disable triggers, which is why the API should run as the app role.
 
 ## 10. Observability and config
 
@@ -163,4 +169,4 @@ The live incident runtime (`halt/service.py`) is held in memory and written thro
 
 - No outbound network calls from the API (LLM adapter off by default; when on, sends only structured, synthetic evidence).
 - CORS restricted to the web origin. Demo personas selected in UI; requests carry `X-Halt-Actor`, recorded in audit. This is not authentication and is labelled as such.
-- Inputs validated by Pydantic; no SQL string building; no `eval`.
+- Inputs validated by Pydantic; no `eval`. SQL is built with SQLAlchemy, except the role-grant DDL in `halt/db/__init__.py`, whose only variable is the configured role name, validated against `^[a-z_][a-z0-9_]{0,62}$`.

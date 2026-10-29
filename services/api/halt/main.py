@@ -4,21 +4,17 @@ from __future__ import annotations
 
 import uuid
 from collections.abc import Awaitable, Callable
-from pathlib import Path
 
 from fastapi import FastAPI, Request, Response
 from fastapi.middleware.cors import CORSMiddleware
 
 from halt import __version__
-from halt.api import errors, health, routes, ws
+from halt.api import errors, health, routes, state, ws
 from halt.config import Settings, get_settings
-from halt.db import create_schema, make_engine
-from halt.db.repo import Repository
+from halt.db import make_engine
 from halt.logging import configure_logging, get_logger, request_id_var
 from halt.openapi import build_openapi
-from halt.proofseal.seal import Sealer
 from halt.scenario.loader import load_scenario
-from halt.service import IncidentService, default_loader
 
 API_PREFIX = "/api/v1"
 
@@ -36,14 +32,10 @@ def create_app(settings: Settings | None = None) -> FastAPI:
     )
     app.state.settings = settings
     app.state.engine = make_engine(settings.db_url)
-    create_schema(app.state.engine)
     # A malformed fixture raises ScenarioError here and the API does not start (AT-1.1).
     app.state.scenario = load_scenario(settings.scenario_dir, settings.scenario_variant)
-    app.state.service = IncidentService(
-        Repository(app.state.engine),
-        Sealer.from_path(Path(settings.signing_key_path)),
-        default_loader(settings.scenario_dir),
-    )
+    # Starts the incident service (restoring persisted incidents), or records why the database is unavailable.
+    state.init(app)
     app.state.llm = None  # optional LlmClient; HALT_LLM_ENABLED must also be true
 
     app.add_middleware(

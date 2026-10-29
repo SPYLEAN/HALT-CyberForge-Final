@@ -27,14 +27,15 @@ function Workspace() {
   const [gateOpen, setGateOpen] = useState(false);
   const started = useRef(false);
 
-  // URL -> store once: ?view= and ?t= (defaults to the end of the replay).
+  // URL -> store once: ?view= and ?t=, else the incident's persisted replay position, else the end of the replay.
   useEffect(() => {
     if (started.current || !ops.incident) return;
     started.current = true;
     const view = params.get("view");
     if (view && (VIEWS as readonly string[]).includes(view)) setView(view as ViewId);
     const t = Number(params.get("t"));
-    seek(Number.isFinite(t) && params.has("t") ? Math.min(t, ops.incident.replay_end_s) : ops.incident.replay_end_s);
+    const persisted = ops.incident.replay_cursor_s;
+    seek(Number.isFinite(t) && params.has("t") ? Math.min(t, ops.incident.replay_end_s) : (persisted ?? ops.incident.replay_end_s));
   }, [ops.incident, params, seek, setView]);
 
   // store -> URL

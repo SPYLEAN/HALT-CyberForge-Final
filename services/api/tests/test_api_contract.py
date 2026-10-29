@@ -43,6 +43,8 @@ DOCUMENTED = {
     ("get", "/incidents/{incident_id}/audit/verify"),
     ("post", "/incidents/{incident_id}/replay/reset"),
     ("get", "/incidents/{incident_id}/variants"),
+    ("post", "/incidents/{incident_id}/reset-to-seed"),
+    ("get", "/ready"),
     ("post", "/incidents/{incident_id}/explain"),
 }
 

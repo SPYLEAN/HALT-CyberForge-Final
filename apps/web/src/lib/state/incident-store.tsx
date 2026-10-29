@@ -14,6 +14,8 @@ export type Speed = 1 | 4 | 16;
 export interface IncidentState {
   incidentId: string;
   connection: SocketStatus;
+  /** Times the replay socket came back after a drop; data that may be stale is refetched on each. */
+  reconnects: number;
   cursor: number;
   playing: boolean;
   speed: Speed;
@@ -34,6 +36,7 @@ export type IncidentAction =
   | { type: "server"; message: ServerMessage }
   | { type: "seek"; t: number }
   | { type: "connection"; status: SocketStatus }
+  | { type: "reconnected" }
   | { type: "view"; view: ViewId }
   | { type: "select"; id: string | null }
   | { type: "simulated"; value: boolean };
@@ -42,6 +45,7 @@ export function initialState(incidentId: string, view: ViewId = "overview", curs
   return {
     incidentId,
     connection: "idle",
+    reconnects: 0,
     cursor,
     playing: false,
     speed: 1,
@@ -95,6 +99,8 @@ export function incidentReducer(state: IncidentState, action: IncidentAction): I
       return { ...state, cursor: action.t, playing: false, nodes: {}, edges: {}, events: [], findings: {}, stage: null };
     case "connection":
       return { ...state, connection: action.status };
+    case "reconnected":
+      return { ...state, reconnects: state.reconnects + 1 };
     case "view":
       return { ...state, view: action.view };
     case "select":
@@ -127,12 +133,22 @@ export interface IncidentProviderProps {
 export function IncidentProvider({ incidentId, children, connect = true, initial }: IncidentProviderProps) {
   const [state, dispatch] = useReducer(incidentReducer, undefined, () => ({ ...initialState(incidentId), ...initial }));
   const socket = useRef<ReplaySocket | null>(null);
+  const cursor = useRef(state.cursor);
+  useEffect(() => {
+    cursor.current = state.cursor;
+  }, [state.cursor]);
 
   useEffect(() => {
     if (!connect || typeof WebSocket === "undefined") return;
     const s = new ReplaySocket(incidentId, {
       onMessage: (message) => dispatch({ type: "server", message }),
       onStatus: (status) => dispatch({ type: "connection", status }),
+      // The server starts a new connection at t = 0: seek back to where this client was.
+      onReconnect: () => {
+        dispatch({ type: "seek", t: cursor.current });
+        s.send({ type: "seek", t: cursor.current });
+        dispatch({ type: "reconnected" });
+      },
     });
     socket.current = s;
     s.connect();

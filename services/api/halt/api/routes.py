@@ -6,6 +6,7 @@ from typing import Annotated, Literal
 
 from fastapi import APIRouter, Header, Query, Request
 
+from halt.api.state import service_of
 from halt.contracts.api import (
     ActionList,
     ApprovalList,
@@ -38,7 +39,7 @@ from halt.contracts.simulation import SimulationRequest, SimulationRun
 from halt.explain.llm import prompt_for
 from halt.explain.templates import Context, cited, explain, invalid_citations
 from halt.gate.gate import GateError
-from halt.service import IncidentService, NotFound, Runtime
+from halt.service import SEED_VARIANT, IncidentService, NotFound, Runtime, Unavailable
 
 router = APIRouter()
 
@@ -48,8 +49,7 @@ Actor = Annotated[
 
 
 def svc(request: Request) -> IncidentService:
-    service: IncidentService = request.app.state.service
-    return service
+    return service_of(request.app)
 
 
 def known_actor(service: IncidentService, rt: Runtime, actor: str) -> str:
@@ -68,7 +68,9 @@ def meta(request: Request, rt: Runtime) -> Meta:
 @router.get("/incidents", response_model=IncidentList)
 def list_incidents(request: Request) -> IncidentList:
     service = svc(request)
-    rt = next(iter(service.runtimes.values()))
+    rt = next(iter(service.runtimes.values()), None)
+    if rt is None:
+        raise Unavailable("restore_inconsistent", "no incident could be restored; reset one to its seed")
     return IncidentList(items=service.summaries(), meta=service.meta(rt))
 
 
@@ -80,8 +82,19 @@ def get_incident(request: Request, incident_id: str) -> Incident:
 @router.post("/incidents/{incident_id}/replay/reset", response_model=Incident)
 def reset(request: Request, incident_id: str, body: ResetRequest) -> Incident:
     service = svc(request)
-    service.runtime(incident_id)
+    service.known(incident_id)
     service.reset(incident_id, body.variant)
+    return service.incident(incident_id)
+
+
+@router.post("/incidents/{incident_id}/reset-to-seed", response_model=Incident)
+def reset_to_seed(request: Request, incident_id: str) -> Incident:
+    """The demo's deterministic restart: baseline variant, replay from the start, no plan, no approvals.
+    Works after a failed restore. The audit log is append-only, so its history is kept (with this reset
+    recorded); everything derived afterwards is identical to a fresh start."""
+    service = svc(request)
+    service.known(incident_id)
+    service.reset(incident_id, SEED_VARIANT)
     return service.incident(incident_id)
 
 

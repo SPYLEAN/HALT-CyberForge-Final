@@ -4,9 +4,9 @@ About 6 minutes. Every number on screen comes from the API; nothing below needs 
 
 ## Before you start
 
-1. Start the API and a **production build** of the web app: the API as in README → *Run it locally*, then `npm run build -w @halt/web` and `npm run start -w @halt/web`. This is the path the end-to-end suite exercises. `docker compose up --build -d --wait` has not been run yet, so don't rely on it for the live demo.
+1. `npm run demo` (after a one-off `npm run setup`). It builds the web app for production, starts the API on a SQLite file under `.halt/`, waits until `/api/v1/ready` answers, resets INC-2417 to its seed, then prints the URL. This is the path the end-to-end suite exercises. `docker compose up --build -d --wait` has not been run yet, so don't rely on it for the live demo.
 2. Open http://localhost:3000 once and scroll to the bottom, then reload: this warms the build so the live run is instant.
-3. Reset the incident so the audience sees it from the start: Command Center → **Policies** → *Demo variant* `Baseline` → **RESET INCIDENT**, then go back to http://localhost:3000.
+3. Reset the incident so the audience sees it from the start: `npm run demo:reset` in a second terminal (or Command Center → **Policies** → `Baseline` → **RESET INCIDENT**), then go back to http://localhost:3000.
 4. Browser at 1440 × 900 or larger. Turn off OS "reduce motion" if you want the live 3D scene (with it on, HALT shows the static poster, which is fine).
 
 ## The story (landing page)
@@ -37,8 +37,9 @@ About 6 minutes. Every number on screen comes from the API; nothing below needs 
 
 | Symptom | Fix |
 |---|---|
-| Red "Request failed" toast or "Connecting to the HALT API" | The API is down: restart it (in-memory data resets; reset the incident from Policies). |
+| Red "Request failed" toast or "Connecting to the HALT API" | The API is down or its database is. If it stopped, `npm run demo -- --keep` restarts it and **restores** the incident where it was (it is journaled in `.halt/halt-demo.db`); plain `npm run demo` resets to the seed instead. The open page reconnects by itself. |
+| "restore_inconsistent" | The journal and the record disagree after a restart (the message says how). `npm run demo:reset`. |
 | Top bar stays CONNECTING | The WebSocket can't reach `ws://localhost:8000`: check the API is on port 8000. |
 | Landing figures show loading bars | The analysis is still running or failed: open the Command Center and use the next-step button instead. |
 | Plan or approvals look stale after switching variant | Use **RESET INCIDENT** again, then reload the page. The selector shows the variant the API is running, marked "(running)". |
-| Need to restart mid-demo | Policies → `Baseline` → **RESET INCIDENT**, then reopen http://localhost:3000. |
+| Need to restart mid-demo | `npm run demo:reset`, then reopen http://localhost:3000. |

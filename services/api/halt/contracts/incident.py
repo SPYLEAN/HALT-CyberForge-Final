@@ -72,6 +72,7 @@ class Incident(Contract):
     state: IncidentState
     confidence: Derivation | None
     replay_end_s: float  # last timeline message (replay seconds); the scrubber's range
+    replay_cursor_s: float | None  # last position a client sought to (persisted); null = start at the end
     latest: LatestArtefacts
     variant: str  # active demo variant key (scenario variants.json); "baseline" unless reset to another
     meta: Meta

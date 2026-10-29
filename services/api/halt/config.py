@@ -18,6 +18,11 @@ class Settings(BaseSettings):
     model_config = SettingsConfigDict(env_prefix="HALT_", env_file=".env", extra="ignore")
 
     db_url: str = Field(description="postgresql+psycopg://... or sqlite+pysqlite:///...")
+    # Optional owner connection for schema creation; db_url can then be a role that may only read and
+    # append to the audit log and journal (see db.grant_app_role). Defaults to db_url.
+    db_migrate_url: str | None = None
+    # PostgreSQL role granted SELECT/INSERT only on the append-only tables when the schema is created.
+    db_app_role: str | None = Field(default=None, pattern=r"^[a-z_][a-z0-9_]{0,62}$")
     seed: int = 2417
     signing_key_path: str = "./secrets/demo-signing-key.pem"
     llm_enabled: bool = False
@@ -26,10 +31,10 @@ class Settings(BaseSettings):
     scenario_dir: Path = DEFAULT_SCENARIO_DIR
     scenario_variant: str = "baseline"
 
-    @field_validator("db_url")
+    @field_validator("db_url", "db_migrate_url")
     @classmethod
-    def _check_db_url(cls, v: str) -> str:
-        if not v.startswith(ALLOWED_DB_SCHEMES):
+    def _check_db_url(cls, v: str | None) -> str | None:
+        if v is not None and not v.startswith(ALLOWED_DB_SCHEMES):
             raise ValueError(f"must start with one of {', '.join(ALLOWED_DB_SCHEMES)}")
         return v
 

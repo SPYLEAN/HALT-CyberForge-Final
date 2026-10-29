@@ -128,12 +128,25 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - run: docker compose up --build -d --wait --wait-timeout 300
-      - name: Health check against PostgreSQL
+      - name: Health and readiness against PostgreSQL
         run: |
           body=$(curl -fsS http://localhost:8000/api/v1/health)
           echo "$body"
           echo "$body" | python3 -c "import json,sys;b=json.load(sys.stdin);assert b['status']=='ok' and b['db']=='ok' and b['audit_enforcement']=='db',b"
+          curl -fsS http://localhost:8000/api/v1/ready
           curl -fsS http://localhost:3000/healthz
+      - name: The application role cannot change the audit log
+        run: |
+          if docker compose exec -T -e PGPASSWORD=halt_app db psql -v ON_ERROR_STOP=1 -U halt_app -d halt -c "DELETE FROM audit_log"; then
+            echo "halt_app was able to delete from audit_log" && exit 1
+          fi
+      - name: Restart restores the incident
+        run: |
+          curl -fsS -X POST http://localhost:8000/api/v1/incidents/INC-2417/correlate -H 'content-type: application/json' -d '{}' > /dev/null
+          docker compose restart api
+          docker compose up -d --wait api
+          curl -fsS http://localhost:8000/api/v1/ready
+          curl -fsS http://localhost:8000/api/v1/incidents/INC-2417 | python3 -c "import json,sys;b=json.load(sys.stdin);assert b['state']=='forecast_ready',b['state']"
       - if: always()
         run: docker compose logs --no-color
       - if: always()

@@ -45,7 +45,11 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        /** Health */
+        /**
+         * Health
+         * @description Fast: while the service has not started, the failed start already says the database is down, so it
+         *     is not pinged again (an unreachable host can take seconds to time out).
+         */
         get: operations["health_api_v1_health_get"];
         put?: never;
         post?: never;
@@ -293,6 +297,28 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/v1/incidents/{incident_id}/reset-to-seed": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Reset To Seed
+         * @description The demo's deterministic restart: baseline variant, replay from the start, no plan, no approvals.
+         *     Works after a failed restore. The audit log is append-only, so its history is kept (with this reset
+         *     recorded); everything derived afterwards is identical to a fresh start.
+         */
+        post: operations["reset_to_seed_api_v1_incidents__incident_id__reset_to_seed_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/v1/incidents/{incident_id}/simulations": {
         parameters: {
             query?: never;
@@ -424,6 +450,26 @@ export interface paths {
         put?: never;
         /** Verify */
         post: operations["verify_api_v1_proofs__proof_id__verify_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/ready": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Ready
+         * @description Ready = the database answers and every known incident is being served (seeded or restored).
+         */
+        get: operations["ready_api_v1_ready_get"];
+        put?: never;
+        post?: never;
         delete?: never;
         options?: never;
         head?: never;
@@ -1077,6 +1123,11 @@ export interface components {
              */
             db: "ok" | "unavailable";
             /**
+             * Service
+             * @enum {string}
+             */
+            service: "ready" | "unavailable";
+            /**
              * Simulated
              * @default true
              * @constant
@@ -1109,6 +1160,8 @@ export interface components {
             latest: components["schemas"]["LatestArtefacts"];
             meta: components["schemas"]["Meta"];
             params: components["schemas"]["IncidentParams"];
+            /** Replay Cursor S */
+            replay_cursor_s: number | null;
             /** Replay End S */
             replay_end_s: number;
             /**
@@ -1150,6 +1203,18 @@ export interface components {
             soft_cut_evasion_p: number;
             /** Target Id */
             target_id: string;
+        };
+        /** IncidentReadiness */
+        IncidentReadiness: {
+            /** Detail */
+            detail: string | null;
+            /** Id */
+            id: string;
+            /**
+             * Status
+             * @enum {string}
+             */
+            status: "seeded" | "restored" | "restoring" | "dropped" | "failed";
         };
         /** IncidentSpec */
         IncidentSpec: {
@@ -1481,6 +1546,20 @@ export interface components {
             recomputed: string;
             /** Signature Valid */
             signature_valid: boolean;
+        };
+        /** Readiness */
+        Readiness: {
+            /**
+             * Db
+             * @enum {string}
+             */
+            db: "ok" | "unavailable";
+            /** Incidents */
+            incidents: components["schemas"]["IncidentReadiness"][];
+            /** Ready */
+            ready: boolean;
+            /** Reason */
+            reason: string | null;
         };
         /** Rejection */
         Rejection: {
@@ -2318,6 +2397,37 @@ export interface operations {
             };
         };
     };
+    reset_to_seed_api_v1_incidents__incident_id__reset_to_seed_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                incident_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Incident"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
     create_simulation_api_v1_incidents__incident_id__simulations_post: {
         parameters: {
             query?: never;
@@ -2611,6 +2721,35 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    ready_api_v1_ready_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Readiness"];
+                };
+            };
+            /** @description Service Unavailable */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Readiness"];
                 };
             };
         };

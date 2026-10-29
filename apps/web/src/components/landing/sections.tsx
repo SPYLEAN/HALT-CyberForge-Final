@@ -58,7 +58,7 @@ export function Hero() {
             <span>RUN THE INCIDENT</span>
             <span aria-hidden>→</span>
           </a>
-          <Link className="halt-btn" href="/incidents/INC-2417?view=overview">
+          <Link className="halt-btn" href={`/incidents/${ops.incident?.id ?? "INC-2417"}?view=overview&t=${ops.incident?.replay_end_s ?? 0}`}>
             <span>EXPLORE THE COMMAND CENTER</span>
             <span aria-hidden>→</span>
           </Link>
