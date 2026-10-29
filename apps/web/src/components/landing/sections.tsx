@@ -3,6 +3,7 @@
 import Link from "next/link";
 import type { ReactNode } from "react";
 
+import { roleRequirements } from "@/components/gate/ActionGateDrawer";
 import { MetricBlock, Skeleton, StatusChip } from "@/components/halt";
 import { useOps } from "@/lib/api/ops";
 import type { SecurityEvent } from "@/lib/api/types";
@@ -30,6 +31,13 @@ export function Section({ id, scene, t, title, kicker, children }: { id: string;
 }
 
 const Pending = ({ what }: { what: string }) => <Skeleton lines={2} label={`Waiting for ${what} from the HALT API`} />;
+
+/** Seconds from the first event to the first event of this kind (0 until the event list arrives). */
+function offsetOf(events: SecurityEvent[], kind: SecurityEvent["kind"]): number {
+  const first = events[0];
+  const hit = events.find((e) => e.kind === kind);
+  return first && hit ? (new Date(hit.ts).getTime() - new Date(first.ts).getTime()) / 1000 : 0;
+}
 
 export function Hero() {
   const ops = useOps();
@@ -63,7 +71,7 @@ export function Hero() {
   );
 }
 
-export function Paradox() {
+export function Paradox({ allEvents }: { allEvents: SecurityEvent[] }) {
   const ops = useOps();
   const { state } = useIncident();
   const enumeration = state.events.find((e) => e.attributes.request_count !== undefined);
@@ -74,10 +82,10 @@ export function Paradox() {
     .filter((n) => n.kind === "process" && n.criticality === "critical")
     .map((n) => n.id);
   const down = aggressive ? critical.filter((p) => (aggressive.downtime_min[p] ?? 0) > 0) : [];
-  const downtime = aggressive ? Math.max(0, ...Object.values(aggressive.downtime_min)) : 0;
+  const downtime = aggressive ? Math.max(0, ...down.map((p) => aggressive.downtime_min[p] ?? 0)) : 0;
 
   return (
-    <Section id="paradox" scene="intrusion" t={84} kicker="The containment paradox" title="A response can stop the attacker—and the organisation.">
+    <Section id="paradox" scene="intrusion" t={offsetOf(allEvents, "sign_in")} kicker="The containment paradox" title="A response can stop the attacker—and the organisation.">
       <p className="body">
         The obvious answer is to isolate everything the attacker could reach. Here that means the finance estate. The attacker loses access. So do the people who close the books,
         run payroll and reconcile the ledger.
@@ -101,8 +109,13 @@ export function Paradox() {
           {aggressive ? (
             <>
               <MetricBlock label="Critical processes taken offline" value={`${down.length} of ${critical.length}`} derivation={`Dependency closure broken by ${aggressive.action_ids.join(" + ")}`} simulated />
-              <MetricBlock label="Users locked out" value={aggressive.users_affected.numerator ?? 0} derivation={aggressive.users_affected.method} simulated />
-              <MetricBlock label="Finance close delayed" value={`${Math.floor(downtime / 60)} h ${String(downtime % 60).padStart(2, "0")} min`} derivation="Containment window the isolation stays in force" simulated />
+              <MetricBlock label="Users locked out" value={aggressive.users_affected.numerator ?? "—"} derivation={aggressive.users_affected.method} simulated />
+              <MetricBlock
+                label="Longest critical-process outage"
+                value={`${Math.floor(downtime / 60)} h ${String(downtime % 60).padStart(2, "0")} min`}
+                derivation="Containment window the isolation stays in force"
+                simulated
+              />
             </>
           ) : (
             <Pending what="the EchoLab futures" />
@@ -127,7 +140,7 @@ export function IncidentSection({ allEvents }: { allEvents: SecurityEvent[] }) {
           Incident reconstruction
         </p>
         <h2 id="incident-h" className="display-headline" style={{ margin: "var(--space-2) 0 var(--space-4)" }}>
-          Six events. Every one has a source.
+          {allEvents.length ? `${allEvents.length} events. Every one has a source.` : "Every event has a source."}
         </h2>
         <p className="body">
           HALT rebuilds the incident from telemetry in the order it happened. A solid square is something a log recorded. A dashed link is something HALT infers, and it says on what
@@ -170,7 +183,8 @@ export function ContextSection({ end }: { end: number }) {
           <li key={n.id} className="evidence-text" style={{ display: "flex", justifyContent: "space-between", borderTop: "var(--border-hairline) solid var(--line)", padding: "var(--space-2) 0" }}>
             <span>{n.label}</span>
             <span className="telemetry">
-              {n.business?.users ?? 0} users{n.business?.deadline ? ` · ${n.business.deadline}` : ""} · {n.criticality}
+              {n.business ? `${n.business.users} users` : "No business record"}
+              {n.business?.deadline ? ` · ${n.business.deadline}` : ""} · {n.criticality}
             </span>
           </li>
         ))}
@@ -197,9 +211,9 @@ export function EchoSection({ end }: { end: number }) {
                 <p className="label">
                   {f.label} · {FUTURE_TITLES[f.label]}
                 </p>
-                <MetricBlock label="Paths blocked" value={count(f.paths_blocked)} derivation="High-risk paths with a hard cut" simulated />
+                <MetricBlock label="Paths blocked" value={count(f.paths_blocked)} derivation={f.paths_blocked.method} simulated />
                 <MetricBlock label="Rollouts reaching the ledger" value={count(f.target_reached)} derivation={`seed ${sim.request.seed}, horizon ${sim.request.horizon_s} s`} simulated tone="threat" />
-                <MetricBlock label="Users affected" value={f.users_affected.numerator ?? 0} derivation={Object.keys(f.downtime_min).length ? `${Object.keys(f.downtime_min).length} processes down` : "No process down"} />
+                <MetricBlock label="Users affected" value={f.users_affected.numerator ?? "—"} derivation={Object.keys(f.downtime_min).length ? `${Object.keys(f.downtime_min).length} processes down` : "No process down"} />
               </article>
             ))}
           </div>
@@ -221,9 +235,11 @@ export function SafeCutSection({ end }: { end: number }) {
       {plan?.status === "optimal" ? (
         <>
           <p className="body">
-            SafeCut checked {ops.proof ? ops.proof.enumeration.subsets_checked.toLocaleString("en-GB") : "every"} combinations of {ops.actions.length} candidate actions against
-            the hard rules: block every dangerous path, keep every critical process running. {plan.display_actions.length} actions satisfy them
-            {ops.proof?.enumeration.unique ? ". No other set does as well." : "."}
+            SafeCut weighed {ops.actions.length} candidate actions against the hard rules: block every dangerous path, keep every critical process running. It chose{" "}
+            {plan.display_actions.length} actions.
+            {ops.proof
+              ? ` ProofSeal then checked all ${ops.proof.enumeration.subsets_checked.toLocaleString("en-GB")} combinations independently${ops.proof.enumeration.unique ? ": no other set does as well." : "."}`
+              : null}
           </p>
           <ol style={{ listStyle: "none", padding: 0 }} aria-label="Response actions">
             {plan.display_actions.map((d) => {
@@ -282,13 +298,28 @@ export function ProofSection({ end }: { end: number }) {
   );
 }
 
+/** What still stands between the plan and execution, from the plan and the recorded approvals. */
+function gateSentence(ops: ReturnType<typeof useOps>): string {
+  const plan = ops.plan;
+  if (ops.execution?.state === "applied") return "The plan has run against the simulated environment, and the way back stays open.";
+  if (!plan) return "Nothing has been executed.";
+  if (plan.status !== "optimal") return "Nothing can be executed: no plan satisfies every hard rule, so HALT shows the closest options instead.";
+  const selected = ops.actions.filter((a) => plan.selected_candidate_ids.includes(a.id));
+  const reqs = roleRequirements(selected, ops.policySet?.policies ?? [], ops.policySet?.approvers ?? []);
+  const outstanding = ops.outstandingRoles ?? reqs.map((r) => r.role);
+  const names = reqs.filter((r) => outstanding.includes(r.role)).map((r) => r.approver?.name ?? r.role.replaceAll("_", " "));
+  if (!names.length) return "Nothing has been executed, and every required approval is recorded.";
+  return `Nothing has been executed: ${names.length === 1 ? "one named human still has" : `${names.length} named humans still have`} to approve (${names.join(", ")}).`;
+}
+
 export function CommandHandoff({ end }: { end: number }) {
   const { state } = useIncident();
+  const ops = useOps();
   const href = `/incidents/${state.incidentId}?view=overview&t=${Math.round(state.cursor)}`;
   return (
     <Section id="command" scene="verified" t={end} kicker="Command Center" title="The incident does not restart. The interface picks it up.">
       <p className="body">
-        The graph you just watched is the graph you operate. Same threads, same cut, same seal. Nothing has been executed: two named humans still have to approve.
+        The graph you just watched is the graph you operate. Same threads, same cut, same seal. {gateSentence(ops)}
       </p>
       <Link className="halt-btn halt-btn-primary" href={href} data-testid="enter-command-center">
         <span>ENTER LIVE COMMAND CENTER</span>

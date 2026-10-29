@@ -57,7 +57,7 @@ export function Landing() {
       </header>
       <main className="landing-content">
         <Hero />
-        <Paradox />
+        <Paradox allEvents={events} />
         <IncidentSection allEvents={events} />
         <ContextSection end={end} />
         <EchoSection end={end} />
