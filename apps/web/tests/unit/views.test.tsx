@@ -122,6 +122,24 @@ describe("AT-8.1 views render recorded API data", () => {
     expect(await screen.findByText("Finance close change freeze, 09:00–11:00Z")).toBeInTheDocument();
     expect(screen.getByText("UNAVAILABLE")).toBeInTheDocument(); // S. Iyer in this variant
   });
+
+  it("Policies says 'Every action' only when a policy covers the whole catalogue", async () => {
+    useStage("blocked");
+    const recordedFetch = globalThis.fetch;
+    vi.stubGlobal("fetch", async (request: Request) => {
+      const response = await recordedFetch(request);
+      if (!request.url.endsWith("/policies")) return response;
+      const body = (await response.json()) as { policies: Array<Record<string, unknown>> };
+      const partial = { ...body.policies[0], id: "IR-TEST-04", title: "Covers four types", window: null,
+        applies_to_action_types: ["revoke_session", "isolate_api", "isolate_database", "isolate_subnet"] };
+      return new Response(JSON.stringify({ ...body, policies: [...body.policies, partial] }), { headers: { "content-type": "application/json" } });
+    });
+    render(<Providers view="policies"><PoliciesView /></Providers>);
+    const partial = (await screen.findByText("Covers four types")).closest("tr")!;
+    expect(partial).toHaveTextContent("revoke session, isolate api, isolate database, isolate subnet");
+    expect(partial).not.toHaveTextContent("Every action");
+    expect(screen.getByText("Preserve evidence before containment").closest("tr")).toHaveTextContent("Every action");
+  });
 });
 
 describe("AT-8.2 no invented numbers when the API is down", () => {

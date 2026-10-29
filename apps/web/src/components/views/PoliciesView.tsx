@@ -61,6 +61,10 @@ function VariantSwitcher() {
 export function PoliciesView() {
   const ops = useOps();
   const set = ops.policySet;
+  const actionTypes = [...new Set(ops.actions.map((a) => a.type))];
+  /** "Every action" only when the policy names every action type in the catalogue. */
+  const appliesTo = (types: string[]) =>
+    actionTypes.length && actionTypes.every((t) => types.includes(t)) ? "Every action" : types.join(", ").replaceAll("_", " ") || "—";
   return (
     <>
       <ViewHeader kicker="Policies" title="Who may authorise what, and the limits every plan must meet" />
@@ -82,7 +86,7 @@ export function PoliciesView() {
                   <span className="telemetry">{p.id}</span>
                   <div>{p.title}</div>
                 </th>
-                <td>{p.applies_to_action_types.length > 3 ? "Every action" : p.applies_to_action_types.join(", ").replaceAll("_", " ") || "—"}</td>
+                <td>{appliesTo(p.applies_to_action_types)}</td>
                 <td>
                   {p.required_roles.join(" + ") || "—"}
                   {p.window ? ` · freeze ${p.window.start.slice(0, 5)}–${p.window.end.slice(0, 5)}Z: ${p.window.exception_role}` : ""}
