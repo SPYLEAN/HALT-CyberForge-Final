@@ -37,3 +37,18 @@ for (const theme of ["dark", "light"] as const) {
     });
   }
 }
+
+test("evidence rail with a selection · dark (FINALIZATION_AUDIT F-01)", async ({ page }) => {
+  await page.goto("/incidents/INC-2417?view=safecut");
+  const rejected = page.getByRole("table").filter({ hasText: "Why it is not in the plan" });
+  await rejected.getByRole("button").first().click();
+  const rail = page.getByRole("complementary", { name: "Evidence" });
+  await expect(rail.getByRole("button", { name: /EXPLAIN/ })).toBeVisible();
+  const ids = await rail.locator("[id]").evaluateAll((els) => els.map((e) => e.id));
+  expect(new Set(ids).size).toBe(ids.length);
+  const results = await new AxeBuilder({ page }).withTags(["wcag2a", "wcag2aa", "wcag21a", "wcag21aa"]).analyze();
+  const blocking = results.violations
+    .filter((v) => v.impact === "serious" || v.impact === "critical")
+    .map((v) => `${v.id} (${v.impact}): ${v.nodes.slice(0, 3).map((n) => n.target.join(" ")).join(" | ")}`);
+  expect(blocking).toEqual([]);
+});
