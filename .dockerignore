@@ -1,0 +1,15 @@
+# Build context for apps/web/Dockerfile is the repository root; keep local build output out of it.
+**/node_modules
+**/.next
+**/.venv
+**/__pycache__
+**/.pytest_cache
+**/.ruff_cache
+**/.mypy_cache
+**/test-results
+**/playwright-report
+**/secrets
+**/*.db
+.git
+.claude
+assets/halt-package

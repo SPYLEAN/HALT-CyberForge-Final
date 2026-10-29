@@ -124,5 +124,5 @@ Tooling: `pytest` (+ `hypothesis` for properties) for the API; Vitest + Testing 
 |---|---|
 | AT-10.1 | Playwright script: landing → Command Center → correlate → forecast → EchoLab → SafeCut → approve ×2 → execute → contained → rollback; 0 console errors |
 | AT-10.2 | Three consecutive runs produce identical proof certificates |
-| AT-10.3 | `docker compose up` from a clean clone to working demo in ≤ 10 min (documented, timed once) |
+| AT-10.3 | `docker compose up` from a clean clone to working demo in ≤ 10 min (documented, timed once). **Not yet run**: Docker is unavailable on the development machine; see README → Verification status |
 | AT-10.4 | Variant switcher (`approver_unavailable`) shows "Blocked by policy" and no Execute path |

@@ -35,10 +35,11 @@ export default defineConfig({
       },
     },
     {
-      command: "npx next dev -p 3000",
+      // A production build, as demoed: no on-demand compilation or dev reloads to race against.
+      command: "npx next build && npx next start -p 3000",
       url: "http://localhost:3000/healthz",
       reuseExistingServer: !process.env.CI,
-      timeout: 180_000,
+      timeout: 300_000,
     },
   ],
 });

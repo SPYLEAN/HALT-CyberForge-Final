@@ -237,8 +237,9 @@ export function OpsProvider({ incidentId, children }: { incidentId: string; chil
         }),
       reset: (variant) =>
         run("resetting", async () => {
-          const incident = unwrap(await api.POST("/api/v1/incidents/{incident_id}/replay/reset", { ...path, body: { variant } }));
-          return { ...EMPTY, incident, policySet: state.policySet, actions: state.actions, audit: await loadAudit() };
+          unwrap(await api.POST("/api/v1/incidents/{incident_id}/replay/reset", { ...path, body: { variant } }));
+          // A variant can change policies, approvers, actions and constraints: reload everything, keep nothing.
+          return { ...EMPTY, ...(await fetchBase()) };
         }),
       explain: async (subjectId) => {
         try {
@@ -248,7 +249,7 @@ export function OpsProvider({ incidentId, children }: { incidentId: string; chil
         }
       },
     };
-  }, [state, path, refresh, run, patch, incidentNow, loadAudit]);
+  }, [state, path, refresh, run, patch, incidentNow, loadAudit, fetchBase]);
 
   return <OpsContext.Provider value={value}>{children}</OpsContext.Provider>;
 }

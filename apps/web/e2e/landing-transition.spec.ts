@@ -6,7 +6,7 @@ import { resetIncident } from "./support";
 test.beforeEach(async ({ request }) => resetIncident(request));
 
 test("AT-9.1 scrolling drives the replay and the hand-off keeps incident and cursor", async ({ page, context }) => {
-  // Compile the Command Center route in another tab first: in dev, the first client navigation waits for it.
+  // Load the Command Center route once in another tab (warms caches; with a dev server it also compiles it).
   const warm = await context.newPage();
   await warm.goto("/incidents/INC-2417?view=overview");
   await expect(warm.getByRole("banner", { name: "Incident" })).toBeVisible({ timeout: 60_000 });
@@ -55,7 +55,7 @@ test.describe("AT-9.3 reduced motion", () => {
   });
 });
 
-test("AT-9.4 landing LCP under 2.5 s (local API, warmed dev server)", async ({ page }) => {
+test("AT-9.4 landing LCP under 2.5 s (local API, production build)", async ({ page }) => {
   await page.goto("/"); // warm: compile and cache
   await page.goto("about:blank");
   await page.goto("/");

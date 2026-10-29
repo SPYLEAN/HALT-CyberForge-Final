@@ -4,6 +4,7 @@ import { useState } from "react";
 
 import { Button, StatusChip } from "@/components/halt";
 import { useOps } from "@/lib/api/ops";
+import { useIncident } from "@/lib/state/incident-store";
 
 import { Panel, ViewHeader } from "./common";
 import { GraphPanel } from "./GraphPanel";
@@ -18,6 +19,7 @@ const VARIANTS = [
 
 function VariantSwitcher() {
   const ops = useOps();
+  const { state, seek } = useIncident();
   const [variant, setVariant] = useState<string>("baseline");
   return (
     <Panel title="Demo variant" chip={<StatusChip kind="simulated">DEMO ONLY</StatusChip>}>
@@ -41,7 +43,14 @@ function VariantSwitcher() {
             </option>
           ))}
         </select>
-        <Button variant="secondary" onClick={() => ops.reset(variant)} trailing="↺">
+        <Button
+          variant="secondary"
+          onClick={async () => {
+            await ops.reset(variant);
+            seek(state.cursor); // a variant can change the graph: rebuild the replayed state
+          }}
+          trailing="↺"
+        >
           RESET INCIDENT
         </Button>
       </div>
