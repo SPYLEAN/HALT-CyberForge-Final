@@ -172,3 +172,4 @@ body { margin: 0; background: var(--bg); color: var(--text); font-family: var(--
   .halt-edge-march, .halt-edge-pulse, .halt-skel-pulse, .halt-skel-graph, .halt-toast { animation: none !important; }
   .halt-btn, .halt-approve, .halt-tip { transition: none !important; }
 }
+.halt-graph-frame { background: var(--bg); border: var(--border-hairline) solid var(--line); border-radius: var(--radius-md); }

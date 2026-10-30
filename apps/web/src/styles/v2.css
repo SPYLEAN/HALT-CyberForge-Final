@@ -263,3 +263,20 @@
 }
 @media (max-width: 1100px) { .v2-mission-hero { grid-template-columns: minmax(0, 1fr) !important; } }
 @media (max-width: 959px) { .v2-arch-tier { grid-template-columns: minmax(0, 1fr) !important; } .v2-bar-label { display: none; } }
+
+/* ---------- stage track ---------- */
+.v2-track-body { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: var(--space-6); align-items: center; min-width: 0; }
+.v2-response-stages { list-style: none; margin: 0; padding: 0; display: flex; gap: var(--space-4); align-items: center; }
+.v2-response-stages li { display: flex; align-items: center; gap: 6px; flex-shrink: 0; font-size: 13px; white-space: nowrap; }
+@media (max-width: 1279px) { .v2-response-stages li span { display: none; } .v2-response-stages { gap: var(--space-2); } }
+@media (max-width: 639px) { .v2-response-stages { display: none; } .v2-track-body { grid-template-columns: minmax(0, 1fr); } }
+
+/* ---------- graph and metrics inside v2 surfaces ---------- */
+.v2-stage .halt-graph-frame, .v2-panel .halt-graph-frame { background: transparent; border-color: transparent; }
+.v2-main .halt-metric { background: transparent; border-color: var(--v2-border); padding: var(--space-4) var(--space-5); }
+.v2-main .halt-metric .label { font-size: 13px; letter-spacing: 0.06em; line-height: 18px; color: var(--v2-text-2); }
+.v2-main .halt-metric .data-value { font-size: 30px; line-height: 36px; font-weight: 600; }
+.v2-main .halt-metric .deriv { font-size: 12.5px; line-height: 18px; }
+/* Metric values and derivations are prose numbers, not identifiers: display face (mono is for IDs only). */
+.v2-main .halt-metric .label, .v2-main .halt-metric .data-value, .v2-main .halt-metric .deriv { font-family: var(--font-display); }
+.v2-main .halt-metric .data-value { font-variant-numeric: tabular-nums; }

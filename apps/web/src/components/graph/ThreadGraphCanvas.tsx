@@ -179,7 +179,7 @@ export function ThreadGraphCanvas({
   }, [model]);
 
   return (
-    <div style={{ position: "relative", height, background: "var(--bg)", border: "var(--border-hairline) solid var(--line)", borderRadius: "var(--radius-md)" }}>
+    <div className="halt-graph-frame" style={{ position: "relative", height }}>
       <div ref={container} style={{ position: "absolute", inset: 0 }} role="img" aria-label={model.summary} data-testid="threadgraph"
         data-node-ids={model.elements.filter((e) => e.group === "nodes").map((e) => e.data.id).sort().join(" ")}
       />

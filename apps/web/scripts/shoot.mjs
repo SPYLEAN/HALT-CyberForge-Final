@@ -19,7 +19,7 @@ const SIZES = [
   ["1280x800", 1280, 800],
   ["1024x768", 1024, 768],
   ["390x844", 390, 844],
-];
+].filter(([name]) => !process.env.HALT_SIZES || process.env.HALT_SIZES.split(",").includes(name));
 
 const ROUTES = {
   v1: [

@@ -66,7 +66,7 @@ export function Horizon({ futures, target }: { futures: Future[]; target: string
             <text x={330 + 8 * NAMES[f.label].title.length + 14} y={y - 30} fill="var(--v2-text-2)" fontSize={12.5} fontFamily="var(--font-display)">
               {NAMES[f.label].kind.toUpperCase()}
             </text>
-            <text x={882} y={y - 5} fill={reach > 0 ? "var(--v2-threat-text)" : "var(--v2-text-2)"} fontSize={14} fontFamily="var(--font-mono)">
+            <text x={882} y={y - 5} fill={reach > 0 ? "var(--v2-threat-text)" : "var(--v2-text-2)"} fontSize={15} fontWeight={600} fontFamily="var(--font-display)">
               {count(f.target_reached)}
             </text>
             <text x={882} y={y + 19} fill={down ? "var(--v2-text-2)" : "var(--v2-continuity-text)"} fontSize={12.5} fontFamily="var(--font-display)">
@@ -75,8 +75,8 @@ export function Horizon({ futures, target }: { futures: Future[]; target: string
           </g>
         );
       })}
-      <text x={882} y={24} fill="var(--v2-text-2)" fontSize={12.5} fontFamily="var(--font-display)">
-        {`→ ${target}`}
+      <text x={W - 8} y={24} fill="var(--v2-text-2)" fontSize={12.5} textAnchor="end" fontFamily="var(--font-display)">
+        {`reaching ${target} →`}
       </text>
     </svg>
   );

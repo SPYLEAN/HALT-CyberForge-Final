@@ -209,6 +209,7 @@ export function StageTrack() {
   const replay = list.slice(0, all.length);
   const response = list.slice(all.length);
   const current = list.find((s) => s.status === "active");
+  const at = (i: number) => (end ? ((replay[i]?.t ?? 0) / end) * 100 : 0);
   return (
     <footer className="v2-track" aria-label="Incident replay">
       <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
@@ -238,21 +239,29 @@ export function StageTrack() {
           ))}
         </div>
       </div>
-      <div style={{ display: "grid", gridTemplateColumns: "minmax(0, 3fr) minmax(0, 2fr)", gap: "var(--space-5)", alignItems: "center", minWidth: 0 }}>
+      <div className="v2-track-body">
         <div style={{ position: "relative", minWidth: 0, paddingTop: 16 }}>
           <ol aria-label="Incident stages" style={{ listStyle: "none", margin: 0, padding: 0, position: "absolute", left: 0, right: 0, top: 0, height: 16 }}>
-            {replay.map((s) => (
+            {replay.map((s, i) => {
+              const pct = at(i);
+              // Events closer than 10% of the track form a cluster; only its first tick is numbered ("1–4").
+              const crowded = i > 0 && pct - at(i - 1) < 10;
+              let last = i;
+              while (last + 1 < replay.length && at(last + 1) - at(last) < 10) last += 1;
+              const num = last > i ? `${s.n}–${replay[last]?.n ?? ""}` : `${s.n}`;
+              return (
               <li
                 key={s.n}
                 title={`${s.n}. ${s.label} (${s.detail})`}
                 className="v2-meta"
-                style={{ position: "absolute", left: `${end ? ((s.t ?? 0) / end) * 100 : 0}%`, transform: "translateX(-50%)", whiteSpace: "nowrap", fontSize: 11.5, color: s.status === "done" ? "var(--v2-text)" : "var(--v2-text-2)" }}
+                style={{ position: "absolute", left: `${pct}%`, transform: "translateX(-50%)", whiteSpace: "nowrap", fontSize: 11.5, color: s.status === "done" ? "var(--v2-text)" : "var(--v2-text-2)" }}
               >
-                <span aria-hidden style={{ display: "inline-block", width: 7, height: 7, marginRight: 4, background: s.status === "done" ? "var(--v2-text)" : "transparent", border: "1px solid var(--v2-text-2)" }} />
-                <span className="v2-stage-num">{s.n}</span>
-                <span className="sr-only">{`. ${s.label}, ${s.status === "done" ? "observed" : "not yet"}`}</span>
+                <span aria-hidden style={{ display: "inline-block", width: 2, height: 9, background: s.status === "done" ? "var(--v2-text)" : "var(--v2-text-2)", verticalAlign: "middle" }} />
+                {crowded ? null : <span aria-hidden className="v2-stage-num" style={{ marginLeft: 4 }}>{num}</span>}
+                <span className="sr-only">{`${s.n}. ${s.label}, ${s.status === "done" ? "observed" : "not yet"}`}</span>
               </li>
-            ))}
+              );
+            })}
           </ol>
           <input
             type="range"
@@ -267,9 +276,9 @@ export function StageTrack() {
             style={{ width: "100%", minHeight: 28, accentColor: "var(--v2-text)" }}
           />
         </div>
-        <ol aria-label="Response stages" style={{ listStyle: "none", margin: 0, padding: 0, display: "flex", gap: "var(--space-3)", alignItems: "center", minWidth: 0, overflow: "hidden" }}>
+        <ol aria-label="Response stages" className="v2-response-stages">
           {response.map((s) => (
-            <li key={s.n} title={s.detail ?? s.label} style={{ display: "flex", alignItems: "center", gap: 6, minWidth: 0, fontSize: 12.5, color: s.status === "pending" ? "var(--v2-text-2)" : "var(--v2-text)" }}>
+            <li key={s.n} title={s.detail ?? s.label} style={{ color: s.status === "pending" ? "var(--v2-text-2)" : "var(--v2-text)" }}>
               <svg width="14" height="14" viewBox="0 0 14 14" aria-hidden style={{ flexShrink: 0 }}>
                 {s.status === "done" ? (
                   <>
