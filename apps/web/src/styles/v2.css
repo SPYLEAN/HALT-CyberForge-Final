@@ -212,7 +212,8 @@
 @media (max-width: 1279px) {
   .v2-cc { grid-template-columns: var(--v2-rail-w) minmax(0, 1fr); grid-template-areas: "bar bar" "rail main" "rail track"; }
   .v2-drawer { position: fixed; right: 0; top: var(--v2-bar-h); bottom: var(--v2-track-h); z-index: var(--z-drawer); }
-  .v2-drawer[data-open="false"] { width: 0; border: none; overflow: visible; }
+  /* Closed overlay: a 48 px tab holding the toggle, so the evidence is always one click away. */
+  .v2-drawer[data-open="false"] { width: 48px; bottom: auto; border-bottom: var(--border-hairline) solid var(--v2-border); }
   .v2-split { grid-template-columns: minmax(0, 1fr); }
   .v2-bar-item[data-optional] { display: none; }
 }
@@ -233,7 +234,17 @@
   .v2-platform-main { padding: var(--space-6) var(--space-4) var(--space-8); }
 }
 @media (max-width: 639px) {
-  .v2-bar { gap: var(--space-3); padding: 0 var(--space-3); }
+  /* Two rows on a phone: logo, status, Theatre, Reset; then SIMULATED and the mode switch. Nothing is dropped
+     but the incident title (the view head names the incident's state) and the secondary status items. */
+  .v2-cc { --v2-bar-h: 100px; }
+  .v2-bar { gap: var(--space-2) var(--space-3); padding: var(--space-2) var(--space-3); flex-wrap: wrap; align-content: center; }
+  .v2-bar > a:first-child img { width: 84px; height: auto; }
+  .v2-bar-ident { display: none !important; }
+  .v2-bar-controls { display: contents; }
+  .v2-bar-controls > :nth-child(1) { order: 5; }
+  .v2-bar-controls > :nth-child(2) { order: 6; }
+  .v2-bar-controls > :nth-child(3) { order: 3; margin-left: auto; }
+  .v2-bar-controls > :nth-child(4) { order: 4; }
   .v2-bar-status { display: none; }
   .v2-track { grid-template-columns: auto minmax(0, 1fr); gap: var(--space-3); padding: 0 var(--space-3); }
   .v2-track > :last-child { display: none; }

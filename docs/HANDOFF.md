@@ -52,8 +52,8 @@ Use this document to continue the build. It describes what HALT is, what has bee
 │  ├─ src/styles/           tokens.css / tailwind-theme.css / tokens.ts (generated), halt-components.css (copied)
 │  ├─ public/brand, public/3d, public/vendor   copied supplied assets, three r128, 3D scene scripts (unmodified)
 │  ├─ scripts/              build-tokens.mjs, copy-brand.mjs
-│  ├─ tests/unit/           Vitest (88 tests) + fixtures/api/stages.json (recorded from the real API)
-│  └─ e2e/                  Playwright (27 tests)
+│  ├─ tests/unit/           Vitest (91 tests) + fixtures/api/stages.json (recorded from the real API)
+│  └─ e2e/                  Playwright (41 tests)
 ├─ services/api/            FastAPI service
 │  ├─ halt/contracts/       Pydantic models = single schema source (→ OpenAPI → TS)
 │  ├─ halt/scenario/        loader + inc_2417 fixture (incident, events, background, topology, actions, policies, approvers, constraints, variants, presets)
@@ -191,6 +191,20 @@ Paths are counted over all seven enumerated paths, so a plan that leaves U1 open
   - Archivo and IBM Plex Mono load through `next/font`. The 17 components are faithful ports.
   - Brand and asset copies are checksum-tested against the supplied package.
 
+### UI v2 (branch `frontend-rebirth/god-mode`)
+
+A presentation-layer rebuild over the same data layer (`ops.tsx`, the replay store) and API contracts. The only contract change is `severity` on the incident (a scenario fixture field). Specs: `docs/UI_V2_SPEC.md`, `docs/DESIGN_IMPLEMENTATION_MAP.md`, `docs/ASSET_PLACEMENT_MATRIX.md`; visual QA: `docs/VISUAL_QA_REPORT.md`.
+
+- **Routes:** `/` (nine-section landing, including the signature HALT moment), `/mission` (Mission Control), `/incidents` (Incident Rooms, scenario variants), `/architecture` (implemented / architecture-ready / planned), `/incidents/INC-2417` (Command Center), `/incidents/INC-2417/theatre` (presentation mode: nine steps, ← → keys, Esc exits).
+- **Modes:** Command (default, `components/v2/views/*V2.tsx`), Forensic (`?mode=forensic`, the v1 dense views unchanged), Theatre (the route above). Reports (`?view=report`) prints to PDF.
+- **Shell:** `components/v2/shell/CommandShell.tsx`: command bar, navigation rail with live statuses, evidence drawer (never empty; docked at ≥1280 px, a closed tab below), ten-stage incident track.
+- **Motifs:** `components/v2/motifs.tsx` (Containment Aperture, Proof Signal, Continuity Path, Threat Path, Safe Envelope, Thread Lattice). The aperture state comes from `apertureOf(ops)` in `components/v2/derive.ts`; every sentence there names the API field it rests on.
+- **Action Gate additions:** decline (recorded as `decision: "declined"`), request an alternate plan under the other policy, inspect evidence, and a notice that execution touches only the simulated environment.
+- **States:** an unreachable API shows a dedicated state with no figures and a retry; an infeasible plan shows the closest options and the alternate-policy request.
+- **Styles:** `styles/v2.css` (semantic aliases of the generated tokens; no raw colours). Motion is keyed to state; the global reduced-motion rule leaves end states.
+- **Screenshots:** `node apps/web/scripts/shoot.mjs <out> v2` (all routes, four sizes, records overflow) and `scripts/shoot-landing.mjs` (one image per landing section). Both need the API on :8000 and the web app on :3000.
+- **Rollback:** the v1 Command Center views remain (Forensic mode). To return entirely to v1, check out `stabilization/god-mode`; nothing on `main` was changed.
+
 ## 8. How to run
 
 From the repository root (Python 3.12 and Node 22+):
@@ -215,8 +229,8 @@ Presenter walkthrough: `docs/DEMO_SCRIPT.md`.
 | Suite | Command | Status |
 |---|---|---|
 | API (AT-1 to AT-6, AT-S, AT-P) | `cd services/api && .venv/Scripts/python -m pytest` | 148 passed with `HALT_TEST_PG_URL` (PostgreSQL 16 via pgserver); 145 passed and 3 skipped without it |
-| Web unit (AT-7, AT-8, AT-S.10–11, AT-P.11) | `npm test` | 88 passed |
-| E2E + axe (AT-8 to AT-10) | `npm run test:e2e` (starts the API and a production build) | 27 passed |
+| Web unit (AT-7, AT-8, AT-S.10–11, AT-P.11, UI v2) | `npm test` | 91 passed |
+| E2E + axe (AT-8 to AT-10, UI v2 platform) | `npm run test:e2e` (starts the API and a production build) | 41 passed |
 | Static | `npm run lint`, `npm run typecheck`, `ruff check`, `ruff format --check`, `mypy` | clean |
 | Everything except E2E | `npm run check` | passed (exit 0) |
 

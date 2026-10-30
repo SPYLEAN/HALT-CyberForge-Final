@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useState, type ReactNode } from "react";
+import { useEffect, useState, type ReactNode } from "react";
 
 import { Button, Dialog, StatusChip } from "@/components/halt";
 import { displayStage } from "@/components/shell/CommandCenterShell";
@@ -103,8 +103,8 @@ export function CommandBar({ mode, onMode, actor }: { mode: Mode; onMode: (m: Mo
       <Link href="/mission" aria-label="HALT Mission Control" style={{ display: "inline-flex", flexShrink: 0 }}>
         <Image src="/brand/halt-horizontal-bone.svg" alt="HALT" width={104} height={30} priority unoptimized />
       </Link>
-      <div style={{ display: "flex", flexDirection: "column", minWidth: 0, maxWidth: 300 }}>
-        <span className="v2-id">Incident {state.incidentId}</span>
+      <div className="v2-bar-ident" style={{ display: "flex", flexDirection: "column", minWidth: 0, maxWidth: 300 }}>
+        <span className="v2-id" style={{ whiteSpace: "nowrap" }}>Incident {state.incidentId}</span>
         <span style={{ fontSize: 15, fontWeight: 600, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>{ops.incident?.title ?? "Connecting to the HALT API"}</span>
       </div>
       <span aria-live="polite" style={{ flexShrink: 0 }}>
@@ -365,7 +365,17 @@ function IncidentEvidence() {
 }
 
 export function EvidenceDrawer({ sections, subject }: { sections: EvidenceSection[]; subject: string | null }) {
+  // Docked open on wide screens; below 1280 px it is an overlay, so it starts closed and the decision comes first.
   const [open, setOpen] = useState(true);
+  useEffect(() => {
+    if (!window.matchMedia?.("(min-width: 1280px)").matches) queueMicrotask(() => setOpen(false));
+  }, []);
+  // Selecting something to inspect opens the drawer on it.
+  const [shown, setShown] = useState(subject);
+  if (subject !== shown) {
+    setShown(subject);
+    if (subject) setOpen(true);
+  }
   return (
     <aside className="v2-drawer" aria-label="Evidence" data-open={open} tabIndex={0}>
       <div className="v2-drawer-head">
