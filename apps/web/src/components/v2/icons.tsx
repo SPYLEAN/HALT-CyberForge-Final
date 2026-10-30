@@ -16,7 +16,8 @@ export type IconName =
   | "architecture"
   | "theatre"
   | "forensic"
-  | "reset";
+  | "reset"
+  | "reconstruct";
 
 const PATHS: Record<IconName, ReactNode> = {
   // An aperture inside a frame: the incident at a glance.
@@ -116,6 +117,14 @@ const PATHS: Record<IconName, ReactNode> = {
     <>
       <path d="M4 12a8 8 0 1 0 2.4-5.7" />
       <path d="M4 4v4h4" />
+    </>
+  ),
+  // Scattered records joined into one thread.
+  reconstruct: (
+    <>
+      <path d="M4 6h3M4 12h3M4 18h3" />
+      <path d="M11 6l4 6-4 6" />
+      <circle cx="19" cy="12" r="2" />
     </>
   ),
 };

@@ -33,7 +33,7 @@ target.
 | evidence_coverage (selected edges with evidence) | 1.0 | 10/10 | 1.0 | yes |
 | unsupported_story_claims | 0 | 0/10 | 0 | yes |
 | deterministic_replay | 1.0 | 1/1 | 1.0 | yes |
-| reconstruction_latency_ms (median) | 410 | — | ≤ 3000 | yes |
+| reconstruction_latency_ms (median) | 242 | — | ≤ 3000 | yes |
 
 The one false-positive event is the young-domain marketing mail, a distractor. HALT-R1 scores it 0.80, so it
 becomes a seed and is kept in the graph. It is not linked to the selected path, and the story lists it under
@@ -55,7 +55,7 @@ missing evidence ("not linked to the selected path by sufficient evidence").
 | evidence_coverage | 1.0 | 19/19 | 1.0 | yes |
 | unsupported_story_claims | 0 | 0/9 | 0 | yes |
 | deterministic_replay | 1.0 | 1/1 | 1.0 | yes |
-| reconstruction_latency_ms (median) | 138 | — | ≤ 3000 | yes |
+| reconstruction_latency_ms (median) | 115 | — | ≤ 3000 | yes |
 
 ## Seed variants
 
@@ -67,7 +67,7 @@ against different attacks.
 ## How to read these numbers
 
 - **Latency is noisy.** It is single-machine wall-clock time on a Windows laptop with the repository under
-  OneDrive. The same code measured 183 ms (A) and 72 ms (B) in an earlier run of this pass. Treat it as
+  OneDrive. The same code has measured between 183 and 410 ms (A) and between 72 and 138 ms (B) across runs. Treat it as
   "well under the target", not as a benchmark.
 - **The denominators are tiny.** Each scenario has one attack chain of 7 steps. A single wrong edge would move
   precision by 5–10 points.

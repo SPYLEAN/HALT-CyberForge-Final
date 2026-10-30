@@ -21,10 +21,13 @@ from halt.ps2.config import load_config
 from halt.ps2.datasets import dataset_ids, load_dataset
 from halt.ps2.engine import Reconstruction, reconstruct
 from halt.ps2.evaluate import GROUND_TRUTH_DIR, evaluate_dataset, load_truth, score_run
+from halt.ps2.intake.adapters import ADAPTERS, CONTENT_TYPES
 from halt.ps2.intake.intake import Ingestion, IntakeError, ingest
 from halt.ps2.schema import (
+    CANONICAL_SCHEMA,
     AttackStory,
     CanonicalEvent,
+    Entity,
     EvaluationReport,
     Hypotheses,
     IngestionResult,
@@ -33,6 +36,7 @@ from halt.ps2.schema import (
     ReconstructedGraph,
     ReconstructionReceipt,
     ReconstructionSummary,
+    StageAssignment,
 )
 from halt.service import NotFound
 
@@ -79,6 +83,40 @@ class CanonicalEventPage(Contract):
     offset: int
     limit: int
     items: list[CanonicalEvent]
+
+
+class AdapterInfo(Contract):
+    adapter_id: str
+    version: str
+    format: str
+    content_types: list[str]
+    source_type: str
+    description: str
+
+
+class IntakeLimits(Contract):
+    max_files: int
+    max_file_bytes: int
+    max_total_bytes: int
+    max_records_per_file: int
+
+
+class IntakeCapabilities(Contract):
+    """What an upload may contain, read from the adapter registry and the reconstruction config."""
+
+    canonical_schema: str
+    adapters: list[AdapterInfo]
+    limits: IntakeLimits
+
+
+class EntityList(Contract):
+    run_id: str
+    items: list[Entity]
+
+
+class StageList(Contract):
+    run_id: str
+    items: list[StageAssignment]  # events kept in the reconstructed graph, in time order
 
 
 class AttackFlowExport(Contract):
@@ -146,6 +184,31 @@ def datasets() -> DatasetList:
             )
         )
     return DatasetList(items=items)
+
+
+@router.get("/intake", response_model=IntakeCapabilities)
+def intake_capabilities() -> IntakeCapabilities:
+    lim = load_config().limits
+    return IntakeCapabilities(
+        canonical_schema=CANONICAL_SCHEMA,
+        adapters=[
+            AdapterInfo(
+                adapter_id=a.adapter_id,
+                version=a.version,
+                format=a.fmt,
+                content_types=sorted(CONTENT_TYPES[a.fmt]),
+                source_type=a.source_type,
+                description=a.description,
+            )
+            for a in sorted(ADAPTERS.values(), key=lambda a: a.adapter_id)
+        ],
+        limits=IntakeLimits(
+            max_files=lim.max_files,
+            max_file_bytes=lim.max_file_bytes,
+            max_total_bytes=lim.max_total_bytes,
+            max_records_per_file=lim.max_records_per_file,
+        ),
+    )
 
 
 @router.post("/ingestions", response_model=IngestionResult, dependencies=[Depends(size_guard)])
@@ -225,6 +288,20 @@ def get_story(run_id: str, store: Store) -> AttackStory:
 @router.get("/reconstructions/{run_id}/hypotheses", response_model=Hypotheses)
 def get_hypotheses(run_id: str, store: Store) -> Hypotheses:
     return _run(store, run_id).hypotheses
+
+
+@router.get("/reconstructions/{run_id}/entities", response_model=EntityList)
+def get_entities(run_id: str, store: Store) -> EntityList:
+    return EntityList(run_id=run_id, items=_run(store, run_id).entities)
+
+
+@router.get("/reconstructions/{run_id}/stages", response_model=StageList)
+def get_stages(run_id: str, store: Store) -> StageList:
+    rec = _run(store, run_id)
+    kept = {n.node_id for n in rec.graph.nodes if n.node_kind == "event"}
+    order = {e.event_id: i for i, e in enumerate(rec.events)}  # events are already in time order
+    items = sorted((s for s in rec.stages.values() if s.event_id in kept), key=lambda s: order[s.event_id])
+    return StageList(run_id=run_id, items=items)
 
 
 @router.get("/reconstructions/{run_id}/receipt", response_model=ReconstructionReceipt)

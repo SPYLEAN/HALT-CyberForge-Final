@@ -177,12 +177,14 @@ const commands = {
       "services/api/halt/scenario/inc_2417/background_events.json",
       "apps/web/src/lib/api/schema.d.ts",
       "apps/web/tests/fixtures/api/stages.json",
+      "apps/web/tests/fixtures/api/ps2.json",
     ];
     const digest = (f) => createHash("sha256").update(readFileSync(join(ROOT, f))).digest("hex");
     const before = Object.fromEntries(generated.map((f) => [f, digest(f)]));
     run(py, ["-m", "halt.scenario.background"], { cwd: API_DIR });
     run(py, ["scripts/export_openapi.py"], { cwd: API_DIR });
     run(py, ["scripts/record_fixtures.py"], { cwd: API_DIR });
+    run(py, ["scripts/record_ps2_fixtures.py"], { cwd: API_DIR });
     run("npm", ["run", "gen:api"]);
     const drifted = generated.filter((f) => digest(f) !== before[f]);
     if (drifted.length) {

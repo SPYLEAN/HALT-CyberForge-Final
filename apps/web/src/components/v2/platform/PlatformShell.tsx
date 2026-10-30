@@ -13,6 +13,7 @@ import { Icon, type IconName } from "../icons";
 const ITEMS: Array<{ href: string; label: string; icon: IconName }> = [
   { href: "/mission", label: "Mission Control", icon: "mission" },
   { href: "/incidents", label: "Incident Rooms", icon: "rooms" },
+  { href: "/reconstruct", label: "Reconstruct", icon: "reconstruct" },
   { href: "/architecture", label: "System Architecture", icon: "architecture" },
 ];
 
@@ -28,7 +29,7 @@ export function PlatformShell({ children }: { children: ReactNode }) {
         </Link>
         <nav aria-label="Platform">
           {ITEMS.map((i) => (
-            <Link key={i.href} href={i.href} aria-current={path === i.href ? "page" : undefined}>
+            <Link key={i.href} href={i.href} aria-label={i.label} aria-current={path === i.href || (i.href === "/reconstruct" && path.startsWith("/reconstructions/")) ? "page" : undefined}>
               <Icon name={i.icon} size={18} />
               <span>{i.label}</span>
             </Link>

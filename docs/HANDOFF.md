@@ -241,6 +241,7 @@ Presenter walkthrough: `docs/DEMO_SCRIPT.md`.
 | Contracts (OpenAPI) | `python scripts/export_openapi.py` |
 | TypeScript types | `npm run gen:api` |
 | Recorded API fixtures | `python scripts/record_fixtures.py` |
+| Recorded PS2 web fixtures | `python scripts/record_ps2_fixtures.py` |
 | Background events | `python -m halt.scenario.background` |
 | Design tokens | `npm run gen:tokens` |
 | Copied assets | `npm run copy:brand` |

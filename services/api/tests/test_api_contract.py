@@ -49,6 +49,7 @@ DOCUMENTED = {
     ("post", "/incidents/{incident_id}/explain"),
     # PS2 reconstruction engine (docs/PS2_RECONSTRUCTION_ENGINE.md)
     ("get", "/ps2/datasets"),
+    ("get", "/ps2/intake"),
     ("post", "/ps2/ingestions"),
     ("get", "/ps2/ingestions/{batch_id}"),
     ("get", "/ps2/ingestions/{batch_id}/events"),
@@ -57,6 +58,8 @@ DOCUMENTED = {
     ("get", "/ps2/reconstructions/{run_id}/graph"),
     ("get", "/ps2/reconstructions/{run_id}/story"),
     ("get", "/ps2/reconstructions/{run_id}/hypotheses"),
+    ("get", "/ps2/reconstructions/{run_id}/entities"),
+    ("get", "/ps2/reconstructions/{run_id}/stages"),
     ("get", "/ps2/reconstructions/{run_id}/receipt"),
     ("get", "/ps2/reconstructions/{run_id}/attack-flow"),
     ("get", "/ps2/reconstructions/{run_id}/evaluation"),

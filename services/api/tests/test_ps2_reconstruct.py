@@ -363,3 +363,13 @@ def test_foundry_output_matches_committed_datasets() -> None:
         cwd=PS2.parents[1],
     )
     assert out.returncode == 0, out.stdout + out.stderr
+
+
+def test_service_nodes_carry_criticality_from_the_context() -> None:
+    ing, rec = dataset_run("scenario-a")
+    declared = {s.name: s.criticality for s in ing.context.business_services}
+    services = [n for n in rec.graph.nodes if n.node_kind == "business_service"]
+    assert services
+    for n in services:
+        assert n.criticality == declared.get(n.label)
+    assert all(n.criticality is None for n in rec.graph.nodes if n.node_kind != "business_service")

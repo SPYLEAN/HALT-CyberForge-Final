@@ -133,10 +133,10 @@
           "status": "measured",
           "target": 3000.0,
           "target_met": true,
-          "value": 410.1425
+          "value": 242.2709
         }
       ],
-      "replay_id": "37f48192b1a4481795756ae086471fd6c21d1feda6ef47813601da05ba6712f4"
+      "replay_id": "d84008bb2c753cac0b49651ee9580d8e53b3efc1ad28377d0d6c2286a584302a"
     },
     "scenario-b": {
       "dataset_id": "scenario-b",
@@ -270,10 +270,10 @@
           "status": "measured",
           "target": 3000.0,
           "target_met": true,
-          "value": 137.8126
+          "value": 115.0021
         }
       ],
-      "replay_id": "ddaf6698f71309b87e5c47b48351ad0f1cab26fc2c4030ced56d5923af71d908"
+      "replay_id": "250332fcca3e328633f5998cd1eacb101bbaa22fcd92b2f813d181605977808f"
     }
   },
   "generated_by": "python -m halt.ps2.evaluate",

@@ -2,7 +2,7 @@
 
 > **Status: Implementation Pass 1 (backend only).** The engine takes raw security logs and builds an
 > evidence-backed ThreadGraph, ranked attack paths, a cited story and a receipt. No frontend uses it yet. All
-> data is synthetic. The engine version is `halt.ps2.engine/1.0.0` and the code lives in
+> data is synthetic. The engine version is `halt.ps2.engine/1.0.1` (1.0.1 adds service criticality to graph nodes; no algorithm change) and the code lives in
 > `services/api/halt/ps2/`.
 
 The existing incident flow (`halt.scenario`, SafeCut, ProofSeal, Action Gate, audit) is unchanged. The

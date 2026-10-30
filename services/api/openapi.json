@@ -22,6 +22,75 @@
         "title": "ActionList",
         "type": "object"
       },
+      "AdapterInfo": {
+        "additionalProperties": false,
+        "properties": {
+          "adapter_id": {
+            "title": "Adapter Id",
+            "type": "string"
+          },
+          "content_types": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Content Types",
+            "type": "array"
+          },
+          "description": {
+            "title": "Description",
+            "type": "string"
+          },
+          "format": {
+            "title": "Format",
+            "type": "string"
+          },
+          "source_type": {
+            "title": "Source Type",
+            "type": "string"
+          },
+          "version": {
+            "title": "Version",
+            "type": "string"
+          }
+        },
+        "required": [
+          "adapter_id",
+          "version",
+          "format",
+          "content_types",
+          "source_type",
+          "description"
+        ],
+        "title": "AdapterInfo",
+        "type": "object"
+      },
+      "Alias": {
+        "additionalProperties": false,
+        "properties": {
+          "event_ids": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Event Ids",
+            "type": "array"
+          },
+          "field": {
+            "title": "Field",
+            "type": "string"
+          },
+          "value": {
+            "title": "Value",
+            "type": "string"
+          }
+        },
+        "required": [
+          "value",
+          "field",
+          "event_ids"
+        ],
+        "title": "Alias",
+        "type": "object"
+      },
       "ApiError": {
         "additionalProperties": false,
         "properties": {
@@ -1626,6 +1695,36 @@
         "title": "ConstraintResult",
         "type": "object"
       },
+      "Contradiction": {
+        "additionalProperties": false,
+        "properties": {
+          "event_ids": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Event Ids",
+            "type": "array"
+          },
+          "field": {
+            "title": "Field",
+            "type": "string"
+          },
+          "values": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Values",
+            "type": "array"
+          }
+        },
+        "required": [
+          "field",
+          "values",
+          "event_ids"
+        ],
+        "title": "Contradiction",
+        "type": "object"
+      },
       "CorrelateRequest": {
         "additionalProperties": false,
         "properties": {
@@ -1835,6 +1934,115 @@
           "blocks_path_ids"
         ],
         "title": "DisplayAction",
+        "type": "object"
+      },
+      "Entity": {
+        "additionalProperties": false,
+        "properties": {
+          "aliases": {
+            "items": {
+              "$ref": "#/components/schemas/Alias"
+            },
+            "title": "Aliases",
+            "type": "array"
+          },
+          "confidence": {
+            "maximum": 1.0,
+            "minimum": 0.0,
+            "title": "Confidence",
+            "type": "number"
+          },
+          "contradictions": {
+            "items": {
+              "$ref": "#/components/schemas/Contradiction"
+            },
+            "title": "Contradictions",
+            "type": "array"
+          },
+          "entity_id": {
+            "title": "Entity Id",
+            "type": "string"
+          },
+          "entity_type": {
+            "enum": [
+              "user",
+              "service_account",
+              "device",
+              "ip",
+              "session",
+              "token",
+              "application",
+              "process",
+              "api",
+              "cloud_service",
+              "database",
+              "business_service"
+            ],
+            "title": "Entity Type",
+            "type": "string"
+          },
+          "label": {
+            "title": "Label",
+            "type": "string"
+          },
+          "matching_fields": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Matching Fields",
+            "type": "array"
+          },
+          "method": {
+            "title": "Method",
+            "type": "string"
+          },
+          "resolution_version": {
+            "title": "Resolution Version",
+            "type": "string"
+          },
+          "source_event_ids": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Source Event Ids",
+            "type": "array"
+          }
+        },
+        "required": [
+          "entity_id",
+          "entity_type",
+          "label",
+          "aliases",
+          "matching_fields",
+          "method",
+          "confidence",
+          "contradictions",
+          "source_event_ids",
+          "resolution_version"
+        ],
+        "title": "Entity",
+        "type": "object"
+      },
+      "EntityList": {
+        "additionalProperties": false,
+        "properties": {
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/Entity"
+            },
+            "title": "Items",
+            "type": "array"
+          },
+          "run_id": {
+            "title": "Run Id",
+            "type": "string"
+          }
+        },
+        "required": [
+          "run_id",
+          "items"
+        ],
+        "title": "EntityList",
         "type": "object"
       },
       "Enumeration": {
@@ -2960,10 +3168,21 @@
           "run_id": {
             "title": "Run Id",
             "type": "string"
+          },
+          "selected": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/PathHypothesis"
+              },
+              {
+                "type": "null"
+              }
+            ]
           }
         },
         "required": [
           "run_id",
+          "selected",
           "alternates",
           "rejected_paths",
           "rejected_edges"
@@ -3590,6 +3809,62 @@
           "input_hashes"
         ],
         "title": "IngestionResult",
+        "type": "object"
+      },
+      "IntakeCapabilities": {
+        "additionalProperties": false,
+        "description": "What an upload may contain, read from the adapter registry and the reconstruction config.",
+        "properties": {
+          "adapters": {
+            "items": {
+              "$ref": "#/components/schemas/AdapterInfo"
+            },
+            "title": "Adapters",
+            "type": "array"
+          },
+          "canonical_schema": {
+            "title": "Canonical Schema",
+            "type": "string"
+          },
+          "limits": {
+            "$ref": "#/components/schemas/IntakeLimits"
+          }
+        },
+        "required": [
+          "canonical_schema",
+          "adapters",
+          "limits"
+        ],
+        "title": "IntakeCapabilities",
+        "type": "object"
+      },
+      "IntakeLimits": {
+        "additionalProperties": false,
+        "properties": {
+          "max_file_bytes": {
+            "title": "Max File Bytes",
+            "type": "integer"
+          },
+          "max_files": {
+            "title": "Max Files",
+            "type": "integer"
+          },
+          "max_records_per_file": {
+            "title": "Max Records Per File",
+            "type": "integer"
+          },
+          "max_total_bytes": {
+            "title": "Max Total Bytes",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "max_files",
+          "max_file_bytes",
+          "max_total_bytes",
+          "max_records_per_file"
+        ],
+        "title": "IntakeLimits",
         "type": "object"
       },
       "LatestArtefacts": {
@@ -5968,6 +6243,89 @@
         "title": "SolverInfo",
         "type": "object"
       },
+      "StageAssignment": {
+        "additionalProperties": false,
+        "properties": {
+          "candidates": {
+            "items": {
+              "$ref": "#/components/schemas/TechniqueCandidate"
+            },
+            "title": "Candidates",
+            "type": "array"
+          },
+          "event_id": {
+            "title": "Event Id",
+            "type": "string"
+          },
+          "primary": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/TechniqueCandidate"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "tactic": {
+            "anyOf": [
+              {
+                "enum": [
+                  "reconnaissance",
+                  "resource-development",
+                  "initial-access",
+                  "execution",
+                  "persistence",
+                  "privilege-escalation",
+                  "defense-evasion",
+                  "credential-access",
+                  "discovery",
+                  "lateral-movement",
+                  "collection",
+                  "command-and-control",
+                  "exfiltration",
+                  "impact"
+                ],
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Tactic"
+          }
+        },
+        "required": [
+          "event_id",
+          "tactic",
+          "primary",
+          "candidates"
+        ],
+        "title": "StageAssignment",
+        "type": "object"
+      },
+      "StageList": {
+        "additionalProperties": false,
+        "properties": {
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/StageAssignment"
+            },
+            "title": "Items",
+            "type": "array"
+          },
+          "run_id": {
+            "title": "Run Id",
+            "type": "string"
+          }
+        },
+        "required": [
+          "run_id",
+          "items"
+        ],
+        "title": "StageList",
+        "type": "object"
+      },
       "StageMessage": {
         "additionalProperties": false,
         "properties": {
@@ -6194,6 +6552,23 @@
       "ThreadNode": {
         "additionalProperties": false,
         "properties": {
+          "criticality": {
+            "anyOf": [
+              {
+                "enum": [
+                  "low",
+                  "medium",
+                  "high",
+                  "critical"
+                ],
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Criticality"
+          },
           "entity_type": {
             "anyOf": [
               {
@@ -6322,7 +6697,8 @@
           "occurred_at",
           "suspicion",
           "seed",
-          "tactic"
+          "tactic",
+          "criticality"
         ],
         "title": "ThreadNode",
         "type": "object"
@@ -7884,6 +8260,27 @@
         ]
       }
     },
+    "/api/v1/ps2/intake": {
+      "get": {
+        "operationId": "intake_capabilities_api_v1_ps2_intake_get",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/IntakeCapabilities"
+                }
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "summary": "Intake Capabilities",
+        "tags": [
+          "ps2"
+        ]
+      }
+    },
     "/api/v1/ps2/reconstructions": {
       "post": {
         "operationId": "create_reconstruction_api_v1_ps2_reconstructions_post",
@@ -8004,6 +8401,48 @@
           }
         },
         "summary": "Get Attack Flow",
+        "tags": [
+          "ps2"
+        ]
+      }
+    },
+    "/api/v1/ps2/reconstructions/{run_id}/entities": {
+      "get": {
+        "operationId": "get_entities_api_v1_ps2_reconstructions__run_id__entities_get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "run_id",
+            "required": true,
+            "schema": {
+              "title": "Run Id",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EntityList"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Get Entities",
         "tags": [
           "ps2"
         ]
@@ -8172,6 +8611,48 @@
           }
         },
         "summary": "Get Receipt",
+        "tags": [
+          "ps2"
+        ]
+      }
+    },
+    "/api/v1/ps2/reconstructions/{run_id}/stages": {
+      "get": {
+        "operationId": "get_stages_api_v1_ps2_reconstructions__run_id__stages_get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "run_id",
+            "required": true,
+            "schema": {
+              "title": "Run Id",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StageList"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Get Stages",
         "tags": [
           "ps2"
         ]

@@ -545,6 +545,23 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/v1/ps2/intake": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Intake Capabilities */
+        get: operations["intake_capabilities_api_v1_ps2_intake_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/v1/ps2/reconstructions": {
         parameters: {
             query?: never;
@@ -588,6 +605,23 @@ export interface paths {
         };
         /** Get Attack Flow */
         get: operations["get_attack_flow_api_v1_ps2_reconstructions__run_id__attack_flow_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/ps2/reconstructions/{run_id}/entities": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get Entities */
+        get: operations["get_entities_api_v1_ps2_reconstructions__run_id__entities_get"];
         put?: never;
         post?: never;
         delete?: never;
@@ -664,6 +698,23 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/v1/ps2/reconstructions/{run_id}/stages": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get Stages */
+        get: operations["get_stages_api_v1_ps2_reconstructions__run_id__stages_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/v1/ps2/reconstructions/{run_id}/story": {
         parameters: {
             query?: never;
@@ -727,6 +778,30 @@ export interface components {
             /** Items */
             items: components["schemas"]["ResponseAction"][];
             meta: components["schemas"]["Meta"];
+        };
+        /** AdapterInfo */
+        AdapterInfo: {
+            /** Adapter Id */
+            adapter_id: string;
+            /** Content Types */
+            content_types: string[];
+            /** Description */
+            description: string;
+            /** Format */
+            format: string;
+            /** Source Type */
+            source_type: string;
+            /** Version */
+            version: string;
+        };
+        /** Alias */
+        Alias: {
+            /** Event Ids */
+            event_ids: string[];
+            /** Field */
+            field: string;
+            /** Value */
+            value: string;
         };
         /** ApiError */
         ApiError: {
@@ -1204,6 +1279,15 @@ export interface components {
             /** Value */
             value: string;
         };
+        /** Contradiction */
+        Contradiction: {
+            /** Event Ids */
+            event_ids: string[];
+            /** Field */
+            field: string;
+            /** Values */
+            values: string[];
+        };
         /** CorrelateRequest */
         CorrelateRequest: {
             /** Until */
@@ -1275,6 +1359,39 @@ export interface components {
             id: string;
             /** Title */
             title: string;
+        };
+        /** Entity */
+        Entity: {
+            /** Aliases */
+            aliases: components["schemas"]["Alias"][];
+            /** Confidence */
+            confidence: number;
+            /** Contradictions */
+            contradictions: components["schemas"]["Contradiction"][];
+            /** Entity Id */
+            entity_id: string;
+            /**
+             * Entity Type
+             * @enum {string}
+             */
+            entity_type: "user" | "service_account" | "device" | "ip" | "session" | "token" | "application" | "process" | "api" | "cloud_service" | "database" | "business_service";
+            /** Label */
+            label: string;
+            /** Matching Fields */
+            matching_fields: string[];
+            /** Method */
+            method: string;
+            /** Resolution Version */
+            resolution_version: string;
+            /** Source Event Ids */
+            source_event_ids: string[];
+        };
+        /** EntityList */
+        EntityList: {
+            /** Items */
+            items: components["schemas"]["Entity"][];
+            /** Run Id */
+            run_id: string;
         };
         /** Enumeration */
         Enumeration: {
@@ -1672,6 +1789,7 @@ export interface components {
             rejected_paths: components["schemas"]["PathHypothesis"][];
             /** Run Id */
             run_id: string;
+            selected: components["schemas"]["PathHypothesis"] | null;
         };
         /** Impact */
         Impact: {
@@ -1880,6 +1998,28 @@ export interface components {
             rejected: number;
             /** Warnings */
             warnings: number;
+        };
+        /**
+         * IntakeCapabilities
+         * @description What an upload may contain, read from the adapter registry and the reconstruction config.
+         */
+        IntakeCapabilities: {
+            /** Adapters */
+            adapters: components["schemas"]["AdapterInfo"][];
+            /** Canonical Schema */
+            canonical_schema: string;
+            limits: components["schemas"]["IntakeLimits"];
+        };
+        /** IntakeLimits */
+        IntakeLimits: {
+            /** Max File Bytes */
+            max_file_bytes: number;
+            /** Max Files */
+            max_files: number;
+            /** Max Records Per File */
+            max_records_per_file: number;
+            /** Max Total Bytes */
+            max_total_bytes: number;
         };
         /**
          * LatestArtefacts
@@ -2701,6 +2841,23 @@ export interface components {
             /** Wall Ms */
             wall_ms: number;
         };
+        /** StageAssignment */
+        StageAssignment: {
+            /** Candidates */
+            candidates: components["schemas"]["TechniqueCandidate"][];
+            /** Event Id */
+            event_id: string;
+            primary: components["schemas"]["TechniqueCandidate"] | null;
+            /** Tactic */
+            tactic: ("reconnaissance" | "resource-development" | "initial-access" | "execution" | "persistence" | "privilege-escalation" | "defense-evasion" | "credential-access" | "discovery" | "lateral-movement" | "collection" | "command-and-control" | "exfiltration" | "impact") | null;
+        };
+        /** StageList */
+        StageList: {
+            /** Items */
+            items: components["schemas"]["StageAssignment"][];
+            /** Run Id */
+            run_id: string;
+        };
         /** StageMessage */
         StageMessage: {
             /** Seq */
@@ -2790,6 +2947,8 @@ export interface components {
         };
         /** ThreadNode */
         ThreadNode: {
+            /** Criticality */
+            criticality: ("low" | "medium" | "high" | "critical") | null;
             /** Entity Type */
             entity_type: ("user" | "service_account" | "device" | "ip" | "session" | "token" | "application" | "process" | "api" | "cloud_service" | "database" | "business_service") | null;
             /** Event Kind */
@@ -3897,6 +4056,26 @@ export interface operations {
             };
         };
     };
+    intake_capabilities_api_v1_ps2_intake_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["IntakeCapabilities"];
+                };
+            };
+        };
+    };
     create_reconstruction_api_v1_ps2_reconstructions_post: {
         parameters: {
             query?: never;
@@ -3979,6 +4158,37 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["AttackFlowExport"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    get_entities_api_v1_ps2_reconstructions__run_id__entities_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                run_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["EntityList"];
                 };
             };
             /** @description Validation Error */
@@ -4103,6 +4313,37 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["ReconstructionReceipt"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    get_stages_api_v1_ps2_reconstructions__run_id__stages_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                run_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StageList"];
                 };
             };
             /** @description Validation Error */

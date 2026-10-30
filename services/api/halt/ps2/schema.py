@@ -297,6 +297,7 @@ class ThreadNode(Contract):
     suspicion: float = 0.0
     seed: bool = False
     tactic: Tactic | None = None
+    criticality: Criticality | None = None  # business services only, from the organisation context
 
 
 class ReconstructedGraph(Contract):
@@ -349,6 +350,7 @@ class AttackStory(Contract):
 
 class Hypotheses(Contract):
     run_id: str
+    selected: PathHypothesis | None = None  # the selected path, for comparison with the alternates
     alternates: list[PathHypothesis]
     rejected_paths: list[PathHypothesis]
     rejected_edges: list[CandidateEdge]

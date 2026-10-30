@@ -4,4 +4,4 @@ Deterministic throughout: no language model participates in parsing, entity reso
 stages or path selection.
 """
 
-ENGINE_VERSION = "halt.ps2.engine/1.0.0"
+ENGINE_VERSION = "halt.ps2.engine/1.0.1"

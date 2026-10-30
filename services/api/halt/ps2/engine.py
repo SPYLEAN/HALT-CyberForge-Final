@@ -221,14 +221,17 @@ def reconstruct(ing: Ingestion, config: ReconstructionConfig) -> Reconstruction:
                     selected=True,
                 )
             )
+    criticality = {s.name.lower(): s.criticality for s in ing.context.business_services}
     for ent in sorted(used_entities):
         x = res.entities[ent]
+        is_service = x.entity_type == "business_service"
         nodes.append(
             ThreadNode(
                 node_id=ent,
-                node_kind="business_service" if x.entity_type == "business_service" else "entity",
+                node_kind="business_service" if is_service else "entity",
                 label=x.label,
                 entity_type=x.entity_type,
+                criticality=criticality.get(x.label.lower()) if is_service else None,
             )
         )
     forecasts = _forecasts(selected, by_id, ing, config)
@@ -241,6 +244,7 @@ def reconstruct(ing: Ingestion, config: ReconstructionConfig) -> Reconstruction:
                     node_kind="business_service",
                     label=service,
                     entity_type="business_service",
+                    criticality=criticality.get(service.lower()),
                 )
             )
     graph_edges = sorted([*reduced.selected, *entity_edges], key=lambda e: e.edge_id)
@@ -352,6 +356,7 @@ def reconstruct(ing: Ingestion, config: ReconstructionConfig) -> Reconstruction:
         paths=ranked.paths,
         hypotheses=Hypotheses(
             run_id=run_id,
+            selected=selected,
             alternates=alternates,
             rejected_paths=rejected_paths,
             rejected_edges=reduced.rejected,

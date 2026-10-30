@@ -106,3 +106,47 @@ def test_malformed_upload_is_reported_with_redacted_preview(client: TestClient) 
     body = res.json()
     assert body["rejected"] >= 1
     assert "hunter2" not in res.text
+
+
+def test_intake_capabilities_come_from_the_registry_and_config(client: TestClient) -> None:
+    from halt.ps2.intake.adapters import ADAPTERS
+
+    body = client.get(f"{BASE}/intake").json()
+    assert [a["adapter_id"] for a in body["adapters"]] == sorted(ADAPTERS)
+    lim = load_config().limits
+    assert body["limits"] == {
+        "max_files": lim.max_files,
+        "max_file_bytes": lim.max_file_bytes,
+        "max_total_bytes": lim.max_total_bytes,
+        "max_records_per_file": lim.max_records_per_file,
+    }
+    assert body["canonical_schema"] == "halt.canonical/1.0"
+
+
+def _fixture_run(client: TestClient, dataset_id: str) -> str:
+    batch = client.post(f"{BASE}/ingestions", json={"dataset_id": dataset_id}).json()["batch_id"]
+    return str(client.post(f"{BASE}/reconstructions", json={"batch_id": batch}).json()["run_id"])
+
+
+def test_entities_stages_and_selected_hypothesis(client: TestClient) -> None:
+    run_id = _fixture_run(client, "scenario-a")
+    summary = client.get(f"{BASE}/reconstructions/{run_id}").json()
+    entities = client.get(f"{BASE}/reconstructions/{run_id}/entities").json()["items"]
+    assert len(entities) == summary["entity_count"]
+    assert any(e["aliases"] for e in entities)
+
+    graph = client.get(f"{BASE}/reconstructions/{run_id}/graph").json()
+    kept = {n["node_id"] for n in graph["nodes"] if n["node_kind"] == "event"}
+    stages = client.get(f"{BASE}/reconstructions/{run_id}/stages").json()["items"]
+    assert stages and {s["event_id"] for s in stages} <= kept
+    times = {n["node_id"]: n["occurred_at"] for n in graph["nodes"] if n["node_kind"] == "event"}
+    ordered = [times[s["event_id"]] for s in stages]
+    assert ordered == sorted(ordered)
+    assert all(
+        c["basis"] in ("observed", "rule_inferred", "uncertain") for s in stages for c in s["candidates"]
+    )
+
+    hyp = client.get(f"{BASE}/reconstructions/{run_id}/hypotheses").json()
+    assert hyp["selected"]["path_id"] == summary["selected_path_id"]
+    assert hyp["selected"]["status"] == "selected"
+    assert all(a["score"] <= hyp["selected"]["score"] for a in hyp["alternates"])
