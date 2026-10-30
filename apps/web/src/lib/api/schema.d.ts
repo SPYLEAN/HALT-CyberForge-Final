@@ -477,6 +477,210 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/v1/ps2/datasets": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Datasets */
+        get: operations["datasets_api_v1_ps2_datasets_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/ps2/ingestions": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Create Ingestion */
+        post: operations["create_ingestion_api_v1_ps2_ingestions_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/ps2/ingestions/{batch_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get Ingestion */
+        get: operations["get_ingestion_api_v1_ps2_ingestions__batch_id__get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/ps2/ingestions/{batch_id}/events": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get Events */
+        get: operations["get_events_api_v1_ps2_ingestions__batch_id__events_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/ps2/reconstructions": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Create Reconstruction */
+        post: operations["create_reconstruction_api_v1_ps2_reconstructions_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/ps2/reconstructions/{run_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get Reconstruction */
+        get: operations["get_reconstruction_api_v1_ps2_reconstructions__run_id__get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/ps2/reconstructions/{run_id}/attack-flow": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get Attack Flow */
+        get: operations["get_attack_flow_api_v1_ps2_reconstructions__run_id__attack_flow_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/ps2/reconstructions/{run_id}/evaluation": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get Evaluation */
+        get: operations["get_evaluation_api_v1_ps2_reconstructions__run_id__evaluation_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/ps2/reconstructions/{run_id}/graph": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get Graph */
+        get: operations["get_graph_api_v1_ps2_reconstructions__run_id__graph_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/ps2/reconstructions/{run_id}/hypotheses": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get Hypotheses */
+        get: operations["get_hypotheses_api_v1_ps2_reconstructions__run_id__hypotheses_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/ps2/reconstructions/{run_id}/receipt": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get Receipt */
+        get: operations["get_receipt_api_v1_ps2_reconstructions__run_id__receipt_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/ps2/reconstructions/{run_id}/story": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get Story */
+        get: operations["get_story_api_v1_ps2_reconstructions__run_id__story_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/v1/ready": {
         parameters: {
             query?: never;
@@ -604,6 +808,36 @@ export interface components {
             /** User Node Id */
             user_node_id: string | null;
         };
+        /** AssetContext */
+        AssetContext: {
+            /** Business Service */
+            business_service: string;
+            /**
+             * Criticality
+             * @enum {string}
+             */
+            criticality: "low" | "medium" | "high" | "critical";
+            /** Depends On */
+            depends_on?: string[];
+            /** Resource */
+            resource: string;
+            /**
+             * Resource Type
+             * @enum {string}
+             */
+            resource_type: "api" | "cloud_service" | "database" | "file_share" | "mailbox" | "application";
+        };
+        /** AttackFlowExport */
+        AttackFlowExport: {
+            /** Bundle */
+            bundle: {
+                [key: string]: unknown;
+            };
+            /** Conformance */
+            conformance: string;
+            /** Run Id */
+            run_id: string;
+        };
         /** AttackPath */
         AttackPath: {
             /** Edge Ids */
@@ -628,6 +862,17 @@ export interface components {
             target_id: string;
             /** Uncertain */
             uncertain: boolean;
+        };
+        /** AttackStory */
+        AttackStory: {
+            /** Checked Statements */
+            checked_statements: number;
+            /** Run Id */
+            run_id: string;
+            /** Statements */
+            statements: components["schemas"]["StoryStatement"][];
+            /** Unsupported Claims */
+            unsupported_claims: number;
         };
         /** AttackTechnique */
         AttackTechnique: {
@@ -699,6 +944,181 @@ export interface components {
             /** Users */
             users: number;
         };
+        /** BusinessService */
+        BusinessService: {
+            /**
+             * Criticality
+             * @enum {string}
+             */
+            criticality: "low" | "medium" | "high" | "critical";
+            /** Name */
+            name: string;
+        };
+        /** CandidateEdge */
+        CandidateEdge: {
+            /**
+             * Classification
+             * @enum {string}
+             */
+            classification: "observed" | "inferred" | "forecast" | "context";
+            /** Components */
+            components: components["schemas"]["ConfidenceComponent"][];
+            /** Confidence */
+            confidence: number;
+            /** Edge Id */
+            edge_id: string;
+            /** Edge Type */
+            edge_type: string;
+            /** Evidence Event Ids */
+            evidence_event_ids: string[];
+            /** Evidence Fields */
+            evidence_fields: string[];
+            /** First Observed */
+            first_observed: string | null;
+            /** Last Observed */
+            last_observed: string | null;
+            /** Rejection Reason */
+            rejection_reason: string | null;
+            /** Rule Version */
+            rule_version: string;
+            /** Selected */
+            selected: boolean;
+            /** Source */
+            source: string;
+            /** Target */
+            target: string;
+        };
+        /** CanonicalEvent */
+        CanonicalEvent: {
+            /** Action */
+            action: string;
+            /** Actor Alias */
+            actor_alias: string | null;
+            /** Actor Kind */
+            actor_kind: ("human" | "service") | null;
+            /** Actor User */
+            actor_user: string | null;
+            /** Anomaly Score */
+            anomaly_score: number | null;
+            /** App Age Days */
+            app_age_days: number | null;
+            /** Application */
+            application: string | null;
+            /** Application Name */
+            application_name: string | null;
+            /** Asn */
+            asn: number | null;
+            /** Attack Candidates */
+            attack_candidates: components["schemas"]["TechniqueCandidate"][];
+            /** Business Service */
+            business_service: string | null;
+            /**
+             * Canonical Schema
+             * @default halt.canonical/1.0
+             * @constant
+             */
+            canonical_schema: "halt.canonical/1.0";
+            /** Credential Type */
+            credential_type: string | null;
+            /** Device */
+            device: string | null;
+            /** Device Id */
+            device_id: string | null;
+            /** Dst Ip */
+            dst_ip: string | null;
+            /** Event Id */
+            event_id: string;
+            /**
+             * Event Kind
+             * @enum {string}
+             */
+            event_kind: "email_delivery" | "authentication" | "mfa_method_change" | "app_consent" | "credential_change" | "token_use" | "token_issued" | "role_assumption" | "permission_change" | "resource_enumeration" | "resource_access" | "access_denied" | "process_start" | "database_query";
+            evidence: components["schemas"]["EvidenceRef"];
+            /** Host */
+            host: string | null;
+            /** Interactive */
+            interactive: boolean | null;
+            /** Link Type */
+            link_type: string | null;
+            /**
+             * Occurred At
+             * Format: date-time
+             */
+            occurred_at: string;
+            /**
+             * Outcome
+             * @enum {string}
+             */
+            outcome: "success" | "failure" | "unknown";
+            /** Parent Process */
+            parent_process: string | null;
+            /** Parent Process Id */
+            parent_process_id: number | null;
+            /** Permission */
+            permission: string | null;
+            /** Process */
+            process: string | null;
+            /** Process Id */
+            process_id: number | null;
+            /** Publisher Verified */
+            publisher_verified: boolean | null;
+            /** Raw Sha256 */
+            raw_sha256: string;
+            /** Request Count */
+            request_count: number | null;
+            /** Resource */
+            resource: string | null;
+            /** Resource Type */
+            resource_type: string | null;
+            /** Role */
+            role: string | null;
+            /** Scopes */
+            scopes: string[];
+            /** Sender Domain */
+            sender_domain: string | null;
+            /** Sender Domain Age Days */
+            sender_domain_age_days: number | null;
+            /** Session */
+            session: string | null;
+            /**
+             * Severity
+             * @default info
+             * @enum {string}
+             */
+            severity: "info" | "low" | "medium" | "high";
+            /** Source Name */
+            source_name: string;
+            /**
+             * Source Type
+             * @enum {string}
+             */
+            source_type: "identity_signin" | "identity_audit" | "email" | "api_activity" | "cloud_audit" | "process" | "database_audit";
+            /** Src Ip */
+            src_ip: string | null;
+            /** Target User */
+            target_user: string | null;
+            /** Token */
+            token: string | null;
+            /** Token Issued */
+            token_issued: string | null;
+            /** User Agent */
+            user_agent: string | null;
+            /** Window S */
+            window_s: number | null;
+        };
+        /** CanonicalEventPage */
+        CanonicalEventPage: {
+            /** Batch Id */
+            batch_id: string;
+            /** Items */
+            items: components["schemas"]["CanonicalEvent"][];
+            /** Limit */
+            limit: number;
+            /** Offset */
+            offset: number;
+            /** Total */
+            total: number;
+        };
         /** ClockMessage */
         ClockMessage: {
             /** Playing */
@@ -725,6 +1145,17 @@ export interface components {
             breaks: components["schemas"]["ConstraintResult"][];
             /** Candidate Ids */
             candidate_ids: string[];
+        };
+        /** ConfidenceComponent */
+        ConfidenceComponent: {
+            /** Detail */
+            detail: string;
+            /** Name */
+            name: string;
+            /** Value */
+            value: number;
+            /** Weight */
+            weight: number;
         };
         /** Constraint */
         Constraint: {
@@ -795,6 +1226,31 @@ export interface components {
              */
             strength: "hard" | "soft";
         };
+        /** DatasetInfo */
+        DatasetInfo: {
+            /** Adapters */
+            adapters: string[];
+            /** Dataset Id */
+            dataset_id: string;
+            /** Files */
+            files: string[];
+            /** Has Ground Truth */
+            has_ground_truth: boolean;
+            /** Seed */
+            seed: number;
+            /**
+             * Synthetic
+             * @default true
+             */
+            synthetic: boolean;
+            /** Title */
+            title: string;
+        };
+        /** DatasetList */
+        DatasetList: {
+            /** Items */
+            items: components["schemas"]["DatasetInfo"][];
+        };
         /**
          * Derivation
          * @description Required wherever a number is shown: counts with their denominator, never a bare score.
@@ -831,6 +1287,17 @@ export interface components {
             /** Unique */
             unique: boolean;
         };
+        /** EvaluationReport */
+        EvaluationReport: {
+            /** Dataset Id */
+            dataset_id: string;
+            /** Ground Truth Sha256 */
+            ground_truth_sha256: string;
+            /** Metrics */
+            metrics: components["schemas"]["MetricResult"][];
+            /** Replay Id */
+            replay_id: string;
+        };
         /** EventList */
         EventList: {
             /** Items */
@@ -857,6 +1324,22 @@ export interface components {
             record_id: string;
             /** System */
             system: string;
+        };
+        /**
+         * EvidenceRef
+         * @description Where an event came from. The raw record itself is kept only as its SHA-256 and a redacted preview.
+         */
+        EvidenceRef: {
+            /** Line */
+            line: number | null;
+            /** Parser */
+            parser: string;
+            /** Raw Sha256 */
+            raw_sha256: string;
+            /** Source Name */
+            source_name: string;
+            /** Source Record Id */
+            source_record_id: string;
         };
         /** ExecuteRequest */
         ExecuteRequest: {
@@ -921,6 +1404,23 @@ export interface components {
             subject_id: string;
             /** Text */
             text: string;
+        };
+        /** FileReport */
+        FileReport: {
+            /** Accepted */
+            accepted: number;
+            /** Adapter */
+            adapter: string;
+            /** File Sha256 */
+            file_sha256: string;
+            /** Filename */
+            filename: string;
+            /** Records */
+            records: components["schemas"]["IngestedRecord"][];
+            /** Rejected */
+            rejected: number;
+            /** Warnings */
+            warnings: number;
         };
         /** Finding */
         Finding: {
@@ -1162,6 +1662,17 @@ export interface components {
             /** Version */
             version: string;
         };
+        /** Hypotheses */
+        Hypotheses: {
+            /** Alternates */
+            alternates: components["schemas"]["PathHypothesis"][];
+            /** Rejected Edges */
+            rejected_edges: components["schemas"]["CandidateEdge"][];
+            /** Rejected Paths */
+            rejected_paths: components["schemas"]["PathHypothesis"][];
+            /** Run Id */
+            run_id: string;
+        };
         /** Impact */
         Impact: {
             /** Description */
@@ -1299,6 +1810,77 @@ export interface components {
             /** Rationale */
             rationale: string;
         };
+        /** IngestedRecord */
+        IngestedRecord: {
+            /** Event Id */
+            event_id: string | null;
+            /**
+             * Ingested At
+             * Format: date-time
+             */
+            ingested_at: string;
+            /** Issues */
+            issues: components["schemas"]["RecordIssue"][];
+            /** Line */
+            line: number | null;
+            /** Occurred At */
+            occurred_at: string | null;
+            /** Parser */
+            parser: string;
+            /** Preview */
+            preview: string;
+            /** Raw Sha256 */
+            raw_sha256: string;
+            /** Source Name */
+            source_name: string;
+            /** Source Record Id */
+            source_record_id: string;
+            /**
+             * Status
+             * @enum {string}
+             */
+            status: "normalised" | "normalised_with_warnings" | "rejected";
+        };
+        /**
+         * IngestionRequest
+         * @description Exactly one of: a bundled dataset id (fixture mode) or uploaded files with an organisation context.
+         */
+        IngestionRequest: {
+            context?: components["schemas"]["OrgContext"] | null;
+            /** Dataset Id */
+            dataset_id?: string | null;
+            /** Files */
+            files?: components["schemas"]["RawFile"][];
+        };
+        /** IngestionResult */
+        IngestionResult: {
+            /** Accepted */
+            accepted: number;
+            /** Batch Id */
+            batch_id: string;
+            /**
+             * Canonical Schema
+             * @default halt.canonical/1.0
+             * @constant
+             */
+            canonical_schema: "halt.canonical/1.0";
+            /** Context Sha256 */
+            context_sha256: string;
+            /** Dataset Id */
+            dataset_id: string | null;
+            /** Event Count */
+            event_count: number;
+            /** Files */
+            files: components["schemas"]["FileReport"][];
+            /** Input Hashes */
+            input_hashes: {
+                [key: string]: string;
+            };
+            /** Rejected */
+            rejected: number;
+            /** Warnings */
+            warnings: number;
+        };
         /**
          * LatestArtefacts
          * @description Ids of the incident's current artefacts, so a client can rehydrate after a reload.
@@ -1348,6 +1930,31 @@ export interface components {
              */
             simulated: true;
         };
+        /** MetricResult */
+        MetricResult: {
+            /** Denominator */
+            denominator: number | null;
+            /** Name */
+            name: string;
+            /**
+             * Note
+             * @default
+             */
+            note: string;
+            /** Numerator */
+            numerator: number | null;
+            /**
+             * Status
+             * @enum {string}
+             */
+            status: "measured" | "unavailable";
+            /** Target */
+            target: number | null;
+            /** Target Met */
+            target_met: boolean | null;
+            /** Value */
+            value: number | null;
+        };
         /** Objective */
         Objective: {
             /** Terms */
@@ -1356,6 +1963,53 @@ export interface components {
             };
             /** Value */
             value: number;
+        };
+        /** OrgContext */
+        OrgContext: {
+            /** Assets */
+            assets?: components["schemas"]["AssetContext"][];
+            /** Business Services */
+            business_services?: components["schemas"]["BusinessService"][];
+            /** Internal Cidrs */
+            internal_cidrs?: string[];
+            /** Known Egress Cidrs */
+            known_egress_cidrs?: string[];
+            /** Managed Hosts */
+            managed_hosts?: string[];
+            /** Organisation */
+            organisation: string;
+            /** Service Accounts */
+            service_accounts?: string[];
+        };
+        /** PathHypothesis */
+        PathHypothesis: {
+            /** Components */
+            components: components["schemas"]["ConfidenceComponent"][];
+            /** Edge Ids */
+            edge_ids: string[];
+            /** Event Ids */
+            event_ids: string[];
+            /** Missing Evidence */
+            missing_evidence: string[];
+            /** Path Id */
+            path_id: string;
+            /** Rank */
+            rank: number;
+            /** Rejection Reason */
+            rejection_reason: string | null;
+            /** Root Event Id */
+            root_event_id: string;
+            /** Score */
+            score: number;
+            /**
+             * Status
+             * @enum {string}
+             */
+            status: "selected" | "alternate" | "rejected";
+            /** Terminal Event Id */
+            terminal_event_id: string;
+            /** Unsupported Hops */
+            unsupported_hops: string[];
         };
         /** PathList */
         PathList: {
@@ -1690,6 +2344,20 @@ export interface components {
             /** Signature Valid */
             signature_valid: boolean;
         };
+        /** RawFile */
+        RawFile: {
+            /** Adapter */
+            adapter: string;
+            /** Content */
+            content: string;
+            /**
+             * Content Type
+             * @enum {string}
+             */
+            content_type: "application/json" | "application/x-ndjson" | "application/jsonl" | "text/csv";
+            /** Filename */
+            filename: string;
+        };
         /** Readiness */
         Readiness: {
             /**
@@ -1703,6 +2371,106 @@ export interface components {
             ready: boolean;
             /** Reason */
             reason: string | null;
+        };
+        /** ReconstructedGraph */
+        ReconstructedGraph: {
+            /** Edges */
+            edges: components["schemas"]["CandidateEdge"][];
+            /** Forecast Edges */
+            forecast_edges: components["schemas"]["CandidateEdge"][];
+            /** Graph Hash */
+            graph_hash: string;
+            /** Nodes */
+            nodes: components["schemas"]["ThreadNode"][];
+            /** Run Id */
+            run_id: string;
+        };
+        /** ReconstructionReceipt */
+        ReconstructionReceipt: {
+            /** Adapter Versions */
+            adapter_versions: {
+                [key: string]: string;
+            };
+            /** Alternate Path Ids */
+            alternate_path_ids: string[];
+            /** Canonical Schema */
+            canonical_schema: string;
+            /** Config Sha256 */
+            config_sha256: string;
+            /** Context Sha256 */
+            context_sha256: string;
+            /** Engine Version */
+            engine_version: string;
+            /** Evidence Coverage */
+            evidence_coverage: number;
+            /** Graph Hash */
+            graph_hash: string;
+            /** Input Hashes */
+            input_hashes: {
+                [key: string]: string;
+            };
+            /** Metrics */
+            metrics: components["schemas"]["MetricResult"][];
+            /** Processing Ms */
+            processing_ms: number;
+            /** Receipt Id */
+            receipt_id: string;
+            /** Replay Id */
+            replay_id: string;
+            /** Run Id */
+            run_id: string;
+            /** Selected Event Ids */
+            selected_event_ids: string[];
+            /** Selected Path Id */
+            selected_path_id: string | null;
+            /** Story Citation Coverage */
+            story_citation_coverage: number;
+            uncertainty: components["schemas"]["Uncertainty"];
+        };
+        /** ReconstructionRequest */
+        ReconstructionRequest: {
+            /** Batch Id */
+            batch_id: string;
+        };
+        /** ReconstructionSummary */
+        ReconstructionSummary: {
+            /** Affected Services */
+            affected_services: string[];
+            /** Batch Id */
+            batch_id: string;
+            /** Candidate Edges */
+            candidate_edges: number;
+            /** Dataset Id */
+            dataset_id: string | null;
+            /** Entity Count */
+            entity_count: number;
+            /** Event Count */
+            event_count: number;
+            /** Graph Hash */
+            graph_hash: string;
+            /** Processing Ms */
+            processing_ms: number;
+            /** Replay Id */
+            replay_id: string;
+            /** Root Event Id */
+            root_event_id: string | null;
+            /** Run Id */
+            run_id: string;
+            /** Seeds */
+            seeds: number;
+            /** Selected Edges */
+            selected_edges: number;
+            /** Selected Path Id */
+            selected_path_id: string | null;
+        };
+        /** RecordIssue */
+        RecordIssue: {
+            /** Code */
+            code: string;
+            /** Field */
+            field: string | null;
+            /** Message */
+            message: string;
         };
         /** Rejection */
         Rejection: {
@@ -1966,6 +2734,33 @@ export interface components {
              */
             type: "stale";
         };
+        /** StoryStatement */
+        StoryStatement: {
+            /** Confidence */
+            confidence: number;
+            /** Edge Ids */
+            edge_ids: string[];
+            /** Event Ids */
+            event_ids: string[];
+            /** Facts */
+            facts: {
+                [key: string]: string;
+            };
+            /**
+             * Section
+             * @enum {string}
+             */
+            section: "observed" | "inferred" | "missing_evidence" | "forecast";
+            /** Statement Id */
+            statement_id: string;
+            /**
+             * Status
+             * @enum {string}
+             */
+            status: "observed" | "inferred" | "missing" | "forecast";
+            /** Text */
+            text: string;
+        };
         /** SubscribeCommand */
         SubscribeCommand: {
             /**
@@ -1973,6 +2768,55 @@ export interface components {
              * @constant
              */
             type: "subscribe";
+        };
+        /** TechniqueCandidate */
+        TechniqueCandidate: {
+            /**
+             * Basis
+             * @enum {string}
+             */
+            basis: "observed" | "rule_inferred" | "uncertain";
+            /** Rule */
+            rule: string;
+            /**
+             * Tactic
+             * @enum {string}
+             */
+            tactic: "reconnaissance" | "resource-development" | "initial-access" | "execution" | "persistence" | "privilege-escalation" | "defense-evasion" | "credential-access" | "discovery" | "lateral-movement" | "collection" | "command-and-control" | "exfiltration" | "impact";
+            /** Technique Id */
+            technique_id: string;
+            /** Technique Name */
+            technique_name: string;
+        };
+        /** ThreadNode */
+        ThreadNode: {
+            /** Entity Type */
+            entity_type: ("user" | "service_account" | "device" | "ip" | "session" | "token" | "application" | "process" | "api" | "cloud_service" | "database" | "business_service") | null;
+            /** Event Kind */
+            event_kind: ("email_delivery" | "authentication" | "mfa_method_change" | "app_consent" | "credential_change" | "token_use" | "token_issued" | "role_assumption" | "permission_change" | "resource_enumeration" | "resource_access" | "access_denied" | "process_start" | "database_query") | null;
+            /** Label */
+            label: string;
+            /** Node Id */
+            node_id: string;
+            /**
+             * Node Kind
+             * @enum {string}
+             */
+            node_kind: "event" | "entity" | "business_service";
+            /** Occurred At */
+            occurred_at: string | null;
+            /**
+             * Seed
+             * @default false
+             */
+            seed: boolean;
+            /**
+             * Suspicion
+             * @default 0
+             */
+            suspicion: number;
+            /** Tactic */
+            tactic: ("reconnaissance" | "resource-development" | "initial-access" | "execution" | "persistence" | "privilege-escalation" | "defense-evasion" | "credential-access" | "discovery" | "lateral-movement" | "collection" | "command-and-control" | "exfiltration" | "impact") | null;
         };
         /**
          * Transition
@@ -1986,6 +2830,17 @@ export interface components {
             ];
             /** P */
             p: number;
+        };
+        /** Uncertainty */
+        Uncertainty: {
+            /** Coverage Gaps */
+            coverage_gaps: string[];
+            /** Inferred Hops */
+            inferred_hops: number;
+            /** Min Edge Confidence */
+            min_edge_confidence: number;
+            /** Score Margin */
+            score_margin: number;
         };
         /** UserGroupImpact */
         UserGroupImpact: {
@@ -2911,6 +3766,374 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["ProofVerify"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    datasets_api_v1_ps2_datasets_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["DatasetList"];
+                };
+            };
+        };
+    };
+    create_ingestion_api_v1_ps2_ingestions_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["IngestionRequest"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["IngestionResult"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    get_ingestion_api_v1_ps2_ingestions__batch_id__get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                batch_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["IngestionResult"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    get_events_api_v1_ps2_ingestions__batch_id__events_get: {
+        parameters: {
+            query?: {
+                offset?: number;
+                limit?: number;
+            };
+            header?: never;
+            path: {
+                batch_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CanonicalEventPage"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    create_reconstruction_api_v1_ps2_reconstructions_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["ReconstructionRequest"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ReconstructionSummary"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    get_reconstruction_api_v1_ps2_reconstructions__run_id__get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                run_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ReconstructionSummary"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    get_attack_flow_api_v1_ps2_reconstructions__run_id__attack_flow_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                run_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["AttackFlowExport"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    get_evaluation_api_v1_ps2_reconstructions__run_id__evaluation_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                run_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["EvaluationReport"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    get_graph_api_v1_ps2_reconstructions__run_id__graph_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                run_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ReconstructedGraph"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    get_hypotheses_api_v1_ps2_reconstructions__run_id__hypotheses_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                run_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Hypotheses"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    get_receipt_api_v1_ps2_reconstructions__run_id__receipt_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                run_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ReconstructionReceipt"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    get_story_api_v1_ps2_reconstructions__run_id__story_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                run_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["AttackStory"];
                 };
             };
             /** @description Validation Error */

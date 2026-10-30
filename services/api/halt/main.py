@@ -14,6 +14,7 @@ from halt.config import Settings, get_settings
 from halt.db import make_engine
 from halt.logging import configure_logging, get_logger, request_id_var
 from halt.openapi import build_openapi
+from halt.ps2 import api as ps2_api
 from halt.scenario.loader import load_scenario
 
 API_PREFIX = "/api/v1"
@@ -64,6 +65,7 @@ def create_app(settings: Settings | None = None) -> FastAPI:
     errors.install(app)
     app.include_router(health.router, prefix=API_PREFIX)
     app.include_router(routes.router, prefix=API_PREFIX)
+    app.include_router(ps2_api.router, prefix=API_PREFIX)
     app.include_router(ws.router)
     app.openapi = lambda: build_openapi(app)  # type: ignore[method-assign]
     return app

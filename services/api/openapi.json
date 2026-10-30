@@ -251,6 +251,81 @@
         "title": "Approver",
         "type": "object"
       },
+      "AssetContext": {
+        "additionalProperties": false,
+        "properties": {
+          "business_service": {
+            "title": "Business Service",
+            "type": "string"
+          },
+          "criticality": {
+            "enum": [
+              "low",
+              "medium",
+              "high",
+              "critical"
+            ],
+            "title": "Criticality",
+            "type": "string"
+          },
+          "depends_on": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Depends On",
+            "type": "array"
+          },
+          "resource": {
+            "title": "Resource",
+            "type": "string"
+          },
+          "resource_type": {
+            "enum": [
+              "api",
+              "cloud_service",
+              "database",
+              "file_share",
+              "mailbox",
+              "application"
+            ],
+            "title": "Resource Type",
+            "type": "string"
+          }
+        },
+        "required": [
+          "resource",
+          "resource_type",
+          "business_service",
+          "criticality"
+        ],
+        "title": "AssetContext",
+        "type": "object"
+      },
+      "AttackFlowExport": {
+        "additionalProperties": false,
+        "properties": {
+          "bundle": {
+            "additionalProperties": true,
+            "title": "Bundle",
+            "type": "object"
+          },
+          "conformance": {
+            "title": "Conformance",
+            "type": "string"
+          },
+          "run_id": {
+            "title": "Run Id",
+            "type": "string"
+          }
+        },
+        "required": [
+          "run_id",
+          "conformance",
+          "bundle"
+        ],
+        "title": "AttackFlowExport",
+        "type": "object"
+      },
       "AttackPath": {
         "additionalProperties": false,
         "properties": {
@@ -325,6 +400,38 @@
           "uncertain"
         ],
         "title": "AttackPath",
+        "type": "object"
+      },
+      "AttackStory": {
+        "additionalProperties": false,
+        "properties": {
+          "checked_statements": {
+            "title": "Checked Statements",
+            "type": "integer"
+          },
+          "run_id": {
+            "title": "Run Id",
+            "type": "string"
+          },
+          "statements": {
+            "items": {
+              "$ref": "#/components/schemas/StoryStatement"
+            },
+            "title": "Statements",
+            "type": "array"
+          },
+          "unsupported_claims": {
+            "title": "Unsupported Claims",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "run_id",
+          "statements",
+          "checked_statements",
+          "unsupported_claims"
+        ],
+        "title": "AttackStory",
         "type": "object"
       },
       "AttackTechnique": {
@@ -540,6 +647,731 @@
         "title": "BusinessInfo",
         "type": "object"
       },
+      "BusinessService": {
+        "additionalProperties": false,
+        "properties": {
+          "criticality": {
+            "enum": [
+              "low",
+              "medium",
+              "high",
+              "critical"
+            ],
+            "title": "Criticality",
+            "type": "string"
+          },
+          "name": {
+            "title": "Name",
+            "type": "string"
+          }
+        },
+        "required": [
+          "name",
+          "criticality"
+        ],
+        "title": "BusinessService",
+        "type": "object"
+      },
+      "CandidateEdge": {
+        "additionalProperties": false,
+        "properties": {
+          "classification": {
+            "enum": [
+              "observed",
+              "inferred",
+              "forecast",
+              "context"
+            ],
+            "title": "Classification",
+            "type": "string"
+          },
+          "components": {
+            "items": {
+              "$ref": "#/components/schemas/ConfidenceComponent"
+            },
+            "title": "Components",
+            "type": "array"
+          },
+          "confidence": {
+            "maximum": 1.0,
+            "minimum": 0.0,
+            "title": "Confidence",
+            "type": "number"
+          },
+          "edge_id": {
+            "title": "Edge Id",
+            "type": "string"
+          },
+          "edge_type": {
+            "title": "Edge Type",
+            "type": "string"
+          },
+          "evidence_event_ids": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Evidence Event Ids",
+            "type": "array"
+          },
+          "evidence_fields": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Evidence Fields",
+            "type": "array"
+          },
+          "first_observed": {
+            "anyOf": [
+              {
+                "format": "date-time",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "First Observed"
+          },
+          "last_observed": {
+            "anyOf": [
+              {
+                "format": "date-time",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Last Observed"
+          },
+          "rejection_reason": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Rejection Reason"
+          },
+          "rule_version": {
+            "title": "Rule Version",
+            "type": "string"
+          },
+          "selected": {
+            "title": "Selected",
+            "type": "boolean"
+          },
+          "source": {
+            "title": "Source",
+            "type": "string"
+          },
+          "target": {
+            "title": "Target",
+            "type": "string"
+          }
+        },
+        "required": [
+          "edge_id",
+          "edge_type",
+          "source",
+          "target",
+          "first_observed",
+          "last_observed",
+          "evidence_event_ids",
+          "evidence_fields",
+          "confidence",
+          "components",
+          "classification",
+          "rule_version",
+          "selected",
+          "rejection_reason"
+        ],
+        "title": "CandidateEdge",
+        "type": "object"
+      },
+      "CanonicalEvent": {
+        "additionalProperties": false,
+        "properties": {
+          "action": {
+            "title": "Action",
+            "type": "string"
+          },
+          "actor_alias": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Actor Alias"
+          },
+          "actor_kind": {
+            "anyOf": [
+              {
+                "enum": [
+                  "human",
+                  "service"
+                ],
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Actor Kind"
+          },
+          "actor_user": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Actor User"
+          },
+          "anomaly_score": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Anomaly Score"
+          },
+          "app_age_days": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "App Age Days"
+          },
+          "application": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Application"
+          },
+          "application_name": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Application Name"
+          },
+          "asn": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Asn"
+          },
+          "attack_candidates": {
+            "items": {
+              "$ref": "#/components/schemas/TechniqueCandidate"
+            },
+            "title": "Attack Candidates",
+            "type": "array"
+          },
+          "business_service": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Business Service"
+          },
+          "canonical_schema": {
+            "const": "halt.canonical/1.0",
+            "default": "halt.canonical/1.0",
+            "title": "Canonical Schema",
+            "type": "string"
+          },
+          "credential_type": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Credential Type"
+          },
+          "device": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Device"
+          },
+          "device_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Device Id"
+          },
+          "dst_ip": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Dst Ip"
+          },
+          "event_id": {
+            "title": "Event Id",
+            "type": "string"
+          },
+          "event_kind": {
+            "enum": [
+              "email_delivery",
+              "authentication",
+              "mfa_method_change",
+              "app_consent",
+              "credential_change",
+              "token_use",
+              "token_issued",
+              "role_assumption",
+              "permission_change",
+              "resource_enumeration",
+              "resource_access",
+              "access_denied",
+              "process_start",
+              "database_query"
+            ],
+            "title": "Event Kind",
+            "type": "string"
+          },
+          "evidence": {
+            "$ref": "#/components/schemas/EvidenceRef"
+          },
+          "host": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Host"
+          },
+          "interactive": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Interactive"
+          },
+          "link_type": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Link Type"
+          },
+          "occurred_at": {
+            "format": "date-time",
+            "title": "Occurred At",
+            "type": "string"
+          },
+          "outcome": {
+            "enum": [
+              "success",
+              "failure",
+              "unknown"
+            ],
+            "title": "Outcome",
+            "type": "string"
+          },
+          "parent_process": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Parent Process"
+          },
+          "parent_process_id": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Parent Process Id"
+          },
+          "permission": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Permission"
+          },
+          "process": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Process"
+          },
+          "process_id": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Process Id"
+          },
+          "publisher_verified": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Publisher Verified"
+          },
+          "raw_sha256": {
+            "pattern": "^[0-9a-f]{64}$",
+            "title": "Raw Sha256",
+            "type": "string"
+          },
+          "request_count": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Request Count"
+          },
+          "resource": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Resource"
+          },
+          "resource_type": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Resource Type"
+          },
+          "role": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Role"
+          },
+          "scopes": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Scopes",
+            "type": "array"
+          },
+          "sender_domain": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Sender Domain"
+          },
+          "sender_domain_age_days": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Sender Domain Age Days"
+          },
+          "session": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Session"
+          },
+          "severity": {
+            "default": "info",
+            "enum": [
+              "info",
+              "low",
+              "medium",
+              "high"
+            ],
+            "title": "Severity",
+            "type": "string"
+          },
+          "source_name": {
+            "title": "Source Name",
+            "type": "string"
+          },
+          "source_type": {
+            "enum": [
+              "identity_signin",
+              "identity_audit",
+              "email",
+              "api_activity",
+              "cloud_audit",
+              "process",
+              "database_audit"
+            ],
+            "title": "Source Type",
+            "type": "string"
+          },
+          "src_ip": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Src Ip"
+          },
+          "target_user": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Target User"
+          },
+          "token": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Token"
+          },
+          "token_issued": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Token Issued"
+          },
+          "user_agent": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "User Agent"
+          },
+          "window_s": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Window S"
+          }
+        },
+        "required": [
+          "canonical_schema",
+          "event_id",
+          "occurred_at",
+          "source_type",
+          "source_name",
+          "event_kind",
+          "action",
+          "outcome",
+          "severity",
+          "actor_user",
+          "actor_kind",
+          "actor_alias",
+          "target_user",
+          "src_ip",
+          "dst_ip",
+          "asn",
+          "user_agent",
+          "device",
+          "device_id",
+          "host",
+          "session",
+          "token",
+          "token_issued",
+          "application",
+          "application_name",
+          "process",
+          "process_id",
+          "parent_process",
+          "parent_process_id",
+          "resource",
+          "resource_type",
+          "business_service",
+          "request_count",
+          "window_s",
+          "scopes",
+          "publisher_verified",
+          "app_age_days",
+          "credential_type",
+          "interactive",
+          "link_type",
+          "sender_domain",
+          "sender_domain_age_days",
+          "role",
+          "permission",
+          "attack_candidates",
+          "anomaly_score",
+          "evidence",
+          "raw_sha256"
+        ],
+        "title": "CanonicalEvent",
+        "type": "object"
+      },
+      "CanonicalEventPage": {
+        "additionalProperties": false,
+        "properties": {
+          "batch_id": {
+            "title": "Batch Id",
+            "type": "string"
+          },
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/CanonicalEvent"
+            },
+            "title": "Items",
+            "type": "array"
+          },
+          "limit": {
+            "title": "Limit",
+            "type": "integer"
+          },
+          "offset": {
+            "title": "Offset",
+            "type": "integer"
+          },
+          "total": {
+            "title": "Total",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "batch_id",
+          "total",
+          "offset",
+          "limit",
+          "items"
+        ],
+        "title": "CanonicalEventPage",
+        "type": "object"
+      },
       "ClockMessage": {
         "additionalProperties": false,
         "properties": {
@@ -606,6 +1438,35 @@
           "breaks"
         ],
         "title": "ClosestOption",
+        "type": "object"
+      },
+      "ConfidenceComponent": {
+        "additionalProperties": false,
+        "properties": {
+          "detail": {
+            "title": "Detail",
+            "type": "string"
+          },
+          "name": {
+            "title": "Name",
+            "type": "string"
+          },
+          "value": {
+            "title": "Value",
+            "type": "number"
+          },
+          "weight": {
+            "title": "Weight",
+            "type": "number"
+          }
+        },
+        "required": [
+          "name",
+          "value",
+          "weight",
+          "detail"
+        ],
+        "title": "ConfidenceComponent",
         "type": "object"
       },
       "Constraint": {
@@ -822,6 +1683,74 @@
         "title": "Cut",
         "type": "object"
       },
+      "DatasetInfo": {
+        "additionalProperties": false,
+        "properties": {
+          "adapters": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Adapters",
+            "type": "array"
+          },
+          "dataset_id": {
+            "title": "Dataset Id",
+            "type": "string"
+          },
+          "files": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Files",
+            "type": "array"
+          },
+          "has_ground_truth": {
+            "title": "Has Ground Truth",
+            "type": "boolean"
+          },
+          "seed": {
+            "title": "Seed",
+            "type": "integer"
+          },
+          "synthetic": {
+            "default": true,
+            "title": "Synthetic",
+            "type": "boolean"
+          },
+          "title": {
+            "title": "Title",
+            "type": "string"
+          }
+        },
+        "required": [
+          "dataset_id",
+          "title",
+          "seed",
+          "files",
+          "adapters",
+          "has_ground_truth",
+          "synthetic"
+        ],
+        "title": "DatasetInfo",
+        "type": "object"
+      },
+      "DatasetList": {
+        "additionalProperties": false,
+        "properties": {
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/DatasetInfo"
+            },
+            "title": "Items",
+            "type": "array"
+          }
+        },
+        "required": [
+          "items"
+        ],
+        "title": "DatasetList",
+        "type": "object"
+      },
       "Derivation": {
         "additionalProperties": false,
         "description": "Required wherever a number is shown: counts with their denominator, never a bare score.",
@@ -937,6 +1866,40 @@
         "title": "Enumeration",
         "type": "object"
       },
+      "EvaluationReport": {
+        "additionalProperties": false,
+        "properties": {
+          "dataset_id": {
+            "title": "Dataset Id",
+            "type": "string"
+          },
+          "ground_truth_sha256": {
+            "pattern": "^[0-9a-f]{64}$",
+            "title": "Ground Truth Sha256",
+            "type": "string"
+          },
+          "metrics": {
+            "items": {
+              "$ref": "#/components/schemas/MetricResult"
+            },
+            "title": "Metrics",
+            "type": "array"
+          },
+          "replay_id": {
+            "pattern": "^[0-9a-f]{64}$",
+            "title": "Replay Id",
+            "type": "string"
+          }
+        },
+        "required": [
+          "dataset_id",
+          "ground_truth_sha256",
+          "replay_id",
+          "metrics"
+        ],
+        "title": "EvaluationReport",
+        "type": "object"
+      },
       "EventList": {
         "additionalProperties": false,
         "properties": {
@@ -1009,6 +1972,49 @@
           "record_id"
         ],
         "title": "EventSource",
+        "type": "object"
+      },
+      "EvidenceRef": {
+        "additionalProperties": false,
+        "description": "Where an event came from. The raw record itself is kept only as its SHA-256 and a redacted preview.",
+        "properties": {
+          "line": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Line"
+          },
+          "parser": {
+            "title": "Parser",
+            "type": "string"
+          },
+          "raw_sha256": {
+            "pattern": "^[0-9a-f]{64}$",
+            "title": "Raw Sha256",
+            "type": "string"
+          },
+          "source_name": {
+            "title": "Source Name",
+            "type": "string"
+          },
+          "source_record_id": {
+            "title": "Source Record Id",
+            "type": "string"
+          }
+        },
+        "required": [
+          "source_name",
+          "source_record_id",
+          "line",
+          "raw_sha256",
+          "parser"
+        ],
+        "title": "EvidenceRef",
         "type": "object"
       },
       "ExecuteRequest": {
@@ -1207,6 +2213,54 @@
           "meta"
         ],
         "title": "ExplainResult",
+        "type": "object"
+      },
+      "FileReport": {
+        "additionalProperties": false,
+        "properties": {
+          "accepted": {
+            "title": "Accepted",
+            "type": "integer"
+          },
+          "adapter": {
+            "title": "Adapter",
+            "type": "string"
+          },
+          "file_sha256": {
+            "pattern": "^[0-9a-f]{64}$",
+            "title": "File Sha256",
+            "type": "string"
+          },
+          "filename": {
+            "title": "Filename",
+            "type": "string"
+          },
+          "records": {
+            "items": {
+              "$ref": "#/components/schemas/IngestedRecord"
+            },
+            "title": "Records",
+            "type": "array"
+          },
+          "rejected": {
+            "title": "Rejected",
+            "type": "integer"
+          },
+          "warnings": {
+            "title": "Warnings",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "filename",
+          "adapter",
+          "file_sha256",
+          "accepted",
+          "rejected",
+          "warnings",
+          "records"
+        ],
+        "title": "FileReport",
         "type": "object"
       },
       "Finding": {
@@ -1879,6 +2933,44 @@
         "title": "Health",
         "type": "object"
       },
+      "Hypotheses": {
+        "additionalProperties": false,
+        "properties": {
+          "alternates": {
+            "items": {
+              "$ref": "#/components/schemas/PathHypothesis"
+            },
+            "title": "Alternates",
+            "type": "array"
+          },
+          "rejected_edges": {
+            "items": {
+              "$ref": "#/components/schemas/CandidateEdge"
+            },
+            "title": "Rejected Edges",
+            "type": "array"
+          },
+          "rejected_paths": {
+            "items": {
+              "$ref": "#/components/schemas/PathHypothesis"
+            },
+            "title": "Rejected Paths",
+            "type": "array"
+          },
+          "run_id": {
+            "title": "Run Id",
+            "type": "string"
+          }
+        },
+        "required": [
+          "run_id",
+          "alternates",
+          "rejected_paths",
+          "rejected_edges"
+        ],
+        "title": "Hypotheses",
+        "type": "object"
+      },
       "Impact": {
         "additionalProperties": false,
         "properties": {
@@ -2289,6 +3381,217 @@
         "title": "Inference",
         "type": "object"
       },
+      "IngestedRecord": {
+        "additionalProperties": false,
+        "properties": {
+          "event_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Event Id"
+          },
+          "ingested_at": {
+            "format": "date-time",
+            "title": "Ingested At",
+            "type": "string"
+          },
+          "issues": {
+            "items": {
+              "$ref": "#/components/schemas/RecordIssue"
+            },
+            "title": "Issues",
+            "type": "array"
+          },
+          "line": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Line"
+          },
+          "occurred_at": {
+            "anyOf": [
+              {
+                "format": "date-time",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Occurred At"
+          },
+          "parser": {
+            "title": "Parser",
+            "type": "string"
+          },
+          "preview": {
+            "maxLength": 240,
+            "title": "Preview",
+            "type": "string"
+          },
+          "raw_sha256": {
+            "pattern": "^[0-9a-f]{64}$",
+            "title": "Raw Sha256",
+            "type": "string"
+          },
+          "source_name": {
+            "title": "Source Name",
+            "type": "string"
+          },
+          "source_record_id": {
+            "title": "Source Record Id",
+            "type": "string"
+          },
+          "status": {
+            "enum": [
+              "normalised",
+              "normalised_with_warnings",
+              "rejected"
+            ],
+            "title": "Status",
+            "type": "string"
+          }
+        },
+        "required": [
+          "source_name",
+          "source_record_id",
+          "line",
+          "raw_sha256",
+          "parser",
+          "ingested_at",
+          "occurred_at",
+          "status",
+          "issues",
+          "event_id",
+          "preview"
+        ],
+        "title": "IngestedRecord",
+        "type": "object"
+      },
+      "IngestionRequest": {
+        "additionalProperties": false,
+        "description": "Exactly one of: a bundled dataset id (fixture mode) or uploaded files with an organisation context.",
+        "properties": {
+          "context": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/OrgContext"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "dataset_id": {
+            "anyOf": [
+              {
+                "pattern": "^[a-z0-9][a-z0-9-]{0,63}$",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Dataset Id"
+          },
+          "files": {
+            "items": {
+              "$ref": "#/components/schemas/RawFile"
+            },
+            "maxItems": 10,
+            "title": "Files",
+            "type": "array"
+          }
+        },
+        "title": "IngestionRequest",
+        "type": "object"
+      },
+      "IngestionResult": {
+        "additionalProperties": false,
+        "properties": {
+          "accepted": {
+            "title": "Accepted",
+            "type": "integer"
+          },
+          "batch_id": {
+            "title": "Batch Id",
+            "type": "string"
+          },
+          "canonical_schema": {
+            "const": "halt.canonical/1.0",
+            "default": "halt.canonical/1.0",
+            "title": "Canonical Schema",
+            "type": "string"
+          },
+          "context_sha256": {
+            "pattern": "^[0-9a-f]{64}$",
+            "title": "Context Sha256",
+            "type": "string"
+          },
+          "dataset_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Dataset Id"
+          },
+          "event_count": {
+            "title": "Event Count",
+            "type": "integer"
+          },
+          "files": {
+            "items": {
+              "$ref": "#/components/schemas/FileReport"
+            },
+            "title": "Files",
+            "type": "array"
+          },
+          "input_hashes": {
+            "additionalProperties": {
+              "pattern": "^[0-9a-f]{64}$",
+              "type": "string"
+            },
+            "title": "Input Hashes",
+            "type": "object"
+          },
+          "rejected": {
+            "title": "Rejected",
+            "type": "integer"
+          },
+          "warnings": {
+            "title": "Warnings",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "batch_id",
+          "dataset_id",
+          "canonical_schema",
+          "files",
+          "accepted",
+          "rejected",
+          "warnings",
+          "event_count",
+          "context_sha256",
+          "input_hashes"
+        ],
+        "title": "IngestionResult",
+        "type": "object"
+      },
       "LatestArtefacts": {
         "additionalProperties": false,
         "description": "Ids of the incident's current artefacts, so a client can rehydrate after a reload.",
@@ -2414,6 +3717,95 @@
         "title": "Meta",
         "type": "object"
       },
+      "MetricResult": {
+        "additionalProperties": false,
+        "properties": {
+          "denominator": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Denominator"
+          },
+          "name": {
+            "title": "Name",
+            "type": "string"
+          },
+          "note": {
+            "default": "",
+            "title": "Note",
+            "type": "string"
+          },
+          "numerator": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Numerator"
+          },
+          "status": {
+            "enum": [
+              "measured",
+              "unavailable"
+            ],
+            "title": "Status",
+            "type": "string"
+          },
+          "target": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Target"
+          },
+          "target_met": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Target Met"
+          },
+          "value": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Value"
+          }
+        },
+        "required": [
+          "name",
+          "status",
+          "value",
+          "numerator",
+          "denominator",
+          "target",
+          "target_met",
+          "note"
+        ],
+        "title": "MetricResult",
+        "type": "object"
+      },
       "Objective": {
         "additionalProperties": false,
         "properties": {
@@ -2434,6 +3826,158 @@
           "terms"
         ],
         "title": "Objective",
+        "type": "object"
+      },
+      "OrgContext": {
+        "additionalProperties": false,
+        "properties": {
+          "assets": {
+            "items": {
+              "$ref": "#/components/schemas/AssetContext"
+            },
+            "title": "Assets",
+            "type": "array"
+          },
+          "business_services": {
+            "items": {
+              "$ref": "#/components/schemas/BusinessService"
+            },
+            "title": "Business Services",
+            "type": "array"
+          },
+          "internal_cidrs": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Internal Cidrs",
+            "type": "array"
+          },
+          "known_egress_cidrs": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Known Egress Cidrs",
+            "type": "array"
+          },
+          "managed_hosts": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Managed Hosts",
+            "type": "array"
+          },
+          "organisation": {
+            "title": "Organisation",
+            "type": "string"
+          },
+          "service_accounts": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Service Accounts",
+            "type": "array"
+          }
+        },
+        "required": [
+          "organisation"
+        ],
+        "title": "OrgContext",
+        "type": "object"
+      },
+      "PathHypothesis": {
+        "additionalProperties": false,
+        "properties": {
+          "components": {
+            "items": {
+              "$ref": "#/components/schemas/ConfidenceComponent"
+            },
+            "title": "Components",
+            "type": "array"
+          },
+          "edge_ids": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Edge Ids",
+            "type": "array"
+          },
+          "event_ids": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Event Ids",
+            "type": "array"
+          },
+          "missing_evidence": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Missing Evidence",
+            "type": "array"
+          },
+          "path_id": {
+            "title": "Path Id",
+            "type": "string"
+          },
+          "rank": {
+            "title": "Rank",
+            "type": "integer"
+          },
+          "rejection_reason": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Rejection Reason"
+          },
+          "root_event_id": {
+            "title": "Root Event Id",
+            "type": "string"
+          },
+          "score": {
+            "title": "Score",
+            "type": "number"
+          },
+          "status": {
+            "enum": [
+              "selected",
+              "alternate",
+              "rejected"
+            ],
+            "title": "Status",
+            "type": "string"
+          },
+          "terminal_event_id": {
+            "title": "Terminal Event Id",
+            "type": "string"
+          },
+          "unsupported_hops": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Unsupported Hops",
+            "type": "array"
+          }
+        },
+        "required": [
+          "path_id",
+          "rank",
+          "status",
+          "event_ids",
+          "edge_ids",
+          "score",
+          "components",
+          "root_event_id",
+          "terminal_event_id",
+          "missing_evidence",
+          "unsupported_hops",
+          "rejection_reason"
+        ],
+        "title": "PathHypothesis",
         "type": "object"
       },
       "PathList": {
@@ -3456,6 +5000,42 @@
         "title": "ProofVerify",
         "type": "object"
       },
+      "RawFile": {
+        "additionalProperties": false,
+        "properties": {
+          "adapter": {
+            "title": "Adapter",
+            "type": "string"
+          },
+          "content": {
+            "title": "Content",
+            "type": "string"
+          },
+          "content_type": {
+            "enum": [
+              "application/json",
+              "application/x-ndjson",
+              "application/jsonl",
+              "text/csv"
+            ],
+            "title": "Content Type",
+            "type": "string"
+          },
+          "filename": {
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]{0,99}$",
+            "title": "Filename",
+            "type": "string"
+          }
+        },
+        "required": [
+          "filename",
+          "adapter",
+          "content_type",
+          "content"
+        ],
+        "title": "RawFile",
+        "type": "object"
+      },
       "Readiness": {
         "properties": {
           "db": {
@@ -3496,6 +5076,326 @@
           "incidents"
         ],
         "title": "Readiness",
+        "type": "object"
+      },
+      "ReconstructedGraph": {
+        "additionalProperties": false,
+        "properties": {
+          "edges": {
+            "items": {
+              "$ref": "#/components/schemas/CandidateEdge"
+            },
+            "title": "Edges",
+            "type": "array"
+          },
+          "forecast_edges": {
+            "items": {
+              "$ref": "#/components/schemas/CandidateEdge"
+            },
+            "title": "Forecast Edges",
+            "type": "array"
+          },
+          "graph_hash": {
+            "pattern": "^[0-9a-f]{64}$",
+            "title": "Graph Hash",
+            "type": "string"
+          },
+          "nodes": {
+            "items": {
+              "$ref": "#/components/schemas/ThreadNode"
+            },
+            "title": "Nodes",
+            "type": "array"
+          },
+          "run_id": {
+            "title": "Run Id",
+            "type": "string"
+          }
+        },
+        "required": [
+          "run_id",
+          "nodes",
+          "edges",
+          "forecast_edges",
+          "graph_hash"
+        ],
+        "title": "ReconstructedGraph",
+        "type": "object"
+      },
+      "ReconstructionReceipt": {
+        "additionalProperties": false,
+        "properties": {
+          "adapter_versions": {
+            "additionalProperties": {
+              "type": "string"
+            },
+            "title": "Adapter Versions",
+            "type": "object"
+          },
+          "alternate_path_ids": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Alternate Path Ids",
+            "type": "array"
+          },
+          "canonical_schema": {
+            "title": "Canonical Schema",
+            "type": "string"
+          },
+          "config_sha256": {
+            "pattern": "^[0-9a-f]{64}$",
+            "title": "Config Sha256",
+            "type": "string"
+          },
+          "context_sha256": {
+            "pattern": "^[0-9a-f]{64}$",
+            "title": "Context Sha256",
+            "type": "string"
+          },
+          "engine_version": {
+            "title": "Engine Version",
+            "type": "string"
+          },
+          "evidence_coverage": {
+            "title": "Evidence Coverage",
+            "type": "number"
+          },
+          "graph_hash": {
+            "pattern": "^[0-9a-f]{64}$",
+            "title": "Graph Hash",
+            "type": "string"
+          },
+          "input_hashes": {
+            "additionalProperties": {
+              "pattern": "^[0-9a-f]{64}$",
+              "type": "string"
+            },
+            "title": "Input Hashes",
+            "type": "object"
+          },
+          "metrics": {
+            "items": {
+              "$ref": "#/components/schemas/MetricResult"
+            },
+            "title": "Metrics",
+            "type": "array"
+          },
+          "processing_ms": {
+            "title": "Processing Ms",
+            "type": "number"
+          },
+          "receipt_id": {
+            "title": "Receipt Id",
+            "type": "string"
+          },
+          "replay_id": {
+            "pattern": "^[0-9a-f]{64}$",
+            "title": "Replay Id",
+            "type": "string"
+          },
+          "run_id": {
+            "title": "Run Id",
+            "type": "string"
+          },
+          "selected_event_ids": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Selected Event Ids",
+            "type": "array"
+          },
+          "selected_path_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Selected Path Id"
+          },
+          "story_citation_coverage": {
+            "title": "Story Citation Coverage",
+            "type": "number"
+          },
+          "uncertainty": {
+            "$ref": "#/components/schemas/Uncertainty"
+          }
+        },
+        "required": [
+          "receipt_id",
+          "run_id",
+          "replay_id",
+          "engine_version",
+          "canonical_schema",
+          "config_sha256",
+          "adapter_versions",
+          "input_hashes",
+          "context_sha256",
+          "graph_hash",
+          "selected_path_id",
+          "selected_event_ids",
+          "alternate_path_ids",
+          "evidence_coverage",
+          "story_citation_coverage",
+          "uncertainty",
+          "metrics",
+          "processing_ms"
+        ],
+        "title": "ReconstructionReceipt",
+        "type": "object"
+      },
+      "ReconstructionRequest": {
+        "additionalProperties": false,
+        "properties": {
+          "batch_id": {
+            "pattern": "^batch-[0-9a-f]{16}$",
+            "title": "Batch Id",
+            "type": "string"
+          }
+        },
+        "required": [
+          "batch_id"
+        ],
+        "title": "ReconstructionRequest",
+        "type": "object"
+      },
+      "ReconstructionSummary": {
+        "additionalProperties": false,
+        "properties": {
+          "affected_services": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Affected Services",
+            "type": "array"
+          },
+          "batch_id": {
+            "title": "Batch Id",
+            "type": "string"
+          },
+          "candidate_edges": {
+            "title": "Candidate Edges",
+            "type": "integer"
+          },
+          "dataset_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Dataset Id"
+          },
+          "entity_count": {
+            "title": "Entity Count",
+            "type": "integer"
+          },
+          "event_count": {
+            "title": "Event Count",
+            "type": "integer"
+          },
+          "graph_hash": {
+            "pattern": "^[0-9a-f]{64}$",
+            "title": "Graph Hash",
+            "type": "string"
+          },
+          "processing_ms": {
+            "title": "Processing Ms",
+            "type": "number"
+          },
+          "replay_id": {
+            "pattern": "^[0-9a-f]{64}$",
+            "title": "Replay Id",
+            "type": "string"
+          },
+          "root_event_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Root Event Id"
+          },
+          "run_id": {
+            "title": "Run Id",
+            "type": "string"
+          },
+          "seeds": {
+            "title": "Seeds",
+            "type": "integer"
+          },
+          "selected_edges": {
+            "title": "Selected Edges",
+            "type": "integer"
+          },
+          "selected_path_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Selected Path Id"
+          }
+        },
+        "required": [
+          "run_id",
+          "batch_id",
+          "dataset_id",
+          "replay_id",
+          "graph_hash",
+          "event_count",
+          "entity_count",
+          "candidate_edges",
+          "selected_edges",
+          "seeds",
+          "selected_path_id",
+          "root_event_id",
+          "affected_services",
+          "processing_ms"
+        ],
+        "title": "ReconstructionSummary",
+        "type": "object"
+      },
+      "RecordIssue": {
+        "additionalProperties": false,
+        "properties": {
+          "code": {
+            "title": "Code",
+            "type": "string"
+          },
+          "field": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Field"
+          },
+          "message": {
+            "title": "Message",
+            "type": "string"
+          }
+        },
+        "required": [
+          "code",
+          "message",
+          "field"
+        ],
+        "title": "RecordIssue",
         "type": "object"
       },
       "Rejection": {
@@ -4148,6 +6048,78 @@
         "title": "StaleMessage",
         "type": "object"
       },
+      "StoryStatement": {
+        "additionalProperties": false,
+        "properties": {
+          "confidence": {
+            "maximum": 1.0,
+            "minimum": 0.0,
+            "title": "Confidence",
+            "type": "number"
+          },
+          "edge_ids": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Edge Ids",
+            "type": "array"
+          },
+          "event_ids": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Event Ids",
+            "type": "array"
+          },
+          "facts": {
+            "additionalProperties": {
+              "type": "string"
+            },
+            "title": "Facts",
+            "type": "object"
+          },
+          "section": {
+            "enum": [
+              "observed",
+              "inferred",
+              "missing_evidence",
+              "forecast"
+            ],
+            "title": "Section",
+            "type": "string"
+          },
+          "statement_id": {
+            "title": "Statement Id",
+            "type": "string"
+          },
+          "status": {
+            "enum": [
+              "observed",
+              "inferred",
+              "missing",
+              "forecast"
+            ],
+            "title": "Status",
+            "type": "string"
+          },
+          "text": {
+            "title": "Text",
+            "type": "string"
+          }
+        },
+        "required": [
+          "statement_id",
+          "section",
+          "text",
+          "event_ids",
+          "edge_ids",
+          "confidence",
+          "status",
+          "facts"
+        ],
+        "title": "StoryStatement",
+        "type": "object"
+      },
       "SubscribeCommand": {
         "additionalProperties": false,
         "properties": {
@@ -4161,6 +6133,198 @@
           "type"
         ],
         "title": "SubscribeCommand",
+        "type": "object"
+      },
+      "TechniqueCandidate": {
+        "additionalProperties": false,
+        "properties": {
+          "basis": {
+            "enum": [
+              "observed",
+              "rule_inferred",
+              "uncertain"
+            ],
+            "title": "Basis",
+            "type": "string"
+          },
+          "rule": {
+            "title": "Rule",
+            "type": "string"
+          },
+          "tactic": {
+            "enum": [
+              "reconnaissance",
+              "resource-development",
+              "initial-access",
+              "execution",
+              "persistence",
+              "privilege-escalation",
+              "defense-evasion",
+              "credential-access",
+              "discovery",
+              "lateral-movement",
+              "collection",
+              "command-and-control",
+              "exfiltration",
+              "impact"
+            ],
+            "title": "Tactic",
+            "type": "string"
+          },
+          "technique_id": {
+            "pattern": "^T\\d{4}(\\.\\d{3})?$",
+            "title": "Technique Id",
+            "type": "string"
+          },
+          "technique_name": {
+            "title": "Technique Name",
+            "type": "string"
+          }
+        },
+        "required": [
+          "technique_id",
+          "technique_name",
+          "tactic",
+          "basis",
+          "rule"
+        ],
+        "title": "TechniqueCandidate",
+        "type": "object"
+      },
+      "ThreadNode": {
+        "additionalProperties": false,
+        "properties": {
+          "entity_type": {
+            "anyOf": [
+              {
+                "enum": [
+                  "user",
+                  "service_account",
+                  "device",
+                  "ip",
+                  "session",
+                  "token",
+                  "application",
+                  "process",
+                  "api",
+                  "cloud_service",
+                  "database",
+                  "business_service"
+                ],
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Entity Type"
+          },
+          "event_kind": {
+            "anyOf": [
+              {
+                "enum": [
+                  "email_delivery",
+                  "authentication",
+                  "mfa_method_change",
+                  "app_consent",
+                  "credential_change",
+                  "token_use",
+                  "token_issued",
+                  "role_assumption",
+                  "permission_change",
+                  "resource_enumeration",
+                  "resource_access",
+                  "access_denied",
+                  "process_start",
+                  "database_query"
+                ],
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Event Kind"
+          },
+          "label": {
+            "title": "Label",
+            "type": "string"
+          },
+          "node_id": {
+            "title": "Node Id",
+            "type": "string"
+          },
+          "node_kind": {
+            "enum": [
+              "event",
+              "entity",
+              "business_service"
+            ],
+            "title": "Node Kind",
+            "type": "string"
+          },
+          "occurred_at": {
+            "anyOf": [
+              {
+                "format": "date-time",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Occurred At"
+          },
+          "seed": {
+            "default": false,
+            "title": "Seed",
+            "type": "boolean"
+          },
+          "suspicion": {
+            "default": 0.0,
+            "title": "Suspicion",
+            "type": "number"
+          },
+          "tactic": {
+            "anyOf": [
+              {
+                "enum": [
+                  "reconnaissance",
+                  "resource-development",
+                  "initial-access",
+                  "execution",
+                  "persistence",
+                  "privilege-escalation",
+                  "defense-evasion",
+                  "credential-access",
+                  "discovery",
+                  "lateral-movement",
+                  "collection",
+                  "command-and-control",
+                  "exfiltration",
+                  "impact"
+                ],
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Tactic"
+          }
+        },
+        "required": [
+          "node_id",
+          "node_kind",
+          "label",
+          "event_kind",
+          "entity_type",
+          "occurred_at",
+          "suspicion",
+          "seed",
+          "tactic"
+        ],
+        "title": "ThreadNode",
         "type": "object"
       },
       "Transition": {
@@ -4193,6 +6357,38 @@
           "delay_s"
         ],
         "title": "Transition",
+        "type": "object"
+      },
+      "Uncertainty": {
+        "additionalProperties": false,
+        "properties": {
+          "coverage_gaps": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Coverage Gaps",
+            "type": "array"
+          },
+          "inferred_hops": {
+            "title": "Inferred Hops",
+            "type": "integer"
+          },
+          "min_edge_confidence": {
+            "title": "Min Edge Confidence",
+            "type": "number"
+          },
+          "score_margin": {
+            "title": "Score Margin",
+            "type": "number"
+          }
+        },
+        "required": [
+          "score_margin",
+          "min_edge_confidence",
+          "inferred_hops",
+          "coverage_gaps"
+        ],
+        "title": "Uncertainty",
         "type": "object"
       },
       "UserGroupImpact": {
@@ -5517,6 +7713,510 @@
           }
         },
         "summary": "Verify"
+      }
+    },
+    "/api/v1/ps2/datasets": {
+      "get": {
+        "operationId": "datasets_api_v1_ps2_datasets_get",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DatasetList"
+                }
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "summary": "Datasets",
+        "tags": [
+          "ps2"
+        ]
+      }
+    },
+    "/api/v1/ps2/ingestions": {
+      "post": {
+        "operationId": "create_ingestion_api_v1_ps2_ingestions_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/IngestionRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/IngestionResult"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Create Ingestion",
+        "tags": [
+          "ps2"
+        ]
+      }
+    },
+    "/api/v1/ps2/ingestions/{batch_id}": {
+      "get": {
+        "operationId": "get_ingestion_api_v1_ps2_ingestions__batch_id__get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "batch_id",
+            "required": true,
+            "schema": {
+              "title": "Batch Id",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/IngestionResult"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Get Ingestion",
+        "tags": [
+          "ps2"
+        ]
+      }
+    },
+    "/api/v1/ps2/ingestions/{batch_id}/events": {
+      "get": {
+        "operationId": "get_events_api_v1_ps2_ingestions__batch_id__events_get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "batch_id",
+            "required": true,
+            "schema": {
+              "title": "Batch Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "offset",
+            "required": false,
+            "schema": {
+              "default": 0,
+              "minimum": 0,
+              "title": "Offset",
+              "type": "integer"
+            }
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "required": false,
+            "schema": {
+              "default": 100,
+              "maximum": 500,
+              "minimum": 1,
+              "title": "Limit",
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CanonicalEventPage"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Get Events",
+        "tags": [
+          "ps2"
+        ]
+      }
+    },
+    "/api/v1/ps2/reconstructions": {
+      "post": {
+        "operationId": "create_reconstruction_api_v1_ps2_reconstructions_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ReconstructionRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ReconstructionSummary"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Create Reconstruction",
+        "tags": [
+          "ps2"
+        ]
+      }
+    },
+    "/api/v1/ps2/reconstructions/{run_id}": {
+      "get": {
+        "operationId": "get_reconstruction_api_v1_ps2_reconstructions__run_id__get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "run_id",
+            "required": true,
+            "schema": {
+              "title": "Run Id",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ReconstructionSummary"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Get Reconstruction",
+        "tags": [
+          "ps2"
+        ]
+      }
+    },
+    "/api/v1/ps2/reconstructions/{run_id}/attack-flow": {
+      "get": {
+        "operationId": "get_attack_flow_api_v1_ps2_reconstructions__run_id__attack_flow_get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "run_id",
+            "required": true,
+            "schema": {
+              "title": "Run Id",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AttackFlowExport"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Get Attack Flow",
+        "tags": [
+          "ps2"
+        ]
+      }
+    },
+    "/api/v1/ps2/reconstructions/{run_id}/evaluation": {
+      "get": {
+        "operationId": "get_evaluation_api_v1_ps2_reconstructions__run_id__evaluation_get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "run_id",
+            "required": true,
+            "schema": {
+              "title": "Run Id",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EvaluationReport"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Get Evaluation",
+        "tags": [
+          "ps2"
+        ]
+      }
+    },
+    "/api/v1/ps2/reconstructions/{run_id}/graph": {
+      "get": {
+        "operationId": "get_graph_api_v1_ps2_reconstructions__run_id__graph_get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "run_id",
+            "required": true,
+            "schema": {
+              "title": "Run Id",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ReconstructedGraph"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Get Graph",
+        "tags": [
+          "ps2"
+        ]
+      }
+    },
+    "/api/v1/ps2/reconstructions/{run_id}/hypotheses": {
+      "get": {
+        "operationId": "get_hypotheses_api_v1_ps2_reconstructions__run_id__hypotheses_get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "run_id",
+            "required": true,
+            "schema": {
+              "title": "Run Id",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Hypotheses"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Get Hypotheses",
+        "tags": [
+          "ps2"
+        ]
+      }
+    },
+    "/api/v1/ps2/reconstructions/{run_id}/receipt": {
+      "get": {
+        "operationId": "get_receipt_api_v1_ps2_reconstructions__run_id__receipt_get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "run_id",
+            "required": true,
+            "schema": {
+              "title": "Run Id",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ReconstructionReceipt"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Get Receipt",
+        "tags": [
+          "ps2"
+        ]
+      }
+    },
+    "/api/v1/ps2/reconstructions/{run_id}/story": {
+      "get": {
+        "operationId": "get_story_api_v1_ps2_reconstructions__run_id__story_get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "run_id",
+            "required": true,
+            "schema": {
+              "title": "Run Id",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AttackStory"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Get Story",
+        "tags": [
+          "ps2"
+        ]
       }
     },
     "/api/v1/ready": {
