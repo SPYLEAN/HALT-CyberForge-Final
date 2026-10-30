@@ -255,11 +255,11 @@
 .v2-theatre-steps button:focus-visible { box-shadow: var(--v2-focus); }
 .v2-theatre-stage { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: var(--space-7); align-items: center; padding: var(--space-6); min-height: 0; }
 .v2-theatre-copy { display: flex; flex-direction: column; gap: var(--space-4); }
+.v2-theatre-status { margin-left: auto; }
 .v2-theatre-foot { display: flex; align-items: center; justify-content: space-between; padding: 0 var(--space-6); border-top: var(--border-hairline) solid var(--v2-border); }
 @media (max-width: 959px) {
   .v2-theatre-stage { grid-template-columns: minmax(0, 1fr); padding: var(--space-4); gap: var(--space-5); }
   .v2-theatre-bar { padding: 0 var(--space-4); gap: var(--space-3); }
-  .v2-theatre-bar .v2-meta { display: none; }
 }
 @media (max-width: 1100px) { .v2-mission-hero { grid-template-columns: minmax(0, 1fr) !important; } }
 @media (max-width: 959px) { .v2-arch-tier { grid-template-columns: minmax(0, 1fr) !important; } .v2-bar-label { display: none; } }
@@ -312,6 +312,25 @@
   /* A 1000-unit chamber is unreadable at phone width; the action list below carries the same plan. */
   .landing-chamber { display: none; }
   .landing-bar { gap: var(--space-2); }
-  .landing-bar .telemetry { white-space: nowrap; font-size: 11px; }
+  .landing-bar .telemetry { white-space: nowrap; font-size: 11px; min-width: 0; overflow: hidden; text-overflow: ellipsis; }
+  .landing-bar img { width: 84px; height: auto; flex-shrink: 0; }
   .landing-bar .halt-btn > span:first-child { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+}
+
+/* ---------- states ---------- */
+.v2-unavailable { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: var(--space-6); align-items: center; max-width: 880px; padding: var(--space-8) 0; }
+@media (max-width: 639px) { .v2-unavailable { grid-template-columns: minmax(0, 1fr); } }
+@media (max-width: 639px) {
+  .v2-platform-bar .halt-btn > span:first-child { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+  .v2-platform-bar img { width: 84px; height: auto; }
+  .v2-platform-bar nav a { padding: 8px; }
+}
+@media (max-width: 639px) {
+  /* Phone: steps get their own row; SIMULATED and the step count stay visible, only the keyboard hint goes. */
+  .v2-theatre { grid-template-rows: auto minmax(0, 1fr) auto; }
+  .v2-theatre-bar { flex-wrap: wrap; row-gap: var(--space-2); padding: var(--space-3) var(--space-4); }
+  .v2-theatre-steps { order: 3; width: 100%; justify-content: space-between; }
+  .v2-theatre-keys { display: none; }
+  .v2-theatre-bar img { width: 84px; height: auto; }
+  .v2-theatre-foot { flex-wrap: wrap; gap: var(--space-2); padding: var(--space-3) var(--space-4); }
 }

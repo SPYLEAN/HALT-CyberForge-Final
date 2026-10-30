@@ -1,5 +1,7 @@
 "use client";
 
+import Link from "next/link";
+
 import { ApprovalControl, Button, Drawer, StatusChip } from "@/components/halt";
 import { useOps } from "@/lib/api/ops";
 import type { Approver, Policy, ResponseAction } from "@/lib/api/types";
@@ -45,6 +47,20 @@ export function ActionGateDrawer({ open, onClose }: { open: boolean; onClose: ()
   const proofOk = ops.proof?.claims.every((c) => c.status === "verified") ?? false;
   const applied = ops.execution?.state === "applied";
   const sealRule = ops.policySet?.constraints.find((c) => c.id === "C-EVIDENCE");
+  const alternates = (ops.policySet?.profiles ?? []).filter((p) => p.id !== plan?.profile_id);
+  const alternateReason = applied ? "The plan is applied to the simulated environment: roll back before re-solving." : ops.busy ? `Waiting for ${ops.busy} to finish.` : null;
+  const alternateButton = (p: (typeof alternates)[number]) => {
+    const label = `REQUEST ALTERNATE PLAN · ${p.title.toUpperCase()}`;
+    return alternateReason ? (
+      <Button key={p.id} variant="secondary" disabled reason={alternateReason} block>
+        {label}
+      </Button>
+    ) : (
+      <Button key={p.id} variant="secondary" onClick={() => ops.createPlan(p.id)} block>
+        {label}
+      </Button>
+    );
+  };
   const executeReason = !ops.proof
     ? `Disabled until ProofSeal has sealed the plan${sealRule ? ` (${sealRule.id} · ${sealRule.label})` : ""}.`
     : !proofOk
@@ -79,11 +95,17 @@ export function ActionGateDrawer({ open, onClose }: { open: boolean; onClose: ()
       }
     >
       {!plan || plan.status !== "optimal" ? (
-        <p className="body">No optimal plan to approve. {plan?.status === "infeasible" ? "This plan is blocked: see SafeCut for the closest options." : ""}</p>
+        <>
+          <p className="body">No optimal plan to approve. {plan?.status === "infeasible" ? "This plan is blocked: see SafeCut for the closest options." : ""}</p>
+          {plan ? alternates.map(alternateButton) : null}
+        </>
       ) : (
         <>
           <p className="evidence-text" style={{ marginTop: 0 }}>
             {plan.display_actions.map((d) => `${d.id} ${d.title}`).join(" · ")}
+          </p>
+          <p className="evidence-text" style={{ color: "var(--text-secondary)" }}>
+            Execution runs against HALT&apos;s simulated environment only. No real account, session or application is changed.
           </p>
           <div style={{ display: "flex", flexDirection: "column", gap: "var(--space-3)" }}>
             {reqs.map((r) => {
@@ -104,6 +126,7 @@ export function ActionGateDrawer({ open, onClose }: { open: boolean; onClose: ()
                   at={d ? utcTime(d.at) : undefined}
                   disabled={!r.approver?.available || applied || Boolean(ops.busy)}
                   onApprove={() => r.approver && ops.approve(r.approver.id, r.policy.id)}
+                  onDecline={() => r.approver && ops.approve(r.approver.id, r.policy.id, "declined")}
                 />
               );
             })}
@@ -117,6 +140,20 @@ export function ActionGateDrawer({ open, onClose }: { open: boolean; onClose: ()
               ))}
             </ol>
           ) : null}
+          <div role="group" aria-label="Other decisions" style={{ display: "flex", flexDirection: "column", gap: "var(--space-2)", marginTop: "var(--space-4)" }}>
+            {ops.incident ? (
+              <Link className="halt-btn halt-btn-ghost" href={`/incidents/${ops.incident.id}?view=proofseal`} onClick={onClose}>
+                <span>INSPECT THE EVIDENCE</span>
+                <span aria-hidden>→</span>
+              </Link>
+            ) : null}
+            {alternates.map(alternateButton)}
+            {alternates.length ? (
+              <p className="evidence-text" style={{ color: "var(--text-secondary)", margin: 0 }}>
+                SafeCut re-solves the same incident under the other policy. A new plan needs its own ProofSeal and approvals.
+              </p>
+            ) : null}
+          </div>
           {ops.execution?.rollback_window_until && applied ? (
             <p className="evidence-text">Rollback window open until {utcTime(ops.execution.rollback_window_until)} or new telemetry.</p>
           ) : null}

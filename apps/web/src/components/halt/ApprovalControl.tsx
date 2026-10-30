@@ -14,6 +14,8 @@ export interface ApprovalControlProps {
   at?: string;
   disabled?: boolean;
   onApprove?: () => void;
+  /** Records a "declined" decision; offered only while the decision is pending. */
+  onDecline?: () => void;
 }
 
 export function ApprovalControl(p: ApprovalControlProps) {
@@ -61,6 +63,11 @@ export function ApprovalControl(p: ApprovalControlProps) {
         <span>{on ? `APPROVED · ${p.at ?? ""}` : `APPROVE · ${(p.short ?? p.role).toUpperCase()}`}</span>
         <span aria-hidden>{on ? "✓" : "→"}</span>
       </button>
+      {p.onDecline && state === "pending" ? (
+        <button type="button" className="halt-btn halt-btn-ghost" disabled={p.disabled} onClick={p.onDecline} style={{ alignSelf: "flex-start" }}>
+          <span>{`DECLINE · ${(p.short ?? p.role).toUpperCase()}`}</span>
+        </button>
+      ) : null}
     </div>
   );
 }

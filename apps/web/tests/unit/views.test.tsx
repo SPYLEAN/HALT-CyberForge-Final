@@ -189,6 +189,8 @@ describe("AT-8.2 no invented numbers when the API is down", () => {
     failingApi();
     render(<Providers view="overview"><CommandCenter /></Providers>);
     expect(await screen.findByText(/could not be reached/)).toBeInTheDocument();
+    expect(screen.getByRole("region", { name: "HALT API unavailable" })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: /TRY AGAIN/ })).toBeEnabled();
     expect(screen.queryByText(/of 6,000/)).toBeNull();
     expect(screen.queryByText("16 of 16")).toBeNull();
   });
@@ -202,6 +204,29 @@ describe("AT-8.5 Action Gate", () => {
     expect(execute).toBeDisabled();
     expect(screen.getByText(/Disabled until approvals are recorded: .*finance_ops_owner/)).toHaveTextContent("tier2_analyst");
     expect(screen.getAllByText("AWAITING")).toHaveLength(2);
+  });
+
+  it("records a decline as a decision, not a missing approval", async () => {
+    useStage("sealed");
+    const recorded = globalThis.fetch;
+    const bodies: unknown[] = [];
+    vi.stubGlobal("fetch", async (input: Request) => {
+      if (input.method === "POST" && new URL(input.url).pathname.endsWith("/approvals")) bodies.push(await input.clone().json());
+      return recorded(input);
+    });
+    render(<Providers><ActionGateDrawer open onClose={noop} /></Providers>);
+    (await screen.findByRole("button", { name: /^DECLINE · FINANCE OPS OWNER/ })).click();
+    await waitFor(() => expect(bodies).toHaveLength(1));
+    expect(bodies[0]).toMatchObject({ approver_id: expect.any(String), decision: "declined" });
+  });
+
+  it("offers the alternate policy, the evidence, and says execution is simulated", async () => {
+    useStage("sealed");
+    render(<Providers><ActionGateDrawer open onClose={noop} /></Providers>);
+    expect(await screen.findByRole("button", { name: "REQUEST ALTERNATE PLAN · CRITICAL ASSET ZERO TOLERANCE" })).toBeEnabled();
+    expect(screen.queryByRole("button", { name: /ALTERNATE PLAN · CONTINUITY BALANCED/ })).toBeNull(); // the current policy
+    expect(screen.getByRole("link", { name: /INSPECT THE EVIDENCE/ })).toHaveAttribute("href", "/incidents/INC-2417?view=proofseal");
+    expect(screen.getByText(/simulated environment only/)).toBeInTheDocument();
   });
 
   it("offers rollback once applied", async () => {

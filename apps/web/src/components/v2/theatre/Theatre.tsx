@@ -109,7 +109,10 @@ export function Theatre() {
             </li>
           ))}
         </ol>
-        <span className="v2-meta" style={{ marginLeft: "auto" }}>SIMULATED · {step + 1} / {STEPS.length} · ← → to move · Esc to exit</span>
+        <span className="v2-meta v2-theatre-status">
+          {`SIMULATED · ${step + 1} / ${STEPS.length}`}
+          <span className="v2-theatre-keys"> · ← → to move · Esc to exit</span>
+        </span>
         <Link className="halt-btn halt-btn-ghost" href={`/incidents/${state.incidentId}?view=overview`}>
           EXIT TO COMMAND
         </Link>

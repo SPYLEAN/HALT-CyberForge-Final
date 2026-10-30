@@ -14,6 +14,7 @@ import { ProofSealV2 } from "@/components/v2/views/ProofSealV2";
 import { ReportV2 } from "@/components/v2/views/ReportV2";
 import { SafeCutV2 } from "@/components/v2/views/SafeCutV2";
 import { TimelineV2 } from "@/components/v2/views/TimelineV2";
+import { Unavailable } from "@/components/v2/views/parts";
 import { useOps } from "@/lib/api/ops";
 import { useIncident, VIEWS, type ViewId } from "@/lib/state/incident-store";
 
@@ -103,14 +104,16 @@ function Workspace() {
       evidence={evidence}
       subject={state.selection}
     >
-      {ops.error ? (
+      {ops.error && !ops.incident ? (
+        <Unavailable status={ops.error.status || undefined} message={ops.error.body?.message} />
+      ) : ops.error ? (
         <div style={{ marginBottom: "var(--space-4)" }}>
           <Toast kind="caution" title={`Request failed${ops.error.status ? ` (${ops.error.status})` : ""}`} onDismiss={ops.clearError}>
             {ops.error.body?.message ?? "The HALT API could not be reached. Nothing shown here was invented to fill the gap."}
           </Toast>
         </div>
       ) : null}
-      {ops.incident || ops.error ? (mode === "forensic" ? forensic : command)[state.view] : <Skeleton variant="graph" label="Connecting to the HALT API" />}
+      {ops.incident ? (mode === "forensic" ? forensic : command)[state.view] : ops.error ? null : <Skeleton variant="graph" label="Connecting to the HALT API" />}
       <ActionGateDrawer open={gateOpen} onClose={() => setGateOpen(false)} />
     </CommandShell>
   );

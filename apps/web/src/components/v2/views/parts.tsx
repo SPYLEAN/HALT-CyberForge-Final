@@ -2,6 +2,8 @@
 
 import type { ReactNode } from "react";
 
+import { Aperture } from "../motifs";
+
 /** A view's head: kicker, one decisive title, one statement, and the next action. */
 export function ViewHead({ kicker, title, statement, children, tone }: { kicker: string; title: string; statement?: ReactNode; children?: ReactNode; tone?: "threat" | "continuity" | "neutral" }) {
   return (
@@ -58,5 +60,29 @@ export function Basis({ kind }: { kind: "observed" | "calculated" | "simulated" 
       </svg>
       {kind}
     </span>
+  );
+}
+
+/** The backend could not be reached: say so plainly, show nothing invented, and offer the one useful action. */
+export function Unavailable({ status, message }: { status?: number; message?: string }) {
+  return (
+    <section className="v2-unavailable" aria-label="HALT API unavailable">
+      <Aperture state="none" size={120} label="" />
+      <div>
+        <p className="v2-kicker" style={{ color: "var(--v2-threat-text)" }}>
+          {`Request failed${status ? ` (${status})` : ""} · HALT API unavailable`}
+        </p>
+        <h1 className="v2-title">No incident data, so nothing is shown.</h1>
+        <p className="v2-decision" style={{ color: "var(--v2-text-2)" }}>
+          {message ?? "The HALT API could not be reached. The Command Center reads every number from it, so until it answers no graph, forecast, plan or proof is shown in its place."}
+        </p>
+        <div className="v2-btn-row">
+          <button type="button" className="halt-btn halt-btn-primary" onClick={() => window.location.reload()}>
+            <span>TRY AGAIN</span>
+            <span aria-hidden>↻</span>
+          </button>
+        </div>
+      </div>
+    </section>
   );
 }

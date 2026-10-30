@@ -37,7 +37,8 @@ export function IncidentRooms() {
           <h2 className="v2-section" style={{ fontSize: 28, margin: "var(--space-3) 0" }}>{incident?.title ?? "Connecting to the HALT API"}</h2>
           <p className="v2-decision" style={{ color: "var(--v2-text-2)" }}>{incident?.summary}</p>
         </div>
-        <dl style={{ margin: 0, display: "grid", gap: "var(--space-3)", alignContent: "start" }}>
+        <div style={{ display: "grid", gap: "var(--space-4)", alignContent: "start" }}>
+          <dl style={{ margin: 0, display: "grid", gap: "var(--space-3)" }}>
           {[
             ["Response status", status],
             ["Policy", policyTitle(ops) ?? "No plan yet"],
@@ -49,13 +50,14 @@ export function IncidentRooms() {
               <dd style={{ margin: 0, fontSize: 16, fontWeight: 600 }}>{v}</dd>
             </div>
           ))}
+          </dl>
           <div className="v2-btn-row">
             <Link className="halt-btn halt-btn-primary" href={`/incidents/${state.incidentId}?view=overview`}>
               <span>ENTER THE ROOM</span>
               <span aria-hidden>→</span>
             </Link>
           </div>
-        </dl>
+        </div>
       </section>
 
       <section aria-label="Controlled scenario variants" className="v2-panel">
