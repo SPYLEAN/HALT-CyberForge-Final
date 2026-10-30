@@ -64,7 +64,7 @@ describe("AT-8.4 containment", () => {
     const m = model("cut", true);
     expect(m.rings.map((r) => r.pathId).sort()).toEqual(["P1", "P2", "P3", "P4", "P5", "P6"]);
     expect(new Set(m.rings.map((r) => `${r.edgeId}@${r.at}`)).size).toBe(6);
-    expect(m.summary).toBe("After containment: 6 of 6 high-risk paths cut, business thread continuing.");
+    expect(m.summary).toBe("After containment: 6 of 7 enumerated paths cut; U1 open as accepted residual risk, business thread continuing.");
   });
 
   it("keeps the business thread whole: never held, never dimmed", () => {

@@ -140,8 +140,12 @@ export function buildModel(input: GraphInput): GraphModel {
   }
 
   const high = paths.filter((p) => p.high_risk);
+  const open = paths.filter((p) => !blocked.has(p.id)).map((p) => p.id);
+  // Counted over every enumerated path, so a path the policy leaves open is named, never hidden.
   const summary = applied
-    ? `After containment: ${blocked.size} of ${high.length} high-risk paths cut, business thread continuing.`
+    ? `After containment: ${blocked.size} of ${paths.length} enumerated paths cut${
+        open.length ? `; ${open.join(", ")} open as accepted residual risk` : ""
+      }, business thread continuing.`
     : mode === "response" && input.plan?.status === "optimal"
       ? `Proposed response: ${input.plan.display_actions.length} actions, not yet applied. ${high.length} high-risk paths open.`
       : high.length

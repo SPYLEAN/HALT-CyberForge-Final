@@ -1,6 +1,7 @@
 {
   "id": "INC-2417",
   "title": "OAuth consent phishing against Finance Ops",
+  "severity": "high",
   "summary": "A consent-phishing message leads to a suspicious sign-in, an added authenticator, a malicious OAuth grant, replayed sessions and enumeration of the Finance-Close library. Synthetic scenario.",
   "t0": "2026-10-27T09:41:12Z",
   "params": {

@@ -45,7 +45,7 @@ test("AT-10.1 the full demo: landing → Command Center → approve → execute 
   await page.getByRole("link", { name: /ThreadGraph/ }).click();
   await expect(page.locator("[data-proof-ring]")).toHaveCount(6);
 
-  await page.getByRole("link", { name: /Incident Overview/ }).click();
+  await page.getByRole("link", { name: /^Overview/ }).click();
   await page.getByRole("button", { name: /REVIEW ROLLBACK/ }).click();
   await page.getByRole("button", { name: /ROLL BACK ALL/ }).click();
   await expect(topBar(page)).toContainText("ROLLED BACK");
@@ -80,7 +80,7 @@ test("AT-10.4 the approver-unavailable variant is blocked by policy with no exec
   await page.reload();
   await expect(page.getByLabel("Variant", { exact: true })).toHaveValue("approver_unavailable");
 
-  await page.getByRole("link", { name: /Incident Overview/ }).click();
+  await page.getByRole("link", { name: /^Overview/ }).click();
   await page.getByRole("button", { name: /CORRELATE WITH HALT-R1/ }).click();
   await page.getByRole("button", { name: /DERIVE ENVELOPE WITH SAFECUT/ }).click();
   await expect(topBar(page)).toContainText("BLOCKED BY POLICY");

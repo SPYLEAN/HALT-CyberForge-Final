@@ -30,7 +30,7 @@ test("AT-9.1 scrolling drives the replay and the hand-off keeps incident and cur
   await enter.click();
   await expect(page).toHaveURL(/\/incidents\/INC-2417\?view=overview&t=\d+/, { timeout: 30_000 });
   expect(await page.evaluate(() => (window as unknown as { __noReload?: string }).__noReload)).toBe("kept");
-  await expect(page.locator(".cc-timeline .telemetry")).toHaveText(before);
+  await expect(page.getByTestId("replay-clock")).toHaveText(before);
   await expect(page.getByRole("banner", { name: "Incident" })).toContainText("APPROVAL PENDING");
 });
 
@@ -40,7 +40,7 @@ test("AT-9.2 a deep link restores view and replay position after reload", async 
   await expect(slider).toHaveValue("420");
   await page.reload();
   await expect(slider).toHaveValue("420");
-  await expect(page.locator(".cc-timeline .telemetry")).toHaveText("T+07:00");
+  await expect(page.getByTestId("replay-clock")).toHaveText("T+07:00");
   await expect(page.getByRole("link", { name: /ThreadGraph/ })).toHaveAttribute("aria-current", "page");
 });
 

@@ -1960,6 +1960,16 @@
             "title": "Replay End S",
             "type": "number"
           },
+          "severity": {
+            "enum": [
+              "low",
+              "medium",
+              "high",
+              "critical"
+            ],
+            "title": "Severity",
+            "type": "string"
+          },
           "state": {
             "enum": [
               "new",
@@ -2004,6 +2014,7 @@
           "params",
           "state",
           "confidence",
+          "severity",
           "replay_end_s",
           "replay_cursor_s",
           "latest",
@@ -2133,6 +2144,16 @@
           "params": {
             "$ref": "#/components/schemas/IncidentParams"
           },
+          "severity": {
+            "enum": [
+              "low",
+              "medium",
+              "high",
+              "critical"
+            ],
+            "title": "Severity",
+            "type": "string"
+          },
           "summary": {
             "title": "Summary",
             "type": "string"
@@ -2157,6 +2178,7 @@
           "id",
           "title",
           "summary",
+          "severity",
           "t0",
           "params",
           "synthetic"

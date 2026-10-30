@@ -1186,6 +1186,11 @@ export interface components {
             /** Replay End S */
             replay_end_s: number;
             /**
+             * Severity
+             * @enum {string}
+             */
+            severity: "low" | "medium" | "high" | "critical";
+            /**
              * State
              * @enum {string}
              */
@@ -1242,6 +1247,11 @@ export interface components {
             /** Id */
             id: string;
             params: components["schemas"]["IncidentParams"];
+            /**
+             * Severity
+             * @enum {string}
+             */
+            severity: "low" | "medium" | "high" | "critical";
             /** Summary */
             summary: string;
             /**

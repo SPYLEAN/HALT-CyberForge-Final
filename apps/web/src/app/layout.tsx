@@ -6,6 +6,7 @@ import { OpsProvider } from "@/lib/api/ops";
 import { IncidentProvider } from "@/lib/state/incident-store";
 
 import "./globals.css";
+import "@/styles/v2.css";
 
 // Canonical typefaces (tokens.json type.families), exposed as the variables tokens.css reads.
 const archivo = Archivo({ subsets: ["latin"], axes: ["wdth"], variable: "--font-archivo", display: "swap" });

@@ -422,6 +422,7 @@ class IncidentService:
             params=rt.scenario.incident.params,
             state=self.state(rt),
             confidence=self.confidence(rt),
+            severity=rt.scenario.incident.severity,
             replay_end_s=end_t(rt.scenario),
             replay_cursor_s=rt.replay_cursor,
             latest=self.latest(rt),

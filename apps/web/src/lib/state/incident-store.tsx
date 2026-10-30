@@ -5,7 +5,7 @@ import { createContext, useCallback, useContext, useEffect, useMemo, useReducer,
 import type { Execution, Finding, GraphEdge, GraphNode, SecurityEvent, ServerMessage } from "@/lib/api/types";
 import { ReplaySocket, type SocketStatus } from "@/lib/api/ws";
 
-export const VIEWS = ["overview", "graph", "echolab", "safecut", "proofseal", "timeline", "policies"] as const;
+export const VIEWS = ["overview", "graph", "echolab", "safecut", "proofseal", "timeline", "policies", "report"] as const;
 export type ViewId = (typeof VIEWS)[number];
 export type Stage = Extract<ServerMessage, { type: "stage" }>["state"];
 export type Speed = 1 | 4 | 16;

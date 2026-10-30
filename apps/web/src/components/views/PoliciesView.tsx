@@ -9,7 +9,7 @@ import { useIncident } from "@/lib/state/incident-store";
 import { Panel, ViewHeader } from "./common";
 import { GraphPanel } from "./GraphPanel";
 
-function VariantSwitcher() {
+export function VariantSwitcher() {
   const ops = useOps();
   const { state, seek } = useIncident();
   // The variant list and the active variant both come from the API, so a reload shows what is really running.

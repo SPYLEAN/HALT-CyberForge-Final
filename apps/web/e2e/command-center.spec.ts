@@ -36,9 +36,9 @@ test("operator flow: correlate → SafeCut → EchoLab → ProofSeal → approve
   await page.getByRole("link", { name: /ThreadGraph/ }).click();
   await expect(page.locator("[data-proof-ring]")).toHaveCount(6);
   expect(await page.locator("[data-thread-edge]").count()).toBeGreaterThan(0);
-  await expect(page.getByTestId("graph-summary")).toHaveText("After containment: 6 of 6 high-risk paths cut, business thread continuing.");
+  await expect(page.getByTestId("graph-summary")).toHaveText("After containment: 6 of 7 enumerated paths cut; U1 open as accepted residual risk, business thread continuing.");
 
-  await page.getByRole("link", { name: /Incident Overview/ }).click();
+  await page.getByRole("link", { name: /^Overview/ }).click();
   await page.getByRole("button", { name: /REVIEW ROLLBACK/ }).click();
   await page.getByRole("button", { name: /ROLL BACK ALL/ }).click();
   await expect(page.getByText("ROLLED BACK · SNAPSHOT RESTORED")).toBeVisible();

@@ -38,10 +38,14 @@ class IncidentParams(Contract):
     soft_cut_evasion_p: float = Field(ge=0, le=1)
 
 
+Severity = Literal["low", "medium", "high", "critical"]
+
+
 class IncidentSpec(Contract):
     id: IncidentId
     title: str
     summary: str
+    severity: Severity  # scenario input (synthetic), shown as given; HALT does not score it
     t0: AwareDatetime  # replay clock zero
     params: IncidentParams
     synthetic: Literal[True] = True
@@ -71,6 +75,7 @@ class Incident(Contract):
     params: IncidentParams
     state: IncidentState
     confidence: Derivation | None
+    severity: Severity
     replay_end_s: float  # last timeline message (replay seconds); the scrubber's range
     replay_cursor_s: float | None  # last position a client sought to (persisted); null = start at the end
     latest: LatestArtefacts
