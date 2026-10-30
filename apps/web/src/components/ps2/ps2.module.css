@@ -15,7 +15,7 @@
 
 /* Pipeline stages: real request states, never a timer. */
 .stages { list-style: none; margin: 0 0 var(--space-5); padding: 0; display: grid; grid-template-columns: repeat(8, minmax(0, 1fr)); gap: var(--space-2); counter-reset: stage; }
-.stage { border-top: 3px solid var(--v2-border); padding-top: var(--space-2); font-size: 12.5px; line-height: 1.4; color: var(--v2-text-3); }
+.stage { border-top: 3px solid var(--v2-border); padding-top: var(--space-2); font-size: 12.5px; line-height: 1.4; color: var(--v2-text-2); }
 .stage strong { display: block; font-weight: 600; color: inherit; }
 .stage[data-state="done"] { border-top-color: var(--ps2-proof); color: var(--v2-text); }
 .stage[data-state="active"] { border-top-color: var(--v2-text); color: var(--v2-text); }

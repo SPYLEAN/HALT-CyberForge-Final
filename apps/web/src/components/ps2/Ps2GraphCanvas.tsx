@@ -1,7 +1,7 @@
 "use client";
 
 import cytoscape, { type Core, type ElementDefinition, type StylesheetJson } from "cytoscape";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 
 import { glyphUri } from "@/components/graph/glyphs";
 import type { NodeKind } from "@/components/halt";
@@ -84,6 +84,7 @@ export function Ps2GraphCanvas({
   const container = useRef<HTMLDivElement>(null);
   const cyRef = useRef<Core | null>(null);
   const revealed = useRef(false);
+  const [motion, setMotion] = useState<"pending" | "animated" | "instant">("pending");
   const select = useRef(onSelect);
   useEffect(() => {
     select.current = onSelect;
@@ -120,7 +121,9 @@ export function Ps2GraphCanvas({
     cy.fit(undefined, 32);
     if (!revealed.current && model.pathEdgeIds.size) {
       revealed.current = true;
-      if (!reducedMotion()) {
+      const animate = !reducedMotion();
+      setMotion(animate ? "animated" : "instant");
+      if (animate) {
         // Selected-path reveal, hop by hop in path order: runs once, when the graph is first ready.
         const hops = cy.edges(".path");
         hops.style("opacity", 0);
@@ -155,7 +158,7 @@ export function Ps2GraphCanvas({
 
   return (
     <div style={{ position: "relative", height }}>
-      <div ref={container} style={{ position: "absolute", inset: 0 }} role="img" aria-label={model.summary} data-testid="ps2-graph" data-path={model.pathEventIds.join(" ")} />
+      <div ref={container} style={{ position: "absolute", inset: 0 }} role="img" aria-label={model.summary} data-testid="ps2-graph" data-path={model.pathEventIds.join(" ")} data-path-reveal={motion} />
     </div>
   );
 }

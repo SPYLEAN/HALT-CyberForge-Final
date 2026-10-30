@@ -72,7 +72,7 @@ def upload_files() -> list[dict[str, str]]:
         {
             "filename": "api_activity.jsonl",
             "adapter": "api_activity",
-            "content_type": "application/x-ndjson",
+            "content_type": "application/jsonl",  # what the web upload form sends for a .jsonl file
             "content": "\n".join(lines) + "\n",
         }
     ]
