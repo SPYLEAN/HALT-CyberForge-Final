@@ -1,0 +1,102 @@
+{
+  "version": "halt.ps2.config/1.0",
+  "limits": {
+    "max_file_bytes": 2000000,
+    "max_files": 10,
+    "max_total_bytes": 5000000,
+    "max_records_per_file": 20000,
+    "max_paths": 400,
+    "max_path_hops": 14
+  },
+  "windows_s": {
+    "edge_max_gap": 3600,
+    "identity_ip": 900,
+    "identity_device": 1800,
+    "temporal_succession": 600,
+    "email_to_auth": 3600,
+    "temporal_decay_tau": 1800
+  },
+  "temporal_successors_per_event": 2,
+  "edge_weights": {
+    "shared_session": 0.9,
+    "token_lineage": 0.95,
+    "shared_token": 0.85,
+    "parent_child_process": 0.9,
+    "shared_application": 0.6,
+    "identity_device": 0.55,
+    "identity_ip": 0.5,
+    "email_recipient_auth": 0.5,
+    "temporal_succession": 0.25,
+    "stage_transition": 0.15,
+    "anomaly_continuity": 0.1
+  },
+  "exact_components": [
+    "shared_session",
+    "token_lineage",
+    "shared_token",
+    "parent_child_process",
+    "shared_application"
+  ],
+  "temporal_only_cap": 0.3,
+  "contradiction_penalty": 0.35,
+  "edge_select_threshold": 0.5,
+  "seed": {
+    "threshold": 0.5,
+    "r1_weight": 0.9,
+    "rules": {
+      "auth_first_seen_ip": 0.45,
+      "auth_unmanaged_device": 0.15,
+      "service_auth_external_ip": 0.7,
+      "consent_unverified_publisher": 0.4,
+      "consent_high_privilege_scope": 0.3,
+      "consent_young_app": 0.15,
+      "email_young_domain": 0.3,
+      "email_consent_link": 0.25,
+      "token_use_new_ip": 0.6,
+      "enumeration_burst": 0.55,
+      "access_denied_critical": 0.6,
+      "access_critical_from_external": 0.55,
+      "permission_wildcard": 0.65,
+      "role_assumption_external": 0.6,
+      "mfa_change": 0.2,
+      "credential_added": 0.35,
+      "known_egress_suppression": 0.6
+    },
+    "enumeration_rate_per_min": 30,
+    "high_privilege_scopes": [
+      "Files.ReadWrite.All",
+      "Mail.Read",
+      "Mail.ReadWrite",
+      "Directory.ReadWrite.All",
+      "Sites.Read.All"
+    ],
+    "young_days": 30
+  },
+  "reduction": {
+    "max_depth": 4,
+    "relevance_threshold": 0.35,
+    "propagation_decay": 0.85
+  },
+  "path_weights": {
+    "mean_edge_confidence": 0.22,
+    "evidence_diversity": 0.08,
+    "entity_continuity": 0.12,
+    "attack_progression": 0.12,
+    "seed_coverage": 0.22,
+    "critical_reach": 0.08,
+    "temporal_coherence": 0.06,
+    "anomaly": 0.1,
+    "contradiction_penalty": 0.15,
+    "unsupported_hop_penalty": 0.1
+  },
+  "alternates": 3,
+  "attack_map_version": "halt.attack-map/1.0",
+  "forecast": {
+    "hop_confidence": 0.6,
+    "max_hops": 2,
+    "criticalities": [
+      "high",
+      "critical"
+    ]
+  }
+}

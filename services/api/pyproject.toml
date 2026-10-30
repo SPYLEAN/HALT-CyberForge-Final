@@ -38,6 +38,7 @@ include = ["halt*"]
 [tool.setuptools.package-data]
 "halt.scenario" = ["inc_2417/*.json"]
 "halt.r1" = ["r1_model.json"]
+"halt.ps2" = ["*.json", "datasets/*/*.json", "datasets/*/raw/*", "ground_truth/*.json"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]

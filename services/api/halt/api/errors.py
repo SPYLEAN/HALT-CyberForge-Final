@@ -10,6 +10,7 @@ from halt.api.state import describe
 from halt.contracts.common import ApiError
 from halt.gate.gate import GateError
 from halt.logging import get_logger, request_id_var
+from halt.ps2.intake.intake import IntakeError
 from halt.scenario.loader import ScenarioError
 from halt.service import Conflict, NotFound, Unavailable
 
@@ -35,6 +36,10 @@ def install(app: FastAPI) -> None:
     @app.exception_handler(ScenarioError)
     async def scenario(_: Request, exc: ScenarioError) -> JSONResponse:
         return _error(422, "invalid_scenario", str(exc))
+
+    @app.exception_handler(IntakeError)
+    async def intake(_: Request, exc: IntakeError) -> JSONResponse:
+        return _error(exc.status, exc.code, str(exc))
 
     @app.exception_handler(Unavailable)
     async def unavailable(_: Request, exc: Unavailable) -> JSONResponse:
