@@ -12,8 +12,8 @@ import type { GraphNode } from "@/lib/api/types";
 import { count, utcTime } from "@/lib/format";
 import { useIncident } from "@/lib/state/incident-store";
 
-import { policyTitle } from "../derive";
-import { Aperture, ContinuityPath, Lattice, type ApertureState } from "../motifs";
+import { apertureOf, policyTitle } from "../derive";
+import { Aperture, ContinuityPath, Lattice } from "../motifs";
 
 type Health = components["schemas"]["Health"];
 type AuditVerify = components["schemas"]["AuditVerify"];
@@ -46,7 +46,7 @@ function ResilienceMap({ nodes }: { nodes: GraphNode[] }) {
   const down = new Set(plan?.constraints.find((c) => c.constraint_id === "C-DOWNTIME")?.derivation.source_ids ?? []);
   const services = nodes.filter((n) => n.kind === "process" && n.criticality === "critical");
   const target = nodes.find((n) => n.id === ops.paths[0]?.target_id);
-  const aperture: ApertureState = !plan ? "idle" : plan.status === "infeasible" ? "none" : ops.execution?.state === "applied" ? "applied" : ops.proof ? "sealed" : "proposed";
+  const aperture = apertureOf(ops);
   const W = 900;
   const H = 360;
   return (

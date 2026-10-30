@@ -7,6 +7,10 @@ import { roleRequirements } from "@/components/gate/ActionGateDrawer";
 import { MetricBlock, Skeleton, StatusChip } from "@/components/halt";
 import { useOps } from "@/lib/api/ops";
 import type { SecurityEvent } from "@/lib/api/types";
+import { Aperture } from "@/components/v2/motifs";
+import { apertureOf, criticalServices, decision, policyTitle, targetLabel } from "@/components/v2/derive";
+import { Horizon } from "@/components/v2/views/EchoLabV2";
+import { Chamber } from "@/components/v2/views/SafeCutV2";
 import { count, replayTime, utcTime } from "@/lib/format";
 import { useIncident } from "@/lib/state/incident-store";
 
@@ -14,11 +18,11 @@ import type { SceneState } from "./HaltScene3D";
 
 // Copy follows 04-marketing-site; every figure comes from the API with its derivation.
 
-export function Section({ id, scene, t, title, kicker, children }: { id: string; scene: SceneState; t: number; title: string; kicker: string; children?: ReactNode }) {
+export function Section({ id, scene, t, title, kicker, wide, children }: { id: string; scene: SceneState; t: number; title: string; kicker: string; wide?: boolean; children?: ReactNode }) {
   return (
     <section id={id} className="landing-section" data-scene={scene} aria-labelledby={`${id}-h`}>
-      <div className="landing-copy" data-replay-t={t}>
-        <p className="label" style={{ margin: 0 }}>
+      <div className={wide ? "landing-copy landing-copy-wide" : "landing-copy"} data-replay-t={t}>
+        <p className="v2-kicker" style={{ margin: 0 }}>
           {kicker}
         </p>
         <h2 id={`${id}-h`} className="display-headline" style={{ margin: "var(--space-2) 0 var(--space-4)" }}>
@@ -44,13 +48,13 @@ export function Hero() {
   return (
     <section id="hero" className="landing-section landing-hero" data-scene="dormant" aria-labelledby="hero-h">
       <div className="landing-copy" data-replay-t={0}>
-        <p className="label" style={{ margin: 0 }}>
+        <p className="v2-kicker" style={{ margin: 0 }}>
           Proof-carrying cyber response
         </p>
-        <h1 id="hero-h" className="display-headline" style={{ fontSize: 56, lineHeight: "60px", margin: "var(--space-3) 0 var(--space-4)" }}>
+        <h1 id="hero-h" className="v2-display landing-hero-title">
           Stop the attack. Not the business.
         </h1>
-        <p className="body" style={{ fontSize: 17, lineHeight: "26px", color: "var(--text-secondary)" }}>
+        <p className="v2-decision" style={{ color: "var(--v2-text-2)" }}>
           HALT simulates, optimises and proves the smallest reversible response that blocks high-risk attack paths while preserving critical operations.
         </p>
         <div style={{ display: "flex", gap: "var(--space-3)", flexWrap: "wrap", marginTop: "var(--space-5)" }}>
@@ -63,8 +67,11 @@ export function Hero() {
             <span aria-hidden>→</span>
           </Link>
         </div>
-        <p className="telemetry" style={{ marginTop: "var(--space-5)", color: "var(--text-secondary)" }}>
-          {ops.incident ? `${ops.incident.id} · ${ops.incident.title} · ${utcTime(ops.incident.t0)}` : "INC-2417"} · Simulated demonstration data
+        <p className="v2-meta" style={{ marginTop: "var(--space-5)" }}>
+          <span className="v2-id">{ops.incident?.id ?? "INC-2417"}</span>
+          {ops.incident ? ` · ${ops.incident.title} · ` : " · "}
+          {ops.incident ? <span className="v2-id">{utcTime(ops.incident.t0)}</span> : null}
+          {ops.incident ? " · " : ""}Simulated demonstration data
         </p>
       </div>
     </section>
@@ -143,7 +150,7 @@ export function IncidentSection({ allEvents }: { allEvents: SecurityEvent[] }) {
   return (
     <section id="incident" className="landing-section landing-incident" data-scene="reconstruction" aria-labelledby="incident-h">
       <div className="landing-copy">
-        <p className="label" style={{ margin: 0 }}>
+        <p className="v2-kicker" style={{ margin: 0 }}>
           Incident reconstruction
         </p>
         <h2 id="incident-h" className="display-headline" style={{ margin: "var(--space-2) 0 var(--space-4)" }}>
@@ -187,9 +194,9 @@ export function ContextSection({ end }: { end: number }) {
       </p>
       <ul style={{ listStyle: "none", padding: 0 }} aria-label="Business processes">
         {processes.map((n) => (
-          <li key={n.id} className="evidence-text" style={{ display: "flex", justifyContent: "space-between", borderTop: "var(--border-hairline) solid var(--line)", padding: "var(--space-2) 0" }}>
-            <span>{n.label}</span>
-            <span className="telemetry">
+          <li key={n.id} className="landing-process" data-critical={n.criticality === "critical"}>
+            <span className="v2-body" style={{ color: "var(--v2-text)" }}>{n.label}</span>
+            <span className="v2-meta">
               {n.business ? `${n.business.users} users` : "No business record"}
               {n.business?.deadline ? ` · ${n.business.deadline}` : ""} · {n.criticality}
             </span>
@@ -204,14 +211,17 @@ const FUTURE_TITLES = { A: "Aggressive isolation", B: "Passive monitoring", C: "
 
 export function EchoSection({ end }: { end: number }) {
   const ops = useOps();
+  const { state } = useIncident();
   const sim = ops.simulation;
+  const target = targetLabel(state.nodes, ops.paths);
   return (
-    <Section id="echolab" scene="futures" t={end} kicker="EchoLab" title="Three futures, run side by side before anything is touched.">
+    <Section id="echolab" scene="futures" t={end} kicker="EchoLab · Decision Horizon" title="Three futures, run side by side before anything is touched." wide>
       {sim ? (
         <>
           <p className="body">
             EchoLab replays the incident {sim.request.rollouts.toLocaleString("en-GB")} times under each response and counts what happens. Same incident, same graph, three different outcomes.
           </p>
+          <Horizon futures={sim.futures} target={target} />
           <div className="landing-three">
             {sim.futures.map((f) => (
               <article key={f.label} aria-label={FUTURE_TITLES[f.label]}>
@@ -224,7 +234,7 @@ export function EchoSection({ end }: { end: number }) {
               </article>
             ))}
           </div>
-          <p className="telemetry" style={{ color: "var(--text-secondary)" }}>Likelihoods are shares of rollouts, not measured probabilities.</p>
+          <p className="v2-meta">Likelihoods are shares of rollouts, not measured probabilities.</p>
         </>
       ) : (
         <Pending what="the EchoLab futures" />
@@ -238,7 +248,7 @@ export function SafeCutSection({ end }: { end: number }) {
   const plan = ops.plan;
   const actions = Object.fromEntries(ops.actions.map((a) => [a.id, a]));
   return (
-    <Section id="safecut" scene="contained" t={end} kicker="SafeCut" title="Not the strongest response. The smallest one that works.">
+    <Section id="safecut" scene="contained" t={end} kicker="SafeCut · Containment Aperture" title="Not the strongest response. The smallest one that works." wide>
       {plan?.status === "optimal" ? (
         <>
           <p className="body">
@@ -248,6 +258,9 @@ export function SafeCutSection({ end }: { end: number }) {
               ? ` ProofSeal then checked all ${ops.proof.enumeration.subsets_checked.toLocaleString("en-GB")} combinations independently${ops.proof.enumeration.unique ? ": no other set does as well." : "."}`
               : null}
           </p>
+          <div className="landing-chamber">
+            <Chamber state={apertureOf(ops)} />
+          </div>
           <ol style={{ listStyle: "none", padding: 0 }} aria-label="Response actions">
             {plan.display_actions.map((d) => {
               const members = d.candidate_ids.map((c) => actions[c]).filter((a) => a !== undefined);
@@ -269,6 +282,52 @@ export function SafeCutSection({ end }: { end: number }) {
         <Pending what="the SafeCut plan" />
       )}
     </Section>
+  );
+}
+
+/** The signature moment: the aperture closes on the hostile thread while the business thread runs through. */
+export function HaltMoment({ end }: { end: number }) {
+  const ops = useOps();
+  const { state } = useIncident();
+  const plan = ops.plan;
+  const services = criticalServices(state.nodes, ops);
+  const running = services.filter((s) => !s.down).length;
+  const d = decision(state, ops);
+  const aperture = apertureOf(ops);
+  const residual = plan?.status === "optimal" ? plan.residual : null;
+  return (
+    <section id="halt" className="landing-section landing-halt" data-scene="contained" aria-labelledby="halt-h">
+      <div className="landing-copy landing-copy-wide" data-replay-t={end}>
+        <Aperture state={aperture} size={240} label={`Containment Aperture: ${aperture}`} />
+        <div>
+          <p className="v2-kicker" style={{ margin: 0 }}>
+            {d.kicker}
+          </p>
+          {plan?.status === "optimal" ? (
+            <>
+              <h2 id="halt-h" className="v2-display landing-halt-title">
+                HALT.
+              </h2>
+              <p className="v2-decision" style={{ margin: 0 }}>
+                {`${plan.display_actions.length} reversible actions close the aperture on ${residual?.required_path_ids.length ?? 0} required paths. ${running} of ${services.length} critical operations keep running under ${policyTitle(ops) ?? "the policy"}.`}
+              </p>
+              {residual?.open_path_ids.length ? (
+                <p className="v2-body" style={{ color: "var(--v2-text-2)" }}>
+                  {`${residual.open_path_ids.join(", ")} stays open as accepted residual risk: ${count(residual.reach_bound)} simulated rollouts. Not zero risk.`}
+                </p>
+              ) : null}
+            </>
+          ) : (
+            <>
+              <h2 id="halt-h" className="v2-display landing-halt-title">
+                {plan ? "No safe cut." : "HALT."}
+              </h2>
+              {plan ? <p className="v2-decision">{d.statement}</p> : <Pending what="the SafeCut plan" />}
+            </>
+          )}
+        </div>
+      </div>
+    </section>
   );
 }
 

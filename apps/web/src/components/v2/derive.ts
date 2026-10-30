@@ -4,6 +4,8 @@ import type { OpsApi } from "@/lib/api/ops";
 import type { AttackPath, GraphNode } from "@/lib/api/types";
 import type { IncidentState } from "@/lib/state/incident-store";
 
+import type { ApertureState } from "./motifs";
+
 export interface Service {
   id: string;
   label: string;
@@ -17,6 +19,15 @@ export function criticalServices(nodes: Record<string, GraphNode>, ops: OpsApi):
   return Object.values(nodes)
     .filter((n) => n.kind === "process" && n.criticality === "critical")
     .map((n) => ({ id: n.id, label: n.label, down: down.has(n.id) }));
+}
+
+/** The aperture's state, from the plan, the proof and the simulated execution; never chosen by a view. */
+export function apertureOf(ops: OpsApi): ApertureState {
+  const plan = ops.plan;
+  if (!plan) return "idle";
+  if (plan.status === "infeasible") return "none";
+  if (ops.execution?.state === "applied") return "applied";
+  return ops.proof ? "sealed" : "proposed";
 }
 
 export function policyTitle(ops: OpsApi): string | null {

@@ -280,3 +280,38 @@
 /* Metric values and derivations are prose numbers, not identifiers: display face (mono is for IDs only). */
 .v2-main .halt-metric .label, .v2-main .halt-metric .data-value, .v2-main .halt-metric .deriv { font-family: var(--font-display); }
 .v2-main .halt-metric .data-value { font-variant-numeric: tabular-nums; }
+
+/* ---------- landing narrative (Pass 3) ---------- */
+.landing-hero-title { font-size: clamp(44px, 5.2vw, 76px); line-height: 1.04; font-stretch: 110%; letter-spacing: -0.01em; margin: var(--space-3) 0 var(--space-5); }
+.landing-copy-wide { max-width: 1080px; width: 100%; }
+.landing-halt .landing-copy { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: var(--space-8); align-items: center; }
+.landing-halt-title { font-size: clamp(56px, 8vw, 88px); line-height: 1; font-stretch: 110%; letter-spacing: -0.01em; margin: var(--space-2) 0 var(--space-4); }
+.landing-process { display: flex; justify-content: space-between; gap: var(--space-4); flex-wrap: wrap; border-top: var(--border-hairline) solid var(--v2-border); padding: var(--space-3) 0 var(--space-3) var(--space-3); border-left: 3px solid transparent; }
+.landing-process[data-critical="true"] { border-left-color: var(--v2-continuity); }
+@media (max-width: 639px) {
+  .landing-halt .landing-copy { grid-template-columns: minmax(0, 1fr); gap: var(--space-4); }
+  .landing-halt .v2-aperture { width: 140px; height: 140px; }
+}
+
+/* ---------- motion tied to state (UI_V2_SPEC §motion); the global reduced-motion rule leaves end states ---------- */
+@keyframes v2-rise { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+@keyframes v2-draw-in { from { stroke-dashoffset: 1; } to { stroke-dashoffset: 0; } }
+@keyframes v2-march-on { to { stroke-dashoffset: -16; } }
+.v2-chamber-row { animation: v2-rise var(--duration-expand) var(--ease-out) both; }
+.v2-draw { stroke-dasharray: 1; animation: v2-draw-in var(--duration-approach) var(--ease-out) both; }
+.v2-march { animation: v2-march-on var(--duration-march) linear infinite; }
+.v2-aperture-jaws rect { transition: fill var(--duration-proof) var(--ease-out); }
+/* Wide story panels (Decision Horizon, chamber) carry their own figure: the scene's floating labels step back. */
+.landing[data-scene-active="futures"] .landing-scene-labels,
+.landing[data-scene-active="contained"] .landing-scene-labels { visibility: hidden; }
+.landing .landing-section .display-headline { font-size: clamp(32px, 3.4vw, 48px); line-height: 1.1; }
+.landing .halt-metric .label, .landing .halt-metric .data-value, .landing .halt-metric .deriv { font-family: var(--font-display); }
+.landing .halt-metric .label { font-size: 12.5px; letter-spacing: 0.06em; }
+.landing .halt-metric .deriv { font-size: 12.5px; line-height: 18px; }
+@media (max-width: 639px) {
+  /* A 1000-unit chamber is unreadable at phone width; the action list below carries the same plan. */
+  .landing-chamber { display: none; }
+  .landing-bar { gap: var(--space-2); }
+  .landing-bar .telemetry { white-space: nowrap; font-size: 11px; }
+  .landing-bar .halt-btn > span:first-child { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+}

@@ -95,7 +95,7 @@ export function HaltScene3D({ state }: { state: SceneState }) {
         <img src={posterFor(state)} alt="" style={{ width: "100%", height: "100%", objectFit: "cover" }} data-testid="halt-3d-poster" />
       ) : null}
       <canvas ref={canvas} style={{ width: "100%", height: "100%", display: mode === "poster" ? "none" : "block" }} />
-      <div ref={labels} style={{ position: "absolute", inset: 0, pointerEvents: "none" }} />
+      <div ref={labels} className="landing-scene-labels" style={{ position: "absolute", inset: 0, pointerEvents: "none" }} />
     </div>
   );
 }

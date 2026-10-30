@@ -8,7 +8,7 @@ import type { ResponseAction } from "@/lib/api/types";
 import { count } from "@/lib/format";
 import { useIncident } from "@/lib/state/incident-store";
 
-import { criticalServices, policyTitle, targetLabel } from "../derive";
+import { apertureOf, criticalServices, policyTitle, targetLabel } from "../derive";
 import { ContinuityPath, ProofSignal, SafeEnvelope, type ApertureState } from "../motifs";
 import { Section, ViewHead } from "./parts";
 
@@ -209,7 +209,7 @@ export function SafeCutV2({ onOpenGate }: { onOpenGate: () => void }) {
   const plan = ops.plan;
   const policy = policyTitle(ops);
   const services = criticalServices(state.nodes, ops);
-  const aperture: ApertureState = !plan ? "idle" : plan.status === "infeasible" ? "none" : ops.execution?.state === "applied" ? "applied" : ops.proof ? "sealed" : "proposed";
+  const aperture = apertureOf(ops);
   const names = services.map((s) => s.label).join(", ");
 
   return (

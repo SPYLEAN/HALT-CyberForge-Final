@@ -43,7 +43,7 @@ export function Horizon({ futures, target }: { futures: Future[]; target: string
         const cutX = blocked === total && total > 0 ? 560 : null;
         return (
           <g key={f.label} className="v2-lane">
-            <path d={branch} fill="none" stroke="var(--v2-border-strong)" strokeWidth={1.5} />
+            <path d={branch} className="v2-draw" pathLength={1} fill="none" stroke="var(--v2-border-strong)" strokeWidth={1.5} style={{ animationDelay: `${i * 140}ms` }} />
             {/* Hostile stream: thickness = share of rollouts reaching the target; ends at a cut if every path is blocked. */}
             <path d={`M320 ${y - 10} H ${cutX ?? 860}`} fill="none" stroke="var(--v2-threat)" strokeWidth={threatWidth} strokeLinecap="round" strokeDasharray={reach > 0 ? undefined : "2 6"} opacity={reach > 0 ? 1 : 0.6} />
             {cutX ? (

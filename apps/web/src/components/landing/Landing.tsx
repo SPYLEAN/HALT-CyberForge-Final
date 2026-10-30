@@ -13,7 +13,7 @@ import { useIncident } from "@/lib/state/incident-store";
 
 import { HaltScene3D } from "./HaltScene3D";
 import { useLandingAnalysis, useScrollCursor } from "./hooks";
-import { CommandHandoff, ContextSection, EchoSection, Hero, IncidentSection, Paradox, ProofSection, SafeCutSection } from "./sections";
+import { CommandHandoff, ContextSection, EchoSection, HaltMoment, Hero, IncidentSection, Paradox, ProofSection, SafeCutSection } from "./sections";
 
 export function Landing() {
   const root = useRef<HTMLDivElement>(null);
@@ -38,7 +38,7 @@ export function Landing() {
   }, [state.incidentId]);
 
   return (
-    <div className="landing" ref={root}>
+    <div className="landing" ref={root} data-scene-active={scene}>
       <div className="landing-scene">
         <HaltScene3D state={scene} />
       </div>
@@ -62,6 +62,7 @@ export function Landing() {
         <ContextSection end={end} />
         <EchoSection end={end} />
         <SafeCutSection end={end} />
+        <HaltMoment end={end} />
         <ProofSection end={end} />
         <CommandHandoff end={end} />
       </main>
