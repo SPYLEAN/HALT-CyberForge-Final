@@ -1,47 +1,69 @@
 "use client";
 
-import { useRouter, useSearchParams } from "next/navigation";
-import { useCallback, useMemo, useSyncExternalStore } from "react";
+import { useSearchParams } from "next/navigation";
+import { useCallback, useEffect, useReducer, useSyncExternalStore } from "react";
 
-import { clampQuery, deriveAtlas, parseQuery, toSearch, type Atlas, type AtlasQuery } from "@/lib/ps3/atlas";
+import { parseQuery, toSearch, type Atlas, type AtlasQuery } from "@/lib/ps3/atlas";
 import { loadFixtures, type Fixtures } from "@/lib/ps3/engine";
+import { initialState, reduceAtlas, type AtlasAction, type AtlasStoreState, type HistoryMode, type Patch } from "@/lib/ps3/store";
 
 export interface AtlasStore {
   fx: Fixtures;
   q: AtlasQuery;
   atlas: Atlas;
-  /** Selection, panel and drift changes push history (Back restores them); scrubbing replaces. */
-  set: (patch: Partial<AtlasQuery>, mode?: "push" | "replace") => void;
+  focus: AtlasStoreState["focus"];
+  /** Patches apply to the latest state. Selections push history (Back restores them); scrubbing replaces. */
+  set: (patch: Patch, mode?: HistoryMode, opts?: { focus?: boolean }) => void;
+}
+
+/**
+ * Read a URL into state. A URL that names a stage but no payload position (a shared link, an older URL) gets the
+ * same synchronisation as a selection: the payload moves to that stage, so status and evidence agree.
+ */
+export function loadFromSearch(fx: Fixtures, search: string, base?: AtlasStoreState): AtlasStoreState {
+  const raw = new URLSearchParams(search);
+  const q = parseQuery(raw, fx);
+  let s = base ? reduceAtlas(fx, base, { type: "load", q }) : initialState(fx, q);
+  if (q.node && !raw.has("t")) {
+    const sync: AtlasAction = { type: "patch", patch: { node: q.node, ...(raw.has("panel") ? { panel: q.panel } : {}) }, mode: "none" };
+    s = reduceAtlas(fx, s, sync);
+  }
+  return s;
 }
 
 let fixtures: Fixtures | null = null;
 export const useFixtures = () => (fixtures ??= loadFixtures());
 
-/** Derive the next query, clamped against the state it produces. */
-export function nextQuery(fx: Fixtures, q: AtlasQuery, atlas: Atlas, patch: Partial<AtlasQuery>): AtlasQuery {
-  const merged = { ...q, ...patch };
-  if (patch.connector && patch.connector !== q.connector) Object.assign(merged, { drift: patch.drift ?? null, repair: false, node: patch.node ?? null, t: 0, record: 0 });
-  if (patch.drift !== undefined && patch.drift !== q.drift) Object.assign(merged, { repair: patch.repair ?? false, t: patch.t ?? 0 });
-  const changes = merged.connector !== q.connector || merged.drift !== q.drift || merged.repair !== q.repair;
-  return clampQuery(merged, changes ? deriveAtlas(fx, merged) : atlas);
-}
-
-/** The Atlas state held in the URL: shareable, restorable, and the browser's Back button works. */
+/**
+ * The Atlas state: a reducer (so rapid input never reads a stale value), mirrored to the URL with the History API
+ * (shareable, restorable, Back/Forward work) and reloaded from it on popstate.
+ */
 export function useUrlAtlas(basePath = "/atlas"): AtlasStore {
   const fx = useFixtures();
   const params = useSearchParams();
-  const router = useRouter();
-  const search = params.toString();
-  const q = useMemo(() => parseQuery(new URLSearchParams(search), fx), [search, fx]);
-  const atlas = useMemo(() => deriveAtlas(fx, q), [fx, q]);
-  const set = useCallback(
-    (patch: Partial<AtlasQuery>, mode: "push" | "replace" = "push") => {
-      const next = nextQuery(fx, q, atlas, patch);
-      router[mode](`${basePath}${toSearch(next, fx)}`, { scroll: false });
-    },
-    [fx, q, atlas, router, basePath],
+  const [s, dispatch] = useReducer(
+    (st: AtlasStoreState, a: AtlasAction | { type: "url"; search: string }) => (a.type === "url" ? loadFromSearch(fx, a.search, st) : reduceAtlas(fx, st, a)),
+    undefined,
+    () => loadFromSearch(fx, params.toString()),
   );
-  return { fx, q, atlas, set };
+
+  useEffect(() => {
+    if (s.mode === "none") return;
+    const search = toSearch(s.q, fx);
+    if (window.location.search === search || (!search && !window.location.search)) return;
+    const url = `${basePath}${search}`;
+    if (s.mode === "push") window.history.pushState(null, "", url);
+    else window.history.replaceState(null, "", url);
+  }, [s, fx, basePath]);
+
+  useEffect(() => {
+    const onPop = () => dispatch({ type: "url", search: window.location.search });
+    window.addEventListener("popstate", onPop);
+    return () => window.removeEventListener("popstate", onPop);
+  }, [fx]);
+
+  const set = useCallback((patch: Patch, mode: HistoryMode = "push", opts?: { focus?: boolean }) => dispatch({ type: "patch", patch, mode, focus: opts?.focus }), []);
+  return { fx, q: s.q, atlas: s.atlas, focus: s.focus, set };
 }
 
 function useMedia(query: string, fallback: boolean): boolean {
@@ -57,7 +79,7 @@ function useMedia(query: string, fallback: boolean): boolean {
 }
 
 export const useReducedMotion = () => useMedia("(prefers-reduced-motion: reduce)", false);
-/** Below 960 px the Atlas becomes a guided tour; the full scene is never shrunk onto a phone. */
+/** Below 960 px the Atlas becomes a guided pipeline; the full scene is never shrunk onto a phone. */
 export const useCompact = () => useMedia("(max-width: 959px)", false);
 
 let webgl: boolean | null = null;

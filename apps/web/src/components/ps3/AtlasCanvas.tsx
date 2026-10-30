@@ -2,11 +2,12 @@
 
 // The Connector Atlas in 3D. It renders the scene model and nothing else: no object, colour or motion here is
 // independent of Atlas state. Renders on demand; continuous only while the payload or the camera moves.
-import { CameraControls, Html, Line, PerformanceMonitor } from "@react-three/drei";
+import { CameraControls, Line, PerformanceMonitor } from "@react-three/drei";
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import { useEffect, useLayoutEffect, useMemo, useRef, useState, type ComponentRef } from "react";
 import * as THREE from "three";
 
+import { fits, frameBox, nodesBounds, overlayPadding, sceneBounds, type Box, type View, type Viewport } from "@/lib/ps3/camera";
 import { cameraTransition, ZONE_TITLES, type NodeStatus, type SceneModel, type SceneNode } from "@/lib/ps3/scene";
 
 export type CameraCommand = { kind: "home" | "focus" | "reset" | "lens"; seq: number };
@@ -40,10 +41,9 @@ function readPalette(): Palette {
   };
 }
 
-const HOME = { pos: [0, 7.5, 25] as const, target: [0, -0.5, 0] as const };
 const sizeOf = (n: SceneNode): [number, number, number] => (n.zone === "source" || n.zone === "destination" ? [1.1, 1.9, 1.1] : [0.8, 0.5, 0.8]);
 
-function Zones({ model, palette, labels }: { model: SceneModel; palette: Palette; labels: boolean }) {
+function Zones({ model, palette }: { model: SceneModel; palette: Palette }) {
   const box = useMemo(() => new THREE.BoxGeometry(1, 1, 1), []);
   const edges = useMemo(() => new THREE.EdgesGeometry(box), [box]);
   return (
@@ -56,17 +56,27 @@ function Zones({ model, palette, labels }: { model: SceneModel; palette: Palette
           <lineSegments geometry={edges}>
             <lineBasicMaterial color={palette.structure} transparent opacity={0.22} />
           </lineSegments>
-          {labels ? (
-            <Html position={[0, 0.56, 0]} center zIndexRange={[1, 0]} style={{ pointerEvents: "none" }}>
-              <span aria-hidden className="ps3-kicker" style={{ whiteSpace: "nowrap", color: "var(--ps3-text-2)" }}>
-                {ZONE_TITLES[z.zone]}
-              </span>
-            </Html>
-          ) : null}
         </group>
       ))}
     </>
   );
+}
+
+/** Zone labels are DOM text (never WebGL): each rendered frame moves them to their zone's projected top centre. */
+function ZoneLabelPositioner({ model }: { model: SceneModel }) {
+  const v = useMemo(() => new THREE.Vector3(), []);
+  useFrame(({ camera, size, gl }) => {
+    const host = gl.domElement.closest("[data-atlas-scene]");
+    for (const z of model.zones) {
+      const el = host?.querySelector<HTMLElement>(`[data-zone-label="${z.zone}"]`);
+      if (!el) continue;
+      v.set(z.x, 4.1, 0).project(camera);
+      const visible = v.z < 1;
+      el.style.visibility = visible ? "visible" : "hidden";
+      el.style.transform = `translate(${((v.x + 1) / 2) * size.width}px, ${((1 - v.y) / 2) * size.height}px) translate(-50%, -100%)`;
+    }
+  });
+  return null;
 }
 
 function Rails({ model, palette }: { model: SceneModel; palette: Palette }) {
@@ -187,95 +197,236 @@ function ProofMarkers({ model, palette }: { model: SceneModel; palette: Palette 
   );
 }
 
-function Packet({ model, palette, reduced }: { model: SceneModel; palette: Palette; reduced: boolean }) {
+/** Duration of one stage-to-stage packet move. Rendering is continuous only for this long, then stops. */
+export const FLIGHT_MS = 600;
+const ease = (k: number) => (k < 0.5 ? 2 * k * k : 1 - (-2 * k + 2) ** 2 / 2);
+
+type Probe = {
+  __ps3Frames?: number[];
+  __ps3Packet?: { node: string | null; moving: boolean; moves: number; position: [number, number, number] | null };
+  __ps3Camera?: {
+    position: number[];
+    target: number[];
+    width: number;
+    height: number;
+    zones: { zone: string; inView: boolean }[];
+    allZonesInView: boolean;
+    offscreenCritical: string[];
+    screen: Record<string, [number, number]>; // node centres in canvas pixels
+  };
+};
+const probe = () => window as unknown as Probe;
+
+/**
+ * The payload. One step forward (a replay advancing) travels along the rail for FLIGHT_MS with a frame requested
+ * on every animation frame; any other change (scrub, record switch, reduced motion, first placement) jumps there.
+ * Timing is wall-clock (performance.now), so a hidden tab never animates and resumes at the final position.
+ */
+function Packet({ model, palette, reduced, t }: { model: SceneModel; palette: Palette; reduced: boolean; t: number }) {
   const ref = useRef<THREE.Mesh>(null);
   const invalidate = useThree((s) => s.invalidate);
+  const anim = useRef<{ from: THREE.Vector3; to: THREE.Vector3; start: number } | null>(null);
+  const last = useRef<{ t: number; node: string } | null>(null);
   const node = model.packet ? model.nodes.find((n) => n.id === model.packet!.node) : undefined;
-  const target = useMemo(() => (node ? new THREE.Vector3(node.position[0], node.position[1] + sizeOf(node)[1] + 0.05, 0.62) : null), [node]);
+  const key = node ? `${node.id}|${node.position.join(",")}` : "";
+
   useEffect(() => {
-    if (!target || !ref.current) return;
-    if (reduced || ref.current.position.lengthSq() === 0) ref.current.position.copy(target);
-    invalidate();
-  }, [target, reduced, invalidate]);
-  useFrame((_, dt) => {
     const m = ref.current;
-    if (!m || !target) return;
-    if (m.position.distanceTo(target) > 0.01) {
-      m.position.lerp(target, Math.min(1, dt * 7));
-      invalidate();
+    if (!m || !node) return;
+    const to = new THREE.Vector3(node.position[0], node.position[1] + sizeOf(node)[1] + 0.05, 0.62);
+    const prev = last.current;
+    const oneStep = prev !== null && prev.node !== node.id && t === prev.t + 1;
+    if (oneStep && !reduced) {
+      anim.current = { from: m.position.clone(), to, start: performance.now() };
+      const w = window as unknown as { __ps3Moves?: number[] };
+      (w.__ps3Moves ??= []).push(anim.current.start);
+    } else {
+      anim.current = null;
+      m.position.copy(to);
+    }
+    last.current = { t, node: node.id };
+    const w = window as unknown as { __ps3Path?: string[] };
+    if ((w.__ps3Path ??= [])[w.__ps3Path.length - 1] !== node.id) w.__ps3Path.push(node.id);
+    const p = probe();
+    p.__ps3Packet = { node: node.id, moving: Boolean(anim.current), moves: (p.__ps3Packet?.moves ?? 0) + (anim.current ? 1 : 0), position: [to.x, to.y, to.z] };
+    invalidate();
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- keyed on the target node and step
+  }, [key, t, reduced]);
+
+  useFrame(() => {
+    const a = anim.current;
+    const m = ref.current;
+    if (!a || !m) return;
+    const k = Math.min(1, (performance.now() - a.start) / FLIGHT_MS);
+    m.position.lerpVectors(a.from, a.to, ease(k));
+    const w = window as unknown as { __ps3Trail?: [number, number][] };
+    (w.__ps3Trail ??= []).push([a.start, k]); // one entry per rendered frame of a move: the packet's progress
+    if (w.__ps3Trail.length > 4000) w.__ps3Trail.shift();
+    if (k < 1) invalidate();
+    else {
+      anim.current = null;
+      const p = probe().__ps3Packet;
+      if (p) p.moving = false;
     }
   });
-  if (!target || !model.packet) return null;
+  if (!node || !model.packet) return null;
   return (
     <mesh ref={ref}>
       <boxGeometry args={[0.32, 0.32, 0.32]} />
-      <meshStandardMaterial color={model.packet.status === "failed" ? palette.status.failed : palette.gold} emissive={model.packet.status === "failed" ? palette.status.failed : palette.gold} emissiveIntensity={0.55} />
+      <meshStandardMaterial
+        color={model.packet.status === "failed" ? palette.status.failed : palette.gold}
+        emissive={model.packet.status === "failed" ? palette.status.failed : palette.gold}
+        emissiveIntensity={0.55}
+      />
     </mesh>
   );
 }
 
-function Camera({ model, selected, command, follow, reduced }: { model: SceneModel; selected: string | null; command: CameraCommand; follow: boolean; reduced: boolean }) {
+interface CameraProps {
+  model: SceneModel;
+  focus: { node: string | null; seq: number };
+  command: CameraCommand;
+  follow: boolean;
+  reduced: boolean;
+  driftKey: string | null;
+  minimap: boolean;
+}
+
+const NO_PAD = { top: 0, right: 0, bottom: 0, left: 0 };
+const zoneBox = (z: SceneModel["zones"][number]): Box => ({ min: [z.x - z.width / 2, -3.7, -1.6], max: [z.x + z.width / 2, 3.7, 1.6] });
+
+function Camera({ model, focus, command, follow, reduced, driftKey, minimap }: CameraProps) {
   const ref = useRef<ComponentRef<typeof CameraControls>>(null);
+  const size = useThree((s) => s.size);
+  const camera = useThree((s) => s.camera) as THREE.PerspectiveCamera;
   const smooth = cameraTransition(reduced);
-  const sel = model.nodes.find((n) => n.id === selected);
-  const packetNode = model.packet ? model.nodes.find((n) => n.id === model.packet!.node) : undefined;
+  const canonical = useRef(true); // true until the viewer moves the camera or asks for another framing
+  const vp: Viewport = useMemo(
+    () => ({ width: size.width, height: size.height, fov: camera.fov, pad: overlayPadding(size.width, size.height, minimap) }),
+    [size.width, size.height, camera.fov, minimap],
+  );
+  const zonesKey = model.zones.map((z) => `${z.zone}:${z.x}:${z.width}`).join("|");
+  // eslint-disable-next-line react-hooks/exhaustive-deps -- the zones' geometry, not the model object, decides the frame
+  const home = useMemo(() => frameBox(sceneBounds(model), vp), [zonesKey, vp]);
+  const apply = (view: View, transition: boolean) => void ref.current?.setLookAt(...view.position, ...view.target, transition);
+  const critical = model.nodes.filter((n) => n.status === "drift" || n.status === "failed");
 
-  const frame = (c: ComponentRef<typeof CameraControls>, n: SceneNode | undefined) => {
-    if (!n) return void c.setLookAt(...HOME.pos, ...HOME.target, smooth);
-    const [x, y] = n.position;
-    // Source Lens: stand at the source and look down its rail; otherwise frame the object from the front.
-    if (n.zone === "source") void c.setLookAt(x - 3.2, y + 1.6, 3.4, x + 7, y, 0, smooth);
-    else void c.setLookAt(x + 2.4, y + 2.4, 7.5, x, y, 0, smooth);
-  };
-
-  // A new selection is always framed.
+  // Initial view, and every resize while canonical: the canonical frame, immediately.
   useEffect(() => {
-    if (ref.current && sel) frame(ref.current, sel);
-    // eslint-disable-next-line react-hooks/exhaustive-deps -- reframe on selection change only
-  }, [sel?.id]);
+    if (canonical.current) apply(home, false);
+  }, [home]);
 
-  // Each button press applies once.
+  // Home and Reset: exactly the canonical view. Focus: the selected object.
   useEffect(() => {
-    if (!ref.current || command.seq === 0) return;
-    frame(ref.current, command.kind === "focus" ? sel : undefined);
-    // eslint-disable-next-line react-hooks/exhaustive-deps -- reacts to the press, not to selection changes
+    if (command.seq === 0) return;
+    if (command.kind === "home" || command.kind === "reset") {
+      canonical.current = true;
+      apply(home, smooth);
+    } else if (command.kind === "focus") {
+      const n = model.nodes.find((x) => x.id === focus.node);
+      if (n) {
+        canonical.current = false;
+        apply(frameBox(nodesBounds([n], 2.4)!, vp), smooth);
+      }
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- reacts to the press only
   }, [command.seq]);
 
+  // An explicit selection frames that object; the Source Lens looks down the source's rail.
   useEffect(() => {
-    if (!follow || !packetNode || !ref.current) return;
-    const [x, y] = packetNode.position;
-    void ref.current.setLookAt(x - 1.5, y + 2.2, 6.5, x + 1.5, y, 0, smooth);
-  }, [follow, packetNode, smooth]);
+    if (focus.seq === 0) return;
+    const n = model.nodes.find((x) => x.id === focus.node);
+    if (!n) return;
+    canonical.current = false;
+    if (n.zone === "source") {
+      const [x, y] = n.position;
+      void ref.current?.setLookAt(x - 3.2, y + 1.6, 3.4, x + 7, y, 0, smooth);
+    } else apply(frameBox(nodesBounds([n], 2.4)!, vp), smooth);
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- reacts to the request only
+  }, [focus.seq]);
 
-  return <CameraControls ref={ref} makeDefault minDistance={3} maxDistance={42} maxPolarAngle={Math.PI * 0.62} smoothTime={reduced ? 0 : 0.45} />;
+  // Drift Shockwave: frame every affected mapping and broken destination together.
+  useEffect(() => {
+    if (!driftKey) return;
+    const box = nodesBounds(critical, 1.6);
+    if (!box) return;
+    canonical.current = false;
+    apply(frameBox(box, vp), smooth);
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- reframe when the drift scenario or viewport changes
+  }, [driftKey, vp]);
+
+  // Payload follow: keep the packet's stage framed as it advances.
+  const packetNode = model.packet ? model.nodes.find((n) => n.id === model.packet!.node) : undefined;
+  useEffect(() => {
+    if (!follow || !packetNode) return;
+    canonical.current = false;
+    apply(frameBox(nodesBounds([packetNode], 2.8)!, vp), smooth);
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- follows the packet's stage
+  }, [follow, packetNode?.id]);
+
+  useEffect(() => {
+    const c = ref.current;
+    if (!c) return;
+    const user = () => {
+      canonical.current = false;
+    };
+    c.addEventListener("controlstart", user);
+    return () => c.removeEventListener("controlstart", user);
+  }, []);
+
+  // Test and audit probe: where the camera is, and whether every zone (and anything failing) is on screen.
+  useFrame(() => {
+    const c = ref.current;
+    if (!c) return;
+    const target = c.getTarget(new THREE.Vector3());
+    const view: View = { position: camera.position.toArray() as [number, number, number], target: target.toArray() as [number, number, number] };
+    const full = { ...vp, pad: NO_PAD };
+    const zones = model.zones.map((z) => ({ zone: z.zone, inView: fits(zoneBox(z), view, full, 1) }));
+    const offscreenCritical = critical.filter((n) => !fits(nodesBounds([n], 0.4)!, view, full, 1)).map((n) => n.id);
+    const v = new THREE.Vector3();
+    const screen: Record<string, [number, number]> = {};
+    for (const n of model.nodes) {
+      v.set(n.position[0], n.position[1] + (sizeOf(n)[1] - 0.5) / 2, n.position[2]).project(camera);
+      screen[n.id] = [((v.x + 1) / 2) * size.width, ((1 - v.y) / 2) * size.height];
+    }
+    probe().__ps3Camera = { position: view.position, target: view.target, width: size.width, height: size.height, zones, allZonesInView: zones.every((z) => z.inView), offscreenCritical, screen };
+  });
+
+  return <CameraControls ref={ref} makeDefault minDistance={3} maxDistance={80} maxPolarAngle={Math.PI * 0.62} smoothTime={reduced ? 0 : 0.45} />;
 }
 
 function Stats() {
-  // Frame timing for the performance evidence (docs/PS3_ACCEPTANCE_TESTS.md); read by the E2E perf probe.
-  useFrame((_, dt) => {
-    const w = window as unknown as { __ps3Frames?: number[] };
-    (w.__ps3Frames ??= []).push(dt * 1000);
-    if (w.__ps3Frames.length > 600) w.__ps3Frames.shift();
+  // Render timestamps for the performance evidence; read by the Atlas E2E suite and audits.
+  useFrame(() => {
+    const p = probe();
+    (p.__ps3Frames ??= []).push(performance.now());
+    if (p.__ps3Frames.length > 2000) p.__ps3Frames.shift();
   });
   return null;
 }
 
 export default function AtlasCanvas({
   model,
-  selected,
   onSelect,
+  selected,
+  focus,
   command,
   follow,
   reduced,
   labels,
+  t,
+  driftKey,
 }: {
   model: SceneModel;
   selected: string | null;
   onSelect: (id: string) => void;
+  focus: { node: string | null; seq: number };
   command: CameraCommand;
   follow: boolean;
   reduced: boolean;
   labels: boolean;
+  t: number;
+  driftKey: string | null;
 }) {
   const palette = useMemo(() => readPalette(), []);
   const [dpr, setDpr] = useState(1.75);
@@ -286,27 +437,38 @@ export default function AtlasCanvas({
     return () => document.removeEventListener("visibilitychange", on);
   }, []);
   return (
+    <>
     <Canvas
       frameloop={hidden ? "never" : "demand"}
       dpr={[1, dpr]}
-      camera={{ position: [...HOME.pos], fov: 38, near: 0.1, far: 200 }}
+      camera={{ position: [0, 6, 30], fov: 38, near: 0.1, far: 300 }}
       gl={{ antialias: true, alpha: true, powerPreference: "high-performance" }}
       tabIndex={-1}
       aria-hidden
       data-testid="atlas-canvas"
-      onPointerMissed={() => undefined}
     >
       <PerformanceMonitor onDecline={() => setDpr(1.25)} onIncline={() => setDpr(1.75)} flipflops={3} onFallback={() => setDpr(1)} />
       <hemisphereLight args={[palette.structure, palette.bg, 0.9]} />
       <directionalLight position={[6, 12, 10]} intensity={1.4} color={palette.structure} />
-      <Zones model={model} palette={palette} labels={labels} />
+      <Zones model={model} palette={palette} />
       <Rails model={model} palette={palette} />
       <Edges model={model} palette={palette} />
       <Nodes model={model} palette={palette} selected={selected} onSelect={onSelect} />
       <ProofMarkers model={model} palette={palette} />
-      <Packet model={model} palette={palette} reduced={reduced} />
-      <Camera model={model} selected={selected} command={command} follow={follow} reduced={reduced} />
+      <Packet model={model} palette={palette} reduced={reduced} t={t} />
+      <Camera model={model} focus={focus} command={command} follow={follow} reduced={reduced} driftKey={driftKey} minimap />
+      <ZoneLabelPositioner model={model} />
       <Stats />
     </Canvas>
+    {labels ? (
+      <div aria-hidden className="ps3-zone-labels">
+        {model.zones.map((z) => (
+          <span key={z.zone} className="ps3-kicker ps3-zone-label" data-zone-label={z.zone}>
+            {ZONE_TITLES[z.zone]}
+          </span>
+        ))}
+      </div>
+    ) : null}
+    </>
   );
 }

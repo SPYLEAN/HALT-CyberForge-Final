@@ -8,6 +8,7 @@ import { Component, useEffect, useMemo, useState, type ErrorInfo, type ReactNode
 import { reachableSteps, type Panel } from "@/lib/ps3/atlas";
 import { ZONES } from "@/lib/ps3/engine";
 import { pipelineOrder, STATUS_TEXT, toScene, ZONE_TITLES, type SceneModel } from "@/lib/ps3/scene";
+import { stepNode } from "@/lib/ps3/store";
 
 import type { CameraCommand } from "./AtlasCanvas";
 import { Flow2D } from "./Flow2D";
@@ -30,11 +31,8 @@ class SceneBoundary extends Component<{ fallback: ReactNode; children: ReactNode
   }
 }
 
-/** Panel that best explains a stage when it is selected. */
-const PANEL_FOR: Record<string, Panel> = { source: "lens", acquisition: "flight", transformation: "mapping", validation: "flight", destination: "proof" };
-
 export function AtlasView({ store, caption }: { store: AtlasStore; caption?: ReactNode }) {
-  const { q, atlas, set, fx } = store;
+  const { q, atlas, set, fx, focus } = store;
   const model = useMemo(() => toScene(atlas, q), [atlas, q]);
   const compact = useCompact();
   const reduced = useReducedMotion();
@@ -43,25 +41,22 @@ export function AtlasView({ store, caption }: { store: AtlasStore; caption?: Rea
   const approval = approvals[atlas.receipt.id] ?? null;
   const onApprove = (id: string) => setApprovals((a) => ({ ...a, [atlas.receipt.id]: id }));
 
-  const select = (id: string) => {
-    const n = model.nodes.find((x) => x.id === id);
-    set({ node: id, ...(n && n.zone === "source" ? { panel: "lens" as Panel } : {}) });
-  };
+  // Selecting opens the stage's panel and moves the payload there (lib/ps3/store.ts) and asks the camera to frame it.
+  const select = (id: string) => set({ node: id }, "push", { focus: true });
 
-  // `[` and `]` step the selection along the pipeline when focus is not in a form control.
+  // `[` and `]` step the selection along the pipeline (from the latest state, however fast they are pressed).
   useEffect(() => {
-    const order = pipelineOrder(atlas);
     const onKey = (e: KeyboardEvent) => {
       if (e.key !== "[" && e.key !== "]") return;
       const tag = (e.target as HTMLElement | null)?.tagName;
       if (tag === "INPUT" || tag === "SELECT" || tag === "TEXTAREA") return;
-      const i = q.node ? order.indexOf(q.node) : -1;
-      const next = e.key === "]" ? Math.min(order.length - 1, i + 1) : Math.max(0, i - 1);
-      set({ node: order[next]! });
+      e.preventDefault();
+      const dir = e.key === "]" ? 1 : -1;
+      set((cur, a) => ({ node: stepNode(cur, a, dir) }), "push", { focus: true });
     };
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
-  }, [atlas, q.node, set]);
+  }, [set]);
 
   if (compact) return <GuidedTour store={store} model={model} approval={approval} onApprove={onApprove} />;
 
@@ -73,7 +68,7 @@ export function AtlasView({ store, caption }: { store: AtlasStore; caption?: Rea
       </nav>
       <main className="ps3-stage" aria-label="Connector Atlas">
         <h1 className="sr-only">{`Connector Atlas: ${atlas.config.title}`}</h1>
-        <StageView model={model} store={store} webgl={webgl} reduced={reduced} onSelect={select} />
+        <StageView model={model} store={store} webgl={webgl} reduced={reduced} onSelect={select} focus={focus} />
         {caption}
       </main>
       <aside className="ps3-drawer" aria-label="Details">
@@ -139,8 +134,22 @@ export function ObjectList({ model, selected, onSelect }: { model: SceneModel; s
   );
 }
 
-function StageView({ model, store, webgl, reduced, onSelect }: { model: SceneModel; store: AtlasStore; webgl: boolean | null; reduced: boolean; onSelect: (id: string) => void }) {
-  const { q } = store;
+function StageView({
+  model,
+  store,
+  webgl,
+  reduced,
+  onSelect,
+  focus,
+}: {
+  model: SceneModel;
+  store: AtlasStore;
+  webgl: boolean | null;
+  reduced: boolean;
+  onSelect: (id: string) => void;
+  focus: AtlasStore["focus"];
+}) {
+  const { q, atlas } = store;
   const [command, setCommand] = useState<CameraCommand>({ kind: "focus", seq: 0 });
   const [follow, setFollow] = useState(false);
   const cmd = (kind: CameraCommand["kind"]) => setCommand((c) => ({ kind, seq: c.seq + 1 }));
@@ -149,6 +158,7 @@ function StageView({ model, store, webgl, reduced, onSelect }: { model: SceneMod
       <Flow2D model={model} selected={q.node} onSelect={onSelect} variant="full" />
     </div>
   );
+  const driftKey = atlas.analysis && !atlas.repaired ? `${q.connector}:${q.drift}` : null;
   if (webgl === false) {
     return (
       <>
@@ -176,7 +186,6 @@ function StageView({ model, store, webgl, reduced, onSelect }: { model: SceneMod
           className="ps3-btn"
           onClick={() => {
             setFollow(false);
-            store.set({ node: null });
             cmd("reset");
           }}
         >
@@ -187,8 +196,8 @@ function StageView({ model, store, webgl, reduced, onSelect }: { model: SceneMod
         full2d
       ) : (
         <SceneBoundary fallback={full2d}>
-          <div style={{ position: "absolute", inset: 0 }}>
-            <AtlasCanvas model={model} selected={q.node} onSelect={onSelect} command={command} follow={follow} reduced={reduced} labels />
+          <div style={{ position: "absolute", inset: 0 }} data-atlas-scene>
+            <AtlasCanvas model={model} selected={q.node} onSelect={onSelect} focus={focus} command={command} follow={follow} reduced={reduced} labels t={q.t} driftKey={driftKey} />
           </div>
         </SceneBoundary>
       )}
@@ -201,32 +210,43 @@ function StageView({ model, store, webgl, reduced, onSelect }: { model: SceneMod
   );
 }
 
+/** Time per replay step; the packet travels for FLIGHT_MS (600 ms) of it and the scene is idle for the rest. */
+export const STEP_MS = 900;
+
 function Timeline({ store }: { store: AtlasStore }) {
   const { q, atlas, set } = store;
   const rec = atlas.trace.records[q.record];
   const n = reachableSteps(rec);
   const [playing, setPlaying] = useState(false);
+  const atEnd = q.t >= n - 1;
   useEffect(() => {
-    if (!playing) return;
-    if (q.t >= n - 1) {
-      const stop = setTimeout(() => setPlaying(false), 0);
-      return () => clearTimeout(stop);
-    }
-    const id = setTimeout(() => set({ t: q.t + 1, panel: "flight" }, "replace"), 900);
+    if (!playing || atEnd) return;
+    const id = setTimeout(() => set((cur) => ({ t: cur.t + 1 }), "replace"), STEP_MS);
     return () => clearTimeout(id);
-  }, [playing, q.t, n, set]);
+  }, [playing, atEnd, q.t, set]);
+  const isPlaying = playing && !atEnd;
   const step = rec?.steps[q.t];
   const stage = atlas.plan.stages.find((s) => s.id === step?.stage_id);
   return (
     <footer className="ps3-track" aria-label="Payload Flight timeline">
       <div style={{ display: "flex", gap: 6 }}>
-        <button type="button" className="ps3-btn" onClick={() => set({ t: Math.max(0, q.t - 1) }, "replace")} disabled={q.t === 0} aria-label="Previous step">
+        <button type="button" className="ps3-btn" onClick={() => set((cur) => ({ t: Math.max(0, cur.t - 1) }), "replace")} disabled={q.t === 0} aria-label="Previous step">
           ←
         </button>
-        <button type="button" className="ps3-btn" onClick={() => (playing ? setPlaying(false) : (q.t >= n - 1 && set({ t: 0 }, "replace"), setPlaying(true)))} disabled={!n}>
-          {playing ? "Pause" : "Dry run"}
+        <button
+          type="button"
+          className="ps3-btn"
+          data-testid="flight-play"
+          onClick={() => {
+            if (isPlaying) return setPlaying(false);
+            set({ ...(atEnd ? { t: 0 } : {}), panel: "flight" }, "replace");
+            setPlaying(true);
+          }}
+          disabled={!n}
+        >
+          {isPlaying ? "Pause" : "Dry run"}
         </button>
-        <button type="button" className="ps3-btn" onClick={() => set({ t: Math.min(n - 1, q.t + 1) }, "replace")} disabled={q.t >= n - 1} aria-label="Next step">
+        <button type="button" className="ps3-btn" onClick={() => set((cur) => ({ t: Math.min(n - 1, cur.t + 1) }), "replace")} disabled={atEnd} aria-label="Next step">
           →
         </button>
       </div>
@@ -246,12 +266,7 @@ function GuidedTour({ store, model, approval, onApprove }: { store: AtlasStore; 
   const node = model.nodes.find((n) => n.id === order[i])!;
   const rec = atlas.trace.records[q.record];
   const step = rec?.steps.find((s) => s.stage_id === node.stage.id);
-  const go = (j: number) => {
-    const id = order[j]!;
-    const zone = model.nodes.find((n) => n.id === id)!.zone;
-    const t = rec ? rec.steps.findIndex((s) => s.stage_id === model.nodes.find((n) => n.id === id)!.stage.id) : 0;
-    set({ node: id, panel: PANEL_FOR[zone], t: Math.min(Math.max(0, t), Math.max(0, reachableSteps(rec) - 1)) });
-  };
+  const go = (j: number) => set({ node: order[j]! });
   return (
     <div className="ps3 ps3-tour">
       <header className="ps3-tour-bar" aria-label="Connector">
