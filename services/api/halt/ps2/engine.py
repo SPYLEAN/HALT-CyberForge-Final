@@ -134,6 +134,22 @@ def _forecasts(
     return [out[k] for k in sorted(out)]
 
 
+def replay_id_of(ing: Ingestion, config: ReconstructionConfig) -> str:
+    """Same inputs, context, config and engine version → same replay id (and run id), in any process."""
+    return sha256_hex(
+        {
+            "inputs": sorted(ing.result.input_hashes.values()),
+            "context": ing.result.context_sha256,
+            "config": config.sha256,
+            "engine": ENGINE_VERSION,
+        }
+    )
+
+
+def run_id_of(replay_id: str) -> str:
+    return "run-" + replay_id[:16]
+
+
 def reconstruct(ing: Ingestion, config: ReconstructionConfig) -> Reconstruction:
     t0 = time.perf_counter()
     raw = ing.events
@@ -167,15 +183,8 @@ def reconstruct(ing: Ingestion, config: ReconstructionConfig) -> Reconstruction:
     selected = ranked.selected
     edge_map = {e.edge_id: e for e in reduced.selected}
 
-    replay_id = sha256_hex(
-        {
-            "inputs": sorted(ing.result.input_hashes.values()),
-            "context": ing.result.context_sha256,
-            "config": config.sha256,
-            "engine": ENGINE_VERSION,
-        }
-    )
-    run_id = "run-" + replay_id[:16]
+    replay_id = replay_id_of(ing, config)
+    run_id = run_id_of(replay_id)
 
     # ---- graph: relevant events, their entities, context and forecast edges
     kept = sorted(reduced.kept_events, key=lambda i: (by_id[i].occurred_at, i))

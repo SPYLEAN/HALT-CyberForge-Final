@@ -214,7 +214,7 @@ From the repository root (Python 3.12 and Node 22+):
 | Install | `npm run setup` |
 | Develop (API hot reload + Next dev; state in `.halt/halt-dev.db`) | `npm run dev` |
 | Deterministic demo (production build, API, reset to seed) | `npm run demo` (`-- --keep` restores instead of resetting) |
-| Reset the running demo | `npm run demo:reset` |
+| Reset the running demo (incident seed + PS2 bundled demo only) | `npm run demo:reset` |
 | All checks except E2E, including contract drift | `npm run check` |
 | End-to-end | `npm run test:e2e` |
 | Production build | `npm run build` |
@@ -222,7 +222,7 @@ From the repository root (Python 3.12 and Node 22+):
 
 `scripts/halt.mjs` implements these. `.claude/` is excluded through `.git/info/exclude` and holds this machine's preview configurations; nothing there is needed to run the project.
 
-Presenter walkthrough: `docs/DEMO_SCRIPT.md`.
+Presenter walkthrough: `docs/DEMO_SCRIPT.md`. PS2 reconstruction demo: `docs/PS2_DEMO_RUNBOOK.md`.
 
 ## 9. Tests and generated files
 

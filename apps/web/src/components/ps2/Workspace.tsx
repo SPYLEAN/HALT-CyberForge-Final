@@ -101,7 +101,11 @@ function RunWorkspace({ runId, onRetry }: { runId: string; onRetry: () => void }
 
   const select = useCallback(
     (id: string | null) => {
-      if (id && narrow && !phone) returnFocus.current = document.activeElement as HTMLElement | null;
+      if (id && narrow && !phone) {
+        // A canvas click leaves focus on <body>: return it to the graph when the drawer closes.
+        const active = document.activeElement as HTMLElement | null;
+        returnFocus.current = active && active !== document.body ? active : document.querySelector<HTMLElement>("[data-graph-focus]");
+      }
       setSelected(id);
       if (id && phone) setStep("evidence");
     },
@@ -163,7 +167,7 @@ function RunWorkspace({ runId, onRetry }: { runId: string; onRetry: () => void }
       <div className={s.headText}>
         <p className="v2-kicker">{summary?.dataset_id ? `Reconstruction · bundled dataset ${summary.dataset_id}` : "Reconstruction · uploaded logs"}</p>
         <h1 className="v2-title">{summary?.affected_services.length ? `Attack path toward ${summary.affected_services.join(", ")}` : "Reconstructed attack path"}</h1>
-        <SessionNote />
+        {summary ? <SessionNote bundled={Boolean(summary.dataset_id)} /> : null}
       </div>
       {summary ? (
         <dl className={s.facts} aria-label="Run facts">

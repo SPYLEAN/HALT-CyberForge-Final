@@ -134,7 +134,7 @@ describe("Reconstruction workspace", () => {
     await openWorkspace(runs["scenario-a"]);
     const hyp = body<Hypotheses>(runPath(runs["scenario-a"], "/hypotheses"));
     expect(screen.getByTestId("ps2-graph")).toHaveAttribute("data-path", hyp.selected!.event_ids.join(" "));
-    expect(screen.getByTestId("session-note")).toHaveTextContent("Demo-session reconstruction — restart clears this run.");
+    expect(screen.getByTestId("session-note")).toHaveTextContent("Bundled synthetic demo run — regenerated identically from the bundled files after an API restart.");
     const stages = screen.getByRole("region", { name: "Reconstruction stages" });
     for (const label of ["Graph ready", "Story verified", "Receipt sealed"]) expect(within(stages).getByText(label).closest("li")).toHaveAttribute("data-state", "done");
   });
@@ -228,6 +228,7 @@ describe("Reconstruction workspace", () => {
 
   it("an upload without ground truth shows no evaluation and no invented path", async () => {
     const user = await openWorkspace(runs.upload);
+    expect(screen.getByTestId("session-note")).toHaveTextContent("Demo-session reconstruction — restart clears this run.");
     expect(screen.getByTestId("empty-graph")).toBeInTheDocument();
     await user.click(screen.getByRole("tab", { name: "EVALUATION" }));
     expect(await screen.findByText(/No ground truth exists for this input/)).toBeInTheDocument();

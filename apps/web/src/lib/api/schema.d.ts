@@ -494,6 +494,27 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/v1/ps2/demo/reset": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Demo Reset
+         * @description Demo-only: return the bundled demo to its initial state by dropping bundled-dataset batches and runs.
+         *     They are regenerated identically when next requested. Uploaded batches and runs are left untouched.
+         */
+        post: operations["demo_reset_api_v1_ps2_demo_reset_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/v1/ps2/ingestions": {
         parameters: {
             query?: never;
@@ -1334,6 +1355,22 @@ export interface components {
         DatasetList: {
             /** Items */
             items: components["schemas"]["DatasetInfo"][];
+        };
+        /**
+         * DemoReset
+         * @description What a demo reset removed. Only bundled-dataset entries are touched; uploads are never deleted.
+         */
+        DemoReset: {
+            /** Kept Uploaded Batches */
+            kept_uploaded_batches: number;
+            /** Kept Uploaded Runs */
+            kept_uploaded_runs: number;
+            /** Note */
+            note: string;
+            /** Removed Batches */
+            removed_batches: string[];
+            /** Removed Runs */
+            removed_runs: string[];
         };
         /**
          * Derivation
@@ -3954,6 +3991,26 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["DatasetList"];
+                };
+            };
+        };
+    };
+    demo_reset_api_v1_ps2_demo_reset_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["DemoReset"];
                 };
             };
         };

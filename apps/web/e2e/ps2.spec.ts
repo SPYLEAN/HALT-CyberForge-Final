@@ -247,3 +247,73 @@ test("phone 390: guided sequence, readable evidence, 44px controls, no horizonta
   await expect(page.getByTestId("inspector")).toContainText("Event evidence");
   expect(await overflow(page)).toBeLessThanOrEqual(0);
 });
+
+/** Click where Cytoscape drew an element (node centre or edge midpoint), with a real mouse. */
+async function clickGraphElement(page: Page, id: string): Promise<void> {
+  const graph = page.getByTestId("ps2-graph");
+  await graph.scrollIntoViewIfNeeded();
+  const p = await graph.evaluate((el, target) => (el as HTMLElement & { ps2RenderedPosition: (i: string) => { x: number; y: number } | null }).ps2RenderedPosition(target), id);
+  expect(p, `${id} is drawn`).not.toBeNull();
+  await page.mouse.click(p!.x, p!.y);
+}
+
+test("mouse: clicking a node and an edge on the canvas opens their evidence; empty canvas clears", async ({ page, request }) => {
+  const run = await runFor(request, "scenario-a");
+  const hyp = await (await request.get(`${PS2}/reconstructions/${run}/hypotheses`)).json();
+  await openRun(page, run);
+  await expect(page.getByTestId("ps2-graph")).toHaveAttribute("data-path-reveal", /animated|instant/);
+  await page.waitForTimeout(1200); // the one-time path reveal
+  const inspector = page.getByTestId("inspector");
+
+  const node = hyp.selected.event_ids[3];
+  await clickGraphElement(page, node);
+  await expect(inspector).toContainText("Event evidence");
+  await expect(inspector).toContainText(node);
+  await expect(inspector).toContainText("Raw-record hash");
+
+  // Alternate and entity edges can cross a path edge's midpoint; hide them so the click lands on the path edge.
+  await page.getByRole("checkbox", { name: "Alternate hypotheses" }).uncheck();
+  await page.getByRole("checkbox", { name: "Entities" }).uncheck();
+  const edge = hyp.selected.edge_ids[2];
+  await clickGraphElement(page, edge);
+  await expect(inspector).toContainText("Edge evidence");
+  await expect(inspector).toContainText(edge);
+  await expect(inspector.getByRole("region", { name: "Confidence components table" })).toBeVisible();
+
+  const box = (await page.getByTestId("ps2-graph").boundingBox())!;
+  await page.mouse.click(box.x + 8, box.y + 8); // empty canvas corner
+  await expect(inspector).toContainText("Select a node");
+});
+
+test("tablet: a canvas click opens the drawer with focus; closing returns focus to the graph", async ({ page, request }) => {
+  await page.setViewportSize({ width: 1024, height: 768 });
+  const run = await runFor(request, "scenario-b");
+  const hyp = await (await request.get(`${PS2}/reconstructions/${run}/hypotheses`)).json();
+  await openRun(page, run);
+  await page.waitForTimeout(1200);
+  await clickGraphElement(page, hyp.selected.event_ids[1]);
+  const drawer = page.getByRole("dialog", { name: "Evidence inspector" });
+  await expect(drawer).toBeVisible();
+  await expect(drawer).toContainText(hyp.selected.event_ids[1]);
+  await expect(page.locator("#drawer-head")).toBeFocused();
+  await drawer.getByRole("button", { name: "Close evidence inspector" }).click();
+  await expect(drawer).toHaveCount(0);
+  await expect(page.getByRole("group", { name: /ThreadGraph canvas/ })).toBeFocused();
+});
+
+test("recovery: after the bundled demo is dropped from API memory, the same URL restores the same run", async ({ page, request }) => {
+  const run = await runFor(request, "scenario-a");
+  const before = await (await request.get(`${PS2}/reconstructions/${run}/receipt`)).json();
+  await openRun(page, run);
+  await expect(page.getByTestId("session-note")).toContainText("regenerated identically");
+
+  const reset = await (await request.post(`${PS2}/demo/reset`)).json();
+  expect(reset.removed_runs).toContain(run);
+  await page.reload();
+  await expect(page.getByTestId("ps2-graph")).toBeVisible();
+  await page.getByRole("tab", { name: "PROOF" }).click();
+  const proof = page.getByRole("tabpanel", { name: "PROOF" });
+  for (const v of [before.replay_id, before.graph_hash, before.receipt_id, before.selected_path_id]) await expect(proof.getByText(v, { exact: true })).toBeVisible();
+  const after = await (await request.get(`${PS2}/reconstructions/${run}/receipt`)).json();
+  expect({ ...after, processing_ms: 0 }).toEqual({ ...before, processing_ms: 0 });
+});

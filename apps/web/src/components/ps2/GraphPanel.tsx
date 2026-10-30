@@ -78,6 +78,7 @@ export function GraphPanel({
         {graph.nodes.length ? (
           <div
             tabIndex={0}
+            data-graph-focus
             role="group"
             aria-label="ThreadGraph canvas. Arrow keys move along the selected path; Escape clears the selection."
             aria-describedby="graph-summary"

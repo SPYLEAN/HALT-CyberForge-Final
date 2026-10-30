@@ -5,7 +5,8 @@
 //   npm run dev          API (SQLite file in .halt/, restart-safe) + Next dev server, hot reload
 //   npm run demo         production build + API, reset to the seed, ready for a live demo
 //                        (npm run demo -- --keep: restore where the last demo left off instead)
-//   npm run demo:reset   reset the running demo to its seed (deterministic: same plan, proof, certificate)
+//   npm run demo:reset   reset the running demo to its seed (deterministic: same plan, proof, certificate),
+//                        and the PS2 bundled demo (bundled-dataset runs only; uploads are never touched)
 //   npm run check        every static check, unit test and contract-drift check (no browser)
 //   npm run test:e2e     Playwright + axe against a production build and a real API
 //
@@ -116,6 +117,11 @@ async function resetToSeed() {
   const body = await r.json();
   if (!r.ok) throw new Error(`reset-to-seed failed (${r.status}): ${body.message ?? JSON.stringify(body)}`);
   console.log(`✓ INC-2417 reset to seed: state ${body.state}, variant ${body.variant}`);
+  // PS2 (demo-only): drop bundled-dataset batches and runs; uploads are left untouched.
+  const p = await fetch(`${API_ORIGIN}/api/v1/ps2/demo/reset`, { method: "POST" });
+  const ps2 = await p.json();
+  if (!p.ok) throw new Error(`PS2 demo reset failed (${p.status}): ${ps2.message ?? JSON.stringify(ps2)}`);
+  console.log(`✓ PS2 bundled demo reset: ${ps2.removed_runs.length} runs, ${ps2.removed_batches.length} batches removed; ${ps2.kept_uploaded_runs} uploaded runs kept`);
 }
 
 const commands = {

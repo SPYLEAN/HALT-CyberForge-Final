@@ -217,8 +217,9 @@ Request safety:
 - Filenames must match `^[A-Za-z0-9][A-Za-z0-9._-]{0,99}$`, so there are no separators or traversal. Dataset ids
   are pattern-checked.
 - Errors use the existing `ApiError` shape.
-- Batches and runs live in a bounded in-memory LRU of 32 entries. A restart clears them; fixtures reproduce
-  identically.
+- Batches and runs live in a bounded in-memory LRU of 32 entries. A restart clears them. Bundled-dataset batches
+  and runs are regenerated on request, with the same ids and hashes, because fixture mode is deterministic.
+  Uploads are not regenerated (404). `POST /ps2/demo/reset` (demo-only) drops bundled entries only.
 
 Metrics are attached to a receipt only for bundled datasets with ground truth, and they are computed **outside
 the engine**, in the API layer.

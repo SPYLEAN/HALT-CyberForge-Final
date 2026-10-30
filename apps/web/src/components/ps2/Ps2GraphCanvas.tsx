@@ -1,6 +1,6 @@
 "use client";
 
-import cytoscape, { type Core, type ElementDefinition, type StylesheetJson } from "cytoscape";
+import cytoscape, { type Core, type EdgeSingular, type ElementDefinition, type StylesheetJson } from "cytoscape";
 import { useEffect, useRef, useState } from "react";
 
 import { glyphUri } from "@/components/graph/glyphs";
@@ -58,6 +58,8 @@ function stylesheet(): StylesheetJson {
 
 const reducedMotion = () => typeof window !== "undefined" && Boolean(window.matchMedia?.("(prefers-reduced-motion: reduce)").matches);
 
+type PositionLookup = HTMLDivElement & { ps2RenderedPosition?: (id: string) => { x: number; y: number } | null };
+
 export interface CanvasControls {
   fit: () => void;
 }
@@ -105,6 +107,14 @@ export function Ps2GraphCanvas({
     cy.on("tap", "node, edge", (e) => select.current(e.target.id()));
     cy.on("tap", (e) => e.target === cy && select.current(null));
     controls?.({ fit: () => cy.fit(undefined, 32) });
+    // Read-only lookup for browser tests: where an element is drawn, so a real mouse click can target it.
+    (container.current as PositionLookup).ps2RenderedPosition = (id: string) => {
+      const el = cy.getElementById(id);
+      if (el.empty()) return null;
+      const box = container.current!.getBoundingClientRect();
+      const p = el.isNode() ? el.renderedPosition() : (el as unknown as EdgeSingular).renderedMidpoint();
+      return { x: box.left + p.x, y: box.top + p.y };
+    };
     return () => {
       cy.destroy();
       cyRef.current = null;

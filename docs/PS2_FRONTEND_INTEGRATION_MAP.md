@@ -81,8 +81,10 @@ These are read-only additions. Algorithms, weights and existing responses are un
 - `reconstructionId` is in the URL. Raw logs, contexts and secrets never go into the URL.
 - `lib/ps2/session.ts` keeps the last ingestion and run for the browser tab (memory only), so browser back
   shows the earlier result instead of posting again. Nothing is posted on mount.
-- A refresh refetches by run id. A 404 shows "Demo-session reconstruction — restart clears this run" with a link
-  to start again. A network failure shows "service unavailable" with retry.
+- A refresh refetches by run id. Bundled-dataset runs are regenerated identically by the API after a restart
+  (see `PS2_DEMO_RUNBOOK.md`). An uploaded run that is gone returns 404, and the page shows "This demo-session
+  reconstruction has expired" with a link to start again. A network failure shows "service unavailable" with
+  retry.
 
 ## SafeCut handoff: not implemented
 

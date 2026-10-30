@@ -1,6 +1,11 @@
 """PS2 REST boundary (`/api/v1/ps2`). Independent of the incident database: batches and runs are held in a
 bounded in-memory store (a restart clears them; bundled datasets reproduce identically in fixture mode).
 
+Demo recovery: batches and runs of the bundled synthetic datasets are deterministic (same files, context,
+config and engine → same batch id, run id, graph hash and receipt hashes), so after an API restart or an
+eviction they are regenerated on request from the bundled files. Uploaded batches are never regenerated: a
+missing upload stays a 404. `POST /ps2/demo/reset` drops only bundled-dataset entries (demo-only).
+
 Security: JSON bodies only (no multipart, no URL fetching), a request-size guard before parsing, allow-listed
 adapters and content types, filename pattern (no path separators), per-file and per-batch size limits, record
 caps, json/csv standard-library parsing only, secret redaction in previews, structured ApiError responses.
@@ -11,6 +16,7 @@ from __future__ import annotations
 import threading
 from collections import OrderedDict
 from datetime import UTC, datetime
+from functools import lru_cache
 from typing import Annotated, Any
 
 from fastapi import APIRouter, Depends, Query, Request
@@ -19,7 +25,7 @@ from pydantic import Field, model_validator
 from halt.contracts.common import Contract
 from halt.ps2.config import load_config
 from halt.ps2.datasets import dataset_ids, load_dataset
-from halt.ps2.engine import Reconstruction, reconstruct
+from halt.ps2.engine import Reconstruction, reconstruct, replay_id_of, run_id_of
 from halt.ps2.evaluate import GROUND_TRUTH_DIR, evaluate_dataset, load_truth, score_run
 from halt.ps2.intake.adapters import ADAPTERS, CONTENT_TYPES
 from halt.ps2.intake.intake import Ingestion, IntakeError, ingest
@@ -119,6 +125,16 @@ class StageList(Contract):
     items: list[StageAssignment]  # events kept in the reconstructed graph, in time order
 
 
+class DemoReset(Contract):
+    """What a demo reset removed. Only bundled-dataset entries are touched; uploads are never deleted."""
+
+    removed_batches: list[str]
+    removed_runs: list[str]
+    kept_uploaded_batches: int
+    kept_uploaded_runs: int
+    note: str
+
+
 class AttackFlowExport(Contract):
     run_id: str
     conformance: str
@@ -156,16 +172,70 @@ def size_guard(request: Request) -> None:
 Store = Annotated[_Store, Depends(store_of)]
 
 
+def _ingest_dataset(dataset_id: str) -> Ingestion:
+    """Fixture mode: the ingestion time is the dataset's declared capture time, so the result is identical."""
+    ds = load_dataset(dataset_id)
+    return ingest(
+        ds.files, ds.context, config=load_config(), ingested_at=ds.captured_at, dataset_id=ds.dataset_id
+    )
+
+
+def _reconstruct(ing: Ingestion) -> Reconstruction:
+    rec = reconstruct(ing, load_config())
+    dataset = ing.result.dataset_id
+    if dataset and (GROUND_TRUTH_DIR / f"{dataset}.json").is_file():
+        # Evaluation is attached outside the engine: the engine never sees ground truth.
+        metrics = list(score_run(rec, ing, load_truth(dataset)).values())
+        rec = Reconstruction(
+            **{**rec.__dict__, "receipt": rec.receipt.model_copy(update={"metrics": metrics})}
+        )
+    return rec
+
+
+@lru_cache(maxsize=4)
+def _bundled(config_sha: str) -> dict[str, tuple[str, str]]:
+    """Batch and run ids of the bundled datasets → (kind, dataset id), for this config and engine version."""
+    del config_sha  # the cache key: a changed config gives different run ids
+    out: dict[str, tuple[str, str]] = {}
+    for dataset_id in dataset_ids():
+        ing = _ingest_dataset(dataset_id)
+        out[ing.result.batch_id] = ("batch", dataset_id)
+        out[run_id_of(replay_id_of(ing, load_config()))] = ("run", dataset_id)
+    return out
+
+
+def bundled_ids() -> dict[str, tuple[str, str]]:
+    return _bundled(load_config().sha256)
+
+
 def _batch(store: _Store, batch_id: str) -> Ingestion:
-    if batch_id not in store.batches:
-        raise NotFound(f"batch {batch_id} not found (batches are kept in memory; re-submit after a restart)")
-    return store.batches[batch_id]
+    if batch_id in store.batches:
+        return store.batches[batch_id]
+    kind, dataset_id = bundled_ids().get(batch_id, ("", ""))
+    if kind == "batch":
+        ing = _ingest_dataset(dataset_id)
+        if ing.result.batch_id == batch_id:
+            store.put(store.batches, batch_id, ing)
+            return ing
+    raise NotFound(
+        f"batch {batch_id} not found (uploaded batches are kept in memory; re-submit after a restart)"
+    )
 
 
 def _run(store: _Store, run_id: str) -> Reconstruction:
-    if run_id not in store.runs:
-        raise NotFound(f"reconstruction {run_id} not found (runs are kept in memory; re-run after a restart)")
-    return store.runs[run_id]
+    if run_id in store.runs:
+        return store.runs[run_id]
+    kind, dataset_id = bundled_ids().get(run_id, ("", ""))
+    if kind == "run":
+        ing = _ingest_dataset(dataset_id)
+        rec = _reconstruct(ing)
+        if rec.summary.run_id == run_id:  # deterministic by construction; never serve a different run
+            store.put(store.batches, ing.result.batch_id, ing)
+            store.put(store.runs, run_id, rec)
+            return rec
+    raise NotFound(
+        f"reconstruction {run_id} not found (uploaded runs are kept in memory; re-run after a restart)"
+    )
 
 
 @router.get("/datasets", response_model=DatasetList)
@@ -216,12 +286,9 @@ def create_ingestion(body: IngestionRequest, store: Store) -> IngestionResult:
     config = load_config()
     if body.dataset_id is not None:
         try:
-            ds = load_dataset(body.dataset_id)
+            ing = _ingest_dataset(body.dataset_id)
         except KeyError as exc:
             raise NotFound(f"dataset {body.dataset_id} not found") from exc
-        ing = ingest(
-            ds.files, ds.context, config=config, ingested_at=ds.captured_at, dataset_id=ds.dataset_id
-        )
     else:
         ing = ingest(
             body.files,
@@ -258,14 +325,7 @@ def get_events(
 @router.post("/reconstructions", response_model=ReconstructionSummary)
 def create_reconstruction(body: ReconstructionRequest, store: Store) -> ReconstructionSummary:
     ing = _batch(store, body.batch_id)
-    rec = reconstruct(ing, load_config())
-    dataset = ing.result.dataset_id
-    if dataset and (GROUND_TRUTH_DIR / f"{dataset}.json").is_file():
-        # Evaluation is attached outside the engine: the engine never sees ground truth.
-        metrics = list(score_run(rec, ing, load_truth(dataset)).values())
-        rec = Reconstruction(
-            **{**rec.__dict__, "receipt": rec.receipt.model_copy(update={"metrics": metrics})}
-        )
+    rec = _reconstruct(ing)
     store.put(store.runs, rec.summary.run_id, rec)
     return rec.summary
 
@@ -324,3 +384,25 @@ def get_evaluation(run_id: str, store: Store) -> EvaluationReport:
             "no ground truth exists for this input; evaluation is available for bundled datasets only"
         )
     return evaluate_dataset(dataset)
+
+
+@router.post("/demo/reset", response_model=DemoReset)
+def demo_reset(store: Store) -> DemoReset:
+    """Demo-only: return the bundled demo to its initial state by dropping bundled-dataset batches and runs.
+    They are regenerated identically when next requested. Uploaded batches and runs are left untouched."""
+    bundled = bundled_ids()
+    with store.lock:
+        batches = sorted(k for k in store.batches if bundled.get(k, ("", ""))[0] == "batch")
+        runs = sorted(k for k in store.runs if bundled.get(k, ("", ""))[0] == "run")
+        for k in batches:
+            del store.batches[k]
+        for k in runs:
+            del store.runs[k]
+        kept = len(store.batches), len(store.runs)
+    return DemoReset(
+        removed_batches=batches,
+        removed_runs=runs,
+        kept_uploaded_batches=kept[0],
+        kept_uploaded_runs=kept[1],
+        note="Demo-only reset of bundled synthetic datasets; uploaded data was not touched.",
+    )

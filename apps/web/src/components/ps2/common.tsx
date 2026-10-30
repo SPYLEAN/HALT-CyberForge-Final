@@ -92,13 +92,16 @@ export function PipelineStages({ stages }: { stages: PipelineStage[] }) {
   );
 }
 
-export function SessionNote() {
+/** Bundled runs are regenerated identically after an API restart; uploaded runs live only in its memory. */
+export function SessionNote({ bundled }: { bundled: boolean }) {
   return (
     <span className={s.session} data-testid="session-note">
       <svg width={12} height={12} viewBox="0 0 12 12" aria-hidden>
         <circle cx={6} cy={6} r={4.5} fill="none" stroke="currentColor" strokeWidth={1.5} strokeDasharray="2 2" />
       </svg>
-      Demo-session reconstruction — restart clears this run.
+      {bundled
+        ? "Bundled synthetic demo run — regenerated identically from the bundled files after an API restart."
+        : "Demo-session reconstruction — restart clears this run."}
     </span>
   );
 }
@@ -134,8 +137,9 @@ export function RunExpired({ runId }: { runId: string }) {
         <p className="v2-kicker">Run {runId} is not in memory</p>
         <h1 className="v2-title">This demo-session reconstruction has expired.</h1>
         <p className="v2-decision" style={{ color: "var(--v2-text-2)" }}>
-          Runs are kept only in the reconstruction service&apos;s memory: a restart, or more than 32 newer runs, clears them. Nothing
-          is shown for it. Start the reconstruction again: bundled datasets reproduce the same run id.
+          Uploaded runs are kept only in the reconstruction service&apos;s memory: a restart, or more than 32 newer runs, clears
+          them, and they are never regenerated. Nothing is shown for it. Bundled datasets are regenerated automatically, so this
+          id is not one of theirs; start a new reconstruction.
         </p>
         <div className="v2-btn-row">
           <Link className="halt-btn halt-btn-primary" href="/reconstruct">

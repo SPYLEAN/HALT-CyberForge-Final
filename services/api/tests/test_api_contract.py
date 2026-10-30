@@ -63,6 +63,7 @@ DOCUMENTED = {
     ("get", "/ps2/reconstructions/{run_id}/receipt"),
     ("get", "/ps2/reconstructions/{run_id}/attack-flow"),
     ("get", "/ps2/reconstructions/{run_id}/evaluation"),
+    ("post", "/ps2/demo/reset"),
 }
 
 

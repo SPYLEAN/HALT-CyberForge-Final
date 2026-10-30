@@ -1850,6 +1850,47 @@
         "title": "DatasetList",
         "type": "object"
       },
+      "DemoReset": {
+        "additionalProperties": false,
+        "description": "What a demo reset removed. Only bundled-dataset entries are touched; uploads are never deleted.",
+        "properties": {
+          "kept_uploaded_batches": {
+            "title": "Kept Uploaded Batches",
+            "type": "integer"
+          },
+          "kept_uploaded_runs": {
+            "title": "Kept Uploaded Runs",
+            "type": "integer"
+          },
+          "note": {
+            "title": "Note",
+            "type": "string"
+          },
+          "removed_batches": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Removed Batches",
+            "type": "array"
+          },
+          "removed_runs": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Removed Runs",
+            "type": "array"
+          }
+        },
+        "required": [
+          "removed_batches",
+          "removed_runs",
+          "kept_uploaded_batches",
+          "kept_uploaded_runs",
+          "note"
+        ],
+        "title": "DemoReset",
+        "type": "object"
+      },
       "Derivation": {
         "additionalProperties": false,
         "description": "Required wherever a number is shown: counts with their denominator, never a bare score.",
@@ -8107,6 +8148,28 @@
           }
         },
         "summary": "Datasets",
+        "tags": [
+          "ps2"
+        ]
+      }
+    },
+    "/api/v1/ps2/demo/reset": {
+      "post": {
+        "description": "Demo-only: return the bundled demo to its initial state by dropping bundled-dataset batches and runs.\nThey are regenerated identically when next requested. Uploaded batches and runs are left untouched.",
+        "operationId": "demo_reset_api_v1_ps2_demo_reset_post",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DemoReset"
+                }
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "summary": "Demo Reset",
         "tags": [
           "ps2"
         ]
