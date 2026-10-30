@@ -1,0 +1,121 @@
+/* PS3 Connector Atlas. Extension palette (docs/CONNECTOR_ATLAS_SPEC.md, RFC A-7): every state colour is
+   paired with text in the interface. Components read these tokens; the 3D scene reads them at runtime. */
+:root {
+  --ps3-bg: var(--bg);
+  --ps3-surface: var(--surface);
+  --ps3-raised: var(--surface-raised);
+  --ps3-line: var(--line);
+  --ps3-line-strong: var(--border-strong);
+  --ps3-text: var(--text);
+  --ps3-text-2: var(--text-secondary);
+  --ps3-structure: var(--text);
+  --ps3-carbon: #1B2124;
+  --ps3-verified: #3FB7A8;
+  --ps3-verified-text: #63D3C4;
+  --ps3-active: #D8A73B;
+  --ps3-active-text: #E8C063;
+  --ps3-failure: var(--threat-observed);
+  --ps3-failure-text: var(--threat-text);
+  --ps3-drift: #9B87F5;
+  --ps3-drift-text: #B9ABFF;
+  --ps3-focus: var(--focus-ring);
+  --ps3-bar-h: 60px;
+  --ps3-track-h: 72px;
+}
+
+.ps3 { min-height: 100vh; min-height: 100dvh; background: var(--ps3-bg); color: var(--ps3-text); font-family: var(--font-display); }
+.ps3 :focus-visible { outline: none; box-shadow: var(--ps3-focus); }
+.ps3-mono { font-family: var(--font-mono); font-size: 12.5px; }
+.ps3-kicker { margin: 0; font-size: 12.5px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ps3-text-2); font-weight: 600; }
+.ps3-title { margin: 0; font-size: clamp(24px, 2.2vw, 32px); line-height: 1.15; font-weight: 700; font-stretch: 110%; }
+.ps3-body { font-size: 14.5px; line-height: 1.55; }
+.ps3-meta { font-size: 12.5px; color: var(--ps3-text-2); }
+.ps3-sim { display: inline-flex; align-items: center; gap: 6px; padding: 3px 8px; border: 1px dashed var(--ps3-line-strong); border-radius: 3px; font-family: var(--font-mono); font-size: 11.5px; letter-spacing: 0.06em; color: var(--ps3-text); }
+
+/* ---------- shell ---------- */
+.ps3-shell { display: grid; height: 100vh; height: 100dvh; overflow: hidden; grid-template-columns: 260px minmax(0, 1fr) 420px; grid-template-rows: var(--ps3-bar-h) minmax(0, 1fr) var(--ps3-track-h); grid-template-areas: "bar bar bar" "list stage drawer" "list track drawer"; }
+.ps3-bar { grid-area: bar; display: flex; align-items: center; gap: var(--space-4); padding: 0 var(--space-5); border-bottom: 1px solid var(--ps3-line); min-width: 0; }
+.ps3-bar select { background: var(--ps3-surface); color: var(--ps3-text); border: 1px solid var(--ps3-line-strong); border-radius: 4px; padding: 6px 8px; font: inherit; font-size: 14px; min-height: 36px; }
+.ps3-list { grid-area: list; overflow-y: auto; border-right: 1px solid var(--ps3-line); padding: var(--space-4) var(--space-3); }
+.ps3-list h2 { margin: var(--space-4) var(--space-2) var(--space-2); font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ps3-text-2); }
+.ps3-list ul { list-style: none; margin: 0; padding: 0; }
+.ps3-obj { all: unset; box-sizing: border-box; display: grid; grid-template-columns: 12px minmax(0, 1fr); gap: 2px 10px; width: 100%; padding: 7px 8px; border-radius: 4px; cursor: pointer; font-size: 13.5px; }
+.ps3-obj:hover { background: var(--ps3-surface); }
+.ps3-obj[aria-pressed="true"] { background: var(--ps3-raised); box-shadow: inset 2px 0 0 var(--ps3-structure); }
+.ps3-obj .ps3-meta { grid-column: 2; font-size: 11.5px; }
+.ps3-stage { grid-area: stage; position: relative; min-width: 0; min-height: 0; background: radial-gradient(90% 80% at 50% 40%, var(--ps3-surface) 0%, var(--ps3-bg) 75%); }
+.ps3-stage canvas { display: block; }
+.ps3-cam { position: absolute; top: var(--space-3); left: var(--space-3); display: flex; gap: 6px; z-index: 2; flex-wrap: wrap; }
+.ps3-minimap { position: absolute; left: var(--space-3); bottom: var(--space-3); width: 260px; background: var(--ps3-bg); border: 1px solid var(--ps3-line); border-radius: 6px; padding: 6px; z-index: 2; }
+.ps3-drawer { grid-area: drawer; display: flex; flex-direction: column; min-height: 0; border-left: 1px solid var(--ps3-line); background: var(--ps3-surface); }
+.ps3-tabs { display: flex; flex-wrap: wrap; gap: 2px; padding: var(--space-3) var(--space-3) 0; border-bottom: 1px solid var(--ps3-line); }
+.ps3-tabs button { all: unset; cursor: pointer; padding: 8px 10px; font-size: 13px; color: var(--ps3-text-2); border-bottom: 2px solid transparent; }
+.ps3-tabs button[aria-selected="true"] { color: var(--ps3-text); border-bottom-color: var(--ps3-structure); }
+.ps3-panel { overflow-y: auto; padding: var(--space-5); display: flex; flex-direction: column; gap: var(--space-4); }
+.ps3-track { grid-area: track; display: grid; grid-template-columns: auto minmax(0, 1fr) auto; gap: var(--space-4); align-items: center; padding: 0 var(--space-5); border-top: 1px solid var(--ps3-line); }
+.ps3-track input[type="range"] { width: 100%; accent-color: var(--ps3-active); }
+
+.ps3-btn { all: unset; box-sizing: border-box; display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 36px; padding: 0 12px; border: 1px solid var(--ps3-line-strong); border-radius: 4px; background: var(--ps3-bg); color: var(--ps3-text); font-family: var(--font-mono); font-size: 12px; letter-spacing: 0.06em; text-transform: uppercase; cursor: pointer; }
+.ps3-btn:hover { background: var(--ps3-raised); }
+.ps3-btn[aria-pressed="true"] { background: var(--ps3-raised); border-color: var(--ps3-structure); }
+.ps3-btn:disabled { cursor: not-allowed; opacity: 0.55; }
+.ps3-btn-primary { background: var(--ps3-structure); color: var(--ps3-bg); border-color: var(--ps3-structure); }
+.ps3-btn-primary:hover { background: var(--ps3-text-2); }
+
+/* ---------- status: colour + text, never colour alone ---------- */
+.ps3-dot { width: 10px; height: 10px; border-radius: 2px; margin-top: 4px; border: 1.5px solid var(--ps3-line-strong); }
+[data-status="passed"] > .ps3-dot { background: var(--ps3-verified); border-color: var(--ps3-verified); }
+[data-status="active"] > .ps3-dot { background: var(--ps3-active); border-color: var(--ps3-active); }
+[data-status="failed"] > .ps3-dot { background: var(--ps3-failure); border-color: var(--ps3-failure); border-radius: 0; transform: rotate(45deg); }
+[data-status="drift"] > .ps3-dot { background: transparent; border-color: var(--ps3-drift); border-style: dashed; border-width: 2px; }
+[data-status="receded"] > .ps3-dot { opacity: 0.45; }
+.ps3-tag { display: inline-flex; padding: 1px 7px; border-radius: 3px; border: 1px solid var(--ps3-line-strong); font-size: 12px; font-family: var(--font-mono); white-space: nowrap; }
+.ps3-tag[data-tone="ok"] { color: var(--ps3-verified-text); border-color: var(--ps3-verified); }
+.ps3-tag[data-tone="active"] { color: var(--ps3-active-text); border-color: var(--ps3-active); }
+.ps3-tag[data-tone="fail"] { color: var(--ps3-failure-text); border-color: var(--ps3-failure); }
+.ps3-tag[data-tone="drift"] { color: var(--ps3-drift-text); border-color: var(--ps3-drift); border-style: dashed; }
+
+/* ---------- panel content ---------- */
+.ps3-kv { display: grid; grid-template-columns: max-content minmax(0, 1fr); gap: 6px 14px; margin: 0; font-size: 13.5px; }
+.ps3-kv dt { color: var(--ps3-text-2); }
+.ps3-kv dd { margin: 0; overflow-wrap: anywhere; }
+.ps3-code { margin: 0; padding: var(--space-3); background: var(--ps3-bg); border: 1px solid var(--ps3-line); border-radius: 4px; font-family: var(--font-mono); font-size: 12px; line-height: 1.5; white-space: pre-wrap; overflow-wrap: anywhere; max-height: 320px; overflow-y: auto; }
+.ps3-pair { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: var(--space-3); }
+.ps3-section h3 { margin: 0 0 var(--space-2); font-size: 13px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--ps3-text-2); }
+.ps3-rules { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 4px; }
+.ps3-rule { all: unset; box-sizing: border-box; display: grid; grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr); gap: 8px; align-items: center; width: 100%; padding: 6px 8px; border: 1px solid var(--ps3-line); border-radius: 4px; cursor: pointer; font-family: var(--font-mono); font-size: 12px; }
+.ps3-rule[aria-pressed="true"] { border-color: var(--ps3-structure); background: var(--ps3-raised); }
+.ps3-rule[data-bad="true"] { border-color: var(--ps3-failure); border-width: 2px; }
+.ps3-steps { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 2px; }
+.ps3-steps li { display: grid; grid-template-columns: 12px minmax(0, 1fr) auto; gap: 8px; align-items: start; padding: 5px 6px; border-radius: 3px; font-size: 13px; }
+.ps3-steps li[aria-current="step"] { background: var(--ps3-raised); }
+.ps3-notice { padding: var(--space-3); border: 1px dashed var(--ps3-line-strong); border-radius: 4px; font-size: 13.5px; }
+.ps3-diff-add { color: var(--ps3-verified-text); }
+.ps3-diff-del { color: var(--ps3-failure-text); text-decoration: line-through; }
+
+/* ---------- 2D flow ---------- */
+.ps3-flow { width: 100%; height: auto; display: block; }
+.ps3-flow [role="button"] { cursor: pointer; }
+.ps3-flow-full { position: absolute; inset: 0; display: grid; place-items: center; padding: var(--space-6) var(--space-5); overflow: auto; }
+
+/* ---------- guided tour (< 960 px) ---------- */
+.ps3-tour { display: flex; flex-direction: column; min-height: 100dvh; }
+.ps3-tour-bar { display: flex; align-items: center; gap: var(--space-3); padding: var(--space-3) var(--space-4); border-bottom: 1px solid var(--ps3-line); flex-wrap: wrap; }
+.ps3-tour-main { flex: 1; padding: var(--space-5) var(--space-4); display: flex; flex-direction: column; gap: var(--space-4); }
+.ps3-tour-nav { position: sticky; bottom: 0; display: flex; justify-content: space-between; gap: var(--space-3); padding: var(--space-3) var(--space-4); background: var(--ps3-bg); border-top: 1px solid var(--ps3-line); }
+.ps3-tour .ps3-pair { grid-template-columns: minmax(0, 1fr); }
+
+/* ---------- theatre ---------- */
+.ps3-theatre-cap { position: absolute; z-index: 3; top: var(--space-3); right: var(--space-3); max-width: 420px; padding: var(--space-4); background: var(--ps3-bg); border: 1px solid var(--ps3-line-strong); border-radius: 6px; }
+.ps3-theatre-cap h2 { margin: 6px 0; font-size: 22px; line-height: 1.2; font-stretch: 110%; }
+.ps3-theatre-steps { display: flex; gap: 4px; margin-top: var(--space-3); }
+.ps3-theatre-steps span { flex: 1; height: 3px; background: var(--ps3-line-strong); }
+.ps3-theatre-steps span[data-on="true"] { background: var(--ps3-structure); }
+
+@media (max-width: 1279px) {
+  .ps3-shell { grid-template-columns: 220px minmax(0, 1fr) 360px; }
+  .ps3-minimap { width: 200px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .ps3 * { transition: none !important; animation: none !important; }
+}

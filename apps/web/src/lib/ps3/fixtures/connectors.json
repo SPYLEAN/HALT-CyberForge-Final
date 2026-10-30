@@ -1,0 +1,96 @@
+{
+  "_note": "Synthetic PS3 fixtures (docs/PS3_PRODUCT_RFC.md A-2, A-4). Fictional tools on .example domains; no connector is live.",
+  "connectors": [
+    {
+      "schema": "halt.connector/v0",
+      "id": "northwind-edr-alerts",
+      "version": "1.3.0",
+      "title": "Northwind EDR · alerts",
+      "source": {
+        "id": "src.northwind",
+        "kind": "rest_api",
+        "vendor": "Northwind EDR (fictional)",
+        "endpoint": "https://api.northwind-edr.example/v2/alerts",
+        "auth": { "type": "oauth2_client_credentials", "secret_ref": "vault://ps3/northwind/client-secret", "scopes": ["alerts.read"] },
+        "pagination": { "type": "cursor", "cursor_param": "after", "cursor_field": "next_cursor", "page_size": 100 },
+        "rate_limit": { "requests_per_minute": 120 },
+        "retry": { "max_attempts": 3, "backoff": "exponential", "base_ms": 500 },
+        "records_field": "alerts"
+      },
+      "mapping": {
+        "version": "m-7",
+        "target": "ocsf.detection_finding",
+        "rules": [
+          { "id": "R1", "from": "alert_id", "to": "finding_info.uid", "op": "rename", "required": true },
+          { "id": "R2", "from": "title", "to": "finding_info.title", "op": "rename", "required": true },
+          { "id": "R3", "from": "severity", "to": "severity_id", "op": "enum", "map": { "low": 2, "medium": 3, "high": 4, "critical": 5 }, "required": true },
+          { "id": "R4", "from": "detected_at", "to": "time", "op": "epoch_ms", "required": true },
+          { "id": "R5", "from": "host.name", "to": "device.hostname", "op": "rename" },
+          { "id": "R6", "from": "host.ip", "to": "device.ip", "op": "rename" },
+          { "id": "R7", "from": "user", "to": "actor.user.name", "op": "lowercase" },
+          { "id": "R8", "to": "metadata.product.vendor_name", "op": "default", "value": "Northwind EDR" },
+          { "id": "R9", "from": "internal_score", "op": "drop" },
+          { "id": "R10", "from": "raw_blob", "op": "drop" }
+        ]
+      },
+      "validation": {
+        "required": ["finding_info.uid", "finding_info.title", "severity_id", "time", "metadata.product.vendor_name"],
+        "types": { "severity_id": "integer", "time": "integer", "finding_info.uid": "string" },
+        "dedupe_key": "finding_info.uid",
+        "policies": [{ "id": "POL-PII-1", "title": "No user e-mail leaves the fabric", "rule": "no_field", "field": "actor.user.email" }]
+      },
+      "destinations": [
+        { "id": "dst.case-api", "kind": "api", "title": "Case API", "requires": ["finding_info.uid", "severity_id", "device.hostname"] },
+        { "id": "dst.siem-queue", "kind": "queue", "title": "SIEM queue", "requires": ["finding_info.uid", "time"] },
+        { "id": "dst.evidence-lake", "kind": "store", "title": "Evidence lake", "requires": ["finding_info.uid"] }
+      ]
+    },
+    {
+      "schema": "halt.connector/v0",
+      "id": "lumen-idp-signins",
+      "version": "0.9.2",
+      "title": "Lumen IdP · sign-in webhook",
+      "source": {
+        "id": "src.lumen",
+        "kind": "webhook",
+        "vendor": "Lumen IdP (fictional)",
+        "endpoint": "https://fabric.halt.example/hooks/lumen-idp",
+        "auth": { "type": "hmac_signature", "secret_ref": "vault://ps3/lumen/webhook-signing-key" },
+        "pagination": { "type": "none" },
+        "rate_limit": { "requests_per_minute": 600 },
+        "retry": { "max_attempts": 1, "backoff": "exponential", "base_ms": 0 },
+        "records_field": "events"
+      },
+      "mapping": {
+        "version": "m-2",
+        "target": "ocsf.authentication",
+        "rules": [
+          { "id": "L1", "from": "event_id", "to": "metadata.uid", "op": "rename", "required": true },
+          { "id": "L2", "from": "outcome", "to": "status_id", "op": "enum", "map": { "success": 1, "failure": 2 }, "required": true },
+          { "id": "L3", "from": "actor", "to": "user.name", "op": "lowercase", "required": true },
+          { "id": "L4", "from": "client_ip", "to": "src_endpoint.ip", "op": "rename" },
+          { "id": "L5", "from": "ts", "to": "time", "op": "epoch_ms", "required": true },
+          { "id": "L6", "to": "metadata.product.vendor_name", "op": "default", "value": "Lumen IdP" }
+        ]
+      },
+      "validation": {
+        "required": ["metadata.uid", "status_id", "user.name", "time"],
+        "types": { "status_id": "integer", "time": "integer" },
+        "dedupe_key": "metadata.uid",
+        "policies": [{ "id": "POL-PII-1", "title": "No user e-mail leaves the fabric", "rule": "no_field", "field": "user.email_addr" }]
+      },
+      "destinations": [
+        { "id": "dst.siem-queue", "kind": "queue", "title": "SIEM queue", "requires": ["metadata.uid", "time"] },
+        { "id": "dst.evidence-lake", "kind": "store", "title": "Evidence lake", "requires": ["metadata.uid"] }
+      ]
+    }
+  ],
+  "drift": [
+    { "id": "rename-detected-at", "connector_id": "northwind-edr-alerts", "title": "Source renames detected_at → detection_time", "op": "rename", "field": "detected_at", "to": "detection_time" },
+    { "id": "remove-host-name", "connector_id": "northwind-edr-alerts", "title": "Source stops sending host.name", "op": "remove", "field": "host.name" },
+    { "id": "rename-outcome", "connector_id": "lumen-idp-signins", "title": "Source renames outcome → result", "op": "rename", "field": "outcome", "to": "result" }
+  ],
+  "approvers": [
+    { "id": "r_okafor", "name": "R. Okafor", "role": "integration_owner", "title": "Integration owner, Security Engineering" }
+  ]
+}

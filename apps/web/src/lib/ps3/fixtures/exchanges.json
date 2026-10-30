@@ -1,0 +1,73 @@
+{
+  "_note": "Recorded source exchanges (synthetic). Credential values in this file are canaries: redactExchange() must remove them before anything reads the exchanges, and tests assert they never reach the DOM.",
+  "recordings": [
+    {
+      "connector_id": "northwind-edr-alerts",
+      "captured_at": "2026-10-29T09:58:00Z",
+      "exchanges": [
+        {
+          "seq": 1,
+          "at": "2026-10-29T09:58:00.120Z",
+          "request": { "method": "POST", "url": "https://auth.northwind-edr.example/oauth/token", "headers": { "content-type": "application/x-www-form-urlencoded" }, "body": { "grant_type": "client_credentials", "client_id": "halt-fabric", "client_secret": "CANARY-SECRET-DO-NOT-RENDER", "scope": "alerts.read" } },
+          "response": { "status": 200, "headers": {}, "body": { "token_type": "bearer", "expires_in": 3600, "scope": "alerts.read", "access_token": "CANARY-SECRET-DO-NOT-RENDER" } }
+        },
+        {
+          "seq": 2,
+          "at": "2026-10-29T09:58:00.410Z",
+          "request": { "method": "GET", "url": "https://api.northwind-edr.example/v2/alerts?limit=100", "headers": { "authorization": "Bearer CANARY-SECRET-DO-NOT-RENDER" } },
+          "response": { "status": 429, "headers": { "retry-after": "1" }, "body": { "error": "rate_limited" } }
+        },
+        {
+          "seq": 3,
+          "at": "2026-10-29T09:58:01.430Z",
+          "request": { "method": "GET", "url": "https://api.northwind-edr.example/v2/alerts?limit=100", "headers": { "authorization": "Bearer CANARY-SECRET-DO-NOT-RENDER" } },
+          "response": {
+            "status": 200,
+            "headers": {},
+            "body": {
+              "next_cursor": "c_7f2a",
+              "alerts": [
+                { "alert_id": "A-1001", "title": "Credential dumping via LSASS access", "severity": "high", "detected_at": "2026-10-29T09:41:12Z", "host": { "name": "fin-ws-014", "ip": "10.20.4.14" }, "user": "M.Verma", "tactic": "Credential Access", "internal_score": 87, "raw_blob": "eyJwcm9jIjoibHNhc3MuZXhlIn0=" },
+                { "alert_id": "A-1002", "title": "PowerShell download cradle", "severity": "medium", "detected_at": "2026-10-29T09:43:50Z", "host": { "name": "fin-ws-022", "ip": "10.20.4.22" }, "user": "S.Iyer", "tactic": "Execution", "internal_score": 61, "raw_blob": "eyJjbWQiOiJpZXgifQ==" }
+              ]
+            }
+          }
+        },
+        {
+          "seq": 4,
+          "at": "2026-10-29T09:58:01.690Z",
+          "request": { "method": "GET", "url": "https://api.northwind-edr.example/v2/alerts?limit=100&after=c_7f2a", "headers": { "authorization": "Bearer CANARY-SECRET-DO-NOT-RENDER" } },
+          "response": {
+            "status": 200,
+            "headers": {},
+            "body": {
+              "next_cursor": null,
+              "alerts": [
+                { "alert_id": "A-1003", "title": "Shadow copy deletion", "severity": "critical", "detected_at": "2026-10-29T09:52:18Z", "host": { "name": "fin-srv-003", "ip": "10.20.9.3" }, "user": "svc_backup", "tactic": "Impact", "internal_score": 95, "raw_blob": "eyJjbWQiOiJ2c3NhZG1pbiJ9" },
+                { "alert_id": "A-1002", "title": "PowerShell download cradle", "severity": "medium", "detected_at": "2026-10-29T09:43:50Z", "host": { "name": "fin-ws-022", "ip": "10.20.4.22" }, "user": "S.Iyer", "tactic": "Execution", "internal_score": 61, "raw_blob": "eyJjbWQiOiJpZXgifQ==" }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "connector_id": "lumen-idp-signins",
+      "captured_at": "2026-10-29T09:50:00Z",
+      "exchanges": [
+        {
+          "seq": 1,
+          "at": "2026-10-29T09:42:36.000Z",
+          "request": { "method": "POST", "url": "https://fabric.halt.example/hooks/lumen-idp", "headers": { "x-signature": "sha256=CANARY-SECRET-DO-NOT-RENDER", "x-signature-check": "passed" }, "body": { "events": [{ "event_id": "LI-55120", "outcome": "success", "actor": "M.Verma", "client_ip": "203.0.113.77", "ts": "2026-10-29T09:42:36Z" }] } },
+          "response": { "status": 200, "headers": {}, "body": { "received": 1 } }
+        },
+        {
+          "seq": 2,
+          "at": "2026-10-29T09:43:21.000Z",
+          "request": { "method": "POST", "url": "https://fabric.halt.example/hooks/lumen-idp", "headers": { "x-signature": "sha256=CANARY-SECRET-DO-NOT-RENDER", "x-signature-check": "passed" }, "body": { "events": [{ "event_id": "LI-55141", "outcome": "failure", "actor": "M.Verma", "client_ip": "203.0.113.77", "ts": "2026-10-29T09:43:21Z" }] } },
+          "response": { "status": 200, "headers": {}, "body": { "received": 1 } }
+        }
+      ]
+    }
+  ]
+}
