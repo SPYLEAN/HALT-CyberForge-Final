@@ -1,0 +1,150 @@
+{
+  "affected_services": [
+    "Month-end close",
+    "Finance ledger"
+  ],
+  "chain_edges": [
+    [
+      "mail_trace.csv#MT-83001",
+      "idp_signin.jsonl#si-439f499b"
+    ],
+    [
+      "idp_signin.jsonl#si-439f499b",
+      "idp_audit.json#da-71c0dde8"
+    ],
+    [
+      "idp_audit.json#da-71c0dde8",
+      "idp_audit.json#da-046ad7d6"
+    ],
+    [
+      "idp_audit.json#da-046ad7d6",
+      "idp_signin.jsonl#si-7ff37771"
+    ],
+    [
+      "idp_signin.jsonl#si-7ff37771",
+      "api_activity.jsonl#ua-0f96f45e"
+    ],
+    [
+      "api_activity.jsonl#ua-0f96f45e",
+      "api_activity.jsonl#ua-47955a35"
+    ]
+  ],
+  "dataset_id": "scenario-a",
+  "forecast_services": [
+    "Finance ledger"
+  ],
+  "path": [
+    "mail_trace.csv#MT-83001",
+    "idp_signin.jsonl#si-439f499b",
+    "idp_audit.json#da-71c0dde8",
+    "idp_audit.json#da-046ad7d6",
+    "idp_signin.jsonl#si-7ff37771",
+    "api_activity.jsonl#ua-0f96f45e",
+    "api_activity.jsonl#ua-47955a35"
+  ],
+  "relevant_records": [
+    "mail_trace.csv#MT-83001",
+    "idp_signin.jsonl#si-439f499b",
+    "idp_audit.json#da-71c0dde8",
+    "idp_audit.json#da-046ad7d6",
+    "idp_signin.jsonl#si-7ff37771",
+    "api_activity.jsonl#ua-0f96f45e",
+    "api_activity.jsonl#ua-47955a35"
+  ],
+  "root_cause": "mail_trace.csv#MT-83001",
+  "stages": {
+    "api_activity.jsonl#ua-0f96f45e": "discovery",
+    "api_activity.jsonl#ua-47955a35": "collection",
+    "idp_audit.json#da-046ad7d6": "credential-access",
+    "idp_audit.json#da-71c0dde8": "persistence",
+    "idp_signin.jsonl#si-439f499b": "initial-access",
+    "idp_signin.jsonl#si-7ff37771": "defense-evasion",
+    "mail_trace.csv#MT-83001": "initial-access"
+  },
+  "steps": [
+    {
+      "record": "mail_trace.csv#MT-83001",
+      "step": "phishing_delivery",
+      "tactic": "initial-access",
+      "time": "2026-10-29T09:33:42Z"
+    },
+    {
+      "record": "idp_signin.jsonl#si-439f499b",
+      "step": "suspicious_authentication",
+      "tactic": "initial-access",
+      "time": "2026-10-29T09:41:37Z"
+    },
+    {
+      "record": "idp_audit.json#da-71c0dde8",
+      "step": "mfa_modification",
+      "tactic": "persistence",
+      "time": "2026-10-29T09:43:46Z"
+    },
+    {
+      "record": "idp_audit.json#da-046ad7d6",
+      "step": "malicious_consent",
+      "tactic": "credential-access",
+      "time": "2026-10-29T09:44:15Z"
+    },
+    {
+      "record": "idp_signin.jsonl#si-7ff37771",
+      "step": "token_replay",
+      "tactic": "defense-evasion",
+      "time": "2026-10-29T09:47:28Z"
+    },
+    {
+      "record": "api_activity.jsonl#ua-0f96f45e",
+      "step": "finance_discovery",
+      "tactic": "discovery",
+      "time": "2026-10-29T09:52:43Z"
+    },
+    {
+      "record": "api_activity.jsonl#ua-47955a35",
+      "step": "ledger_access_attempt",
+      "tactic": "collection",
+      "time": "2026-10-29T09:56:05Z"
+    }
+  ],
+  "valid_edges": [
+    [
+      "api_activity.jsonl#ua-0f96f45e",
+      "api_activity.jsonl#ua-47955a35"
+    ],
+    [
+      "idp_audit.json#da-046ad7d6",
+      "api_activity.jsonl#ua-0f96f45e"
+    ],
+    [
+      "idp_audit.json#da-046ad7d6",
+      "api_activity.jsonl#ua-47955a35"
+    ],
+    [
+      "idp_audit.json#da-046ad7d6",
+      "idp_signin.jsonl#si-7ff37771"
+    ],
+    [
+      "idp_audit.json#da-71c0dde8",
+      "idp_audit.json#da-046ad7d6"
+    ],
+    [
+      "idp_signin.jsonl#si-439f499b",
+      "idp_audit.json#da-046ad7d6"
+    ],
+    [
+      "idp_signin.jsonl#si-439f499b",
+      "idp_audit.json#da-71c0dde8"
+    ],
+    [
+      "idp_signin.jsonl#si-7ff37771",
+      "api_activity.jsonl#ua-0f96f45e"
+    ],
+    [
+      "idp_signin.jsonl#si-7ff37771",
+      "api_activity.jsonl#ua-47955a35"
+    ],
+    [
+      "mail_trace.csv#MT-83001",
+      "idp_signin.jsonl#si-439f499b"
+    ]
+  ]
+}

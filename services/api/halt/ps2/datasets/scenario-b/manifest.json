@@ -1,0 +1,29 @@
+{
+  "captured_at": "2026-10-29T15:00:00Z",
+  "dataset_id": "scenario-b",
+  "files": [
+    {
+      "adapter": "idp_signin",
+      "content_type": "application/x-ndjson",
+      "filename": "idp_signin.jsonl"
+    },
+    {
+      "adapter": "cloud_audit",
+      "content_type": "application/json",
+      "filename": "cloud_audit.json"
+    },
+    {
+      "adapter": "process",
+      "content_type": "application/x-ndjson",
+      "filename": "process.jsonl"
+    },
+    {
+      "adapter": "db_audit",
+      "content_type": "text/csv",
+      "filename": "db_audit.csv"
+    }
+  ],
+  "seed": 7310,
+  "synthetic": true,
+  "title": "Service-account abuse in a cloud data platform"
+}

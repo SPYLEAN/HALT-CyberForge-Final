@@ -1,0 +1,193 @@
+{
+  "affected_services": [
+    "Payroll"
+  ],
+  "chain_edges": [
+    [
+      "idp_signin.jsonl#si-2d468a7c",
+      "cloud_audit.json#ct-b159add9b472"
+    ],
+    [
+      "cloud_audit.json#ct-b159add9b472",
+      "cloud_audit.json#ct-9b58bdfb3f89"
+    ],
+    [
+      "cloud_audit.json#ct-9b58bdfb3f89",
+      "cloud_audit.json#ct-1b658bd463dc"
+    ],
+    [
+      "cloud_audit.json#ct-1b658bd463dc",
+      "cloud_audit.json#ct-7cfb51589bfa"
+    ],
+    [
+      "cloud_audit.json#ct-7cfb51589bfa",
+      "cloud_audit.json#ct-4fdab2a6c3a7"
+    ],
+    [
+      "cloud_audit.json#ct-4fdab2a6c3a7",
+      "db_audit.csv#dba-945433"
+    ]
+  ],
+  "dataset_id": "scenario-b",
+  "forecast_services": [
+    "Payments"
+  ],
+  "path": [
+    "idp_signin.jsonl#si-2d468a7c",
+    "cloud_audit.json#ct-b159add9b472",
+    "cloud_audit.json#ct-9b58bdfb3f89",
+    "cloud_audit.json#ct-1b658bd463dc",
+    "cloud_audit.json#ct-7cfb51589bfa",
+    "cloud_audit.json#ct-4fdab2a6c3a7",
+    "db_audit.csv#dba-945433"
+  ],
+  "relevant_records": [
+    "idp_signin.jsonl#si-2d468a7c",
+    "cloud_audit.json#ct-b159add9b472",
+    "cloud_audit.json#ct-9b58bdfb3f89",
+    "cloud_audit.json#ct-1b658bd463dc",
+    "cloud_audit.json#ct-7cfb51589bfa",
+    "cloud_audit.json#ct-4fdab2a6c3a7",
+    "db_audit.csv#dba-945433"
+  ],
+  "root_cause": "idp_signin.jsonl#si-2d468a7c",
+  "stages": {
+    "cloud_audit.json#ct-1b658bd463dc": "discovery",
+    "cloud_audit.json#ct-4fdab2a6c3a7": "defense-evasion",
+    "cloud_audit.json#ct-7cfb51589bfa": "collection",
+    "cloud_audit.json#ct-9b58bdfb3f89": "privilege-escalation",
+    "cloud_audit.json#ct-b159add9b472": "privilege-escalation",
+    "db_audit.csv#dba-945433": "collection",
+    "idp_signin.jsonl#si-2d468a7c": "initial-access"
+  },
+  "steps": [
+    {
+      "record": "idp_signin.jsonl#si-2d468a7c",
+      "step": "anomalous_service_auth",
+      "tactic": "initial-access",
+      "time": "2026-10-29T13:05:31Z"
+    },
+    {
+      "record": "cloud_audit.json#ct-b159add9b472",
+      "step": "role_assumption",
+      "tactic": "privilege-escalation",
+      "time": "2026-10-29T13:07:49Z"
+    },
+    {
+      "record": "cloud_audit.json#ct-9b58bdfb3f89",
+      "step": "permission_misuse",
+      "tactic": "privilege-escalation",
+      "time": "2026-10-29T13:10:03Z"
+    },
+    {
+      "record": "cloud_audit.json#ct-1b658bd463dc",
+      "step": "resource_enumeration",
+      "tactic": "discovery",
+      "time": "2026-10-29T13:12:22Z"
+    },
+    {
+      "record": "cloud_audit.json#ct-7cfb51589bfa",
+      "step": "export_read",
+      "tactic": "collection",
+      "time": "2026-10-29T13:14:59Z"
+    },
+    {
+      "record": "cloud_audit.json#ct-4fdab2a6c3a7",
+      "step": "db_token_minted",
+      "tactic": "defense-evasion",
+      "time": "2026-10-29T13:16:11Z"
+    },
+    {
+      "record": "db_audit.csv#dba-945433",
+      "step": "payroll_database_access",
+      "tactic": "collection",
+      "time": "2026-10-29T13:16:50Z"
+    }
+  ],
+  "valid_edges": [
+    [
+      "cloud_audit.json#ct-1b658bd463dc",
+      "cloud_audit.json#ct-4fdab2a6c3a7"
+    ],
+    [
+      "cloud_audit.json#ct-1b658bd463dc",
+      "cloud_audit.json#ct-7cfb51589bfa"
+    ],
+    [
+      "cloud_audit.json#ct-1b658bd463dc",
+      "db_audit.csv#dba-945433"
+    ],
+    [
+      "cloud_audit.json#ct-4fdab2a6c3a7",
+      "db_audit.csv#dba-945433"
+    ],
+    [
+      "cloud_audit.json#ct-7cfb51589bfa",
+      "cloud_audit.json#ct-4fdab2a6c3a7"
+    ],
+    [
+      "cloud_audit.json#ct-7cfb51589bfa",
+      "db_audit.csv#dba-945433"
+    ],
+    [
+      "cloud_audit.json#ct-9b58bdfb3f89",
+      "cloud_audit.json#ct-1b658bd463dc"
+    ],
+    [
+      "cloud_audit.json#ct-9b58bdfb3f89",
+      "cloud_audit.json#ct-4fdab2a6c3a7"
+    ],
+    [
+      "cloud_audit.json#ct-9b58bdfb3f89",
+      "cloud_audit.json#ct-7cfb51589bfa"
+    ],
+    [
+      "cloud_audit.json#ct-9b58bdfb3f89",
+      "db_audit.csv#dba-945433"
+    ],
+    [
+      "cloud_audit.json#ct-b159add9b472",
+      "cloud_audit.json#ct-1b658bd463dc"
+    ],
+    [
+      "cloud_audit.json#ct-b159add9b472",
+      "cloud_audit.json#ct-4fdab2a6c3a7"
+    ],
+    [
+      "cloud_audit.json#ct-b159add9b472",
+      "cloud_audit.json#ct-7cfb51589bfa"
+    ],
+    [
+      "cloud_audit.json#ct-b159add9b472",
+      "cloud_audit.json#ct-9b58bdfb3f89"
+    ],
+    [
+      "cloud_audit.json#ct-b159add9b472",
+      "db_audit.csv#dba-945433"
+    ],
+    [
+      "idp_signin.jsonl#si-2d468a7c",
+      "cloud_audit.json#ct-1b658bd463dc"
+    ],
+    [
+      "idp_signin.jsonl#si-2d468a7c",
+      "cloud_audit.json#ct-4fdab2a6c3a7"
+    ],
+    [
+      "idp_signin.jsonl#si-2d468a7c",
+      "cloud_audit.json#ct-7cfb51589bfa"
+    ],
+    [
+      "idp_signin.jsonl#si-2d468a7c",
+      "cloud_audit.json#ct-9b58bdfb3f89"
+    ],
+    [
+      "idp_signin.jsonl#si-2d468a7c",
+      "cloud_audit.json#ct-b159add9b472"
+    ],
+    [
+      "idp_signin.jsonl#si-2d468a7c",
+      "db_audit.csv#dba-945433"
+    ]
+  ]
+}

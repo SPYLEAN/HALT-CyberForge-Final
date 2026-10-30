@@ -1,0 +1,722 @@
+{
+ "Records": [
+  {
+   "awsRegion": "eu-west-1",
+   "eventID": "ct-56ababf2ffb5",
+   "eventName": "AssumeRole",
+   "eventSource": "sts.amazonaws.example",
+   "eventTime": "2026-10-29T10:00:13Z",
+   "requestParameters": {
+    "roleArn": "arn:aws:iam::111122223333:role/reporting-reader",
+    "sourceSession": "sess-c371d75e"
+   },
+   "responseElements": {
+    "credentials": {
+     "accessKeyId": "ASIADECF797ED6BE",
+     "sessionToken": "CANARY-SESSION-TOKEN-DO-NOT-RENDER"
+    }
+   },
+   "sourceIPAddress": "10.40.2.15",
+   "userAgent": "aws-cli/2.17 Python/3.12",
+   "userIdentity": {
+    "accessKeyId": "",
+    "accountId": "111122223333",
+    "sourceIdentity": "svc-reporting",
+    "type": "ServicePrincipal"
+   }
+  },
+  {
+   "awsRegion": "eu-west-1",
+   "eventID": "ct-f994cd4c3094",
+   "eventName": "GetObject",
+   "eventSource": "s3.amazonaws.example",
+   "eventTime": "2026-10-29T10:00:15Z",
+   "requestParameters": {
+    "bucketName": "reports-bucket",
+    "key": "daily/76.parquet"
+   },
+   "responseElements": {},
+   "sourceIPAddress": "10.40.2.15",
+   "userAgent": "aws-cli/2.17 Python/3.12",
+   "userIdentity": {
+    "accessKeyId": "ASIADECF797ED6BE",
+    "accountId": "111122223333",
+    "sourceIdentity": "svc-reporting",
+    "type": "AssumedRole"
+   }
+  },
+  {
+   "awsRegion": "eu-west-1",
+   "eventID": "ct-11f06f17a8ae",
+   "eventName": "GetObject",
+   "eventSource": "s3.amazonaws.example",
+   "eventTime": "2026-10-29T10:00:20Z",
+   "requestParameters": {
+    "bucketName": "reports-bucket",
+    "key": "daily/22.parquet"
+   },
+   "responseElements": {},
+   "sourceIPAddress": "10.40.2.15",
+   "userAgent": "aws-cli/2.17 Python/3.12",
+   "userIdentity": {
+    "accessKeyId": "ASIADECF797ED6BE",
+    "accountId": "111122223333",
+    "sourceIdentity": "svc-reporting",
+    "type": "AssumedRole"
+   }
+  },
+  {
+   "awsRegion": "eu-west-1",
+   "eventID": "ct-424abee0ce10",
+   "eventName": "GetObject",
+   "eventSource": "s3.amazonaws.example",
+   "eventTime": "2026-10-29T10:00:42Z",
+   "requestParameters": {
+    "bucketName": "reports-bucket",
+    "key": "daily/80.parquet"
+   },
+   "responseElements": {},
+   "sourceIPAddress": "10.40.2.15",
+   "userAgent": "aws-cli/2.17 Python/3.12",
+   "userIdentity": {
+    "accessKeyId": "ASIADECF797ED6BE",
+    "accountId": "111122223333",
+    "sourceIdentity": "svc-reporting",
+    "type": "AssumedRole"
+   }
+  },
+  {
+   "awsRegion": "eu-west-1",
+   "eventID": "ct-2cfca68fe534",
+   "eventName": "GetObject",
+   "eventSource": "s3.amazonaws.example",
+   "eventTime": "2026-10-29T10:00:43Z",
+   "requestParameters": {
+    "bucketName": "reports-bucket",
+    "key": "daily/28.parquet"
+   },
+   "responseElements": {},
+   "sourceIPAddress": "10.40.2.15",
+   "userAgent": "aws-cli/2.17 Python/3.12",
+   "userIdentity": {
+    "accessKeyId": "ASIADECF797ED6BE",
+    "accountId": "111122223333",
+    "sourceIdentity": "svc-reporting",
+    "type": "AssumedRole"
+   }
+  },
+  {
+   "awsRegion": "eu-west-1",
+   "eventID": "ct-8914c436208b",
+   "eventName": "AssumeRole",
+   "eventSource": "sts.amazonaws.example",
+   "eventTime": "2026-10-29T10:20:05Z",
+   "requestParameters": {
+    "roleArn": "arn:aws:iam::111122223333:role/deployer",
+    "sourceSession": "sess-fbbaca04"
+   },
+   "responseElements": {
+    "credentials": {
+     "accessKeyId": "ASIAFBC3051530DC"
+    }
+   },
+   "sourceIPAddress": "10.40.3.21",
+   "userAgent": "aws-cli/2.17 Python/3.12",
+   "userIdentity": {
+    "accessKeyId": "",
+    "accountId": "111122223333",
+    "sourceIdentity": "svc-ci",
+    "type": "ServicePrincipal"
+   }
+  },
+  {
+   "additionalEventData": {
+    "requestCount": 3,
+    "windowSeconds": 60
+   },
+   "awsRegion": "eu-west-1",
+   "eventID": "ct-137f08e80449",
+   "eventName": "ListObjectsV2",
+   "eventSource": "s3.amazonaws.example",
+   "eventTime": "2026-10-29T10:20:30Z",
+   "requestParameters": {
+    "bucketName": "reports-bucket"
+   },
+   "responseElements": {},
+   "sourceIPAddress": "10.40.3.21",
+   "userAgent": "aws-cli/2.17 Python/3.12",
+   "userIdentity": {
+    "accessKeyId": "ASIAFBC3051530DC",
+    "accountId": "111122223333",
+    "sourceIdentity": "svc-ci",
+    "type": "AssumedRole"
+   }
+  },
+  {
+   "awsRegion": "eu-west-1",
+   "eventID": "ct-9ebaaa259ca4",
+   "eventName": "AssumeRole",
+   "eventSource": "sts.amazonaws.example",
+   "eventTime": "2026-10-29T11:00:11Z",
+   "requestParameters": {
+    "roleArn": "arn:aws:iam::111122223333:role/reporting-reader",
+    "sourceSession": "sess-7049e479"
+   },
+   "responseElements": {
+    "credentials": {
+     "accessKeyId": "ASIA32909B573285",
+     "sessionToken": "CANARY-SESSION-TOKEN-DO-NOT-RENDER"
+    }
+   },
+   "sourceIPAddress": "10.40.2.15",
+   "userAgent": "aws-cli/2.17 Python/3.12",
+   "userIdentity": {
+    "accessKeyId": "",
+    "accountId": "111122223333",
+    "sourceIdentity": "svc-reporting",
+    "type": "ServicePrincipal"
+   }
+  },
+  {
+   "awsRegion": "eu-west-1",
+   "eventID": "ct-eba71044504d",
+   "eventName": "GetObject",
+   "eventSource": "s3.amazonaws.example",
+   "eventTime": "2026-10-29T11:00:13Z",
+   "requestParameters": {
+    "bucketName": "reports-bucket",
+    "key": "daily/99.parquet"
+   },
+   "responseElements": {},
+   "sourceIPAddress": "10.40.2.15",
+   "userAgent": "aws-cli/2.17 Python/3.12",
+   "userIdentity": {
+    "accessKeyId": "ASIA32909B573285",
+    "accountId": "111122223333",
+    "sourceIdentity": "svc-reporting",
+    "type": "AssumedRole"
+   }
+  },
+  {
+   "awsRegion": "eu-west-1",
+   "eventID": "ct-d5e0ebe1b4dd",
+   "eventName": "GetObject",
+   "eventSource": "s3.amazonaws.example",
+   "eventTime": "2026-10-29T11:00:32Z",
+   "requestParameters": {
+    "bucketName": "reports-bucket",
+    "key": "daily/37.parquet"
+   },
+   "responseElements": {},
+   "sourceIPAddress": "10.40.2.15",
+   "userAgent": "aws-cli/2.17 Python/3.12",
+   "userIdentity": {
+    "accessKeyId": "ASIA32909B573285",
+    "accountId": "111122223333",
+    "sourceIdentity": "svc-reporting",
+    "type": "AssumedRole"
+   }
+  },
+  {
+   "awsRegion": "eu-west-1",
+   "eventID": "ct-499f50d00f8d",
+   "eventName": "AttachRolePolicy",
+   "eventSource": "s3.amazonaws.example",
+   "eventTime": "2026-10-29T11:45:10Z",
+   "requestParameters": {
+    "policyArn": "arn:aws:iam::aws:policy/ReadOnlyAccess",
+    "roleName": "analytics"
+   },
+   "responseElements": {},
+   "sourceIPAddress": "192.0.2.130",
+   "userAgent": "aws-cli/2.17 Python/3.12",
+   "userIdentity": {
+    "accessKeyId": "",
+    "accountId": "111122223333",
+    "sourceIdentity": "d.okafor",
+    "type": "ServicePrincipal"
+   }
+  },
+  {
+   "awsRegion": "eu-west-1",
+   "eventID": "ct-3f2e1ab7e7f8",
+   "eventName": "AssumeRole",
+   "eventSource": "sts.amazonaws.example",
+   "eventTime": "2026-10-29T12:00:28Z",
+   "requestParameters": {
+    "roleArn": "arn:aws:iam::111122223333:role/reporting-reader",
+    "sourceSession": "sess-d7bdddab"
+   },
+   "responseElements": {
+    "credentials": {
+     "accessKeyId": "ASIADD8836C42B0D",
+     "sessionToken": "CANARY-SESSION-TOKEN-DO-NOT-RENDER"
+    }
+   },
+   "sourceIPAddress": "10.40.2.15",
+   "userAgent": "aws-cli/2.17 Python/3.12",
+   "userIdentity": {
+    "accessKeyId": "",
+    "accountId": "111122223333",
+    "sourceIdentity": "svc-reporting",
+    "type": "ServicePrincipal"
+   }
+  },
+  {
+   "awsRegion": "eu-west-1",
+   "eventID": "ct-26814a63ee40",
+   "eventName": "GetObject",
+   "eventSource": "s3.amazonaws.example",
+   "eventTime": "2026-10-29T12:00:37Z",
+   "requestParameters": {
+    "bucketName": "reports-bucket",
+    "key": "daily/9.parquet"
+   },
+   "responseElements": {},
+   "sourceIPAddress": "10.40.2.15",
+   "userAgent": "aws-cli/2.17 Python/3.12",
+   "userIdentity": {
+    "accessKeyId": "ASIADD8836C42B0D",
+    "accountId": "111122223333",
+    "sourceIdentity": "svc-reporting",
+    "type": "AssumedRole"
+   }
+  },
+  {
+   "awsRegion": "eu-west-1",
+   "eventID": "ct-ad0f25ae99c6",
+   "eventName": "GetObject",
+   "eventSource": "s3.amazonaws.example",
+   "eventTime": "2026-10-29T12:00:44Z",
+   "requestParameters": {
+    "bucketName": "reports-bucket",
+    "key": "daily/30.parquet"
+   },
+   "responseElements": {},
+   "sourceIPAddress": "10.40.2.15",
+   "userAgent": "aws-cli/2.17 Python/3.12",
+   "userIdentity": {
+    "accessKeyId": "ASIADD8836C42B0D",
+    "accountId": "111122223333",
+    "sourceIdentity": "svc-reporting",
+    "type": "AssumedRole"
+   }
+  },
+  {
+   "awsRegion": "eu-west-1",
+   "eventID": "ct-4e9883014343",
+   "eventName": "GetObject",
+   "eventSource": "s3.amazonaws.example",
+   "eventTime": "2026-10-29T12:01:02Z",
+   "requestParameters": {
+    "bucketName": "reports-bucket",
+    "key": "daily/90.parquet"
+   },
+   "responseElements": {},
+   "sourceIPAddress": "10.40.2.15",
+   "userAgent": "aws-cli/2.17 Python/3.12",
+   "userIdentity": {
+    "accessKeyId": "ASIADD8836C42B0D",
+    "accountId": "111122223333",
+    "sourceIdentity": "svc-reporting",
+    "type": "AssumedRole"
+   }
+  },
+  {
+   "additionalEventData": {
+    "requestCount": 25,
+    "windowSeconds": 60
+   },
+   "awsRegion": "eu-west-1",
+   "eventID": "ct-71e0ab6e2975",
+   "eventName": "ListObjectsV2",
+   "eventSource": "s3.amazonaws.example",
+   "eventTime": "2026-10-29T12:15:00Z",
+   "requestParameters": {
+    "bucketName": "analytics-scratch"
+   },
+   "responseElements": {},
+   "sourceIPAddress": "10.40.5.9",
+   "userAgent": "aws-cli/2.17 Python/3.12",
+   "userIdentity": {
+    "accessKeyId": "AKIAE3D007C8D833",
+    "accountId": "111122223333",
+    "sourceIdentity": "l.mensah",
+    "type": "AssumedRole"
+   }
+  },
+  {
+   "awsRegion": "eu-west-1",
+   "eventID": "ct-1c38baf40b17",
+   "eventName": "AssumeRole",
+   "eventSource": "sts.amazonaws.example",
+   "eventTime": "2026-10-29T12:40:05Z",
+   "requestParameters": {
+    "roleArn": "arn:aws:iam::111122223333:role/deployer",
+    "sourceSession": "sess-b36e73d7"
+   },
+   "responseElements": {
+    "credentials": {
+     "accessKeyId": "ASIAEAD1027DA35B"
+    }
+   },
+   "sourceIPAddress": "10.40.3.21",
+   "userAgent": "aws-cli/2.17 Python/3.12",
+   "userIdentity": {
+    "accessKeyId": "",
+    "accountId": "111122223333",
+    "sourceIdentity": "svc-ci",
+    "type": "ServicePrincipal"
+   }
+  },
+  {
+   "additionalEventData": {
+    "requestCount": 3,
+    "windowSeconds": 60
+   },
+   "awsRegion": "eu-west-1",
+   "eventID": "ct-e83676babbbe",
+   "eventName": "ListObjectsV2",
+   "eventSource": "s3.amazonaws.example",
+   "eventTime": "2026-10-29T12:40:30Z",
+   "requestParameters": {
+    "bucketName": "reports-bucket"
+   },
+   "responseElements": {},
+   "sourceIPAddress": "10.40.3.21",
+   "userAgent": "aws-cli/2.17 Python/3.12",
+   "userIdentity": {
+    "accessKeyId": "ASIAEAD1027DA35B",
+    "accountId": "111122223333",
+    "sourceIdentity": "svc-ci",
+    "type": "AssumedRole"
+   }
+  },
+  {
+   "awsRegion": "eu-west-1",
+   "eventID": "ct-492f3b4c8b23",
+   "eventName": "AssumeRole",
+   "eventSource": "sts.amazonaws.example",
+   "eventTime": "2026-10-29T13:00:22Z",
+   "requestParameters": {
+    "roleArn": "arn:aws:iam::111122223333:role/reporting-reader",
+    "sourceSession": "sess-88c624dc"
+   },
+   "responseElements": {
+    "credentials": {
+     "accessKeyId": "ASIA1B3CA93FF1FF",
+     "sessionToken": "CANARY-SESSION-TOKEN-DO-NOT-RENDER"
+    }
+   },
+   "sourceIPAddress": "10.40.2.15",
+   "userAgent": "aws-cli/2.17 Python/3.12",
+   "userIdentity": {
+    "accessKeyId": "",
+    "accountId": "111122223333",
+    "sourceIdentity": "svc-reporting",
+    "type": "ServicePrincipal"
+   }
+  },
+  {
+   "awsRegion": "eu-west-1",
+   "eventID": "ct-b4e3152c99cc",
+   "eventName": "GetObject",
+   "eventSource": "s3.amazonaws.example",
+   "eventTime": "2026-10-29T13:00:27Z",
+   "requestParameters": {
+    "bucketName": "reports-bucket",
+    "key": "daily/98.parquet"
+   },
+   "responseElements": {},
+   "sourceIPAddress": "10.40.2.15",
+   "userAgent": "aws-cli/2.17 Python/3.12",
+   "userIdentity": {
+    "accessKeyId": "ASIA1B3CA93FF1FF",
+    "accountId": "111122223333",
+    "sourceIdentity": "svc-reporting",
+    "type": "AssumedRole"
+   }
+  },
+  {
+   "awsRegion": "eu-west-1",
+   "eventID": "ct-d291042a2127",
+   "eventName": "GetObject",
+   "eventSource": "s3.amazonaws.example",
+   "eventTime": "2026-10-29T13:00:38Z",
+   "requestParameters": {
+    "bucketName": "reports-bucket",
+    "key": "daily/74.parquet"
+   },
+   "responseElements": {},
+   "sourceIPAddress": "10.40.2.15",
+   "userAgent": "aws-cli/2.17 Python/3.12",
+   "userIdentity": {
+    "accessKeyId": "ASIA1B3CA93FF1FF",
+    "accountId": "111122223333",
+    "sourceIdentity": "svc-reporting",
+    "type": "AssumedRole"
+   }
+  },
+  {
+   "awsRegion": "eu-west-1",
+   "eventID": "ct-b159add9b472",
+   "eventName": "AssumeRole",
+   "eventSource": "sts.amazonaws.example",
+   "eventTime": "2026-10-29T13:07:49Z",
+   "requestParameters": {
+    "roleArn": "arn:aws:iam::111122223333:role/reporting-reader",
+    "sourceSession": "sess-8fcdff51"
+   },
+   "responseElements": {
+    "credentials": {
+     "accessKeyId": "ASIA5B4F6D5A5CD8",
+     "sessionToken": "CANARY-SESSION-TOKEN-DO-NOT-RENDER"
+    }
+   },
+   "sourceIPAddress": "203.0.113.140",
+   "userAgent": "aws-cli/2.17 Python/3.12",
+   "userIdentity": {
+    "accessKeyId": "",
+    "accountId": "111122223333",
+    "sourceIdentity": "svc-reporting",
+    "type": "ServicePrincipal"
+   }
+  },
+  {
+   "awsRegion": "eu-west-1",
+   "eventID": "ct-9b58bdfb3f89",
+   "eventName": "PutRolePolicy",
+   "eventSource": "s3.amazonaws.example",
+   "eventTime": "2026-10-29T13:10:03Z",
+   "requestParameters": {
+    "policySummary": "s3:* and rds-db:connect on *",
+    "roleName": "reporting-reader"
+   },
+   "responseElements": {},
+   "sourceIPAddress": "203.0.113.140",
+   "userAgent": "aws-cli/2.17 Python/3.12",
+   "userIdentity": {
+    "accessKeyId": "ASIA5B4F6D5A5CD8",
+    "accountId": "111122223333",
+    "sourceIdentity": "svc-reporting",
+    "type": "AssumedRole"
+   }
+  },
+  {
+   "additionalEventData": {
+    "requestCount": 160,
+    "windowSeconds": 90
+   },
+   "awsRegion": "eu-west-1",
+   "eventID": "ct-1b658bd463dc",
+   "eventName": "ListObjectsV2",
+   "eventSource": "s3.amazonaws.example",
+   "eventTime": "2026-10-29T13:12:22Z",
+   "requestParameters": {
+    "bucketName": "hr-payroll-exports"
+   },
+   "responseElements": {},
+   "sourceIPAddress": "203.0.113.140",
+   "userAgent": "aws-cli/2.17 Python/3.12",
+   "userIdentity": {
+    "accessKeyId": "ASIA5B4F6D5A5CD8",
+    "accountId": "111122223333",
+    "sourceIdentity": "svc-reporting",
+    "type": "AssumedRole"
+   }
+  },
+  {
+   "awsRegion": "eu-west-1",
+   "eventID": "ct-7cfb51589bfa",
+   "eventName": "GetObject",
+   "eventSource": "s3.amazonaws.example",
+   "eventTime": "2026-10-29T13:14:59Z",
+   "requestParameters": {
+    "bucketName": "hr-payroll-exports",
+    "key": "2026-10/payroll-run.csv"
+   },
+   "responseElements": {},
+   "sourceIPAddress": "203.0.113.140",
+   "userAgent": "aws-cli/2.17 Python/3.12",
+   "userIdentity": {
+    "accessKeyId": "ASIA5B4F6D5A5CD8",
+    "accountId": "111122223333",
+    "sourceIdentity": "svc-reporting",
+    "type": "AssumedRole"
+   }
+  },
+  {
+   "awsRegion": "eu-west-1",
+   "eventID": "ct-4fdab2a6c3a7",
+   "eventName": "GenerateDBAuthToken",
+   "eventSource": "s3.amazonaws.example",
+   "eventTime": "2026-10-29T13:16:11Z",
+   "requestParameters": {
+    "dbInstanceIdentifier": "db-payroll"
+   },
+   "responseElements": {
+    "tokenId": "dbtok-94e6e9b1"
+   },
+   "sourceIPAddress": "203.0.113.140",
+   "userAgent": "aws-cli/2.17 Python/3.12",
+   "userIdentity": {
+    "accessKeyId": "ASIA5B4F6D5A5CD8",
+    "accountId": "111122223333",
+    "sourceIdentity": "svc-reporting",
+    "type": "AssumedRole"
+   }
+  },
+  {
+   "awsRegion": "eu-west-1",
+   "eventID": "ct-ea5d2c4fdfa9",
+   "eventName": "AssumeRole",
+   "eventSource": "sts.amazonaws.example",
+   "eventTime": "2026-10-29T14:00:25Z",
+   "requestParameters": {
+    "roleArn": "arn:aws:iam::111122223333:role/reporting-reader",
+    "sourceSession": "sess-e767a6b9"
+   },
+   "responseElements": {
+    "credentials": {
+     "accessKeyId": "ASIAA0EA5B702262",
+     "sessionToken": "CANARY-SESSION-TOKEN-DO-NOT-RENDER"
+    }
+   },
+   "sourceIPAddress": "10.40.2.15",
+   "userAgent": "aws-cli/2.17 Python/3.12",
+   "userIdentity": {
+    "accessKeyId": "",
+    "accountId": "111122223333",
+    "sourceIdentity": "svc-reporting",
+    "type": "ServicePrincipal"
+   }
+  },
+  {
+   "awsRegion": "eu-west-1",
+   "eventID": "ct-a35136b011a6",
+   "eventName": "GetObject",
+   "eventSource": "s3.amazonaws.example",
+   "eventTime": "2026-10-29T14:00:31Z",
+   "requestParameters": {
+    "bucketName": "reports-bucket",
+    "key": "daily/43.parquet"
+   },
+   "responseElements": {},
+   "sourceIPAddress": "10.40.2.15",
+   "userAgent": "aws-cli/2.17 Python/3.12",
+   "userIdentity": {
+    "accessKeyId": "ASIAA0EA5B702262",
+    "accountId": "111122223333",
+    "sourceIdentity": "svc-reporting",
+    "type": "AssumedRole"
+   }
+  },
+  {
+   "awsRegion": "eu-west-1",
+   "eventID": "ct-d06f5a638761",
+   "eventName": "GetObject",
+   "eventSource": "s3.amazonaws.example",
+   "eventTime": "2026-10-29T14:00:31Z",
+   "requestParameters": {
+    "bucketName": "reports-bucket",
+    "key": "daily/23.parquet"
+   },
+   "responseElements": {},
+   "sourceIPAddress": "10.40.2.15",
+   "userAgent": "aws-cli/2.17 Python/3.12",
+   "userIdentity": {
+    "accessKeyId": "ASIAA0EA5B702262",
+    "accountId": "111122223333",
+    "sourceIdentity": "svc-reporting",
+    "type": "AssumedRole"
+   }
+  },
+  {
+   "awsRegion": "eu-west-1",
+   "eventID": "ct-f227e06723cd",
+   "eventName": "GetObject",
+   "eventSource": "s3.amazonaws.example",
+   "eventTime": "2026-10-29T14:00:36Z",
+   "requestParameters": {
+    "bucketName": "reports-bucket",
+    "key": "daily/72.parquet"
+   },
+   "responseElements": {},
+   "sourceIPAddress": "10.40.2.15",
+   "userAgent": "aws-cli/2.17 Python/3.12",
+   "userIdentity": {
+    "accessKeyId": "ASIAA0EA5B702262",
+    "accountId": "111122223333",
+    "sourceIdentity": "svc-reporting",
+    "type": "AssumedRole"
+   }
+  },
+  {
+   "awsRegion": "eu-west-1",
+   "eventID": "ct-0aa45c8ae9dd",
+   "eventName": "GetObject",
+   "eventSource": "s3.amazonaws.example",
+   "eventTime": "2026-10-29T14:00:50Z",
+   "requestParameters": {
+    "bucketName": "reports-bucket",
+    "key": "daily/83.parquet"
+   },
+   "responseElements": {},
+   "sourceIPAddress": "10.40.2.15",
+   "userAgent": "aws-cli/2.17 Python/3.12",
+   "userIdentity": {
+    "accessKeyId": "ASIAA0EA5B702262",
+    "accountId": "111122223333",
+    "sourceIdentity": "svc-reporting",
+    "type": "AssumedRole"
+   }
+  },
+  {
+   "awsRegion": "eu-west-1",
+   "eventID": "ct-846a41e08aec",
+   "eventName": "AssumeRole",
+   "eventSource": "sts.amazonaws.example",
+   "eventTime": "2026-10-29T14:05:05Z",
+   "requestParameters": {
+    "roleArn": "arn:aws:iam::111122223333:role/deployer",
+    "sourceSession": "sess-a0dfe4af"
+   },
+   "responseElements": {
+    "credentials": {
+     "accessKeyId": "ASIAE4F91206A0C5"
+    }
+   },
+   "sourceIPAddress": "10.40.3.21",
+   "userAgent": "aws-cli/2.17 Python/3.12",
+   "userIdentity": {
+    "accessKeyId": "",
+    "accountId": "111122223333",
+    "sourceIdentity": "svc-ci",
+    "type": "ServicePrincipal"
+   }
+  },
+  {
+   "additionalEventData": {
+    "requestCount": 3,
+    "windowSeconds": 60
+   },
+   "awsRegion": "eu-west-1",
+   "eventID": "ct-801cab9c9c43",
+   "eventName": "ListObjectsV2",
+   "eventSource": "s3.amazonaws.example",
+   "eventTime": "2026-10-29T14:05:30Z",
+   "requestParameters": {
+    "bucketName": "reports-bucket"
+   },
+   "responseElements": {},
+   "sourceIPAddress": "10.40.3.21",
+   "userAgent": "aws-cli/2.17 Python/3.12",
+   "userIdentity": {
+    "accessKeyId": "ASIAE4F91206A0C5",
+    "accountId": "111122223333",
+    "sourceIdentity": "svc-ci",
+    "type": "AssumedRole"
+   }
+  }
+ ]
+}

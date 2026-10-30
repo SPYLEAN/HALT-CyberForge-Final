@@ -1,0 +1,50 @@
+message_id,received_utc,sender,sender_domain,sender_domain_age_days,recipient,subject,link_domain,link_type,delivery_action
+MT-10485,2026-10-29T06:33:26Z,noreply@vendor-portal.example,vendor-portal.example,1400,k.rao@contoso.example,Invoice available,vendor-portal.example,web,Delivered
+MT-43672,2026-10-29T06:42:41Z,a.chen@contoso.example,contoso.example,3650,r.okafor@contoso.example,Re: month-end,sharepoint.contoso.example,web,Delivered
+MT-25338,2026-10-29T06:46:00Z,k.rao@contoso.example,contoso.example,3650,p.nair@contoso.example,Re: month-end,sharepoint.contoso.example,web,Delivered
+MT-25789,2026-10-29T06:46:56Z,a.chen@contoso.example,contoso.example,3650,p.nair@contoso.example,Re: month-end,sharepoint.contoso.example,web,Delivered
+MT-17282,2026-10-29T06:54:37Z,s.iyer@contoso.example,contoso.example,3650,j.ortiz@contoso.example,Re: month-end,sharepoint.contoso.example,web,Delivered
+MT-88136,2026-10-29T07:00:47Z,a.chen@contoso.example,contoso.example,3650,s.iyer@contoso.example,Re: month-end,sharepoint.contoso.example,web,Delivered
+MT-74565,2026-10-29T07:04:23Z,j.ortiz@contoso.example,contoso.example,3650,a.chen@contoso.example,Re: month-end,sharepoint.contoso.example,web,Delivered
+MT-37893,2026-10-29T07:06:33Z,s.iyer@contoso.example,contoso.example,3650,a.chen@contoso.example,Re: month-end,sharepoint.contoso.example,web,Delivered
+MT-54483,2026-10-29T07:13:07Z,m.verma@contoso.example,contoso.example,3650,j.ortiz@contoso.example,Re: month-end,sharepoint.contoso.example,web,Delivered
+MT-97264,2026-10-29T07:17:43Z,m.verma@contoso.example,contoso.example,3650,j.ortiz@contoso.example,Re: month-end,sharepoint.contoso.example,web,Delivered
+MT-78777,2026-10-29T07:18:37Z,r.okafor@contoso.example,contoso.example,3650,a.chen@contoso.example,Re: month-end,sharepoint.contoso.example,web,Delivered
+MT-21787,2026-10-29T07:19:13Z,s.iyer@contoso.example,contoso.example,3650,a.chen@contoso.example,Re: month-end,sharepoint.contoso.example,web,Delivered
+MT-53611,2026-10-29T07:26:31Z,j.ortiz@contoso.example,contoso.example,3650,p.nair@contoso.example,Re: month-end,sharepoint.contoso.example,web,Delivered
+MT-17473,2026-10-29T07:28:33Z,j.ortiz@contoso.example,contoso.example,3650,m.verma@contoso.example,Re: month-end,sharepoint.contoso.example,web,Delivered
+MT-91573,2026-10-29T07:28:36Z,a.chen@contoso.example,contoso.example,3650,r.okafor@contoso.example,Re: month-end,sharepoint.contoso.example,web,Delivered
+MT-52895,2026-10-29T07:42:00Z,noreply@vendor-portal.example,vendor-portal.example,1400,a.chen@contoso.example,Invoice available,vendor-portal.example,web,Delivered
+MT-54908,2026-10-29T07:53:25Z,p.nair@contoso.example,contoso.example,3650,k.rao@contoso.example,Re: month-end,sharepoint.contoso.example,web,Delivered
+MT-51248,2026-10-29T08:01:50Z,noreply@vendor-portal.example,vendor-portal.example,1400,a.chen@contoso.example,Invoice available,vendor-portal.example,web,Delivered
+MT-62010,2026-10-29T08:06:33Z,j.ortiz@contoso.example,contoso.example,3650,s.iyer@contoso.example,Re: month-end,sharepoint.contoso.example,web,Delivered
+MT-66407,2026-10-29T08:10:53Z,j.ortiz@contoso.example,contoso.example,3650,r.okafor@contoso.example,Re: month-end,sharepoint.contoso.example,web,Delivered
+MT-40424,2026-10-29T08:16:27Z,noreply@vendor-portal.example,vendor-portal.example,1400,m.verma@contoso.example,Invoice available,vendor-portal.example,web,Delivered
+MT-18580,2026-10-29T08:20:50Z,p.nair@contoso.example,contoso.example,3650,j.ortiz@contoso.example,Re: month-end,sharepoint.contoso.example,web,Delivered
+MT-19759,2026-10-29T08:25:36Z,r.okafor@contoso.example,contoso.example,3650,a.chen@contoso.example,Re: month-end,sharepoint.contoso.example,web,Delivered
+MT-74010,2026-10-29T08:26:56Z,noreply@vendor-portal.example,vendor-portal.example,1400,j.ortiz@contoso.example,Invoice available,vendor-portal.example,web,Delivered
+MT-83909,2026-10-29T08:31:15Z,r.okafor@contoso.example,contoso.example,3650,s.iyer@contoso.example,Re: month-end,sharepoint.contoso.example,web,Delivered
+MT-15362,2026-10-29T08:43:00Z,j.ortiz@contoso.example,contoso.example,3650,k.rao@contoso.example,Re: month-end,sharepoint.contoso.example,web,Delivered
+MT-29076,2026-10-29T08:44:10Z,offers@spring-offers.example,spring-offers.example,9,j.ortiz@contoso.example,Your spring discount,spring-offers.example,web,Delivered
+MT-41546,2026-10-29T08:53:03Z,m.verma@contoso.example,contoso.example,3650,a.chen@contoso.example,Re: month-end,sharepoint.contoso.example,web,Delivered
+MT-43713,2026-10-29T08:53:18Z,s.iyer@contoso.example,contoso.example,3650,a.chen@contoso.example,Re: month-end,sharepoint.contoso.example,web,Delivered
+MT-43567,2026-10-29T08:53:28Z,j.ortiz@contoso.example,contoso.example,3650,k.rao@contoso.example,Re: month-end,sharepoint.contoso.example,web,Delivered
+MT-59192,2026-10-29T09:01:17Z,noreply@vendor-portal.example,vendor-portal.example,1400,j.ortiz@contoso.example,Invoice available,vendor-portal.example,web,Delivered
+MT-65848,2026-10-29T09:02:10Z,k.rao@contoso.example,contoso.example,3650,a.chen@contoso.example,Re: month-end,sharepoint.contoso.example,web,Delivered
+MT-26047,2026-10-29T09:11:06Z,m.verma@contoso.example,contoso.example,3650,k.rao@contoso.example,Re: month-end,sharepoint.contoso.example,web,Delivered
+MT-38741,2026-10-29T09:12:47Z,noreply@vendor-portal.example,vendor-portal.example,1400,s.iyer@contoso.example,Invoice available,vendor-portal.example,web,Delivered
+MT-17852,2026-10-29T09:15:04Z,j.ortiz@contoso.example,contoso.example,3650,a.chen@contoso.example,Re: month-end,sharepoint.contoso.example,web,Delivered
+MT-51004,2026-10-29T09:18:06Z,j.ortiz@contoso.example,contoso.example,3650,k.rao@contoso.example,Re: month-end,sharepoint.contoso.example,web,Delivered
+MT-12861,2026-10-29T09:25:57Z,s.iyer@contoso.example,contoso.example,3650,j.ortiz@contoso.example,Re: month-end,sharepoint.contoso.example,web,Delivered
+MT-49769,2026-10-29T09:33:02Z,noreply@vendor-portal.example,vendor-portal.example,1400,r.okafor@contoso.example,Invoice available,vendor-portal.example,web,Delivered
+MT-83001,2026-10-29T09:33:42Z,billing@docusign-portal.example,docusign-portal.example,3,m.verma@contoso.example,Action required: sign the Q3 close pack,login.docusign-portal.example,oauth_consent,Delivered
+MT-25216,2026-10-29T09:34:44Z,m.verma@contoso.example,contoso.example,3650,a.chen@contoso.example,Re: month-end,sharepoint.contoso.example,web,Delivered
+MT-97038,2026-10-29T09:58:14Z,r.okafor@contoso.example,contoso.example,3650,k.rao@contoso.example,Re: month-end,sharepoint.contoso.example,web,Delivered
+MT-63031,2026-10-29T10:02:22Z,p.nair@contoso.example,contoso.example,3650,r.okafor@contoso.example,Re: month-end,sharepoint.contoso.example,web,Delivered
+MT-69545,2026-10-29T10:12:14Z,noreply@vendor-portal.example,vendor-portal.example,1400,s.iyer@contoso.example,Invoice available,vendor-portal.example,web,Delivered
+MT-70489,2026-10-29T10:18:20Z,k.rao@contoso.example,contoso.example,3650,a.chen@contoso.example,Re: month-end,sharepoint.contoso.example,web,Delivered
+MT-73240,2026-10-29T10:18:22Z,s.iyer@contoso.example,contoso.example,3650,a.chen@contoso.example,Re: month-end,sharepoint.contoso.example,web,Delivered
+MT-24516,2026-10-29T10:20:18Z,a.chen@contoso.example,contoso.example,3650,r.okafor@contoso.example,Re: month-end,sharepoint.contoso.example,web,Delivered
+MT-54968,2026-10-29T10:20:49Z,s.iyer@contoso.example,contoso.example,3650,k.rao@contoso.example,Re: month-end,sharepoint.contoso.example,web,Delivered
+MT-14379,2026-10-29T10:26:13Z,noreply@vendor-portal.example,vendor-portal.example,1400,k.rao@contoso.example,Invoice available,vendor-portal.example,web,Delivered
+MT-00000,2026-10-29T10:00:00Z,short-row

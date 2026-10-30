@@ -1,0 +1,144 @@
+{
+ "value": [
+  {
+   "activityDateTime": "2026-10-29T09:13:56Z",
+   "activityDisplayName": "User registered security info",
+   "additionalDetails": [
+    {
+     "key": "Method",
+     "value": "Microsoft Authenticator"
+    }
+   ],
+   "correlationId": "sess-46a95178",
+   "id": "da-c5b2b475",
+   "initiatedBy": {
+    "user": {
+     "id": "u-32165f2c",
+     "ipAddress": "192.0.2.10",
+     "userPrincipalName": "s.iyer@contoso.example"
+    }
+   },
+   "result": "success",
+   "targetResources": [
+    {
+     "type": "User",
+     "userPrincipalName": "s.iyer@contoso.example"
+    }
+   ]
+  },
+  {
+   "activityDateTime": "2026-10-29T09:43:46Z",
+   "activityDisplayName": "User registered security info",
+   "additionalDetails": [
+    {
+     "key": "Method",
+     "value": "Authenticator app (new device)"
+    }
+   ],
+   "correlationId": "sess-16bf490d",
+   "id": "da-71c0dde8",
+   "initiatedBy": {
+    "user": {
+     "id": "u-46caa3b6",
+     "ipAddress": "203.0.113.77",
+     "userPrincipalName": "m.verma@contoso.example"
+    }
+   },
+   "result": "success",
+   "targetResources": [
+    {
+     "type": "User",
+     "userPrincipalName": "m.verma@contoso.example"
+    }
+   ]
+  },
+  {
+   "activityDateTime": "2026-10-29T09:44:15Z",
+   "activityDisplayName": "Consent to application",
+   "additionalDetails": [
+    {
+     "key": "AppAgeDays",
+     "value": "4"
+    },
+    {
+     "key": "AppDisplayName",
+     "value": "DocuSync Pro"
+    },
+    {
+     "key": "AppId",
+     "value": "d0c5f1e2-docusync-pro"
+    },
+    {
+     "key": "ConsentScopes",
+     "value": "Files.ReadWrite.All Mail.Read offline_access"
+    },
+    {
+     "key": "IssuedTokenId",
+     "value": "tok-0526f5c2"
+    },
+    {
+     "key": "PublisherVerified",
+     "value": "false"
+    }
+   ],
+   "correlationId": "sess-16bf490d",
+   "id": "da-046ad7d6",
+   "initiatedBy": {
+    "user": {
+     "id": "u-46caa3b6",
+     "ipAddress": "203.0.113.77",
+     "userPrincipalName": "m.verma@contoso.example"
+    }
+   },
+   "result": "success",
+   "targetResources": [
+    {
+     "type": "User",
+     "userPrincipalName": "m.verma@contoso.example"
+    }
+   ]
+  },
+  {
+   "activityDateTime": "2026-10-29T10:05:00Z",
+   "activityDisplayName": "Consent to application",
+   "additionalDetails": [
+    {
+     "key": "AppAgeDays",
+     "value": "900"
+    },
+    {
+     "key": "AppDisplayName",
+     "value": "Contoso Expenses"
+    },
+    {
+     "key": "AppId",
+     "value": "e7a1c2d4-expenses"
+    },
+    {
+     "key": "ConsentScopes",
+     "value": "User.Read"
+    },
+    {
+     "key": "PublisherVerified",
+     "value": "true"
+    }
+   ],
+   "correlationId": "sess-b4cdb3d6",
+   "id": "da-8510f3f4",
+   "initiatedBy": {
+    "user": {
+     "id": "u-2f9148f2",
+     "ipAddress": "192.0.2.10",
+     "userPrincipalName": "j.ortiz@contoso.example"
+    }
+   },
+   "result": "success",
+   "targetResources": [
+    {
+     "type": "User",
+     "userPrincipalName": "j.ortiz@contoso.example"
+    }
+   ]
+  }
+ ]
+}

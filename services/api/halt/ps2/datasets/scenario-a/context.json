@@ -1,0 +1,103 @@
+{
+  "assets": [
+    {
+      "business_service": "Month-end close",
+      "criticality": "high",
+      "depends_on": [
+        "finance-api"
+      ],
+      "resource": "finance-close-library",
+      "resource_type": "file_share"
+    },
+    {
+      "business_service": "Finance ledger",
+      "criticality": "critical",
+      "depends_on": [
+        "finance-ledger-db"
+      ],
+      "resource": "finance-api",
+      "resource_type": "api"
+    },
+    {
+      "business_service": "Finance ledger",
+      "criticality": "critical",
+      "depends_on": [],
+      "resource": "finance-ledger-db",
+      "resource_type": "database"
+    },
+    {
+      "business_service": "Accounts payable",
+      "criticality": "high",
+      "depends_on": [],
+      "resource": "ap-invoices-library",
+      "resource_type": "file_share"
+    },
+    {
+      "business_service": "Treasury",
+      "criticality": "high",
+      "depends_on": [],
+      "resource": "treasury-reports",
+      "resource_type": "file_share"
+    },
+    {
+      "business_service": "Collaboration",
+      "criticality": "low",
+      "depends_on": [],
+      "resource": "team-site-docs",
+      "resource_type": "file_share"
+    }
+  ],
+  "business_services": [
+    {
+      "criticality": "high",
+      "name": "Month-end close"
+    },
+    {
+      "criticality": "critical",
+      "name": "Finance ledger"
+    },
+    {
+      "criticality": "high",
+      "name": "Accounts payable"
+    },
+    {
+      "criticality": "high",
+      "name": "Treasury"
+    },
+    {
+      "criticality": "low",
+      "name": "Collaboration"
+    }
+  ],
+  "internal_cidrs": [
+    "10.20.0.0/16"
+  ],
+  "known_egress_cidrs": [
+    "192.0.2.0/27",
+    "192.0.2.64/27"
+  ],
+  "managed_hosts": [
+    "fin-ws-010",
+    "fin-ws-011",
+    "fin-ws-012",
+    "fin-ws-013",
+    "fin-ws-014",
+    "fin-ws-015",
+    "fin-ws-016",
+    "fin-ws-017",
+    "fin-ws-018",
+    "fin-ws-019",
+    "fin-ws-020",
+    "fin-ws-021",
+    "fin-ws-022",
+    "fin-ws-023",
+    "fin-ws-024",
+    "fin-ws-025",
+    "fin-ws-026",
+    "fin-ws-027",
+    "fin-ws-028",
+    "fin-ws-029"
+  ],
+  "organisation": "Contoso Finance (synthetic)",
+  "service_accounts": []
+}

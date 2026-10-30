@@ -1,0 +1,83 @@
+{
+  "assets": [
+    {
+      "business_service": "Payroll",
+      "criticality": "high",
+      "depends_on": [
+        "payments-batch-bucket"
+      ],
+      "resource": "hr-payroll-exports",
+      "resource_type": "cloud_service"
+    },
+    {
+      "business_service": "Payments",
+      "criticality": "critical",
+      "depends_on": [],
+      "resource": "payments-batch-bucket",
+      "resource_type": "cloud_service"
+    },
+    {
+      "business_service": "Payroll",
+      "criticality": "critical",
+      "depends_on": [],
+      "resource": "db-payroll",
+      "resource_type": "database"
+    },
+    {
+      "business_service": "Reporting",
+      "criticality": "medium",
+      "depends_on": [],
+      "resource": "reports-bucket",
+      "resource_type": "cloud_service"
+    },
+    {
+      "business_service": "Reporting",
+      "criticality": "medium",
+      "depends_on": [],
+      "resource": "db-reporting",
+      "resource_type": "database"
+    },
+    {
+      "business_service": "Analytics",
+      "criticality": "low",
+      "depends_on": [],
+      "resource": "analytics-scratch",
+      "resource_type": "cloud_service"
+    }
+  ],
+  "business_services": [
+    {
+      "criticality": "critical",
+      "name": "Payroll"
+    },
+    {
+      "criticality": "critical",
+      "name": "Payments"
+    },
+    {
+      "criticality": "medium",
+      "name": "Reporting"
+    },
+    {
+      "criticality": "low",
+      "name": "Analytics"
+    }
+  ],
+  "internal_cidrs": [
+    "10.40.0.0/16"
+  ],
+  "known_egress_cidrs": [
+    "192.0.2.128/27"
+  ],
+  "managed_hosts": [
+    "etl-runner-02",
+    "ci-runner-01",
+    "dev-ws-07",
+    "dev-ws-11"
+  ],
+  "organisation": "Northwind Data Platform (synthetic)",
+  "service_accounts": [
+    "svc-reporting",
+    "svc-ci"
+  ]
+}

@@ -1,0 +1,29 @@
+{
+  "captured_at": "2026-10-29T12:00:00Z",
+  "dataset_id": "scenario-a",
+  "files": [
+    {
+      "adapter": "mail_trace",
+      "content_type": "text/csv",
+      "filename": "mail_trace.csv"
+    },
+    {
+      "adapter": "idp_signin",
+      "content_type": "application/x-ndjson",
+      "filename": "idp_signin.jsonl"
+    },
+    {
+      "adapter": "idp_audit",
+      "content_type": "application/json",
+      "filename": "idp_audit.json"
+    },
+    {
+      "adapter": "api_activity",
+      "content_type": "application/x-ndjson",
+      "filename": "api_activity.jsonl"
+    }
+  ],
+  "seed": 2417,
+  "synthetic": true,
+  "title": "OAuth consent phishing against Finance Operations"
+}

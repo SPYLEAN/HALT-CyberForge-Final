@@ -1,0 +1,293 @@
+{
+  "config_sha256": "81e0ce4ed521f2bbc60173822806627640d522f66fb69cf4384864e085cd1360",
+  "datasets": {
+    "scenario-a": {
+      "dataset_id": "scenario-a",
+      "ground_truth_sha256": "caac1f008014028251e14743683e0386dc8c00ae6ef0d85e5ed14c7edd2a8755",
+      "metrics": [
+        {
+          "denominator": 8,
+          "name": "relevant_event_precision",
+          "note": "",
+          "numerator": 7,
+          "status": "measured",
+          "target": null,
+          "target_met": null,
+          "value": 0.875
+        },
+        {
+          "denominator": 7,
+          "name": "relevant_event_recall",
+          "note": "",
+          "numerator": 7,
+          "status": "measured",
+          "target": 0.9,
+          "target_met": true,
+          "value": 1.0
+        },
+        {
+          "denominator": 10,
+          "name": "edge_precision",
+          "note": "a selected causal edge is correct if both events are attack steps sharing an attacker artefact",
+          "numerator": 10,
+          "status": "measured",
+          "target": 0.85,
+          "target_met": true,
+          "value": 1.0
+        },
+        {
+          "denominator": 10,
+          "name": "false_link_rate",
+          "note": "",
+          "numerator": 0,
+          "status": "measured",
+          "target": 0.05,
+          "target_met": true,
+          "value": 0.0
+        },
+        {
+          "denominator": 6,
+          "name": "edge_recall",
+          "note": "consecutive ground-truth steps recovered as a selected edge",
+          "numerator": 6,
+          "status": "measured",
+          "target": null,
+          "target_met": null,
+          "value": 1.0
+        },
+        {
+          "denominator": 7,
+          "name": "path_node_precision",
+          "note": "",
+          "numerator": 7,
+          "status": "measured",
+          "target": null,
+          "target_met": null,
+          "value": 1.0
+        },
+        {
+          "denominator": 7,
+          "name": "path_node_recall",
+          "note": "",
+          "numerator": 7,
+          "status": "measured",
+          "target": null,
+          "target_met": null,
+          "value": 1.0
+        },
+        {
+          "denominator": 7,
+          "name": "stage_mapping_accuracy",
+          "note": "primary tactic vs ground truth for attack steps on the selected path",
+          "numerator": 7,
+          "status": "measured",
+          "target": 0.85,
+          "target_met": true,
+          "value": 1.0
+        },
+        {
+          "denominator": 1,
+          "name": "root_cause_top3",
+          "note": "",
+          "numerator": 1,
+          "status": "measured",
+          "target": 0.9,
+          "target_met": true,
+          "value": 1.0
+        },
+        {
+          "denominator": 10,
+          "name": "evidence_coverage",
+          "note": "selected causal edges carrying evidence events and fields",
+          "numerator": 10,
+          "status": "measured",
+          "target": 1.0,
+          "target_met": true,
+          "value": 1.0
+        },
+        {
+          "denominator": 10,
+          "name": "unsupported_story_claims",
+          "note": "",
+          "numerator": 0,
+          "status": "measured",
+          "target": 0.0,
+          "target_met": true,
+          "value": 0.0
+        },
+        {
+          "denominator": 1,
+          "name": "deterministic_replay",
+          "note": "3 runs: identical graph hash, story and selected path",
+          "numerator": 1,
+          "status": "measured",
+          "target": 1.0,
+          "target_met": true,
+          "value": 1.0
+        },
+        {
+          "denominator": null,
+          "name": "reconstruction_latency_ms",
+          "note": "median of 3 runs, ingest + reconstruct, on the machine that ran the evaluation",
+          "numerator": null,
+          "status": "measured",
+          "target": 3000.0,
+          "target_met": true,
+          "value": 410.1425
+        }
+      ],
+      "replay_id": "37f48192b1a4481795756ae086471fd6c21d1feda6ef47813601da05ba6712f4"
+    },
+    "scenario-b": {
+      "dataset_id": "scenario-b",
+      "ground_truth_sha256": "df587dc0a0cd29836b8aa3bf0ee57cf09adab97e3cd0a3e06ca05f368ef6598b",
+      "metrics": [
+        {
+          "denominator": 7,
+          "name": "relevant_event_precision",
+          "note": "",
+          "numerator": 7,
+          "status": "measured",
+          "target": null,
+          "target_met": null,
+          "value": 1.0
+        },
+        {
+          "denominator": 7,
+          "name": "relevant_event_recall",
+          "note": "",
+          "numerator": 7,
+          "status": "measured",
+          "target": 0.9,
+          "target_met": true,
+          "value": 1.0
+        },
+        {
+          "denominator": 19,
+          "name": "edge_precision",
+          "note": "a selected causal edge is correct if both events are attack steps sharing an attacker artefact",
+          "numerator": 19,
+          "status": "measured",
+          "target": 0.85,
+          "target_met": true,
+          "value": 1.0
+        },
+        {
+          "denominator": 19,
+          "name": "false_link_rate",
+          "note": "",
+          "numerator": 0,
+          "status": "measured",
+          "target": 0.05,
+          "target_met": true,
+          "value": 0.0
+        },
+        {
+          "denominator": 6,
+          "name": "edge_recall",
+          "note": "consecutive ground-truth steps recovered as a selected edge",
+          "numerator": 6,
+          "status": "measured",
+          "target": null,
+          "target_met": null,
+          "value": 1.0
+        },
+        {
+          "denominator": 7,
+          "name": "path_node_precision",
+          "note": "",
+          "numerator": 7,
+          "status": "measured",
+          "target": null,
+          "target_met": null,
+          "value": 1.0
+        },
+        {
+          "denominator": 7,
+          "name": "path_node_recall",
+          "note": "",
+          "numerator": 7,
+          "status": "measured",
+          "target": null,
+          "target_met": null,
+          "value": 1.0
+        },
+        {
+          "denominator": 7,
+          "name": "stage_mapping_accuracy",
+          "note": "primary tactic vs ground truth for attack steps on the selected path",
+          "numerator": 7,
+          "status": "measured",
+          "target": 0.85,
+          "target_met": true,
+          "value": 1.0
+        },
+        {
+          "denominator": 1,
+          "name": "root_cause_top3",
+          "note": "",
+          "numerator": 1,
+          "status": "measured",
+          "target": 0.9,
+          "target_met": true,
+          "value": 1.0
+        },
+        {
+          "denominator": 19,
+          "name": "evidence_coverage",
+          "note": "selected causal edges carrying evidence events and fields",
+          "numerator": 19,
+          "status": "measured",
+          "target": 1.0,
+          "target_met": true,
+          "value": 1.0
+        },
+        {
+          "denominator": 9,
+          "name": "unsupported_story_claims",
+          "note": "",
+          "numerator": 0,
+          "status": "measured",
+          "target": 0.0,
+          "target_met": true,
+          "value": 0.0
+        },
+        {
+          "denominator": 1,
+          "name": "deterministic_replay",
+          "note": "3 runs: identical graph hash, story and selected path",
+          "numerator": 1,
+          "status": "measured",
+          "target": 1.0,
+          "target_met": true,
+          "value": 1.0
+        },
+        {
+          "denominator": null,
+          "name": "reconstruction_latency_ms",
+          "note": "median of 3 runs, ingest + reconstruct, on the machine that ran the evaluation",
+          "numerator": null,
+          "status": "measured",
+          "target": 3000.0,
+          "target_met": true,
+          "value": 137.8126
+        }
+      ],
+      "replay_id": "ddaf6698f71309b87e5c47b48351ad0f1cab26fc2c4030ced56d5923af71d908"
+    }
+  },
+  "generated_by": "python -m halt.ps2.evaluate",
+  "note": "Synthetic-on-synthetic results: they measure pipeline correctness against the generator's ground truth, not real-world detection efficacy. Targets are development targets.",
+  "variants": {
+    "root_cause_top3": {
+      "denominator": 10,
+      "name": "root_cause_top3",
+      "note": "5 seeded noise variants per scenario",
+      "numerator": 10,
+      "status": "measured",
+      "target": 0.9,
+      "target_met": true,
+      "value": 1.0
+    }
+  }
+}
