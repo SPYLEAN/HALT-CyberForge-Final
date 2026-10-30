@@ -23,8 +23,9 @@ export const ICONS = [
   { from: "06-3d-motion-system/halt-scene-a.js", to: "public/vendor/halt-3d/halt-scene-a.js" },
   { from: "06-3d-motion-system/halt-scene-b.js", to: "public/vendor/halt-3d/halt-scene-b.js" },
 ];
-// three.js r128, the version the supplied scene targets (npm three@0.128.0).
-export const THREE_SOURCE = "node_modules/three/build/three.min.js";
+// three.js r128, the version the supplied scene targets (npm alias three-r128 = three@0.128.0; plain `three` is the
+// modern build used by the PS3 Connector Atlas).
+export const THREE_SOURCE = "node_modules/three-r128/build/three.min.js";
 export const THREE_TARGET = "public/vendor/three/three.min.js";
 
 if (process.argv[1] === fileURLToPath(import.meta.url)) {

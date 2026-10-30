@@ -22,7 +22,7 @@ describe("brand assets", () => {
 
   it("serves three.js r128, the version the supplied scene targets", () => {
     expect(sha(resolve(web, THREE_TARGET))).toBe(sha(resolve(web, "../..", THREE_SOURCE)));
-    expect(readFileSync(resolve(web, "../..", "node_modules/three/package.json"), "utf8")).toContain('"version": "0.128.0"');
+    expect(readFileSync(resolve(web, "../..", "node_modules/three-r128/package.json"), "utf8")).toContain('"version": "0.128.0"');
   });
 
   it("app icons, mark geometry and 3D scene scripts are the supplied files", () => {
