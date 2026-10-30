@@ -99,7 +99,14 @@ export function Paradox({ allEvents }: { allEvents: SecurityEvent[] }) {
             <p className="evidence-text">The enumeration has not happened yet at this point in the replay.</p>
           )}
           {high.length ? (
-            <MetricBlock label="Paths to the finance database" value={high.length} unit={`(${forecast} forecast)`} derivation="ThreadGraph, ranked by EchoLab" simulated tone="threat" />
+            <MetricBlock
+              label="Paths to the finance ledger"
+              value={ops.paths.length}
+              unit={`(${high.length} high-risk, ${forecast} forecast)`}
+              derivation="ThreadGraph, ranked by EchoLab"
+              simulated
+              tone="threat"
+            />
           ) : (
             <Pending what="the forecast" />
           )}
@@ -235,7 +242,7 @@ export function SafeCutSection({ end }: { end: number }) {
       {plan?.status === "optimal" ? (
         <>
           <p className="body">
-            SafeCut weighed {ops.actions.length} candidate actions against the hard rules: block every dangerous path, keep every critical process running. It chose{" "}
+            SafeCut weighed {ops.actions.length} candidate actions against the hard rules of its containment policy: cut every path the policy requires, keep every critical process running. It chose{" "}
             {plan.display_actions.length} actions.
             {ops.proof
               ? ` ProofSeal then checked all ${ops.proof.enumeration.subsets_checked.toLocaleString("en-GB")} combinations independently${ops.proof.enumeration.unique ? ": no other set does as well." : "."}`

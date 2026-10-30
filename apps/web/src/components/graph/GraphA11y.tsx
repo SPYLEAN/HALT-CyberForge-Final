@@ -1,5 +1,20 @@
-import type { AttackPath, GraphNode } from "@/lib/api/types";
+import type { AttackPath, GraphNode, Plan } from "@/lib/api/types";
 import { count } from "@/lib/format";
+
+/** What a path is, in words: its risk class and what its route rests on. All from the path itself. */
+export function pathBasis(p: AttackPath, threshold: number | undefined): string {
+  const level = p.high_risk ? "High-risk" : `Below the ${threshold ?? "high-risk"} threshold (risk ${p.risk.toFixed(2)})`;
+  return p.uncertain ? `${level} · rests on an inferred edge` : level;
+}
+
+/** Where a path stands under the current plan and its policy profile. */
+export function pathStatus(p: AttackPath, blocked: Set<string>, plan: Plan | null, policyTitle: string | undefined): string {
+  if (blocked.has(p.id)) return "Cut";
+  const residual = plan?.status === "optimal" ? plan.residual : null;
+  if (!residual) return "Open";
+  if (residual.open_path_ids.includes(p.id)) return `Open · accepted residual under ${policyTitle ?? plan?.profile_id}`;
+  return "Cut planned (not applied)";
+}
 
 /** Text equivalent of the graph: the path table and a live summary of the graph state. */
 export function GraphA11y({
@@ -9,6 +24,9 @@ export function GraphA11y({
   summary,
   onFocus,
   focusPath,
+  plan = null,
+  policyTitle,
+  threshold,
 }: {
   paths: AttackPath[];
   nodes: Record<string, GraphNode>;
@@ -16,6 +34,9 @@ export function GraphA11y({
   summary: string;
   onFocus?: (id: string | null) => void;
   focusPath?: string | null;
+  plan?: Plan | null;
+  policyTitle?: string;
+  threshold?: number;
 }) {
   const label = (id: string) => nodes[id]?.label ?? id;
   return (
@@ -33,6 +54,7 @@ export function GraphA11y({
               <th scope="col" style={{ textAlign: "left" }}>Path</th>
               <th scope="col" style={{ textAlign: "left" }}>Route</th>
               <th scope="col" style={{ textAlign: "right" }}>Rollouts reaching target</th>
+              <th scope="col" style={{ textAlign: "left", paddingLeft: "var(--space-3)" }}>Class</th>
               <th scope="col" style={{ textAlign: "left", paddingLeft: "var(--space-3)" }}>Status</th>
             </tr>
           </thead>
@@ -57,9 +79,8 @@ export function GraphA11y({
                 <td className="telemetry" style={{ textAlign: "right" }}>
                   {count(p.reach)}
                 </td>
-                <td style={{ paddingLeft: "var(--space-3)" }}>
-                  {!p.high_risk ? "Below threshold · uncertain" : blocked.has(p.id) ? "Cut" : "Open"}
-                </td>
+                <td style={{ paddingLeft: "var(--space-3)" }}>{pathBasis(p, threshold)}</td>
+                <td style={{ paddingLeft: "var(--space-3)" }}>{pathStatus(p, blocked, plan, policyTitle)}</td>
               </tr>
             ))}
           </tbody>

@@ -63,7 +63,7 @@ Tooling: `pytest` (+ `hypothesis` for properties) for the API; Vitest + Testing 
 
 | ID | Criterion |
 |---|---|
-| AT-5.1 | Post-action reachability: 0 of 6 high-risk paths reachable; every critical process keeps its dependency closure |
+| AT-5.1 | Post-action reachability: 0 of the paths the plan's policy requires cut are reachable (6 under Continuity Balanced); every critical process keeps its dependency closure |
 | AT-5.2 | Enumeration checks 4,096 subsets; `optimal_count = 1`, `unique = true` for baseline |
 | AT-5.3 | Irredundancy: removing any selected candidate leaves ≥ 1 path reachable |
 | AT-5.4 | `/proofs/{id}/verify` recomputes the certificate; tampering any byte of the stored proof → `certificate_match = false` |
@@ -102,7 +102,7 @@ Tooling: `pytest` (+ `hypothesis` for properties) for the API; Vitest + Testing 
 |---|---|
 | AT-8.1 | All seven nav views render from API data, both from responses recorded from the real backend (`services/api/scripts/record_fixtures.py`, replayed by a fetch stub instead of MSW) and with the real API (Playwright E2E) |
 | AT-8.2 | With the API stopped, views show an explicit error/skeleton state — never prototype numbers |
-| AT-8.3 | ThreadGraph: observed/forecast/inferred edges distinguished by dash pattern (Cytoscape style assertions); U1 rendered as uncertain |
+| AT-8.3 | ThreadGraph: observed/forecast/inferred edges distinguished by dash pattern (Cytoscape style assertions); the path table classes U1 as "Below the 0.2 threshold (risk 0.08) · rests on an inferred edge" and, under Continuity Balanced, "Open · accepted residual" |
 | AT-8.4 | After `applied`: 6 proof rings in gaps; business thread element present and continuous throughout (never removed from DOM) |
 | AT-8.5 | Execute button disabled with visible reason until both approvals are recorded |
 | AT-8.6 | Evidence rail shows evidence IDs, source record IDs, confidence with derivation and policy requirements for the selected node/action |
@@ -158,3 +158,21 @@ Not covered by an automated test: a missing users count rendering "—" (F-06), 
 | AT-S.9 | Restore works on PostgreSQL | `test_pg_audit.py::test_restart_restores_from_postgres` (needs `HALT_TEST_PG_URL`) |
 | AT-S.10 | The replay socket reconnects with backoff, never after a final close or a page close, and re-seeks to the client's cursor | `tests/unit/ws-recovery.test.tsx` |
 | AT-S.11 | A 503 from the API shows its reason and no figures | `views.test.tsx` (AT-8.2 block) |
+
+## Policy-aware residual risk
+
+| ID | Criterion | Test |
+|---|---|---|
+| AT-P.1 | Continuity Balanced and Critical Asset Zero Tolerance are different C-COVER / C-RESIDUAL limits and nothing else | `test_policy_profiles.py::test_the_two_profiles_are_different_constraint_limits` |
+| AT-P.2 | Continuity Balanced leaves U1 open as bounded residual risk (502 ≤ 600) with its uncertainty stated | `…::test_continuity_leaves_u1_open_as_bounded_residual_risk` |
+| AT-P.3 | Weak containment leaves a path Zero Tolerance finds unacceptable, and EchoLab still reaches the ledger through it | `…::test_weak_containment_leaves_a_path_zero_tolerance_finds_unacceptable` |
+| AT-P.4 | Zero Tolerance is truthfully infeasible in the baseline: C-COVER named, closest option shown, sealing refused, reasons cite C05/C06/C07 | `…::test_zero_tolerance_is_truthfully_infeasible_in_the_baseline` |
+| AT-P.5 | When feasible (`support_route_blockable`), Zero Tolerance cuts every enumerated path and all ten proof claims verify; the plans differ by C09 | `…::test_zero_tolerance_cuts_every_enumerated_path_when_feasible` |
+| AT-P.6 | ProofSeal judges the plan by the profile the plan names; its 4,096-subset enumeration agrees with SafeCut under both profiles and three variants | `…::test_proofseal_checks_the_plans_own_profile`, `…::test_the_solver_still_follows_scenario_inputs` |
+| AT-P.7 | Plan residuals, constraint results, proof claims and comparison reasons cite real path ids and event ids | `…::test_claims_reference_graph_paths_and_evidence` |
+| AT-P.8 | U1 is never presented as contained: "required paths", "6 of 7, open: U1", "accepted residual risk, not containment" | `…::test_u1_is_no_longer_mislabelled` |
+| AT-P.9 | The comparison states the exact trade-off (adds C09, −502 reach, 0 users, 0 downtime); with no feasible plan nothing is "added" or "dropped" | `…::test_comparison_states_the_exact_tradeoff` |
+| AT-P.10 | The API re-solves under the chosen profile, the comparison ids match, and a restart restores the profile | `…::test_api_resolves_under_the_chosen_profile_and_restores_it` |
+| AT-P.11 | The UI shows both profiles, the residual left open (not zero-risk), the comparison and the reasons; choosing a profile re-solves | `views.test.tsx` (policy-aware residual risk block) |
+
+Measured before/after: `POLICY_EVALUATION.md`.

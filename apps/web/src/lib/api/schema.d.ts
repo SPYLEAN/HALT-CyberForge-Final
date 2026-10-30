@@ -280,6 +280,27 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/v1/incidents/{incident_id}/policy-comparison": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Policy Comparison
+         * @description SafeCut under every policy profile, each plan simulated by EchoLab, and the exact trade-off.
+         *     Read-only (nothing is stored or audited); 409 before correlation, like /paths.
+         */
+        get: operations["policy_comparison_api_v1_incidents__incident_id__policy_comparison_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/v1/incidents/{incident_id}/replay/reset": {
         parameters: {
             query?: never;
@@ -711,7 +732,7 @@ export interface components {
              * Id
              * @enum {string}
              */
-            id: "C-COVER" | "C-DOWNTIME" | "C-USERS" | "C-REVERSIBLE" | "C-AUTH" | "C-EVIDENCE";
+            id: "C-COVER" | "C-RESIDUAL" | "C-DOWNTIME" | "C-USERS" | "C-REVERSIBLE" | "C-AUTH" | "C-EVIDENCE";
             /**
              * Kind
              * @enum {string}
@@ -722,7 +743,7 @@ export interface components {
             /** Limit */
             limit: number | boolean | null;
             /** Unit */
-            unit: ("min" | "users" | "s" | "paths") | null;
+            unit: ("min" | "users" | "s" | "paths" | "risk" | "rollouts") | null;
         };
         /** ConstraintOverride */
         ConstraintOverride: {
@@ -730,7 +751,7 @@ export interface components {
              * Constraint Id
              * @enum {string}
              */
-            constraint_id: "C-COVER" | "C-DOWNTIME" | "C-USERS" | "C-REVERSIBLE" | "C-AUTH" | "C-EVIDENCE";
+            constraint_id: "C-COVER" | "C-RESIDUAL" | "C-DOWNTIME" | "C-USERS" | "C-REVERSIBLE" | "C-AUTH" | "C-EVIDENCE";
             /** Limit */
             limit: number | boolean | null;
         };
@@ -740,7 +761,7 @@ export interface components {
              * Constraint Id
              * @enum {string}
              */
-            constraint_id: "C-COVER" | "C-DOWNTIME" | "C-USERS" | "C-REVERSIBLE" | "C-AUTH" | "C-EVIDENCE";
+            constraint_id: "C-COVER" | "C-RESIDUAL" | "C-DOWNTIME" | "C-USERS" | "C-REVERSIBLE" | "C-AUTH" | "C-EVIDENCE";
             derivation: components["schemas"]["Derivation"];
             /** Limit */
             limit: string;
@@ -1259,7 +1280,7 @@ export interface components {
             /** Closest Options */
             closest_options: components["schemas"]["ClosestOption"][];
             /** Violated Constraint Ids */
-            violated_constraint_ids: ("C-COVER" | "C-DOWNTIME" | "C-USERS" | "C-REVERSIBLE" | "C-AUTH" | "C-EVIDENCE")[];
+            violated_constraint_ids: ("C-COVER" | "C-RESIDUAL" | "C-DOWNTIME" | "C-USERS" | "C-REVERSIBLE" | "C-AUTH" | "C-EVIDENCE")[];
         };
         /** Inference */
         Inference: {
@@ -1344,8 +1365,14 @@ export interface components {
             input_hashes: components["schemas"]["PlanInputHashes"];
             meta: components["schemas"]["Meta"];
             objective: components["schemas"]["Objective"] | null;
+            /**
+             * Profile Id
+             * @enum {string}
+             */
+            profile_id: "continuity_balanced" | "critical_asset_zero_tolerance";
             /** Rejected */
             rejected: components["schemas"]["Rejection"][];
+            residual: components["schemas"]["ResidualRisk"] | null;
             /** Selected Candidate Ids */
             selected_candidate_ids: string[];
             solver: components["schemas"]["SolverInfo"];
@@ -1418,6 +1445,8 @@ export interface components {
         PlanRequest: {
             /** Constraint Overrides */
             constraint_overrides?: components["schemas"]["ConstraintOverride"][];
+            /** Profile Id */
+            profile_id?: ("continuity_balanced" | "critical_asset_zero_tolerance") | null;
         };
         /** PlayCommand */
         PlayCommand: {
@@ -1447,6 +1476,40 @@ export interface components {
             title: string;
             window: components["schemas"]["PolicyWindow"] | null;
         };
+        /** PolicyComparison */
+        PolicyComparison: {
+            meta: components["schemas"]["Meta"];
+            /** Outcomes */
+            outcomes: components["schemas"]["ProfileOutcome"][];
+            tradeoff: components["schemas"]["PolicyTradeoff"];
+        };
+        /**
+         * PolicyProfile
+         * @description A containment policy for one protected asset. It is expressed entirely as two constraint limits,
+         *     applied to the scenario before SafeCut, EchoLab and ProofSeal run (halt/scenario/profiles.py):
+         *
+         *     - C-COVER: every enumerated path to the asset whose simulated risk is at least `cover_min_risk` must have
+         *       a hard cut on its live route (0 = every enumerated path);
+         *     - C-RESIDUAL: the paths left open may together reach the asset in at most `residual_reach_limit`
+         *       simulated rollouts (an upper bound: the sum of each open path's own reach count).
+         */
+        PolicyProfile: {
+            /** Cover Min Risk */
+            cover_min_risk: number;
+            /**
+             * Id
+             * @enum {string}
+             */
+            id: "continuity_balanced" | "critical_asset_zero_tolerance";
+            /** Protected Asset Id */
+            protected_asset_id: string;
+            /** Residual Reach Limit */
+            residual_reach_limit: number;
+            /** Summary */
+            summary: string;
+            /** Title */
+            title: string;
+        };
         /** PolicySet */
         PolicySet: {
             /** Approvers */
@@ -1456,6 +1519,47 @@ export interface components {
             meta: components["schemas"]["Meta"];
             /** Policies */
             policies: components["schemas"]["Policy"][];
+            /** Profiles */
+            profiles: components["schemas"]["PolicyProfile"][];
+        };
+        /**
+         * PolicyTradeoff
+         * @description What moving from one profile to the other costs and buys. Every number is a difference of the two
+         *     outcomes; every reason names the actions and paths it rests on.
+         */
+        PolicyTradeoff: {
+            /** Added Candidate Ids */
+            added_candidate_ids: string[];
+            /** Added Roles */
+            added_roles: string[];
+            /** Delta Actions */
+            delta_actions: number | null;
+            /** Delta Critical Downtime Min */
+            delta_critical_downtime_min: number | null;
+            /** Delta Reach Bound */
+            delta_reach_bound: number | null;
+            /** Delta Simulated Reach */
+            delta_simulated_reach: number | null;
+            /** Delta Users */
+            delta_users: number | null;
+            /**
+             * From Profile
+             * @enum {string}
+             */
+            from_profile: "continuity_balanced" | "critical_asset_zero_tolerance";
+            /** Newly Cut Path Ids */
+            newly_cut_path_ids: string[];
+            /** Reasons */
+            reasons: string[];
+            /** Removed Candidate Ids */
+            removed_candidate_ids: string[];
+            /** Reopened Path Ids */
+            reopened_path_ids: string[];
+            /**
+             * To Profile
+             * @enum {string}
+             */
+            to_profile: "continuity_balanced" | "critical_asset_zero_tolerance";
         };
         /**
          * PolicyWindow
@@ -1488,6 +1592,35 @@ export interface components {
             downtime_min: number;
             /** Process Id */
             process_id: string;
+        };
+        /**
+         * ProfileOutcome
+         * @description SafeCut's answer under one profile, with EchoLab's simulation of that answer.
+         */
+        ProfileOutcome: {
+            /** Approval Roles */
+            approval_roles: string[];
+            /** Constraints */
+            constraints: components["schemas"]["ConstraintResult"][];
+            /** Critical Downtime Min */
+            critical_downtime_min: number | null;
+            /** Display Actions */
+            display_actions: components["schemas"]["DisplayAction"][];
+            infeasibility: components["schemas"]["Infeasibility"] | null;
+            /** Plan Id */
+            plan_id: string;
+            profile: components["schemas"]["PolicyProfile"];
+            residual: components["schemas"]["ResidualRisk"] | null;
+            /** Selected Candidate Ids */
+            selected_candidate_ids: string[];
+            simulated_reach: components["schemas"]["Derivation"] | null;
+            /**
+             * Status
+             * @enum {string}
+             */
+            status: "optimal" | "infeasible";
+            /** Users Affected */
+            users_affected: number | null;
         };
         /** Proof */
         Proof: {
@@ -1582,6 +1715,31 @@ export interface components {
              * @default baseline
              */
             variant: string;
+        };
+        /**
+         * ResidualRisk
+         * @description What a plan leaves open on the way to the protected asset, judged by its policy profile.
+         *
+         *     `reach_bound` sums each open path's own simulated reach count: an upper bound on the rollouts that can
+         *     still reach the asset through them (EchoLab's future C measures the actual count). Never a claim of zero
+         *     real-world risk: only enumerated paths in the modelled graph are counted.
+         */
+        ResidualRisk: {
+            /** Enumerated Path Ids */
+            enumerated_path_ids: string[];
+            /** Limit */
+            limit: number;
+            /** Open Path Ids */
+            open_path_ids: string[];
+            /** Protected Asset Id */
+            protected_asset_id: string;
+            reach_bound: components["schemas"]["Derivation"];
+            /** Required Path Ids */
+            required_path_ids: string[];
+            /** Uncertainty */
+            uncertainty: string[];
+            /** Within Limit */
+            within_limit: boolean;
         };
         /** ResponseAction */
         ResponseAction: {
@@ -2349,6 +2507,37 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["PolicySet"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    policy_comparison_api_v1_incidents__incident_id__policy_comparison_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                incident_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PolicyComparison"];
                 };
             };
             /** @description Validation Error */

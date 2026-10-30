@@ -8,7 +8,7 @@ from pydantic import Field
 
 from halt.contracts.actions import ResponseAction
 from halt.contracts.common import Contract, Strength
-from halt.contracts.constraints import Approver, Constraint, ConstraintId, Policy
+from halt.contracts.constraints import Approver, Constraint, ConstraintId, Policy, PolicyProfile, ProfileId
 from halt.contracts.events import SecurityEvent
 from halt.contracts.graph import GraphEdge, GraphNode
 from halt.contracts.incident import IncidentSpec
@@ -75,4 +75,6 @@ class Scenario(Contract):
     constraints: list[Constraint]
     variants: list[Variant]
     presets: list[Preset]
+    profiles: list[PolicyProfile]
     variant: str = "baseline"
+    profile_id: ProfileId | None = None  # set by profiles.apply_profile; None = limits not yet applied

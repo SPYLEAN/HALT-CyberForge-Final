@@ -36,6 +36,7 @@ FILES = {
     "constraints": "constraints.json",
     "variants": "variants.json",
     "presets": "presets.json",
+    "profiles": "profiles.json",
 }
 
 
@@ -164,6 +165,17 @@ def check(s: Scenario, *, variants: bool = True) -> None:
             if aid not in {a.id for a in s.actions}:
                 errors.append(f"preset {p.key}: unknown action {aid}")
 
+    # policy profiles
+    profile_ids = [p.id for p in s.profiles]
+    if "continuity_balanced" not in profile_ids or len(set(profile_ids)) != len(profile_ids):
+        errors.append("profiles must define continuity_balanced, and each profile once")
+    for prof in s.profiles:
+        if prof.protected_asset_id != s.incident.params.target_id:
+            errors.append(
+                f"profile {prof.id}: protects {prof.protected_asset_id}, the incident target is "
+                f"{s.incident.params.target_id}"
+            )
+
     # variants
     if "baseline" not in {v.key for v in s.variants}:
         errors.append("variants must include 'baseline'")
@@ -248,6 +260,6 @@ def scenario_hashes(s: Scenario) -> dict[str, str]:
         "events": sha256_hex([*s.events, *s.background_events]),
         "graph": sha256_hex(s.topology),
         "actions": sha256_hex(s.actions),
-        "policies": sha256_hex([*s.policies, *s.approvers]),
+        "policies": sha256_hex([*s.policies, *s.approvers, *s.profiles]),
         "constraints": sha256_hex(s.constraints),
     }

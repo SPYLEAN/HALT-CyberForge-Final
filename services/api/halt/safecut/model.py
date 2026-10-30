@@ -4,7 +4,8 @@ Variables: x_c (select candidate), broken_b (process b loses a dependency), u_k 
 g_j (bulk group affected), and cov_p only when coverage is relaxed.
 
 Hard constraints (each family can be relaxed for the infeasibility report):
-  C-COVER       every high-risk path has a selected candidate with a hard cut on it
+  C-COVER       every path the policy requires cut has a selected candidate with a hard cut on it
+  C-RESIDUAL    summed simulated reach of the enumerated paths left open <= the policy's limit
   C-DOWNTIME    containment window x critical processes broken <= limit
   C-USERS       named users + bulk group sizes <= limit
   C-REVERSIBLE / C-AUTH / C-EVIDENCE   ineligible candidates are fixed to 0
@@ -24,7 +25,7 @@ from ortools.sat.python import cp_model
 from halt.safecut.instance import WEIGHTS, Instance
 
 UNCOVERED_PENALTY = 10_000_000
-FAMILIES = ("C-COVER", "C-DOWNTIME", "C-USERS", "C-REVERSIBLE", "C-AUTH", "C-EVIDENCE")
+FAMILIES = ("C-COVER", "C-RESIDUAL", "C-DOWNTIME", "C-USERS", "C-REVERSIBLE", "C-AUTH", "C-EVIDENCE")
 
 
 @dataclass(frozen=True)
@@ -59,6 +60,16 @@ def solve_instance(
             uncovered.append(1 - cov)
         else:
             m.add(sum(cutters) >= 1) if cutters else m.add_bool_or([])  # empty OR: infeasible
+
+    # Residual: optional paths may stay open while their summed reach stays within the policy's limit.
+    if "C-RESIDUAL" not in relax and inst.optional:
+        open_reach = []
+        for p in inst.optional:
+            cutters = [x[c.id] for c in inst.candidates if p in c.covers]
+            cut = m.new_bool_var(f"cut_{p}")
+            m.add(cut <= sum(cutters)) if cutters else m.add(cut == 0)
+            open_reach.append(inst.reach[p] * (1 - cut))
+        m.add(sum(open_reach) <= int(inst.residual_limit))
 
     broken = {}
     for b in sorted(inst.processes):

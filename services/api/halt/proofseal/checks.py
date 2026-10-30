@@ -1,7 +1,7 @@
 """Build a sealed Proof for an optimal SafeCut plan.
 
-Claims (each recomputed here, see enumerate.py):
-  CHK-01 coverage      0 of N high-risk routes survive on the post-action snapshot
+Claims (each recomputed here, see enumerate.py), under the plan's policy profile:
+  CHK-01 coverage      0 of N paths the policy requires cut survive on the post-action snapshot
   CHK-02 business      every process keeps its dependency closure
   CHK-03 downtime      critical downtime within the limit
   CHK-04 users         distinct users affected within the limit
@@ -9,7 +9,10 @@ Claims (each recomputed here, see enumerate.py):
   CHK-06 evidence      every action preserves evidence; the event bundle is hashed into the proof
   CHK-07 rollback      every action reversible in time; apply-then-roll-back dry run restores the snapshot
   CHK-08 optimality    2^n enumeration finds the plan's objective as the minimum
-  CHK-09 irredundancy  dropping any selected action re-opens at least one high-risk path
+  CHK-09 irredundancy  dropping any selected action breaks the policy (a required path re-opens, or the
+                       open paths' reach exceeds C-RESIDUAL)
+  CHK-10 residual      the enumerated paths left open, and their simulated reach (sum of own counts, and
+                       EchoLab's measured count for this plan) are within the policy's C-RESIDUAL limit
 """
 
 from __future__ import annotations
@@ -26,10 +29,20 @@ from halt.contracts.proof import Enumeration, Proof, ProofClaim, Signature
 from halt.contracts.simulation import PlanRef, SimulationRequest
 from halt.echolab.simulate import simulate
 from halt.gate.connectors import SimulatedEnvironment
-from halt.proofseal.enumerate import closure_of, enumerate_subsets, hard_refs, limit, roles_needed
+from halt.proofseal.enumerate import (
+    closure_of,
+    enumerate_subsets,
+    enumerated,
+    hard_refs,
+    limit,
+    open_reach,
+    required,
+    roles_needed,
+)
 from halt.proofseal.seal import Sealer, certificate_of
 from halt.scenario.loader import scenario_hashes
 from halt.scenario.models import Scenario
+from halt.scenario.profiles import apply_profile, profile
 from halt.threadgraph.build import snapshot
 from halt.threadgraph.paths import enumerate_paths
 
@@ -58,10 +71,14 @@ def prove(
 ) -> Proof:
     if plan.status != "optimal":
         raise ProofError("only an optimal plan can be sealed")
+    # The proof judges the plan by the policy the plan names, read from the scenario, not from SafeCut.
+    s = apply_profile(s, plan.profile_id)
+    policy = profile(s)
     at = at or plan.meta.generated_at
     actions = {a.id: a for a in s.actions}
     selected = [actions[i] for i in plan.selected_candidate_ids]
-    high = [p for p in paths if p.high_risk]
+    must = required(s, list(paths))
+    must_paths = [p for p in paths if p.id in must]
 
     refs = set().union(*(hard_refs(a) for a in selected)) if selected else set()
     node_ids = {n.id for n in s.topology.nodes}
@@ -71,16 +88,17 @@ def prove(
     claims: list[ProofClaim] = []
 
     # CHK-01 coverage
-    surviving = [p.id for p in high if set(p.node_ids) <= post_nodes and set(p.edge_ids) <= post_edges]
+    surviving = [p.id for p in must_paths if set(p.node_ids) <= post_nodes and set(p.edge_ids) <= post_edges]
     claims.append(
         _claim(
             1,
-            f"{len(surviving)} of {len(high)} high-risk paths reachable after the plan",
+            f"{len(surviving)} of {len(must_paths)} paths {policy.title} requires cut "
+            "are reachable after the plan",
             f"Route check on post-action snapshot {post.hash[:12]}",
             not surviving,
             Derivation(
                 numerator=len(surviving),
-                denominator=len(high),
+                denominator=len(must_paths),
                 method="Routes whose nodes and edges all survive",
                 source_ids=surviving,
             ),
@@ -234,22 +252,26 @@ def prove(
             ),
         )
     )
-    high_ids = {p.id for p in high}
-    redundant = [
-        cid for cid in chosen if high_ids <= set().union(*(eff[o].covers for o in chosen if o != cid))
-    ]
+    residual_limit = limit(s, "C-RESIDUAL")
+
+    def still_holds(ids: list[str]) -> bool:
+        covered = set().union(*(eff[o].covers for o in ids)) if ids else set()
+        return must <= covered and open_reach(s, list(paths), covered)[1] <= residual_limit
+
+    redundant = [cid for cid in chosen if still_holds([o for o in chosen if o != cid])]
     claims.append(
         _claim(
             9,
-            "Removing any action re-opens at least one high-risk path"
+            "Removing any action breaks the policy: a required path re-opens or the residual limit "
+            "is exceeded"
             if not redundant
             else f"Redundant: {', '.join(redundant)}",
-            "Leave-one-out coverage",
+            "Leave-one-out against C-COVER and C-RESIDUAL",
             not redundant,
             Derivation(
                 numerator=len(chosen) - len(redundant),
                 denominator=len(chosen),
-                method="Actions whose removal leaves a high-risk path uncut",
+                method="Actions whose removal still satisfies the policy",
                 source_ids=redundant,
             ),
         )
@@ -264,16 +286,54 @@ def prove(
         {plan.id: list(plan.selected_candidate_ids)},
     )
     future = run.futures[0]
+
+    # CHK-10 residual: which enumerated paths survive the plan, and how far they still reach.
+    edges = {e.id: e for e in s.topology.edges}
+    survivors = [
+        p for p in enumerated(s, list(paths)) if any(r.edge_ids == p.edge_ids for r in residual_routes)
+    ]
+    survivor_ids, bound = open_reach(
+        s, list(paths), {p.id for p in enumerated(s, list(paths))} - {p.id for p in survivors}
+    )
+    measured = future.target_reached.numerator or 0
+    n = future.target_reached.denominator or s.incident.params.rollouts
+    claims.append(
+        _claim(
+            10,
+            (
+                f"{len(survivor_ids)} of {len(enumerated(s, list(paths)))} enumerated paths to "
+                f"{policy.protected_asset_id} stay open ({', '.join(survivor_ids)}): "
+                f"{measured:,} of {n:,} simulated rollouts still reach it, within the "
+                f"{policy.title} limit of {residual_limit:,.0f}"
+                if survivor_ids
+                else f"No enumerated path to {policy.protected_asset_id} stays open: "
+                f"{measured:,} of {n:,} simulated rollouts reach it"
+            ),
+            f"Route check on post-action snapshot {post.hash[:12]}; bound = sum of open paths' own reach "
+            f"({bound:,}); EchoLab measured {measured:,} with seed {run.request.seed}",
+            bound <= residual_limit and measured <= residual_limit,
+            Derivation(
+                numerator=measured,
+                denominator=n,
+                method=f"Open paths' reach bound {bound:,}; limit {residual_limit:,.0f} ({policy.id})",
+                source_ids=survivor_ids,
+            ),
+            evidence=sorted({ev for p in survivors for e in p.edge_ids for ev in edges[e].evidence_ids}),
+        )
+    )
+
     not_covered = []
-    for p in paths:
-        if not p.high_risk and any(r.edge_ids == p.edge_ids for r in residual_routes):
-            not_covered.append(
-                f"{p.id} ({' → '.join(p.node_ids)}) is below the high-risk threshold and stays open: "
-                f"{future.path_reached.get(p.id, 0)} of {future.target_reached.denominator} "
-                "simulated rollouts "
-                "reach the target along it with this plan."
-            )
+    for p in survivors:
+        not_covered.append(
+            f"{p.id} ({' → '.join(p.node_ids)}, simulated risk {p.risk:.4f}) "
+            f"stays open under {policy.title}: "
+            f"{future.path_reached.get(p.id, 0):,} of {n:,} simulated rollouts reach "
+            f"{policy.protected_asset_id} along it with this plan. This is accepted residual risk, "
+            "not containment."
+        )
     not_covered += [
+        "Only paths enumerated in the modelled graph are proven; "
+        "this is not a claim of zero real-world risk.",
         "Attacker capabilities outside the modelled graph (other accounts, devices or tokens).",
         "Transition probabilities are scenario inputs; reach counts are simulated, not measured.",
         "Execution is simulated; no real identity or network system is changed.",

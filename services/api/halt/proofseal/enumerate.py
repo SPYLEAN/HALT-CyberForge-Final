@@ -2,6 +2,9 @@
 
 Written against the documented rules (docs/ARCHITECTURE.md §5), not against SafeCut's code:
 - a path is cut when a hard cut hits a node or edge of its live route;
+- the policy profile's limits decide feasibility: every enumerated path to the target with risk at or above
+  C-COVER must be cut, and the paths left open may together reach the target in at most C-RESIDUAL
+  simulated rollouts (the sum of their own reach counts);
 - a process is broken when a removed node or edge lies in its dependency closure (networkx descendants
   over dependency edges);
 - objective = 1000 x window x processes broken + 100 x users + 10 x actions + 1 x approvals.
@@ -68,8 +71,21 @@ def limit(s: Scenario, cid: str) -> float:
     return float(value)
 
 
+def enumerated(s: Scenario, paths: list[AttackPath]) -> list[AttackPath]:
+    return [p for p in paths if p.target_id == s.incident.params.target_id]
+
+
+def required(s: Scenario, paths: list[AttackPath]) -> set[str]:
+    return {p.id for p in enumerated(s, paths) if p.risk >= limit(s, "C-COVER")}
+
+
+def open_reach(s: Scenario, paths: list[AttackPath], covered: set[str]) -> tuple[list[str], int]:
+    left = [p for p in enumerated(s, paths) if p.id not in covered]
+    return [p.id for p in left], sum(p.reach.numerator or 0 for p in left)
+
+
 def effects(s: Scenario, paths: list[AttackPath], at: datetime) -> dict[str, Effects]:
-    high = [p for p in paths if p.high_risk]
+    every = enumerated(s, paths)
     processes = [n.id for n in s.topology.nodes if n.kind == "process"]
     closures = {p: closure_of(s, p) for p in processes}
     available = {r for ap in s.approvers if ap.available for r in ap.roles}
@@ -80,7 +96,7 @@ def effects(s: Scenario, paths: list[AttackPath], at: datetime) -> dict[str, Eff
         roles = roles_needed(s, a, at)
         rev = a.reversibility
         out[a.id] = Effects(
-            covers=frozenset(p.id for p in high if refs & (set(p.node_ids) | set(p.edge_ids))),
+            covers=frozenset(p.id for p in every if refs & (set(p.node_ids) | set(p.edge_ids))),
             breaks=frozenset(p for p in processes if refs & closures[p]),
             users=frozenset(a.impact.users),
             groups=frozenset(g.group_id for g in a.impact.groups),
@@ -106,7 +122,8 @@ def enumerate_subsets(
     s: Scenario, paths: list[AttackPath], at: datetime
 ) -> tuple[Enumerated, dict[str, Effects]]:
     eff = effects(s, paths, at)
-    high = {p.id for p in paths if p.high_risk}
+    must = required(s, paths)
+    residual_limit = limit(s, "C-RESIDUAL")
     critical = {n.id for n in s.topology.nodes if n.kind == "process" and n.criticality == "critical"}
     group_size: dict[str, int] = {}
     for a in s.actions:
@@ -130,7 +147,12 @@ def enumerate_subsets(
             users = len(set().union(*(e.users for e in es)) if es else set()) + sum(
                 group_size[g] for g in (set().union(*(e.groups for e in es)) if es else set())
             )
-            if not high <= covered or window * len(broken & critical) > down_limit or users > user_limit:
+            if (
+                not must <= covered
+                or open_reach(s, paths, covered)[1] > residual_limit
+                or window * len(broken & critical) > down_limit
+                or users > user_limit
+            ):
                 continue
             feasible += 1
             objective = (

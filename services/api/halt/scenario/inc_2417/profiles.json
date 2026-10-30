@@ -1,0 +1,18 @@
+[
+  {
+    "id": "continuity_balanced",
+    "title": "Continuity Balanced",
+    "summary": "Cut every path to the finance ledger at or above the 0.20 high-risk threshold, with the least business disruption. Paths below the threshold may stay open only while, together, they reach the ledger in at most 600 of 6,000 simulated rollouts (10 %). The remaining routes are shown; the result is never described as zero risk.",
+    "protected_asset_id": "db.finance_ledger",
+    "cover_min_risk": 0.2,
+    "residual_reach_limit": 600
+  },
+  {
+    "id": "critical_asset_zero_tolerance",
+    "title": "Critical Asset Zero Tolerance",
+    "summary": "No enumerated path to the finance ledger may stay open, whatever its simulated risk. SafeCut may add reversible actions; business impact is still measured against the same limits. It proves only what the modelled graph and evidence establish, not absolute security.",
+    "protected_asset_id": "db.finance_ledger",
+    "cover_min_risk": 0.0,
+    "residual_reach_limit": 0
+  }
+]

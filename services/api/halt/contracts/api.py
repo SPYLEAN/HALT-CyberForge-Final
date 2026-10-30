@@ -9,7 +9,7 @@ from pydantic import Field
 from halt.contracts.actions import ResponseAction
 from halt.contracts.audit import AuditEntry
 from halt.contracts.common import Contract, Derivation, Meta
-from halt.contracts.constraints import Approver, Constraint, ConstraintId, Policy
+from halt.contracts.constraints import Approver, Constraint, ConstraintId, Policy, PolicyProfile, ProfileId
 from halt.contracts.events import SecurityEvent
 from halt.contracts.findings import AttackPath, Finding
 from halt.contracts.gate import Approval, Execution
@@ -29,6 +29,8 @@ class ConstraintOverride(Contract):
 
 class PlanRequest(Contract):
     constraint_overrides: list[ConstraintOverride] = Field(default_factory=list)
+    # The policy profile to solve under (GET /policies lists them); null = the default, Continuity Balanced.
+    profile_id: ProfileId | None = None
 
 
 class ApprovalRequest(Contract):
@@ -82,7 +84,8 @@ class ActionList(Contract):
 class PolicySet(Contract):
     policies: list[Policy]
     approvers: list[Approver]
-    constraints: list[Constraint]
+    constraints: list[Constraint]  # C-COVER and C-RESIDUAL carry no limit here: each profile sets them
+    profiles: list[PolicyProfile]
     meta: Meta
 
 

@@ -17,6 +17,7 @@ from halt.contracts.plan import (
     Plan,
     PlanInputHashes,
     Rejection,
+    ResidualRisk,
     SolverInfo,
 )
 from halt.safecut.group import group
@@ -24,6 +25,7 @@ from halt.safecut.instance import PLAN_TIME_OFFSET_S, Candidate, Instance, build
 from halt.safecut.model import FAMILIES, solve_instance
 from halt.scenario.loader import scenario_hashes
 from halt.scenario.models import Scenario
+from halt.scenario.profiles import profile, with_profile
 
 MAX_OPTIONS = 3
 ORTOOLS_VERSION = version("ortools")
@@ -50,18 +52,38 @@ def constraint_results(s: Scenario, inst: Instance, chosen: Sequence[Candidate])
     def state(ok: bool, at_limit: bool = False) -> str:
         return "violated" if not ok else ("binding" if at_limit else "met")
 
+    open_paths, bound = ev.open_paths, ev.residual_bound
     return [
         ConstraintResult(
             constraint_id="C-COVER",
             state=state(not uncovered),
-            value=f"{len(inst.paths) - len(uncovered)} of {len(inst.paths)} high-risk paths cut",
-            limit=f"all {len(inst.paths)}",
+            value=f"{len(inst.paths) - len(uncovered)} of {len(inst.paths)} required paths cut",
+            limit=f"every enumerated path with simulated risk ≥ {inst.cover_min_risk:g} "
+            f"({len(inst.paths)} of {len(inst.reach)})",
             derivation=Derivation(
                 numerator=len(inst.paths) - len(uncovered),
                 denominator=len(inst.paths),
-                method="Hard cuts intersected with each path's live route"
-                + (f"; open: {', '.join(uncovered)}" if uncovered else ""),
-                source_ids=ids,
+                method="Hard cuts intersected with each required path's live route"
+                + (f"; still open: {', '.join(uncovered)}" if uncovered else ""),
+                source_ids=[*inst.paths, *ids],
+            ),
+        ),
+        ConstraintResult(
+            constraint_id="C-RESIDUAL",
+            state=state(bound <= inst.residual_limit, bool(open_paths) and bound == inst.residual_limit),
+            value=f"{bound:,} of {inst.rollouts:,} rollouts"
+            + (f" via {', '.join(open_paths)}" if open_paths else ": no enumerated path left open"),
+            limit=f"≤ {inst.residual_limit:,.0f} of {inst.rollouts:,}",
+            derivation=Derivation(
+                numerator=bound,
+                denominator=inst.rollouts,
+                method="Sum of each open path's own simulated reach count (an upper bound)"
+                + (
+                    ": " + ", ".join(f"{p} {inst.reach[p]:,}" for p in open_paths)
+                    if open_paths
+                    else "; every enumerated path has a hard cut"
+                ),
+                source_ids=list(open_paths),
             ),
         ),
         ConstraintResult(
@@ -151,7 +173,7 @@ def rejections(inst: Instance, chosen: Sequence[Candidate]) -> list[Rejection]:
                 f"Only soft cuts on {', '.join(sorted(c.soft_covers))}: the attacker can evade them"
             )
         elif not c.covers:
-            reasons.append("No hard cut on any high-risk path")
+            reasons.append("No hard cut on any enumerated path to the protected asset")
         if not c.reversible_ok:
             reasons.append(
                 "C-REVERSIBLE: not reversible"
@@ -172,8 +194,12 @@ def rejections(inst: Instance, chosen: Sequence[Candidate]) -> list[Rejection]:
                 f"C-USERS: would raise users affected to {with_c.users} (limit {inst.users_limit:g})"
             )
         if not reasons:
+            newly = sorted(c.covers - base.covered)
             reasons.append(
-                f"Dominated: every path it cuts ({', '.join(sorted(c.covers))}) is already cut; "
+                f"Not needed under this policy: it would also cut {', '.join(newly)}, which the policy lets "
+                f"stay open within C-RESIDUAL; it raises the objective by {with_c.objective - base.objective}"
+                if newly
+                else f"Dominated: every path it cuts ({', '.join(sorted(c.covers))}) is already cut; "
                 f"adding it raises the objective by {with_c.objective - base.objective}"
             )
         out.append(Rejection(candidate_id=c.id, reasons=reasons))
@@ -200,9 +226,55 @@ def _options(s: Scenario, inst: Instance, seed: int) -> tuple[list[str], list[Cl
     return restoring, options
 
 
+def residual_of(
+    s: Scenario, inst: Instance, chosen: Sequence[Candidate], paths: Sequence[AttackPath]
+) -> ResidualRisk:
+    ev = evaluate(inst, list(chosen))
+    by_id = {p.id: p for p in paths}
+    edges = {e.id: e for e in s.topology.edges}
+    params = s.incident.params
+    uncertainty = []
+    for pid in ev.open_paths:
+        for eid in by_id[pid].edge_ids:
+            inference = edges[eid].inference
+            if inference is not None:
+                uncertainty.append(
+                    f"{pid} rests on inferred edge {eid} (confidence {inference.confidence:g}): "
+                    f"{inference.rationale}"
+                )
+        if by_id[pid].provenance == "forecast":
+            uncertainty.append(f"{pid} is a forecast: no event has been observed along its route yet.")
+    uncertainty.append(
+        f"Reach counts are simulated ({params.rollouts:,} rollouts, seed {params.seed}, "
+        f"{params.horizon_s} s horizon) from scenario transition probabilities, not measured; only paths "
+        "in the modelled graph are counted."
+    )
+    return ResidualRisk(
+        protected_asset_id=params.target_id,
+        enumerated_path_ids=list(inst.reach),
+        required_path_ids=list(inst.paths),
+        open_path_ids=list(ev.open_paths),
+        reach_bound=Derivation(
+            numerator=ev.residual_bound,
+            denominator=inst.rollouts,
+            method="Sum of the open paths' own simulated reach counts (upper bound)"
+            + (
+                ": " + ", ".join(f"{pid} {inst.reach[pid]:,}" for pid in ev.open_paths)
+                if ev.open_paths
+                else "; no enumerated path is left open"
+            ),
+            source_ids=list(ev.open_paths),
+        ),
+        limit=int(inst.residual_limit),
+        within_limit=ev.residual_bound <= inst.residual_limit,
+        uncertainty=uncertainty,
+    )
+
+
 def solve(
     s: Scenario, paths: Sequence[AttackPath], plan_time: datetime | None = None, seed: int | None = None
 ) -> Plan:
+    s = with_profile(s)
     plan_time = plan_time or s.incident.t0 + timedelta(seconds=PLAN_TIME_OFFSET_S)
     seed = s.incident.params.seed if seed is None else seed
     inst = build_instance(s, list(paths), plan_time)
@@ -219,7 +291,10 @@ def solve(
         )
     ev = evaluate(inst, chosen)
     hashes = scenario_hashes(s)
+    residual = residual_of(s, inst, chosen, paths) if result.status == "optimal" else None
     body = {
+        "profile": profile(s).model_dump(mode="json"),
+        "residual": residual,
         "status": result.status,
         "selected": list(result.chosen),
         "display": group(s, inst, result.chosen, paths),
@@ -235,12 +310,14 @@ def solve(
     return Plan(
         id=f"PLAN-{digest[:12]}",
         status=result.status,
+        profile_id=profile(s).id,
         selected_candidate_ids=list(result.chosen),
         display_actions=body["display"],
         objective=Objective(value=ev.objective, terms=ev.terms) if result.status == "optimal" else None,
         constraints=body["constraints"],
         rejected=body["rejected"],
         infeasibility=infeasibility,
+        residual=residual,
         solver=SolverInfo(
             version=ORTOOLS_VERSION, wall_ms=round(result.wall_ms, 2), status_raw=result.status_raw
         ),

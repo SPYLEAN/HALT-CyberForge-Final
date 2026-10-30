@@ -122,7 +122,7 @@ export function PoliciesView() {
           {set?.constraints.map((c) => (
             <li key={c.id}>
               <span className="telemetry">{c.id}</span> {c.label}
-              {typeof c.limit === "number" ? ` · ≤ ${c.limit} ${c.unit ?? ""}` : ""}
+              {typeof c.limit === "number" ? ` · ≤ ${c.limit} ${c.unit ?? ""}` : c.limit === null ? " · limit set by the containment policy (SafeCut view)" : ""}
             </li>
           ))}
         </ul>

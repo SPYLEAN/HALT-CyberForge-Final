@@ -47,7 +47,9 @@ def simulate(
     n, horizon = request.rollouts, request.horizon_s
     draws = draw(s.topology.edges, n, request.seed, s.incident.params.soft_cut_evasion_p)
     reversible_limit = next(c.limit for c in s.constraints if c.id == "C-REVERSIBLE")
-    high = [p for p in paths if p.high_risk]
+    # Every enumerated path to the target counts, not only the high-risk ones: a future that leaves a
+    # below-threshold path open must say so (it is reported as 6 of 7, never as 6 of 6).
+    enumerated = [p for p in paths if p.target_id == s.incident.params.target_id]
 
     futures = []
     for ref in request.plans:
@@ -58,7 +60,7 @@ def simulate(
         any_reached = np.zeros(n, dtype=bool)
         for reached in per_path.values():
             any_reached |= reached
-        blocked = [p.id for p in high if blocks(p, hard)]
+        blocked = [p.id for p in enumerated if blocks(p, hard)]
         impact = users_affected(actions)
         avail, downtime = availability(s, actions)
         futures.append(
@@ -67,8 +69,14 @@ def simulate(
                 action_ids=[a.id for a in actions],
                 paths_blocked=Derivation(
                     numerator=len(blocked),
-                    denominator=len(high),
-                    method="High-risk paths with a hard cut on their live route",
+                    denominator=len(enumerated),
+                    method=f"Enumerated paths to {s.incident.params.target_id} "
+                    "with a hard cut on their live route"
+                    + (
+                        f"; open: {', '.join(p.id for p in enumerated if p.id not in blocked)}"
+                        if len(blocked) < len(enumerated)
+                        else ""
+                    ),
                     source_ids=blocked,
                 ),
                 target_reached=Derivation(

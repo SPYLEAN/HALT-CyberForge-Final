@@ -85,7 +85,9 @@ Rule: domain packages never import `api/` or `db/`; they take and return contrac
 
 ## 5. SafeCut model (CP-SAT)
 
-Sets: candidate actions `A` (12), high-risk paths `P` (6), users `U`, critical processes `B`.
+Sets: candidate actions `A` (12), enumerated paths to the protected asset `E` (7), the paths the policy requires cut `P ⊆ E` (risk ≥ C-COVER's limit: 6 under Continuity Balanced, all 7 under Zero Tolerance), users `U`, critical processes `B`.
+
+The policy profile (`profiles.json`, `scenario/profiles.py`) is applied as the limits of C-COVER and C-RESIDUAL before anything else runs; SafeCut, ProofSeal and the reports read those limits like any other constraint and never branch on the profile id.
 
 Variables: `x_a ∈ {0,1}` select action; `broken_b` process b loses a dependency; `u_k` named user k affected; `g_j` bulk group j affected.
 
@@ -93,7 +95,8 @@ Coverage, breakage and impact are derived per candidate in `safecut/instance.py`
 
 Hard constraints:
 
-1. **Coverage**: for each `p ∈ P`: `Σ_{a ∈ hardcut(p)} x_a ≥ 1`, where `hardcut(p)` = actions whose declared cut set contains an edge or node of `p` with `strength = hard`, computed from the graph, not listed by hand.
+1. **Coverage (C-COVER)**: for each `p ∈ P`: `Σ_{a ∈ hardcut(p)} x_a ≥ 1`, where `hardcut(p)` = actions whose declared cut set contains an edge or node of `p` with `strength = hard`, computed from the graph, not listed by hand.
+1a. **Residual (C-RESIDUAL)**: for the optional paths `E \ P`, `cut_p ≤ Σ_{a ∈ hardcut(p)} x_a` and `Σ_{p ∈ E\P} reach_p·(1 − cut_p) ≤ limit`, where `reach_p` is the path's own simulated reach count. The sum is an upper bound on what the open paths can still reach; EchoLab measures the plan's actual count.
 2. **Downtime**: for each `b ∈ B`: `Σ_a downtime(a,b)·x_a ≤ limit_b` (baseline limit 0 min). `downtime(a,b)` is computed by removing `a`'s cut set and testing the business dependency closure of `b`.
 3. **User impact**: `u_k ≥ x_a` for each `k ∈ users(a)`; `Σ_k u_k ≤ 5`.
 4. **Reversibility**: `x_a = 0` for any `a` with `rollback.seconds > 300` or `rollback.method = none`.
@@ -119,7 +122,7 @@ ProofSeal does **not** reuse SafeCut's matrices. It:
 3. Rechecks each constraint from raw action fields.
 4. Enumerates all `2^|A|` subsets (4,096) with the same feasibility predicate and objective, confirms the plan is optimal and reports whether it is unique.
 5. Confirms irredundancy: removing any single selected action leaves at least one high-risk path reachable.
-6. Seals: `certificate = sha256(JCS(proof_body))`, signed with an Ed25519 key generated per deployment and labelled `DEMO KEY`. `sealed_at` comes from the replay clock (plan time), so the certificate is identical across runs and keys; `valid_until` = sealed_at + 40 min. The proof states what it does **not** cover: below-threshold routes left open, with their simulated reach under the plan (U1: 502 of 6,000), attacker capabilities outside the graph, simulated probabilities and simulated execution.
+6. Seals: `certificate = sha256(JCS(proof_body))`, signed with an Ed25519 key generated per deployment and labelled `DEMO KEY`. `sealed_at` comes from the replay clock (plan time), so the certificate is identical across runs and keys; `valid_until` = sealed_at + 40 min. The proof is checked against the profile the plan names. CHK-01 counts only the paths that profile requires cut; CHK-10 recomputes which enumerated paths survive on the post-action snapshot, their reach bound and EchoLab's measured reach, against C-RESIDUAL. The proof states what it does **not** cover: every path left open, named as "accepted residual risk, not containment" under the named policy (U1: 502 of 6,000 under Continuity Balanced), that only enumerated paths in the modelled graph are proven, attacker capabilities outside the graph, simulated probabilities and simulated execution.
 
 `halt/proofseal` never imports `halt.safecut` (a test enforces it); coverage, closure, eligibility and the objective are re-implemented in `proofseal/enumerate.py` from the documented rules.
 

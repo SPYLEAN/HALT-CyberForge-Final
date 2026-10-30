@@ -18,7 +18,7 @@ Use this document to continue the build. It describes what HALT is, what has bee
 | **ThreadGraph** | Typed graph of users, devices, sessions, tokens, apps, APIs, processes and the database. Enumerates attack paths over live hostile edges from attacker footholds, keeping maximal paths only. | `services/api/halt/threadgraph/` |
 | **EchoLab** | Deterministic Monte Carlo (seed 2417, 6,000 rollouts, 600 s horizon) using the same random draws for every future. Ranks paths by risk (P1–P6 high-risk, U1 below the threshold) and compares futures A (aggressive isolation), B (passive) and C (SafeCut plan). | `services/api/halt/echolab/` |
 | **SafeCut** | OR-Tools CP-SAT optimiser. Coverage, breakage and impact are derived from the graph, never hand-listed. Hard constraints plus an integer objective. If no plan is feasible, it reports the closest options. | `services/api/halt/safecut/` |
-| **ProofSeal** | Independent verifier that never imports SafeCut. 9 claims, enumeration of all 4,096 subsets, a "not covered" list, a SHA-256 certificate and an Ed25519 demo-key signature. | `services/api/halt/proofseal/` |
+| **ProofSeal** | Independent verifier that never imports SafeCut. 10 claims, judged against the plan's own policy profile (CHK-10: residual risk), enumeration of all 4,096 subsets, a "not covered" list, a SHA-256 certificate and an Ed25519 demo-key signature. | `services/api/halt/proofseal/` |
 | **Action Gate** | Per-role human approvals, including a change-freeze exception; execution refused unless the plan is sealed, verified, fresh and approved; simulated connectors; exact rollback inside a 40-minute window; a hash-chained append-only audit log. | `services/api/halt/gate/`, `halt/audit/` |
 
 ## 3. Tech stack (resolved versions)
@@ -52,7 +52,7 @@ Use this document to continue the build. It describes what HALT is, what has bee
 │  ├─ src/styles/           tokens.css / tailwind-theme.css / tokens.ts (generated), halt-components.css (copied)
 │  ├─ public/brand, public/3d, public/vendor   copied supplied assets, three r128, 3D scene scripts (unmodified)
 │  ├─ scripts/              build-tokens.mjs, copy-brand.mjs
-│  ├─ tests/unit/           Vitest (86 tests) + fixtures/api/stages.json (recorded from the real API)
+│  ├─ tests/unit/           Vitest (88 tests) + fixtures/api/stages.json (recorded from the real API)
 │  └─ e2e/                  Playwright (27 tests)
 ├─ services/api/            FastAPI service
 │  ├─ halt/contracts/       Pydantic models = single schema source (→ OpenAPI → TS)
@@ -64,7 +64,7 @@ Use this document to continue the build. It describes what HALT is, what has bee
 │  ├─ db-init/              Compose only: creates the halt_app role (demo credentials)
 │  ├─ scripts/              export_openapi.py, record_fixtures.py
 │  ├─ reports/r1_eval.json  model selection report
-│  └─ tests/                pytest (131 with PostgreSQL; without it 3 PostgreSQL tests skip)
+│  └─ tests/                pytest (148 with PostgreSQL; without it 3 PostgreSQL tests skip)
 ├─ assets/halt-package/     supplied package, vendored unmodified (checksummed)
 ├─ docs/                    PRODUCT_RFC, ARCHITECTURE, DATA_CONTRACTS, DEMO_SCENARIO, DESIGN_SYSTEM, ACCEPTANCE_TESTS, THIRD_PARTY_LEDGER, DEMO_SCRIPT, HANDOFF (this)
 ├─ IMPLEMENTATION_PLAN.md   phase plan + file-by-file list (kept in sync)
@@ -98,9 +98,9 @@ Git: local repository on `main` with 12 commits, Phase 0 to Phase 10. **No remot
 | P4 | M. Verma → new session S-3 → Payment processing → ledger | 2,068 | 0.345 |
 | P5 | grant → Reconciliation → ledger | 1,884 | 0.314 |
 | P6 | grant → Payroll → ledger | 1,480 | 0.247 |
-| U1 | AS64500 ⇢ Customer support → Finance API → ledger (uncertain) | 502 | 0.084 |
+| U1 | AS64500 ⇢ Customer support → Finance API → ledger (below threshold; forecast; rests on inferred edge `i.asn-support`) | 502 | 0.084 |
 
-The high-risk threshold is 0.20, so P1–P6 are high-risk and U1 is not.
+The high-risk threshold is 0.20, so P1–P6 are high-risk and U1 is not. U1 still reaches the ledger in 502 of 6,000 rollouts on its own (8.37 %). Whether it may stay open is the **containment policy's** decision (below), and it is always shown.
 
 **Candidate actions (12):**
 
@@ -116,7 +116,7 @@ The high-risk threshold is 0.20, so P1–P6 are high-risk and U1 is not.
 | C11 | Force a password reset |
 | C12 | Quarantine the mailbox |
 
-**SafeCut result:** C01 + C02 + C03 + C04, displayed as three actions (A1 revoke grant; A2 revoke 2 sessions; A3 step-up). Objective 345 (3 users × 100 + 4 actions × 10 + 5 approvals). It is the unique optimum among the 4,096 subsets, and ProofSeal confirms that independently.
+**SafeCut result (Continuity Balanced):** C01 + C02 + C03 + C04, displayed as three actions (A1 revoke grant; A2 revoke 2 sessions; A3 step-up). Objective 345 (3 users × 100 + 4 actions × 10 + 5 approvals). It is the unique optimum among the 4,096 subsets, and ProofSeal confirms that independently.
 
 **Constraints:** every high-risk path cut; 0 minutes of critical downtime; ≤ 5 users affected; every action reversible within 300 s; every required role has an available approver; evidence preserved and sealed before execution.
 
@@ -135,18 +135,28 @@ The high-risk threshold is 0.20, so P1–P6 are high-risk and U1 is not.
 
 | Future | Paths blocked | Rollouts reaching the ledger | Other effects |
 |---|---|---|---|
-| A · aggressive isolation | 6 of 6 | 0 | 4 processes down for 240 min; 413 users; not reversible within 5 min |
-| B · passive monitoring | 0 of 6 | 5,782 | — |
-| C · SafeCut plan | 6 of 6 | 502, all via U1 | 3 users |
+| A · aggressive isolation | 7 of 7 | 0 | 4 processes down for 240 min; 413 users; not reversible within 5 min |
+| B · passive monitoring | 0 of 7 | 5,782 | — |
+| C · SafeCut plan (Continuity Balanced) | 6 of 7 (open: U1) | 502, all via U1 | 3 users |
 
-**Proof:** `PS-2417-d7c66ecf`, certificate `f857dd40…`. It is deterministic across runs and across signing keys.
+Paths are counted over all seven enumerated paths, so a plan that leaves U1 open reads "6 of 7", never "6 of 6".
+
+**Containment policies** (`profiles.json`; PRODUCT_RFC §3a; measured in `POLICY_EVALUATION.md`). A profile is just two constraint limits: C-COVER (cut every path with risk ≥ x) and C-RESIDUAL (open paths may reach the ledger in ≤ y rollouts).
+
+| | Continuity Balanced (default) | Critical Asset Zero Tolerance |
+|---|---|---|
+| Limits | risk ≥ 0.20 must be cut; open paths ≤ 600 of 6,000 | every enumerated path must be cut; 0 left |
+| Baseline | C01–C04 (objective 345); U1 open, 502 ≤ 600; proof 10/10 | **No feasible plan**: only C05/C06/C07 hard-cut U1, each breaks C-REVERSIBLE and C-DOWNTIME; closest option C01–C04 |
+| `support_route_blockable` variant | C01–C04, unchanged | C01–C04 + **C09** (objective 356); U1 closed, 0 of 6,000; +0 users, +0 downtime |
+
+**Proof (Continuity Balanced):** `PS-2417-33f20ba2` for plan `PLAN-9ae8f880ad90`. It is deterministic across runs and across signing keys. (Before policy profiles the ids were `PLAN-10e634719283` / `PS-2417-d7c66ecf`; the plan body now records its profile and residual.)
 
 ## 6. API (FastAPI, `/api/v1`, OpenAPI at `/api/v1/openapi.json`)
 
 - **Incident and data:**
   - `GET /health`, `GET /incidents`, `GET /incidents/{id}`. The incident includes `state`, `confidence`, `replay_end_s`, `variant` (the active demo variant) and `latest` (`{plan_id, simulation_id, proof_id, execution_id}`) for rehydration.
-  - `GET /incidents/{id}/events?until=`, `POST /correlate`, `GET /findings`, `GET /graph?at=&plan_id=`, `GET /paths` (409 before correlation), `GET /actions`, `GET /policies`, `GET /variants` (key, title, description of each demo variant, plus the active one).
-- **Analysis:** `POST /incidents/{id}/simulations`, `GET /simulations/{id}`, `POST /incidents/{id}/plans`, `GET /plans/{id}`, `POST /plans/{id}/proof` (409 if infeasible), `GET /proofs/{id}`, `POST /proofs/{id}/verify`.
+  - `GET /incidents/{id}/events?until=`, `POST /correlate`, `GET /findings`, `GET /graph?at=&plan_id=`, `GET /paths` (409 before correlation), `GET /actions`, `GET /policies` (policies, approvers, constraints, **profiles**), `GET /variants` (key, title, description of each demo variant, plus the active one), `GET /policy-comparison` (SafeCut under every profile, EchoLab per plan, the exact trade-off and its reasons; read-only; 409 before correlation).
+- **Analysis:** `POST /incidents/{id}/simulations`, `GET /simulations/{id}`, `POST /incidents/{id}/plans {profile_id?}` (each plan carries `profile_id` and `residual`), `GET /plans/{id}`, `POST /plans/{id}/proof` (409 if infeasible), `GET /proofs/{id}`, `POST /proofs/{id}/verify`.
 - **Action Gate:** `GET` and `POST /plans/{id}/approvals`, `POST /plans/{id}/execute`, `GET /executions/{id}`, `POST /executions/{id}/rollback`. The POST calls on approvals, execute and rollback need the header `X-Halt-Actor` (demo identity, not authentication).
 - **Audit and other:** `GET /incidents/{id}/audit`, `GET /audit/verify`, `POST /replay/reset {variant}`, `POST /reset-to-seed` (baseline, from the start; works after a failed restore), `POST /explain {subject_id}`.
 - **Health:** `GET /health` is liveness (always 200; `status: degraded`, `db`, `service`). `GET /ready` is 200 only when the database answers and every incident is seeded or restored, else 503 with the reason.
@@ -166,7 +176,9 @@ The high-risk threshold is 0.20, so P1–P6 are high-risk and U1 is not.
 - **Hand-off:** a client-side link to `/incidents/INC-2417?view=overview&t=<cursor>`. Both providers live in the root layout, so the incident, cursor, plan and proof carry over with no reload.
 - **Command Center (`/incidents/INC-2417`):**
   - Layout: rail (7 views), top bar (stage chip, SIMULATED, operator persona labelled as a demo identity), workspace, evidence rail, replay timeline. `?view=` and `?t=` are synced to the URL.
-  - Overview shows five metrics, including the residual reach the plan leaves open (502 of 6,000, via U1, below threshold).
+  - Overview shows five metrics: "Required paths reachable after plan" (0 of 6 under Continuity Balanced) and the residual reach the plan leaves open (502 of 6,000 via U1, "accepted under Continuity Balanced, which allows 600. Not zero risk.").
+  - SafeCut view: a **Containment policy** control (both profiles with their limits; choosing one re-solves), **Residual risk under this policy** (open paths, reach, uncertainty; never called zero-risk), and the **Policy comparison** table with the trade-off column and "Why the plans differ".
+  - The path table classes each path ("Below the 0.2 threshold (risk 0.08) · rests on an inferred edge") and states it under the plan ("Open · accepted residual under Continuity Balanced").
   - Reloading rehydrates everything from the API.
   - The ThreadGraph runs on Cytoscape with preset coordinates and the supplied node glyphs, rendered as SVG data URIs. Line styles follow the graph spec.
   - An SVG overlay draws the continuous 8px business thread and the proof rings in the cut gaps. A text table of the paths sits alongside the graph.
@@ -202,8 +214,8 @@ Presenter walkthrough: `docs/DEMO_SCRIPT.md`.
 
 | Suite | Command | Status |
 |---|---|---|
-| API (AT-1 to AT-6, AT-S) | `cd services/api && .venv/Scripts/python -m pytest` | 131 passed with `HALT_TEST_PG_URL` (PostgreSQL 16 via pgserver); 128 passed and 3 skipped without it |
-| Web unit (AT-7, AT-8, AT-S.10–11) | `npm test` | 86 passed |
+| API (AT-1 to AT-6, AT-S, AT-P) | `cd services/api && .venv/Scripts/python -m pytest` | 148 passed with `HALT_TEST_PG_URL` (PostgreSQL 16 via pgserver); 145 passed and 3 skipped without it |
+| Web unit (AT-7, AT-8, AT-S.10–11, AT-P.11) | `npm test` | 88 passed |
 | E2E + axe (AT-8 to AT-10) | `npm run test:e2e` (starts the API and a production build) | 27 passed |
 | Static | `npm run lint`, `npm run typecheck`, `ruff check`, `ruff format --check`, `mypy` | clean |
 | Everything except E2E | `npm run check` | passed (exit 0) |
@@ -262,7 +274,9 @@ Presenter walkthrough: `docs/DEMO_SCRIPT.md`.
 11. **Motion spec mostly implemented** (F-14): cut, proof ring and mode cross-fade are done. Still not animated: rollback (the gap closing), threat propagation, graph expansion, and the approval tint fill.
 12. ~~Visual polish~~ **Resolved** (F-15): larger labels on bg chips, a visible proposed-cut halo, and a landing hero panel that keeps the scene's lines out of the copy without covering the containment ring. The scene's own HTML labels were not re-checked at every section.
 13. ~~Dependency overlay toggle~~ **Resolved** (F-16).
-14. ~~U1 decision~~ **Decided:** U1 stays open as stated residual risk; Overview now shows it as "Residual reach under the plan" (F-17).
+14. ~~U1 decision~~ **Resolved by policy profiles:** Continuity Balanced accepts U1 as bounded, named residual risk; Critical Asset Zero Tolerance refuses it (no feasible plan in the baseline; C09 closes it in the `support_route_blockable` variant). See PRODUCT_RFC §3a and POLICY_EVALUATION.md.
+24. **Policy profiles are a demo pair.** The 600-rollout allowance is a demo value, not a recommendation. There is no UI to edit a profile; change `profiles.json`. `support_route_blockable` is a labelled what-if, not a claim about real identity providers.
+25. **Old journals restore as `failed`.** A database written before policy profiles holds plans without a profile and the old plan ids; restore will not reproduce them, so the incident needs `reset-to-seed`.
 15. **Alembic migrations deferred.** The schema is created with `create_all`. Add Alembic before the first schema change.
 16. **Dev-only noise:** React StrictMode opens the replay WebSocket twice in dev (one "closed before established" warning), and uvicorn logs `ConnectionResetError` / `WebSocketDisconnect` when sockets close during tests. Both are harmless. `next start` warns that it "does not work with output: standalone"; it does work, and the Docker image uses `server.js` as Next recommends.
 21. **On Windows an unreachable PostgreSQL times out instead of refusing**, so while the database is down each start retry takes about 3 s (`connect_timeout`). `/health` stays fast (it does not ping while the service is down); requests queued behind a retry fail fast.

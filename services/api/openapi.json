@@ -614,6 +614,7 @@
           "id": {
             "enum": [
               "C-COVER",
+              "C-RESIDUAL",
               "C-DOWNTIME",
               "C-USERS",
               "C-REVERSIBLE",
@@ -656,7 +657,9 @@
                   "min",
                   "users",
                   "s",
-                  "paths"
+                  "paths",
+                  "risk",
+                  "rollouts"
                 ],
                 "type": "string"
               },
@@ -683,6 +686,7 @@
           "constraint_id": {
             "enum": [
               "C-COVER",
+              "C-RESIDUAL",
               "C-DOWNTIME",
               "C-USERS",
               "C-REVERSIBLE",
@@ -720,6 +724,7 @@
           "constraint_id": {
             "enum": [
               "C-COVER",
+              "C-RESIDUAL",
               "C-DOWNTIME",
               "C-USERS",
               "C-REVERSIBLE",
@@ -2219,6 +2224,7 @@
             "items": {
               "enum": [
                 "C-COVER",
+                "C-RESIDUAL",
                 "C-DOWNTIME",
                 "C-USERS",
                 "C-REVERSIBLE",
@@ -2476,12 +2482,30 @@
               }
             ]
           },
+          "profile_id": {
+            "enum": [
+              "continuity_balanced",
+              "critical_asset_zero_tolerance"
+            ],
+            "title": "Profile Id",
+            "type": "string"
+          },
           "rejected": {
             "items": {
               "$ref": "#/components/schemas/Rejection"
             },
             "title": "Rejected",
             "type": "array"
+          },
+          "residual": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/ResidualRisk"
+              },
+              {
+                "type": "null"
+              }
+            ]
           },
           "selected_candidate_ids": {
             "items": {
@@ -2505,12 +2529,14 @@
         "required": [
           "id",
           "status",
+          "profile_id",
           "selected_candidate_ids",
           "display_actions",
           "objective",
           "constraints",
           "rejected",
           "infeasibility",
+          "residual",
           "solver",
           "input_hashes",
           "meta"
@@ -2683,6 +2709,21 @@
             },
             "title": "Constraint Overrides",
             "type": "array"
+          },
+          "profile_id": {
+            "anyOf": [
+              {
+                "enum": [
+                  "continuity_balanced",
+                  "critical_asset_zero_tolerance"
+                ],
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Profile Id"
           }
         },
         "title": "PlanRequest",
@@ -2782,6 +2823,78 @@
         "title": "Policy",
         "type": "object"
       },
+      "PolicyComparison": {
+        "additionalProperties": false,
+        "properties": {
+          "meta": {
+            "$ref": "#/components/schemas/Meta"
+          },
+          "outcomes": {
+            "items": {
+              "$ref": "#/components/schemas/ProfileOutcome"
+            },
+            "title": "Outcomes",
+            "type": "array"
+          },
+          "tradeoff": {
+            "$ref": "#/components/schemas/PolicyTradeoff"
+          }
+        },
+        "required": [
+          "outcomes",
+          "tradeoff",
+          "meta"
+        ],
+        "title": "PolicyComparison",
+        "type": "object"
+      },
+      "PolicyProfile": {
+        "additionalProperties": false,
+        "description": "A containment policy for one protected asset. It is expressed entirely as two constraint limits,\napplied to the scenario before SafeCut, EchoLab and ProofSeal run (halt/scenario/profiles.py):\n\n- C-COVER: every enumerated path to the asset whose simulated risk is at least `cover_min_risk` must have\n  a hard cut on its live route (0 = every enumerated path);\n- C-RESIDUAL: the paths left open may together reach the asset in at most `residual_reach_limit`\n  simulated rollouts (an upper bound: the sum of each open path's own reach count).",
+        "properties": {
+          "cover_min_risk": {
+            "maximum": 1.0,
+            "minimum": 0.0,
+            "title": "Cover Min Risk",
+            "type": "number"
+          },
+          "id": {
+            "enum": [
+              "continuity_balanced",
+              "critical_asset_zero_tolerance"
+            ],
+            "title": "Id",
+            "type": "string"
+          },
+          "protected_asset_id": {
+            "title": "Protected Asset Id",
+            "type": "string"
+          },
+          "residual_reach_limit": {
+            "minimum": 0.0,
+            "title": "Residual Reach Limit",
+            "type": "integer"
+          },
+          "summary": {
+            "title": "Summary",
+            "type": "string"
+          },
+          "title": {
+            "title": "Title",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "title",
+          "summary",
+          "protected_asset_id",
+          "cover_min_risk",
+          "residual_reach_limit"
+        ],
+        "title": "PolicyProfile",
+        "type": "object"
+      },
       "PolicySet": {
         "additionalProperties": false,
         "properties": {
@@ -2808,15 +2921,159 @@
             },
             "title": "Policies",
             "type": "array"
+          },
+          "profiles": {
+            "items": {
+              "$ref": "#/components/schemas/PolicyProfile"
+            },
+            "title": "Profiles",
+            "type": "array"
           }
         },
         "required": [
           "policies",
           "approvers",
           "constraints",
+          "profiles",
           "meta"
         ],
         "title": "PolicySet",
+        "type": "object"
+      },
+      "PolicyTradeoff": {
+        "additionalProperties": false,
+        "description": "What moving from one profile to the other costs and buys. Every number is a difference of the two\noutcomes; every reason names the actions and paths it rests on.",
+        "properties": {
+          "added_candidate_ids": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Added Candidate Ids",
+            "type": "array"
+          },
+          "added_roles": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Added Roles",
+            "type": "array"
+          },
+          "delta_actions": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Delta Actions"
+          },
+          "delta_critical_downtime_min": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Delta Critical Downtime Min"
+          },
+          "delta_reach_bound": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Delta Reach Bound"
+          },
+          "delta_simulated_reach": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Delta Simulated Reach"
+          },
+          "delta_users": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Delta Users"
+          },
+          "from_profile": {
+            "enum": [
+              "continuity_balanced",
+              "critical_asset_zero_tolerance"
+            ],
+            "title": "From Profile",
+            "type": "string"
+          },
+          "newly_cut_path_ids": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Newly Cut Path Ids",
+            "type": "array"
+          },
+          "reasons": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Reasons",
+            "type": "array"
+          },
+          "removed_candidate_ids": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Removed Candidate Ids",
+            "type": "array"
+          },
+          "reopened_path_ids": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Reopened Path Ids",
+            "type": "array"
+          },
+          "to_profile": {
+            "enum": [
+              "continuity_balanced",
+              "critical_asset_zero_tolerance"
+            ],
+            "title": "To Profile",
+            "type": "string"
+          }
+        },
+        "required": [
+          "from_profile",
+          "to_profile",
+          "added_candidate_ids",
+          "removed_candidate_ids",
+          "newly_cut_path_ids",
+          "reopened_path_ids",
+          "delta_users",
+          "delta_critical_downtime_min",
+          "delta_actions",
+          "added_roles",
+          "delta_reach_bound",
+          "delta_simulated_reach",
+          "reasons"
+        ],
+        "title": "PolicyTradeoff",
         "type": "object"
       },
       "PolicyWindow": {
@@ -2890,6 +3147,123 @@
           "downtime_min"
         ],
         "title": "ProcessDowntime",
+        "type": "object"
+      },
+      "ProfileOutcome": {
+        "additionalProperties": false,
+        "description": "SafeCut's answer under one profile, with EchoLab's simulation of that answer.",
+        "properties": {
+          "approval_roles": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Approval Roles",
+            "type": "array"
+          },
+          "constraints": {
+            "items": {
+              "$ref": "#/components/schemas/ConstraintResult"
+            },
+            "title": "Constraints",
+            "type": "array"
+          },
+          "critical_downtime_min": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Critical Downtime Min"
+          },
+          "display_actions": {
+            "items": {
+              "$ref": "#/components/schemas/DisplayAction"
+            },
+            "title": "Display Actions",
+            "type": "array"
+          },
+          "infeasibility": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/Infeasibility"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "plan_id": {
+            "title": "Plan Id",
+            "type": "string"
+          },
+          "profile": {
+            "$ref": "#/components/schemas/PolicyProfile"
+          },
+          "residual": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/ResidualRisk"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "selected_candidate_ids": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Selected Candidate Ids",
+            "type": "array"
+          },
+          "simulated_reach": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/Derivation"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "status": {
+            "enum": [
+              "optimal",
+              "infeasible"
+            ],
+            "title": "Status",
+            "type": "string"
+          },
+          "users_affected": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Users Affected"
+          }
+        },
+        "required": [
+          "profile",
+          "plan_id",
+          "status",
+          "selected_candidate_ids",
+          "display_actions",
+          "constraints",
+          "residual",
+          "simulated_reach",
+          "users_affected",
+          "critical_downtime_min",
+          "approval_roles",
+          "infeasibility"
+        ],
+        "title": "ProfileOutcome",
         "type": "object"
       },
       "Proof": {
@@ -3160,6 +3534,67 @@
           }
         },
         "title": "ResetRequest",
+        "type": "object"
+      },
+      "ResidualRisk": {
+        "additionalProperties": false,
+        "description": "What a plan leaves open on the way to the protected asset, judged by its policy profile.\n\n`reach_bound` sums each open path's own simulated reach count: an upper bound on the rollouts that can\nstill reach the asset through them (EchoLab's future C measures the actual count). Never a claim of zero\nreal-world risk: only enumerated paths in the modelled graph are counted.",
+        "properties": {
+          "enumerated_path_ids": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Enumerated Path Ids",
+            "type": "array"
+          },
+          "limit": {
+            "title": "Limit",
+            "type": "integer"
+          },
+          "open_path_ids": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Open Path Ids",
+            "type": "array"
+          },
+          "protected_asset_id": {
+            "title": "Protected Asset Id",
+            "type": "string"
+          },
+          "reach_bound": {
+            "$ref": "#/components/schemas/Derivation"
+          },
+          "required_path_ids": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Required Path Ids",
+            "type": "array"
+          },
+          "uncertainty": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Uncertainty",
+            "type": "array"
+          },
+          "within_limit": {
+            "title": "Within Limit",
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "protected_asset_id",
+          "enumerated_path_ids",
+          "required_path_ids",
+          "open_path_ids",
+          "reach_bound",
+          "limit",
+          "within_limit",
+          "uncertainty"
+        ],
+        "title": "ResidualRisk",
         "type": "object"
       },
       "ResponseAction": {
@@ -4530,6 +4965,46 @@
           }
         },
         "summary": "Policies"
+      }
+    },
+    "/api/v1/incidents/{incident_id}/policy-comparison": {
+      "get": {
+        "description": "SafeCut under every policy profile, each plan simulated by EchoLab, and the exact trade-off.\nRead-only (nothing is stored or audited); 409 before correlation, like /paths.",
+        "operationId": "policy_comparison_api_v1_incidents__incident_id__policy_comparison_get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "incident_id",
+            "required": true,
+            "schema": {
+              "title": "Incident Id",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PolicyComparison"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Policy Comparison"
       }
     },
     "/api/v1/incidents/{incident_id}/replay/reset": {

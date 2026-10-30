@@ -1,8 +1,9 @@
 [
-  { "id": "C-COVER", "label": "Every high-risk path has at least one hard cut", "kind": "hard", "limit": null, "unit": "paths" },
-  { "id": "C-DOWNTIME", "label": "Critical-process downtime", "kind": "hard", "limit": 0, "unit": "min" },
-  { "id": "C-USERS", "label": "Distinct users affected", "kind": "hard", "limit": 5, "unit": "users" },
-  { "id": "C-REVERSIBLE", "label": "Every action reversible within", "kind": "hard", "limit": 300, "unit": "s" },
-  { "id": "C-AUTH", "label": "Every required role has an available approver", "kind": "hard", "limit": true },
-  { "id": "C-EVIDENCE", "label": "Every action preserves evidence; sealed before execution", "kind": "hard", "limit": true }
+  {"id": "C-COVER", "label": "Every enumerated path to the protected asset at or above the policy's risk threshold has a hard cut", "kind": "hard", "limit": null, "unit": "risk"},
+  {"id": "C-RESIDUAL", "label": "Simulated rollouts that may still reach the protected asset through the paths left open", "kind": "hard", "limit": null, "unit": "rollouts"},
+  {"id": "C-DOWNTIME", "label": "Critical-process downtime", "kind": "hard", "limit": 0, "unit": "min"},
+  {"id": "C-USERS", "label": "Distinct users affected", "kind": "hard", "limit": 5, "unit": "users"},
+  {"id": "C-REVERSIBLE", "label": "Every action reversible within", "kind": "hard", "limit": 300, "unit": "s"},
+  {"id": "C-AUTH", "label": "Every required role has an available approver", "kind": "hard", "limit": true},
+  {"id": "C-EVIDENCE", "label": "Every action preserves evidence; sealed before execution", "kind": "hard", "limit": true}
 ]

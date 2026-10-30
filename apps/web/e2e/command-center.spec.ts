@@ -19,7 +19,8 @@ test("operator flow: correlate → SafeCut → EchoLab → ProofSeal → approve
   await expect(page.getByRole("group", { name: "Users affected by the plan" })).toContainText("3 users");
   await page.getByRole("button", { name: /COMPARE FUTURES IN ECHOLAB/ }).click();
   await page.getByRole("button", { name: /SEAL WITH PROOFSEAL/ }).click();
-  await expect(page.getByRole("group", { name: "Paths reachable after plan" })).toContainText("0 of 6");
+  await expect(page.getByRole("group", { name: "Required paths reachable after plan" })).toContainText("0 of 6");
+  await expect(page.getByRole("group", { name: "Residual reach under the plan" })).toContainText("Not zero risk");
   await expect(topBar(page)).toContainText("APPROVAL PENDING");
 
   await page.getByRole("button", { name: /OPEN ACTION GATE/ }).click();

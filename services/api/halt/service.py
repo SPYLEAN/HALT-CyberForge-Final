@@ -23,14 +23,17 @@ from sqlalchemy.exc import SQLAlchemyError
 
 from halt.audit.log import AuditLog, verify_chain
 from halt.canonical import sha256_hex
+from halt.compare import compare
 from halt.contracts.audit import AuditEntry
 from halt.contracts.common import Derivation, Meta
+from halt.contracts.constraints import ProfileId
 from halt.contracts.events import SecurityEvent
 from halt.contracts.findings import AttackPath, Finding
 from halt.contracts.gate import Approval, Execution
 from halt.contracts.graph import GraphSnapshot
 from halt.contracts.incident import Incident, IncidentState, IncidentSummary, LatestArtefacts
 from halt.contracts.plan import Plan
+from halt.contracts.policy import PolicyComparison
 from halt.contracts.proof import Proof
 from halt.contracts.simulation import SimulationRequest, SimulationRun
 from halt.db.repo import DbAuditStore, Operation, Repository
@@ -47,6 +50,7 @@ from halt.safecut.instance import PLAN_TIME_OFFSET_S
 from halt.safecut.solve import solve
 from halt.scenario.loader import apply_variant, load_scenario, scenario_hashes
 from halt.scenario.models import Scenario, SetConstraintLimit, Variant
+from halt.scenario.profiles import apply_profile
 from halt.threadgraph.build import snapshot
 
 OPERATOR_TICK = timedelta(seconds=15)
@@ -304,7 +308,9 @@ class IncidentService:
         a = op.args
         calls: dict[str, Callable[[], object]] = {
             "correlate": lambda: self.correlate(a["incident_id"], a["until"]),
-            "plan": lambda: self.plan(a["incident_id"], [(c, v) for c, v in a["overrides"]]),
+            "plan": lambda: self.plan(
+                a["incident_id"], [(c, v) for c, v in a["overrides"]], a.get("profile_id")
+            ),
             "simulate": lambda: self.simulate(
                 a["incident_id"], SimulationRequest.model_validate(a["request"])
             ),
@@ -512,15 +518,28 @@ class IncidentService:
 
     # ---- SafeCut, EchoLab, ProofSeal
 
-    def plan(self, incident_id: str, overrides: list[tuple[str, Any]]) -> Plan:
+    def plan(
+        self, incident_id: str, overrides: Sequence[tuple[str, Any]], profile_id: ProfileId | None = None
+    ) -> Plan:
+        """Solve under a policy profile (default: the scenario's first, Continuity Balanced). A different
+        profile is a different set of constraint limits, so SafeCut solves again from scratch."""
         with self.lock:
             rt = self.runtime(incident_id)
-            args = {"incident_id": incident_id, "overrides": [[c, v] for c, v in overrides]}
-            return self._journaled(rt, "plan", args, lambda: self._plan(rt, overrides))
+            args = {
+                "incident_id": incident_id,
+                "overrides": [[c, v] for c, v in overrides],
+                "profile_id": profile_id,
+            }
+            return self._journaled(rt, "plan", args, lambda: self._plan(rt, overrides, profile_id))
 
-    def _plan(self, rt: Runtime, overrides: list[tuple[str, Any]]) -> Plan:
+    def compare(self, incident_id: str) -> PolicyComparison:
+        """Read-only: every profile's plan and EchoLab result, and the trade-off. Nothing is stored."""
+        rt = self.runtime(incident_id)
+        return compare(rt.scenario, self.paths(incident_id))
+
+    def _plan(self, rt: Runtime, overrides: Sequence[tuple[str, Any]], profile_id: ProfileId | None) -> Plan:
         paths = self.paths(rt.id)
-        s = rt.scenario
+        s = apply_profile(rt.scenario, profile_id)
         if overrides:
             ops = [
                 SetConstraintLimit(op="set_constraint_limit", constraint_id=c, limit=v) for c, v in overrides

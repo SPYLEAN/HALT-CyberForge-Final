@@ -34,6 +34,7 @@ from halt.contracts.common import Meta
 from halt.contracts.graph import GraphSnapshot
 from halt.contracts.incident import Incident
 from halt.contracts.plan import Plan
+from halt.contracts.policy import PolicyComparison
 from halt.contracts.proof import Proof
 from halt.contracts.simulation import SimulationRequest, SimulationRun
 from halt.explain.llm import prompt_for
@@ -154,8 +155,19 @@ def policies(request: Request, incident_id: str) -> PolicySet:
     rt = service.runtime(incident_id)
     s = rt.scenario
     return PolicySet(
-        policies=s.policies, approvers=s.approvers, constraints=s.constraints, meta=service.meta(rt)
+        policies=s.policies,
+        approvers=s.approvers,
+        constraints=s.constraints,
+        profiles=s.profiles,
+        meta=service.meta(rt),
     )
+
+
+@router.get("/incidents/{incident_id}/policy-comparison", response_model=PolicyComparison)
+def policy_comparison(request: Request, incident_id: str) -> PolicyComparison:
+    """SafeCut under every policy profile, each plan simulated by EchoLab, and the exact trade-off.
+    Read-only (nothing is stored or audited); 409 before correlation, like /paths."""
+    return svc(request).compare(incident_id)
 
 
 @router.get("/incidents/{incident_id}/variants", response_model=VariantList)
@@ -185,7 +197,8 @@ def get_simulation(request: Request, sim_id: str) -> SimulationRun:
 
 @router.post("/incidents/{incident_id}/plans", response_model=Plan)
 def create_plan(request: Request, incident_id: str, body: PlanRequest) -> Plan:
-    return svc(request).plan(incident_id, [(o.constraint_id, o.limit) for o in body.constraint_overrides])
+    overrides = [(o.constraint_id, o.limit) for o in body.constraint_overrides]
+    return svc(request).plan(incident_id, overrides, body.profile_id)
 
 
 @router.get("/plans/{plan_id}", response_model=Plan)

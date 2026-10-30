@@ -990,7 +990,7 @@
      "id": "INC-2417",
      "latest": {
       "execution_id": null,
-      "plan_id": "PLAN-b8f4c3db575e",
+      "plan_id": "PLAN-92acb58c93df",
       "proof_id": null,
       "simulation_id": null
      },
@@ -999,10 +999,10 @@
       "incident_id": "INC-2417",
       "input_hashes": {
        "actions": "4801e6cdc3ddf4e7aaa783cacb6d55bda3de3f0487364bfed5e0b6b78faad0fc",
-       "constraints": "13016acc0bb505e2e0e0fc80bdabf7a9e0ae62e5437c9e505152598631133fe7",
+       "constraints": "5a79931c38f33857c9f9e816b882751679aa53b550e2b1a1860a246c75585437",
        "events": "6139e6ddf6a5359a9e64a5394eefdbb7f3fe7935c472ea3270e3a6c1bf8ffc68",
        "graph": "fe4dcf26cdf686f0a8b1c6918e89c7dabeebab5b86670e5f18363c717f8ffc6a",
-       "policies": "c4fd34bea5179bd436a2d72d86d53f8b20b80a839d88e2ad38b79a1ac55dd346"
+       "policies": "02ea0b3528d79c897836dcb9a3a67f9cef020feb2e1332e5f874623d1deffc6b"
       },
       "schema_version": "1.0",
       "seed": 2417,
@@ -1549,10 +1549,10 @@
       "incident_id": "INC-2417",
       "input_hashes": {
        "actions": "4801e6cdc3ddf4e7aaa783cacb6d55bda3de3f0487364bfed5e0b6b78faad0fc",
-       "constraints": "13016acc0bb505e2e0e0fc80bdabf7a9e0ae62e5437c9e505152598631133fe7",
+       "constraints": "5a79931c38f33857c9f9e816b882751679aa53b550e2b1a1860a246c75585437",
        "events": "6139e6ddf6a5359a9e64a5394eefdbb7f3fe7935c472ea3270e3a6c1bf8ffc68",
        "graph": "fe4dcf26cdf686f0a8b1c6918e89c7dabeebab5b86670e5f18363c717f8ffc6a",
-       "policies": "c4fd34bea5179bd436a2d72d86d53f8b20b80a839d88e2ad38b79a1ac55dd346"
+       "policies": "02ea0b3528d79c897836dcb9a3a67f9cef020feb2e1332e5f874623d1deffc6b"
       },
       "schema_version": "1.0",
       "seed": 2417,
@@ -1597,7 +1597,7 @@
       {
        "actor": "system",
        "at": "2026-10-27T09:56:57Z",
-       "hash": "ea255a16626b54e364dd88da01ca6b49b949470831ad5c6639dffa7f876206b9",
+       "hash": "3bbaef1a519d15e6e003342b846eda1b3fc300bb5bc0f280f0b8ff0265d80c70",
        "kind": "plan_received",
        "payload": {
         "state": "review",
@@ -1605,12 +1605,12 @@
        },
        "prev_hash": "1022710e806bd3a2cbc554b2e53f0ed931aa247094dc12f076c2b930a5736420",
        "seq": 3,
-       "subject_id": "PLAN-10e634719283"
+       "subject_id": "PLAN-9ae8f880ad90"
       },
       {
        "actor": "echolab",
        "at": "2026-10-27T09:57:12Z",
-       "hash": "225c46ca2d08fc7884eb496d351950bcacee5ef927b92888beb7c1f82975771c",
+       "hash": "685999d1d502faf189778c037d673047e261735f94db1c64490dd5dfd94263bb",
        "kind": "simulated",
        "payload": {
         "futures": [
@@ -1619,134 +1619,134 @@
          "C"
         ]
        },
-       "prev_hash": "ea255a16626b54e364dd88da01ca6b49b949470831ad5c6639dffa7f876206b9",
+       "prev_hash": "3bbaef1a519d15e6e003342b846eda1b3fc300bb5bc0f280f0b8ff0265d80c70",
        "seq": 4,
-       "subject_id": "SIM-e0786418e9b0"
+       "subject_id": "SIM-c8f68619b6de"
       },
       {
        "actor": "proofseal",
        "at": "2026-10-27T09:57:27Z",
-       "hash": "dd7335bfb4d5961a4323cd01293d38d10989d97690a302ab0bed954e3c8e0258",
+       "hash": "fbc5f914f5e450bb0eb40b698016b7270fa0371fab3f5b5c8bcd2e96204109ab",
        "kind": "proof_sealed",
        "payload": {
-        "certificate": "f857dd40875435602c5d22590d8e45e7fd58ef1aae7e7b2aae22db489af45d7c"
+        "certificate": "fa1a3d78556050fabf0ada24b77a11f894e9f77fd5a5df0346abd9e592d2f9c7"
        },
-       "prev_hash": "225c46ca2d08fc7884eb496d351950bcacee5ef927b92888beb7c1f82975771c",
+       "prev_hash": "685999d1d502faf189778c037d673047e261735f94db1c64490dd5dfd94263bb",
        "seq": 5,
-       "subject_id": "PS-2417-d7c66ecf"
+       "subject_id": "PS-2417-33f20ba2"
       },
       {
        "actor": "a_rahman",
        "at": "2026-10-27T09:57:42Z",
-       "hash": "cbf0b295504c170c27d376d9a59ef7f10751cb38332d2caa026bbf496638086f",
+       "hash": "e1f14fc9985871f389f9c13db1564b73fcb3fd2d3f38ff05ecdede56d1dc0956",
        "kind": "approval_approved",
        "payload": {
         "approval": "AP-01"
        },
-       "prev_hash": "dd7335bfb4d5961a4323cd01293d38d10989d97690a302ab0bed954e3c8e0258",
+       "prev_hash": "fbc5f914f5e450bb0eb40b698016b7270fa0371fab3f5b5c8bcd2e96204109ab",
        "seq": 6,
        "subject_id": "IR-OAUTH-02"
       },
       {
        "actor": "s_iyer",
        "at": "2026-10-27T09:57:57Z",
-       "hash": "0f4168add2de584ffe5f8bb892befebc985aaa395067f03644717625f1f54404",
+       "hash": "639d6cffeb395c0c902b3f75a4ce66681becb34d59f82a5130a080994c5fd742",
        "kind": "approval_approved",
        "payload": {
         "approval": "AP-02"
        },
-       "prev_hash": "cbf0b295504c170c27d376d9a59ef7f10751cb38332d2caa026bbf496638086f",
+       "prev_hash": "e1f14fc9985871f389f9c13db1564b73fcb3fd2d3f38ff05ecdede56d1dc0956",
        "seq": 7,
        "subject_id": "IR-CA-05"
       },
       {
        "actor": "a_rahman",
        "at": "2026-10-27T09:58:12Z",
-       "hash": "196fc11f1558cfca2c3a9244a69fb26e2a09b0f0782a1ab9459d68a4a94b8a3e",
+       "hash": "94d219f6cb6d144b1acf3a2f6d954e84ec9ffa18c4772967b7af3888f0b364b0",
        "kind": "execution_started",
        "payload": {
-        "proof": "PS-2417-d7c66ecf"
+        "proof": "PS-2417-33f20ba2"
        },
-       "prev_hash": "0f4168add2de584ffe5f8bb892befebc985aaa395067f03644717625f1f54404",
+       "prev_hash": "639d6cffeb395c0c902b3f75a4ce66681becb34d59f82a5130a080994c5fd742",
        "seq": 8,
-       "subject_id": "PLAN-10e634719283"
+       "subject_id": "PLAN-9ae8f880ad90"
       },
       {
        "actor": "connector:simulated",
        "at": "2026-10-27T09:58:12Z",
-       "hash": "803308e90c6e08c3373a1517ef8844ce3a1314d67d247885be0475bc876644e6",
+       "hash": "5e17a726fecbcc570fd8f4b10eb38cee4875dcf9a3ffbcd8c67f523013152019",
        "kind": "step_applied",
        "payload": {
         "post_snapshot_hash": "f25d755a0de41a902de718fbdc878c7662356e8fc627b6067274d877859aafd1"
        },
-       "prev_hash": "196fc11f1558cfca2c3a9244a69fb26e2a09b0f0782a1ab9459d68a4a94b8a3e",
+       "prev_hash": "94d219f6cb6d144b1acf3a2f6d954e84ec9ffa18c4772967b7af3888f0b364b0",
        "seq": 9,
        "subject_id": "C01"
       },
       {
        "actor": "connector:simulated",
        "at": "2026-10-27T09:58:12Z",
-       "hash": "79d6d3e036d1b639f1d1802e6162495860f49dc3e9692b0de57c613ac049a477",
+       "hash": "dcd76c5b35acfe62eb27a345844ad7ae67174b9754eea90bb2c94eeab89a3b06",
        "kind": "step_applied",
        "payload": {
         "post_snapshot_hash": "140ffaa777aec722174aba21400d2df5146a7923d03656a64a008634b650691b"
        },
-       "prev_hash": "803308e90c6e08c3373a1517ef8844ce3a1314d67d247885be0475bc876644e6",
+       "prev_hash": "5e17a726fecbcc570fd8f4b10eb38cee4875dcf9a3ffbcd8c67f523013152019",
        "seq": 10,
        "subject_id": "C02"
       },
       {
        "actor": "connector:simulated",
        "at": "2026-10-27T09:58:12Z",
-       "hash": "9abf516c182eb23aacd0ba27baaf5206982eb21ca744f42061ed09fe58d9674d",
+       "hash": "403f0892b068fb6de16880447daf023d0030998e04b662025d2d80deeb044ea6",
        "kind": "step_applied",
        "payload": {
         "post_snapshot_hash": "0e23b1d50022e91cc6ddd35ce771082cbff89d50bca24d61367c760fe5e12c00"
        },
-       "prev_hash": "79d6d3e036d1b639f1d1802e6162495860f49dc3e9692b0de57c613ac049a477",
+       "prev_hash": "dcd76c5b35acfe62eb27a345844ad7ae67174b9754eea90bb2c94eeab89a3b06",
        "seq": 11,
        "subject_id": "C03"
       },
       {
        "actor": "connector:simulated",
        "at": "2026-10-27T09:58:12Z",
-       "hash": "03f3c3418205a6761d75108c53333321bae5ed9c5078918e66cdf62b52c6704b",
+       "hash": "f6503942ef260af33593681cffe5f7addce061d5b9df4419794e43c347174bfa",
        "kind": "step_applied",
        "payload": {
         "post_snapshot_hash": "7fe2deeb25c5fe95f27f0e8adc0cc3087fbbe220b213baace820984e78e944a7"
        },
-       "prev_hash": "9abf516c182eb23aacd0ba27baaf5206982eb21ca744f42061ed09fe58d9674d",
+       "prev_hash": "403f0892b068fb6de16880447daf023d0030998e04b662025d2d80deeb044ea6",
        "seq": 12,
        "subject_id": "C04"
       },
       {
        "actor": "a_rahman",
        "at": "2026-10-27T09:58:12Z",
-       "hash": "f5a592dc4376e71dc34a043917d61e0057b37a33f6090c7d700eb7cddbd4f14a",
+       "hash": "360d6d8212ee45b5a6c9eca9aa1c6abddc5fac1fd01216c900843e3d85088989",
        "kind": "execution_applied",
        "payload": {
         "steps": 4
        },
-       "prev_hash": "03f3c3418205a6761d75108c53333321bae5ed9c5078918e66cdf62b52c6704b",
+       "prev_hash": "f6503942ef260af33593681cffe5f7addce061d5b9df4419794e43c347174bfa",
        "seq": 13,
-       "subject_id": "EX-10e634719283"
+       "subject_id": "EX-9ae8f880ad90"
       },
       {
        "actor": "system",
        "at": "2026-10-27T09:58:27Z",
-       "hash": "5a13cb15013f781e3bb79c0ab6cc27fe56afbb3519e3abdc5984a952dd4b2964",
+       "hash": "b0249c0398379d3b3798483406dca17a74077f03719491958b15993e8a420e87",
        "kind": "incident_reset",
        "payload": {
         "variant": "approver_unavailable"
        },
-       "prev_hash": "f5a592dc4376e71dc34a043917d61e0057b37a33f6090c7d700eb7cddbd4f14a",
+       "prev_hash": "360d6d8212ee45b5a6c9eca9aa1c6abddc5fac1fd01216c900843e3d85088989",
        "seq": 14,
        "subject_id": "INC-2417"
       },
       {
        "actor": "halt-r1",
        "at": "2026-10-27T09:58:42Z",
-       "hash": "e20a4c25d1decd696621345c42d2627f07a16913be66c862509b33eb3c180ac3",
+       "hash": "1bc670ab64bdde3829803ac967568d867c56c4f6af23efa59ec3ce667423f680",
        "kind": "correlated",
        "payload": {
         "findings": [
@@ -1757,22 +1757,22 @@
         ],
         "until": null
        },
-       "prev_hash": "5a13cb15013f781e3bb79c0ab6cc27fe56afbb3519e3abdc5984a952dd4b2964",
+       "prev_hash": "b0249c0398379d3b3798483406dca17a74077f03719491958b15993e8a420e87",
        "seq": 15,
        "subject_id": "INC-2417"
       },
       {
        "actor": "system",
        "at": "2026-10-27T09:58:57Z",
-       "hash": "77edaf47815fab9d8d95e9582f4caa2418ef0ecdbfdb98c614dff72ec61a6c0b",
+       "hash": "db2c5184cf67d2750e7e4d22665167911e735469821c21322d4f5a8eab6b60f7",
        "kind": "plan_received",
        "payload": {
         "state": "blocked_by_policy",
         "status": "infeasible"
        },
-       "prev_hash": "e20a4c25d1decd696621345c42d2627f07a16913be66c862509b33eb3c180ac3",
+       "prev_hash": "1bc670ab64bdde3829803ac967568d867c56c4f6af23efa59ec3ce667423f680",
        "seq": 16,
-       "subject_id": "PLAN-b8f4c3db575e"
+       "subject_id": "PLAN-92acb58c93df"
       }
      ],
      "meta": {
@@ -1780,10 +1780,10 @@
       "incident_id": "INC-2417",
       "input_hashes": {
        "actions": "4801e6cdc3ddf4e7aaa783cacb6d55bda3de3f0487364bfed5e0b6b78faad0fc",
-       "constraints": "13016acc0bb505e2e0e0fc80bdabf7a9e0ae62e5437c9e505152598631133fe7",
+       "constraints": "5a79931c38f33857c9f9e816b882751679aa53b550e2b1a1860a246c75585437",
        "events": "6139e6ddf6a5359a9e64a5394eefdbb7f3fe7935c472ea3270e3a6c1bf8ffc68",
        "graph": "fe4dcf26cdf686f0a8b1c6918e89c7dabeebab5b86670e5f18363c717f8ffc6a",
-       "policies": "c4fd34bea5179bd436a2d72d86d53f8b20b80a839d88e2ad38b79a1ac55dd346"
+       "policies": "02ea0b3528d79c897836dcb9a3a67f9cef020feb2e1332e5f874623d1deffc6b"
       },
       "schema_version": "1.0",
       "seed": 2417,
@@ -1992,10 +1992,10 @@
       "incident_id": "INC-2417",
       "input_hashes": {
        "actions": "4801e6cdc3ddf4e7aaa783cacb6d55bda3de3f0487364bfed5e0b6b78faad0fc",
-       "constraints": "13016acc0bb505e2e0e0fc80bdabf7a9e0ae62e5437c9e505152598631133fe7",
+       "constraints": "5a79931c38f33857c9f9e816b882751679aa53b550e2b1a1860a246c75585437",
        "events": "6139e6ddf6a5359a9e64a5394eefdbb7f3fe7935c472ea3270e3a6c1bf8ffc68",
        "graph": "fe4dcf26cdf686f0a8b1c6918e89c7dabeebab5b86670e5f18363c717f8ffc6a",
-       "policies": "c4fd34bea5179bd436a2d72d86d53f8b20b80a839d88e2ad38b79a1ac55dd346"
+       "policies": "02ea0b3528d79c897836dcb9a3a67f9cef020feb2e1332e5f874623d1deffc6b"
       },
       "schema_version": "1.0",
       "seed": 2417,
@@ -2220,10 +2220,10 @@
       "incident_id": "INC-2417",
       "input_hashes": {
        "actions": "4801e6cdc3ddf4e7aaa783cacb6d55bda3de3f0487364bfed5e0b6b78faad0fc",
-       "constraints": "13016acc0bb505e2e0e0fc80bdabf7a9e0ae62e5437c9e505152598631133fe7",
+       "constraints": "5a79931c38f33857c9f9e816b882751679aa53b550e2b1a1860a246c75585437",
        "events": "6139e6ddf6a5359a9e64a5394eefdbb7f3fe7935c472ea3270e3a6c1bf8ffc68",
        "graph": "fe4dcf26cdf686f0a8b1c6918e89c7dabeebab5b86670e5f18363c717f8ffc6a",
-       "policies": "c4fd34bea5179bd436a2d72d86d53f8b20b80a839d88e2ad38b79a1ac55dd346"
+       "policies": "02ea0b3528d79c897836dcb9a3a67f9cef020feb2e1332e5f874623d1deffc6b"
       },
       "schema_version": "1.0",
       "seed": 2417,
@@ -2276,9 +2276,16 @@
       {
        "id": "C-COVER",
        "kind": "hard",
-       "label": "Every high-risk path has at least one hard cut",
+       "label": "Every enumerated path to the protected asset at or above the policy's risk threshold has a hard cut",
        "limit": null,
-       "unit": "paths"
+       "unit": "risk"
+      },
+      {
+       "id": "C-RESIDUAL",
+       "kind": "hard",
+       "label": "Simulated rollouts that may still reach the protected asset through the paths left open",
+       "limit": null,
+       "unit": "rollouts"
       },
       {
        "id": "C-DOWNTIME",
@@ -2321,10 +2328,10 @@
       "incident_id": "INC-2417",
       "input_hashes": {
        "actions": "4801e6cdc3ddf4e7aaa783cacb6d55bda3de3f0487364bfed5e0b6b78faad0fc",
-       "constraints": "13016acc0bb505e2e0e0fc80bdabf7a9e0ae62e5437c9e505152598631133fe7",
+       "constraints": "5a79931c38f33857c9f9e816b882751679aa53b550e2b1a1860a246c75585437",
        "events": "6139e6ddf6a5359a9e64a5394eefdbb7f3fe7935c472ea3270e3a6c1bf8ffc68",
        "graph": "fe4dcf26cdf686f0a8b1c6918e89c7dabeebab5b86670e5f18363c717f8ffc6a",
-       "policies": "c4fd34bea5179bd436a2d72d86d53f8b20b80a839d88e2ad38b79a1ac55dd346"
+       "policies": "02ea0b3528d79c897836dcb9a3a67f9cef020feb2e1332e5f874623d1deffc6b"
       },
       "schema_version": "1.0",
       "seed": 2417,
@@ -2510,7 +2517,465 @@
        "title": "Quarantine a mailbox",
        "window": null
       }
+     ],
+     "profiles": [
+      {
+       "cover_min_risk": 0.2,
+       "id": "continuity_balanced",
+       "protected_asset_id": "db.finance_ledger",
+       "residual_reach_limit": 600,
+       "summary": "Cut every path to the finance ledger at or above the 0.20 high-risk threshold, with the least business disruption. Paths below the threshold may stay open only while, together, they reach the ledger in at most 600 of 6,000 simulated rollouts (10 %). The remaining routes are shown; the result is never described as zero risk.",
+       "title": "Continuity Balanced"
+      },
+      {
+       "cover_min_risk": 0.0,
+       "id": "critical_asset_zero_tolerance",
+       "protected_asset_id": "db.finance_ledger",
+       "residual_reach_limit": 0,
+       "summary": "No enumerated path to the finance ledger may stay open, whatever its simulated risk. SafeCut may add reversible actions; business impact is still measured against the same limits. It proves only what the modelled graph and evidence establish, not absolute security.",
+       "title": "Critical Asset Zero Tolerance"
+      }
      ]
+    },
+    "status": 200
+   },
+   "GET /api/v1/incidents/INC-2417/policy-comparison": {
+    "body": {
+     "meta": {
+      "generated_at": "2026-10-27T09:56:12Z",
+      "incident_id": "INC-2417",
+      "input_hashes": {
+       "actions": "4801e6cdc3ddf4e7aaa783cacb6d55bda3de3f0487364bfed5e0b6b78faad0fc",
+       "constraints": "5a79931c38f33857c9f9e816b882751679aa53b550e2b1a1860a246c75585437",
+       "events": "6139e6ddf6a5359a9e64a5394eefdbb7f3fe7935c472ea3270e3a6c1bf8ffc68",
+       "graph": "fe4dcf26cdf686f0a8b1c6918e89c7dabeebab5b86670e5f18363c717f8ffc6a",
+       "policies": "02ea0b3528d79c897836dcb9a3a67f9cef020feb2e1332e5f874623d1deffc6b"
+      },
+      "schema_version": "1.0",
+      "seed": 2417,
+      "simulated": true
+     },
+     "outcomes": [
+      {
+       "approval_roles": [],
+       "constraints": [
+        {
+         "constraint_id": "C-COVER",
+         "derivation": {
+          "denominator": 6,
+          "method": "Hard cuts intersected with each required path's live route; still open: P1, P2, P3, P4, P5, P6",
+          "numerator": 0,
+          "source_ids": [
+           "P1",
+           "P2",
+           "P3",
+           "P4",
+           "P5",
+           "P6"
+          ]
+         },
+         "limit": "every enumerated path with simulated risk ≥ 0.2 (6 of 7)",
+         "state": "violated",
+         "value": "0 of 6 required paths cut"
+        },
+        {
+         "constraint_id": "C-RESIDUAL",
+         "derivation": {
+          "denominator": 6000,
+          "method": "Sum of each open path's own simulated reach count (an upper bound): P1 4,335, P2 4,050, P3 3,431, P4 2,068, P5 1,884, P6 1,480, U1 502",
+          "numerator": 17750,
+          "source_ids": [
+           "P1",
+           "P2",
+           "P3",
+           "P4",
+           "P5",
+           "P6",
+           "U1"
+          ]
+         },
+         "limit": "≤ 600 of 6,000",
+         "state": "violated",
+         "value": "17,750 of 6,000 rollouts via P1, P2, P3, P4, P5, P6, U1"
+        },
+        {
+         "constraint_id": "C-DOWNTIME",
+         "derivation": {
+          "denominator": null,
+          "method": "Critical processes whose dependency closure the cuts break, x containment window (240 min): none",
+          "numerator": 0,
+          "source_ids": []
+         },
+         "limit": "≤ 0 min",
+         "state": "met",
+         "value": "0 min"
+        },
+        {
+         "constraint_id": "C-USERS",
+         "derivation": {
+          "denominator": null,
+          "method": "Distinct named users plus bulk groups (groups counted as disjoint)",
+          "numerator": 0,
+          "source_ids": []
+         },
+         "limit": "≤ 5 users",
+         "state": "met",
+         "value": "0 users"
+        },
+        {
+         "constraint_id": "C-REVERSIBLE",
+         "derivation": {
+          "denominator": null,
+          "method": "Actions with a rollback plan inside the limit",
+          "numerator": 0,
+          "source_ids": []
+         },
+         "limit": "≤ 300 s each",
+         "state": "met",
+         "value": "slowest rollback 0 s"
+        },
+        {
+         "constraint_id": "C-AUTH",
+         "derivation": {
+          "denominator": null,
+          "method": "Required roles (policies plus active freeze exceptions) vs available approvers",
+          "numerator": 0,
+          "source_ids": []
+         },
+         "limit": "every required role has an available approver",
+         "state": "met",
+         "value": "approvers available: none needed"
+        },
+        {
+         "constraint_id": "C-EVIDENCE",
+         "derivation": {
+          "denominator": null,
+          "method": "Action evidence flags; the Gate refuses to execute an unsealed plan",
+          "numerator": 0,
+          "source_ids": []
+         },
+         "limit": "all; seal first (IR-DATA-07)",
+         "state": "met",
+         "value": "0 of 0 preserve evidence; seal before execution"
+        }
+       ],
+       "critical_downtime_min": null,
+       "display_actions": [],
+       "infeasibility": {
+        "closest_options": [
+         {
+          "breaks": [
+           {
+            "constraint_id": "C-AUTH",
+            "derivation": {
+             "denominator": 4,
+             "method": "Required roles (policies plus active freeze exceptions) vs available approvers",
+             "numerator": 3,
+             "source_ids": [
+              "C01",
+              "C02",
+              "C03",
+              "C04"
+             ]
+            },
+            "limit": "every required role has an available approver",
+            "state": "violated",
+            "value": "missing: C04 needs finance_ops_owner"
+           }
+          ],
+          "candidate_ids": [
+           "C01",
+           "C02",
+           "C03",
+           "C04"
+          ]
+         },
+         {
+          "breaks": [
+           {
+            "constraint_id": "C-DOWNTIME",
+            "derivation": {
+             "denominator": null,
+             "method": "Critical processes whose dependency closure the cuts break, x containment window (240 min): process.payment",
+             "numerator": 240,
+             "source_ids": [
+              "process.payment"
+             ]
+            },
+            "limit": "≤ 0 min",
+            "state": "violated",
+            "value": "240 min"
+           }
+          ],
+          "candidate_ids": [
+           "C01",
+           "C02",
+           "C03",
+           "C08"
+          ]
+         },
+         {
+          "breaks": [
+           {
+            "constraint_id": "C-COVER",
+            "derivation": {
+             "denominator": 6,
+             "method": "Hard cuts intersected with each required path's live route; still open: P4",
+             "numerator": 5,
+             "source_ids": [
+              "P1",
+              "P2",
+              "P3",
+              "P4",
+              "P5",
+              "P6",
+              "C01",
+              "C02",
+              "C03"
+             ]
+            },
+            "limit": "every enumerated path with simulated risk ≥ 0.2 (6 of 7)",
+            "state": "violated",
+            "value": "5 of 6 required paths cut"
+           },
+           {
+            "constraint_id": "C-RESIDUAL",
+            "derivation": {
+             "denominator": 6000,
+             "method": "Sum of each open path's own simulated reach count (an upper bound): P4 2,068, U1 502",
+             "numerator": 2570,
+             "source_ids": [
+              "P4",
+              "U1"
+             ]
+            },
+            "limit": "≤ 600 of 6,000",
+            "state": "violated",
+            "value": "2,570 of 6,000 rollouts via P4, U1"
+           }
+          ],
+          "candidate_ids": [
+           "C01",
+           "C02",
+           "C03"
+          ]
+         }
+        ],
+        "violated_constraint_ids": [
+         "C-COVER",
+         "C-DOWNTIME",
+         "C-AUTH"
+        ]
+       },
+       "plan_id": "PLAN-92acb58c93df",
+       "profile": {
+        "cover_min_risk": 0.2,
+        "id": "continuity_balanced",
+        "protected_asset_id": "db.finance_ledger",
+        "residual_reach_limit": 600,
+        "summary": "Cut every path to the finance ledger at or above the 0.20 high-risk threshold, with the least business disruption. Paths below the threshold may stay open only while, together, they reach the ledger in at most 600 of 6,000 simulated rollouts (10 %). The remaining routes are shown; the result is never described as zero risk.",
+        "title": "Continuity Balanced"
+       },
+       "residual": null,
+       "selected_candidate_ids": [],
+       "simulated_reach": null,
+       "status": "infeasible",
+       "users_affected": null
+      },
+      {
+       "approval_roles": [],
+       "constraints": [
+        {
+         "constraint_id": "C-COVER",
+         "derivation": {
+          "denominator": 7,
+          "method": "Hard cuts intersected with each required path's live route; still open: P1, P2, P3, P4, P5, P6, U1",
+          "numerator": 0,
+          "source_ids": [
+           "P1",
+           "P2",
+           "P3",
+           "P4",
+           "P5",
+           "P6",
+           "U1"
+          ]
+         },
+         "limit": "every enumerated path with simulated risk ≥ 0 (7 of 7)",
+         "state": "violated",
+         "value": "0 of 7 required paths cut"
+        },
+        {
+         "constraint_id": "C-RESIDUAL",
+         "derivation": {
+          "denominator": 6000,
+          "method": "Sum of each open path's own simulated reach count (an upper bound): P1 4,335, P2 4,050, P3 3,431, P4 2,068, P5 1,884, P6 1,480, U1 502",
+          "numerator": 17750,
+          "source_ids": [
+           "P1",
+           "P2",
+           "P3",
+           "P4",
+           "P5",
+           "P6",
+           "U1"
+          ]
+         },
+         "limit": "≤ 0 of 6,000",
+         "state": "violated",
+         "value": "17,750 of 6,000 rollouts via P1, P2, P3, P4, P5, P6, U1"
+        },
+        {
+         "constraint_id": "C-DOWNTIME",
+         "derivation": {
+          "denominator": null,
+          "method": "Critical processes whose dependency closure the cuts break, x containment window (240 min): none",
+          "numerator": 0,
+          "source_ids": []
+         },
+         "limit": "≤ 0 min",
+         "state": "met",
+         "value": "0 min"
+        },
+        {
+         "constraint_id": "C-USERS",
+         "derivation": {
+          "denominator": null,
+          "method": "Distinct named users plus bulk groups (groups counted as disjoint)",
+          "numerator": 0,
+          "source_ids": []
+         },
+         "limit": "≤ 5 users",
+         "state": "met",
+         "value": "0 users"
+        },
+        {
+         "constraint_id": "C-REVERSIBLE",
+         "derivation": {
+          "denominator": null,
+          "method": "Actions with a rollback plan inside the limit",
+          "numerator": 0,
+          "source_ids": []
+         },
+         "limit": "≤ 300 s each",
+         "state": "met",
+         "value": "slowest rollback 0 s"
+        },
+        {
+         "constraint_id": "C-AUTH",
+         "derivation": {
+          "denominator": null,
+          "method": "Required roles (policies plus active freeze exceptions) vs available approvers",
+          "numerator": 0,
+          "source_ids": []
+         },
+         "limit": "every required role has an available approver",
+         "state": "met",
+         "value": "approvers available: none needed"
+        },
+        {
+         "constraint_id": "C-EVIDENCE",
+         "derivation": {
+          "denominator": null,
+          "method": "Action evidence flags; the Gate refuses to execute an unsealed plan",
+          "numerator": 0,
+          "source_ids": []
+         },
+         "limit": "all; seal first (IR-DATA-07)",
+         "state": "met",
+         "value": "0 of 0 preserve evidence; seal before execution"
+        }
+       ],
+       "critical_downtime_min": null,
+       "display_actions": [],
+       "infeasibility": {
+        "closest_options": [
+         {
+          "breaks": [
+           {
+            "constraint_id": "C-COVER",
+            "derivation": {
+             "denominator": 7,
+             "method": "Hard cuts intersected with each required path's live route; still open: P4, U1",
+             "numerator": 5,
+             "source_ids": [
+              "P1",
+              "P2",
+              "P3",
+              "P4",
+              "P5",
+              "P6",
+              "U1",
+              "C01",
+              "C02",
+              "C03"
+             ]
+            },
+            "limit": "every enumerated path with simulated risk ≥ 0 (7 of 7)",
+            "state": "violated",
+            "value": "5 of 7 required paths cut"
+           },
+           {
+            "constraint_id": "C-RESIDUAL",
+            "derivation": {
+             "denominator": 6000,
+             "method": "Sum of each open path's own simulated reach count (an upper bound): P4 2,068, U1 502",
+             "numerator": 2570,
+             "source_ids": [
+              "P4",
+              "U1"
+             ]
+            },
+            "limit": "≤ 0 of 6,000",
+            "state": "violated",
+            "value": "2,570 of 6,000 rollouts via P4, U1"
+           }
+          ],
+          "candidate_ids": [
+           "C01",
+           "C02",
+           "C03"
+          ]
+         }
+        ],
+        "violated_constraint_ids": [
+         "C-COVER"
+        ]
+       },
+       "plan_id": "PLAN-7018a1b63303",
+       "profile": {
+        "cover_min_risk": 0.0,
+        "id": "critical_asset_zero_tolerance",
+        "protected_asset_id": "db.finance_ledger",
+        "residual_reach_limit": 0,
+        "summary": "No enumerated path to the finance ledger may stay open, whatever its simulated risk. SafeCut may add reversible actions; business impact is still measured against the same limits. It proves only what the modelled graph and evidence establish, not absolute security.",
+        "title": "Critical Asset Zero Tolerance"
+       },
+       "residual": null,
+       "selected_candidate_ids": [],
+       "simulated_reach": null,
+       "status": "infeasible",
+       "users_affected": null
+      }
+     ],
+     "tradeoff": {
+      "added_candidate_ids": [],
+      "added_roles": [],
+      "delta_actions": null,
+      "delta_critical_downtime_min": null,
+      "delta_reach_bound": null,
+      "delta_simulated_reach": null,
+      "delta_users": null,
+      "from_profile": "continuity_balanced",
+      "newly_cut_path_ids": [],
+      "reasons": [
+       "So no plan satisfies every constraint of Critical Asset Zero Tolerance while its required paths must be cut. Relaxing C-COVER would restore one; HALT does not run a partial plan without an analyst decision.",
+       "Continuity Balanced has no feasible plan either, so there is no trade-off to price."
+      ],
+      "removed_candidate_ids": [],
+      "reopened_path_ids": [],
+      "to_profile": "critical_asset_zero_tolerance"
+     }
     },
     "status": 200
    },
@@ -2542,6 +3007,11 @@
        "description": "Guards against a plan that only wins because of the user limit.",
        "key": "relaxed_users_250",
        "title": "User-impact limit raised to 250"
+      },
+      {
+       "description": "The identity provider can refuse AS64500 sign-ins to the support portal outright, so the edge block on that route (C09) becomes a hard cut. Nothing else changes; under Critical Asset Zero Tolerance a plan that also closes U1 becomes feasible.",
+       "key": "support_route_blockable",
+       "title": "AS64500 can be blocked on the support route"
       }
      ],
      "meta": {
@@ -2549,10 +3019,10 @@
       "incident_id": "INC-2417",
       "input_hashes": {
        "actions": "4801e6cdc3ddf4e7aaa783cacb6d55bda3de3f0487364bfed5e0b6b78faad0fc",
-       "constraints": "13016acc0bb505e2e0e0fc80bdabf7a9e0ae62e5437c9e505152598631133fe7",
+       "constraints": "5a79931c38f33857c9f9e816b882751679aa53b550e2b1a1860a246c75585437",
        "events": "6139e6ddf6a5359a9e64a5394eefdbb7f3fe7935c472ea3270e3a6c1bf8ffc68",
        "graph": "fe4dcf26cdf686f0a8b1c6918e89c7dabeebab5b86670e5f18363c717f8ffc6a",
-       "policies": "c4fd34bea5179bd436a2d72d86d53f8b20b80a839d88e2ad38b79a1ac55dd346"
+       "policies": "02ea0b3528d79c897836dcb9a3a67f9cef020feb2e1332e5f874623d1deffc6b"
       },
       "schema_version": "1.0",
       "seed": 2417,
@@ -2561,20 +3031,47 @@
     },
     "status": 200
    },
-   "GET /api/v1/plans/PLAN-b8f4c3db575e": {
+   "GET /api/v1/plans/PLAN-92acb58c93df": {
     "body": {
      "constraints": [
       {
        "constraint_id": "C-COVER",
        "derivation": {
         "denominator": 6,
-        "method": "Hard cuts intersected with each path's live route; open: P1, P2, P3, P4, P5, P6",
+        "method": "Hard cuts intersected with each required path's live route; still open: P1, P2, P3, P4, P5, P6",
         "numerator": 0,
-        "source_ids": []
+        "source_ids": [
+         "P1",
+         "P2",
+         "P3",
+         "P4",
+         "P5",
+         "P6"
+        ]
        },
-       "limit": "all 6",
+       "limit": "every enumerated path with simulated risk ≥ 0.2 (6 of 7)",
        "state": "violated",
-       "value": "0 of 6 high-risk paths cut"
+       "value": "0 of 6 required paths cut"
+      },
+      {
+       "constraint_id": "C-RESIDUAL",
+       "derivation": {
+        "denominator": 6000,
+        "method": "Sum of each open path's own simulated reach count (an upper bound): P1 4,335, P2 4,050, P3 3,431, P4 2,068, P5 1,884, P6 1,480, U1 502",
+        "numerator": 17750,
+        "source_ids": [
+         "P1",
+         "P2",
+         "P3",
+         "P4",
+         "P5",
+         "P6",
+         "U1"
+        ]
+       },
+       "limit": "≤ 600 of 6,000",
+       "state": "violated",
+       "value": "17,750 of 6,000 rollouts via P1, P2, P3, P4, P5, P6, U1"
       },
       {
        "constraint_id": "C-DOWNTIME",
@@ -2638,7 +3135,7 @@
       }
      ],
      "display_actions": [],
-     "id": "PLAN-b8f4c3db575e",
+     "id": "PLAN-92acb58c93df",
      "infeasibility": {
       "closest_options": [
        {
@@ -2698,17 +3195,38 @@
           "constraint_id": "C-COVER",
           "derivation": {
            "denominator": 6,
-           "method": "Hard cuts intersected with each path's live route; open: P4",
+           "method": "Hard cuts intersected with each required path's live route; still open: P4",
            "numerator": 5,
            "source_ids": [
+            "P1",
+            "P2",
+            "P3",
+            "P4",
+            "P5",
+            "P6",
             "C01",
             "C02",
             "C03"
            ]
           },
-          "limit": "all 6",
+          "limit": "every enumerated path with simulated risk ≥ 0.2 (6 of 7)",
           "state": "violated",
-          "value": "5 of 6 high-risk paths cut"
+          "value": "5 of 6 required paths cut"
+         },
+         {
+          "constraint_id": "C-RESIDUAL",
+          "derivation": {
+           "denominator": 6000,
+           "method": "Sum of each open path's own simulated reach count (an upper bound): P4 2,068, U1 502",
+           "numerator": 2570,
+           "source_ids": [
+            "P4",
+            "U1"
+           ]
+          },
+          "limit": "≤ 600 of 6,000",
+          "state": "violated",
+          "value": "2,570 of 6,000 rollouts via P4, U1"
          }
         ],
         "candidate_ids": [
@@ -2728,41 +3246,42 @@
       "actions": "4801e6cdc3ddf4e7aaa783cacb6d55bda3de3f0487364bfed5e0b6b78faad0fc",
       "graph": "fe4dcf26cdf686f0a8b1c6918e89c7dabeebab5b86670e5f18363c717f8ffc6a",
       "paths": "2915822e4520149e48a62ffff5126074b39f4ce2bcebf5fbc5ac75187e1f4e78",
-      "policies": "c4fd34bea5179bd436a2d72d86d53f8b20b80a839d88e2ad38b79a1ac55dd346"
+      "policies": "02ea0b3528d79c897836dcb9a3a67f9cef020feb2e1332e5f874623d1deffc6b"
      },
      "meta": {
       "generated_at": "2026-10-27T09:56:12Z",
       "incident_id": "INC-2417",
       "input_hashes": {
        "actions": "4801e6cdc3ddf4e7aaa783cacb6d55bda3de3f0487364bfed5e0b6b78faad0fc",
-       "constraints": "13016acc0bb505e2e0e0fc80bdabf7a9e0ae62e5437c9e505152598631133fe7",
+       "constraints": "8393719e80aa222a6574cf25c953aca6fe83610d05f79208dfa6572172b22937",
        "events": "6139e6ddf6a5359a9e64a5394eefdbb7f3fe7935c472ea3270e3a6c1bf8ffc68",
        "graph": "fe4dcf26cdf686f0a8b1c6918e89c7dabeebab5b86670e5f18363c717f8ffc6a",
-       "plan_body": "b8f4c3db575e34c709c6ab0930983c66a537acd64fc00b318c3aae2bd85759b3",
-       "policies": "c4fd34bea5179bd436a2d72d86d53f8b20b80a839d88e2ad38b79a1ac55dd346"
+       "plan_body": "92acb58c93df7a17fdd163473383735f78c25b3b7a81977aa037007a8559087a",
+       "policies": "02ea0b3528d79c897836dcb9a3a67f9cef020feb2e1332e5f874623d1deffc6b"
       },
       "schema_version": "1.0",
       "seed": 2417,
       "simulated": true
      },
      "objective": null,
+     "profile_id": "continuity_balanced",
      "rejected": [
       {
        "candidate_id": "C01",
        "reasons": [
-        "Dominated: every path it cuts (P2, P5, P6) is already cut; adding it raises the objective by 111"
+        "Not needed under this policy: it would also cut P2, P5, P6, which the policy lets stay open within C-RESIDUAL; it raises the objective by 111"
        ]
       },
       {
        "candidate_id": "C02",
        "reasons": [
-        "Dominated: every path it cuts (P1) is already cut; adding it raises the objective by 111"
+        "Not needed under this policy: it would also cut P1, which the policy lets stay open within C-RESIDUAL; it raises the objective by 111"
        ]
       },
       {
        "candidate_id": "C03",
        "reasons": [
-        "Dominated: every path it cuts (P3) is already cut; adding it raises the objective by 111"
+        "Not needed under this policy: it would also cut P3, which the policy lets stay open within C-RESIDUAL; it raises the objective by 111"
        ]
       },
       {
@@ -2804,7 +3323,7 @@
       {
        "candidate_id": "C09",
        "reasons": [
-        "Only soft cuts on P1, P3: the attacker can evade them"
+        "Only soft cuts on P1, P3, U1: the attacker can evade them"
        ]
       },
       {
@@ -2817,17 +3336,18 @@
       {
        "candidate_id": "C11",
        "reasons": [
-        "No hard cut on any high-risk path",
+        "No hard cut on any enumerated path to the protected asset",
         "C-REVERSIBLE: not reversible"
        ]
       },
       {
        "candidate_id": "C12",
        "reasons": [
-        "No hard cut on any high-risk path"
+        "No hard cut on any enumerated path to the protected asset"
        ]
       }
      ],
+     "residual": null,
      "selected_candidate_ids": [],
      "solver": {
       "engine": "ortools-cp-sat",
@@ -2839,7 +3359,7 @@
     },
     "status": 200
    },
-   "GET /api/v1/plans/PLAN-b8f4c3db575e/approvals": {
+   "GET /api/v1/plans/PLAN-92acb58c93df/approvals": {
     "body": {
      "items": [],
      "meta": {
@@ -2847,10 +3367,10 @@
       "incident_id": "INC-2417",
       "input_hashes": {
        "actions": "4801e6cdc3ddf4e7aaa783cacb6d55bda3de3f0487364bfed5e0b6b78faad0fc",
-       "constraints": "13016acc0bb505e2e0e0fc80bdabf7a9e0ae62e5437c9e505152598631133fe7",
+       "constraints": "5a79931c38f33857c9f9e816b882751679aa53b550e2b1a1860a246c75585437",
        "events": "6139e6ddf6a5359a9e64a5394eefdbb7f3fe7935c472ea3270e3a6c1bf8ffc68",
        "graph": "fe4dcf26cdf686f0a8b1c6918e89c7dabeebab5b86670e5f18363c717f8ffc6a",
-       "policies": "c4fd34bea5179bd436a2d72d86d53f8b20b80a839d88e2ad38b79a1ac55dd346"
+       "policies": "02ea0b3528d79c897836dcb9a3a67f9cef020feb2e1332e5f874623d1deffc6b"
       },
       "schema_version": "1.0",
       "seed": 2417,
@@ -2862,12 +3382,12 @@
    }
   },
   "contained": {
-   "GET /api/v1/executions/EX-10e634719283": {
+   "GET /api/v1/executions/EX-9ae8f880ad90": {
     "body": {
      "execution": {
-      "id": "EX-10e634719283",
-      "plan_id": "PLAN-10e634719283",
-      "proof_id": "PS-2417-d7c66ecf",
+      "id": "EX-9ae8f880ad90",
+      "plan_id": "PLAN-9ae8f880ad90",
+      "proof_id": "PS-2417-33f20ba2",
       "rollback_window_until": "2026-10-27T10:36:12Z",
       "state": "applied",
       "steps": [
@@ -2906,10 +3426,10 @@
       "incident_id": "INC-2417",
       "input_hashes": {
        "actions": "4801e6cdc3ddf4e7aaa783cacb6d55bda3de3f0487364bfed5e0b6b78faad0fc",
-       "constraints": "13016acc0bb505e2e0e0fc80bdabf7a9e0ae62e5437c9e505152598631133fe7",
+       "constraints": "5a79931c38f33857c9f9e816b882751679aa53b550e2b1a1860a246c75585437",
        "events": "6139e6ddf6a5359a9e64a5394eefdbb7f3fe7935c472ea3270e3a6c1bf8ffc68",
        "graph": "fe4dcf26cdf686f0a8b1c6918e89c7dabeebab5b86670e5f18363c717f8ffc6a",
-       "policies": "d36e570c27b1cf94583cb037bf7e1ba4f1efe3501b9a6554c52f6494683cf4a4"
+       "policies": "2525bdfcd13279e4d31b0246d28b71b1d84bc445147a598aaacfe2020694a44b"
       },
       "schema_version": "1.0",
       "seed": 2417,
@@ -2935,20 +3455,20 @@
      },
      "id": "INC-2417",
      "latest": {
-      "execution_id": "EX-10e634719283",
-      "plan_id": "PLAN-10e634719283",
-      "proof_id": "PS-2417-d7c66ecf",
-      "simulation_id": "SIM-e0786418e9b0"
+      "execution_id": "EX-9ae8f880ad90",
+      "plan_id": "PLAN-9ae8f880ad90",
+      "proof_id": "PS-2417-33f20ba2",
+      "simulation_id": "SIM-c8f68619b6de"
      },
      "meta": {
       "generated_at": "2026-10-27T09:58:12Z",
       "incident_id": "INC-2417",
       "input_hashes": {
        "actions": "4801e6cdc3ddf4e7aaa783cacb6d55bda3de3f0487364bfed5e0b6b78faad0fc",
-       "constraints": "13016acc0bb505e2e0e0fc80bdabf7a9e0ae62e5437c9e505152598631133fe7",
+       "constraints": "5a79931c38f33857c9f9e816b882751679aa53b550e2b1a1860a246c75585437",
        "events": "6139e6ddf6a5359a9e64a5394eefdbb7f3fe7935c472ea3270e3a6c1bf8ffc68",
        "graph": "fe4dcf26cdf686f0a8b1c6918e89c7dabeebab5b86670e5f18363c717f8ffc6a",
-       "policies": "d36e570c27b1cf94583cb037bf7e1ba4f1efe3501b9a6554c52f6494683cf4a4"
+       "policies": "2525bdfcd13279e4d31b0246d28b71b1d84bc445147a598aaacfe2020694a44b"
       },
       "schema_version": "1.0",
       "seed": 2417,
@@ -3495,10 +4015,10 @@
       "incident_id": "INC-2417",
       "input_hashes": {
        "actions": "4801e6cdc3ddf4e7aaa783cacb6d55bda3de3f0487364bfed5e0b6b78faad0fc",
-       "constraints": "13016acc0bb505e2e0e0fc80bdabf7a9e0ae62e5437c9e505152598631133fe7",
+       "constraints": "5a79931c38f33857c9f9e816b882751679aa53b550e2b1a1860a246c75585437",
        "events": "6139e6ddf6a5359a9e64a5394eefdbb7f3fe7935c472ea3270e3a6c1bf8ffc68",
        "graph": "fe4dcf26cdf686f0a8b1c6918e89c7dabeebab5b86670e5f18363c717f8ffc6a",
-       "policies": "d36e570c27b1cf94583cb037bf7e1ba4f1efe3501b9a6554c52f6494683cf4a4"
+       "policies": "2525bdfcd13279e4d31b0246d28b71b1d84bc445147a598aaacfe2020694a44b"
       },
       "schema_version": "1.0",
       "seed": 2417,
@@ -3543,7 +4063,7 @@
       {
        "actor": "system",
        "at": "2026-10-27T09:56:57Z",
-       "hash": "ea255a16626b54e364dd88da01ca6b49b949470831ad5c6639dffa7f876206b9",
+       "hash": "3bbaef1a519d15e6e003342b846eda1b3fc300bb5bc0f280f0b8ff0265d80c70",
        "kind": "plan_received",
        "payload": {
         "state": "review",
@@ -3551,12 +4071,12 @@
        },
        "prev_hash": "1022710e806bd3a2cbc554b2e53f0ed931aa247094dc12f076c2b930a5736420",
        "seq": 3,
-       "subject_id": "PLAN-10e634719283"
+       "subject_id": "PLAN-9ae8f880ad90"
       },
       {
        "actor": "echolab",
        "at": "2026-10-27T09:57:12Z",
-       "hash": "225c46ca2d08fc7884eb496d351950bcacee5ef927b92888beb7c1f82975771c",
+       "hash": "685999d1d502faf189778c037d673047e261735f94db1c64490dd5dfd94263bb",
        "kind": "simulated",
        "payload": {
         "futures": [
@@ -3565,117 +4085,117 @@
          "C"
         ]
        },
-       "prev_hash": "ea255a16626b54e364dd88da01ca6b49b949470831ad5c6639dffa7f876206b9",
+       "prev_hash": "3bbaef1a519d15e6e003342b846eda1b3fc300bb5bc0f280f0b8ff0265d80c70",
        "seq": 4,
-       "subject_id": "SIM-e0786418e9b0"
+       "subject_id": "SIM-c8f68619b6de"
       },
       {
        "actor": "proofseal",
        "at": "2026-10-27T09:57:27Z",
-       "hash": "dd7335bfb4d5961a4323cd01293d38d10989d97690a302ab0bed954e3c8e0258",
+       "hash": "fbc5f914f5e450bb0eb40b698016b7270fa0371fab3f5b5c8bcd2e96204109ab",
        "kind": "proof_sealed",
        "payload": {
-        "certificate": "f857dd40875435602c5d22590d8e45e7fd58ef1aae7e7b2aae22db489af45d7c"
+        "certificate": "fa1a3d78556050fabf0ada24b77a11f894e9f77fd5a5df0346abd9e592d2f9c7"
        },
-       "prev_hash": "225c46ca2d08fc7884eb496d351950bcacee5ef927b92888beb7c1f82975771c",
+       "prev_hash": "685999d1d502faf189778c037d673047e261735f94db1c64490dd5dfd94263bb",
        "seq": 5,
-       "subject_id": "PS-2417-d7c66ecf"
+       "subject_id": "PS-2417-33f20ba2"
       },
       {
        "actor": "a_rahman",
        "at": "2026-10-27T09:57:42Z",
-       "hash": "cbf0b295504c170c27d376d9a59ef7f10751cb38332d2caa026bbf496638086f",
+       "hash": "e1f14fc9985871f389f9c13db1564b73fcb3fd2d3f38ff05ecdede56d1dc0956",
        "kind": "approval_approved",
        "payload": {
         "approval": "AP-01"
        },
-       "prev_hash": "dd7335bfb4d5961a4323cd01293d38d10989d97690a302ab0bed954e3c8e0258",
+       "prev_hash": "fbc5f914f5e450bb0eb40b698016b7270fa0371fab3f5b5c8bcd2e96204109ab",
        "seq": 6,
        "subject_id": "IR-OAUTH-02"
       },
       {
        "actor": "s_iyer",
        "at": "2026-10-27T09:57:57Z",
-       "hash": "0f4168add2de584ffe5f8bb892befebc985aaa395067f03644717625f1f54404",
+       "hash": "639d6cffeb395c0c902b3f75a4ce66681becb34d59f82a5130a080994c5fd742",
        "kind": "approval_approved",
        "payload": {
         "approval": "AP-02"
        },
-       "prev_hash": "cbf0b295504c170c27d376d9a59ef7f10751cb38332d2caa026bbf496638086f",
+       "prev_hash": "e1f14fc9985871f389f9c13db1564b73fcb3fd2d3f38ff05ecdede56d1dc0956",
        "seq": 7,
        "subject_id": "IR-CA-05"
       },
       {
        "actor": "a_rahman",
        "at": "2026-10-27T09:58:12Z",
-       "hash": "196fc11f1558cfca2c3a9244a69fb26e2a09b0f0782a1ab9459d68a4a94b8a3e",
+       "hash": "94d219f6cb6d144b1acf3a2f6d954e84ec9ffa18c4772967b7af3888f0b364b0",
        "kind": "execution_started",
        "payload": {
-        "proof": "PS-2417-d7c66ecf"
+        "proof": "PS-2417-33f20ba2"
        },
-       "prev_hash": "0f4168add2de584ffe5f8bb892befebc985aaa395067f03644717625f1f54404",
+       "prev_hash": "639d6cffeb395c0c902b3f75a4ce66681becb34d59f82a5130a080994c5fd742",
        "seq": 8,
-       "subject_id": "PLAN-10e634719283"
+       "subject_id": "PLAN-9ae8f880ad90"
       },
       {
        "actor": "connector:simulated",
        "at": "2026-10-27T09:58:12Z",
-       "hash": "803308e90c6e08c3373a1517ef8844ce3a1314d67d247885be0475bc876644e6",
+       "hash": "5e17a726fecbcc570fd8f4b10eb38cee4875dcf9a3ffbcd8c67f523013152019",
        "kind": "step_applied",
        "payload": {
         "post_snapshot_hash": "f25d755a0de41a902de718fbdc878c7662356e8fc627b6067274d877859aafd1"
        },
-       "prev_hash": "196fc11f1558cfca2c3a9244a69fb26e2a09b0f0782a1ab9459d68a4a94b8a3e",
+       "prev_hash": "94d219f6cb6d144b1acf3a2f6d954e84ec9ffa18c4772967b7af3888f0b364b0",
        "seq": 9,
        "subject_id": "C01"
       },
       {
        "actor": "connector:simulated",
        "at": "2026-10-27T09:58:12Z",
-       "hash": "79d6d3e036d1b639f1d1802e6162495860f49dc3e9692b0de57c613ac049a477",
+       "hash": "dcd76c5b35acfe62eb27a345844ad7ae67174b9754eea90bb2c94eeab89a3b06",
        "kind": "step_applied",
        "payload": {
         "post_snapshot_hash": "140ffaa777aec722174aba21400d2df5146a7923d03656a64a008634b650691b"
        },
-       "prev_hash": "803308e90c6e08c3373a1517ef8844ce3a1314d67d247885be0475bc876644e6",
+       "prev_hash": "5e17a726fecbcc570fd8f4b10eb38cee4875dcf9a3ffbcd8c67f523013152019",
        "seq": 10,
        "subject_id": "C02"
       },
       {
        "actor": "connector:simulated",
        "at": "2026-10-27T09:58:12Z",
-       "hash": "9abf516c182eb23aacd0ba27baaf5206982eb21ca744f42061ed09fe58d9674d",
+       "hash": "403f0892b068fb6de16880447daf023d0030998e04b662025d2d80deeb044ea6",
        "kind": "step_applied",
        "payload": {
         "post_snapshot_hash": "0e23b1d50022e91cc6ddd35ce771082cbff89d50bca24d61367c760fe5e12c00"
        },
-       "prev_hash": "79d6d3e036d1b639f1d1802e6162495860f49dc3e9692b0de57c613ac049a477",
+       "prev_hash": "dcd76c5b35acfe62eb27a345844ad7ae67174b9754eea90bb2c94eeab89a3b06",
        "seq": 11,
        "subject_id": "C03"
       },
       {
        "actor": "connector:simulated",
        "at": "2026-10-27T09:58:12Z",
-       "hash": "03f3c3418205a6761d75108c53333321bae5ed9c5078918e66cdf62b52c6704b",
+       "hash": "f6503942ef260af33593681cffe5f7addce061d5b9df4419794e43c347174bfa",
        "kind": "step_applied",
        "payload": {
         "post_snapshot_hash": "7fe2deeb25c5fe95f27f0e8adc0cc3087fbbe220b213baace820984e78e944a7"
        },
-       "prev_hash": "9abf516c182eb23aacd0ba27baaf5206982eb21ca744f42061ed09fe58d9674d",
+       "prev_hash": "403f0892b068fb6de16880447daf023d0030998e04b662025d2d80deeb044ea6",
        "seq": 12,
        "subject_id": "C04"
       },
       {
        "actor": "a_rahman",
        "at": "2026-10-27T09:58:12Z",
-       "hash": "f5a592dc4376e71dc34a043917d61e0057b37a33f6090c7d700eb7cddbd4f14a",
+       "hash": "360d6d8212ee45b5a6c9eca9aa1c6abddc5fac1fd01216c900843e3d85088989",
        "kind": "execution_applied",
        "payload": {
         "steps": 4
        },
-       "prev_hash": "03f3c3418205a6761d75108c53333321bae5ed9c5078918e66cdf62b52c6704b",
+       "prev_hash": "f6503942ef260af33593681cffe5f7addce061d5b9df4419794e43c347174bfa",
        "seq": 13,
-       "subject_id": "EX-10e634719283"
+       "subject_id": "EX-9ae8f880ad90"
       }
      ],
      "meta": {
@@ -3683,10 +4203,10 @@
       "incident_id": "INC-2417",
       "input_hashes": {
        "actions": "4801e6cdc3ddf4e7aaa783cacb6d55bda3de3f0487364bfed5e0b6b78faad0fc",
-       "constraints": "13016acc0bb505e2e0e0fc80bdabf7a9e0ae62e5437c9e505152598631133fe7",
+       "constraints": "5a79931c38f33857c9f9e816b882751679aa53b550e2b1a1860a246c75585437",
        "events": "6139e6ddf6a5359a9e64a5394eefdbb7f3fe7935c472ea3270e3a6c1bf8ffc68",
        "graph": "fe4dcf26cdf686f0a8b1c6918e89c7dabeebab5b86670e5f18363c717f8ffc6a",
-       "policies": "d36e570c27b1cf94583cb037bf7e1ba4f1efe3501b9a6554c52f6494683cf4a4"
+       "policies": "2525bdfcd13279e4d31b0246d28b71b1d84bc445147a598aaacfe2020694a44b"
       },
       "schema_version": "1.0",
       "seed": 2417,
@@ -3895,10 +4415,10 @@
       "incident_id": "INC-2417",
       "input_hashes": {
        "actions": "4801e6cdc3ddf4e7aaa783cacb6d55bda3de3f0487364bfed5e0b6b78faad0fc",
-       "constraints": "13016acc0bb505e2e0e0fc80bdabf7a9e0ae62e5437c9e505152598631133fe7",
+       "constraints": "5a79931c38f33857c9f9e816b882751679aa53b550e2b1a1860a246c75585437",
        "events": "6139e6ddf6a5359a9e64a5394eefdbb7f3fe7935c472ea3270e3a6c1bf8ffc68",
        "graph": "fe4dcf26cdf686f0a8b1c6918e89c7dabeebab5b86670e5f18363c717f8ffc6a",
-       "policies": "d36e570c27b1cf94583cb037bf7e1ba4f1efe3501b9a6554c52f6494683cf4a4"
+       "policies": "2525bdfcd13279e4d31b0246d28b71b1d84bc445147a598aaacfe2020694a44b"
       },
       "schema_version": "1.0",
       "seed": 2417,
@@ -4123,10 +4643,10 @@
       "incident_id": "INC-2417",
       "input_hashes": {
        "actions": "4801e6cdc3ddf4e7aaa783cacb6d55bda3de3f0487364bfed5e0b6b78faad0fc",
-       "constraints": "13016acc0bb505e2e0e0fc80bdabf7a9e0ae62e5437c9e505152598631133fe7",
+       "constraints": "5a79931c38f33857c9f9e816b882751679aa53b550e2b1a1860a246c75585437",
        "events": "6139e6ddf6a5359a9e64a5394eefdbb7f3fe7935c472ea3270e3a6c1bf8ffc68",
        "graph": "fe4dcf26cdf686f0a8b1c6918e89c7dabeebab5b86670e5f18363c717f8ffc6a",
-       "policies": "d36e570c27b1cf94583cb037bf7e1ba4f1efe3501b9a6554c52f6494683cf4a4"
+       "policies": "2525bdfcd13279e4d31b0246d28b71b1d84bc445147a598aaacfe2020694a44b"
       },
       "schema_version": "1.0",
       "seed": 2417,
@@ -4179,9 +4699,16 @@
       {
        "id": "C-COVER",
        "kind": "hard",
-       "label": "Every high-risk path has at least one hard cut",
+       "label": "Every enumerated path to the protected asset at or above the policy's risk threshold has a hard cut",
        "limit": null,
-       "unit": "paths"
+       "unit": "risk"
+      },
+      {
+       "id": "C-RESIDUAL",
+       "kind": "hard",
+       "label": "Simulated rollouts that may still reach the protected asset through the paths left open",
+       "limit": null,
+       "unit": "rollouts"
       },
       {
        "id": "C-DOWNTIME",
@@ -4224,10 +4751,10 @@
       "incident_id": "INC-2417",
       "input_hashes": {
        "actions": "4801e6cdc3ddf4e7aaa783cacb6d55bda3de3f0487364bfed5e0b6b78faad0fc",
-       "constraints": "13016acc0bb505e2e0e0fc80bdabf7a9e0ae62e5437c9e505152598631133fe7",
+       "constraints": "5a79931c38f33857c9f9e816b882751679aa53b550e2b1a1860a246c75585437",
        "events": "6139e6ddf6a5359a9e64a5394eefdbb7f3fe7935c472ea3270e3a6c1bf8ffc68",
        "graph": "fe4dcf26cdf686f0a8b1c6918e89c7dabeebab5b86670e5f18363c717f8ffc6a",
-       "policies": "d36e570c27b1cf94583cb037bf7e1ba4f1efe3501b9a6554c52f6494683cf4a4"
+       "policies": "2525bdfcd13279e4d31b0246d28b71b1d84bc445147a598aaacfe2020694a44b"
       },
       "schema_version": "1.0",
       "seed": 2417,
@@ -4413,7 +4940,463 @@
        "title": "Quarantine a mailbox",
        "window": null
       }
+     ],
+     "profiles": [
+      {
+       "cover_min_risk": 0.2,
+       "id": "continuity_balanced",
+       "protected_asset_id": "db.finance_ledger",
+       "residual_reach_limit": 600,
+       "summary": "Cut every path to the finance ledger at or above the 0.20 high-risk threshold, with the least business disruption. Paths below the threshold may stay open only while, together, they reach the ledger in at most 600 of 6,000 simulated rollouts (10 %). The remaining routes are shown; the result is never described as zero risk.",
+       "title": "Continuity Balanced"
+      },
+      {
+       "cover_min_risk": 0.0,
+       "id": "critical_asset_zero_tolerance",
+       "protected_asset_id": "db.finance_ledger",
+       "residual_reach_limit": 0,
+       "summary": "No enumerated path to the finance ledger may stay open, whatever its simulated risk. SafeCut may add reversible actions; business impact is still measured against the same limits. It proves only what the modelled graph and evidence establish, not absolute security.",
+       "title": "Critical Asset Zero Tolerance"
+      }
      ]
+    },
+    "status": 200
+   },
+   "GET /api/v1/incidents/INC-2417/policy-comparison": {
+    "body": {
+     "meta": {
+      "generated_at": "2026-10-27T09:56:12Z",
+      "incident_id": "INC-2417",
+      "input_hashes": {
+       "actions": "4801e6cdc3ddf4e7aaa783cacb6d55bda3de3f0487364bfed5e0b6b78faad0fc",
+       "constraints": "5a79931c38f33857c9f9e816b882751679aa53b550e2b1a1860a246c75585437",
+       "events": "6139e6ddf6a5359a9e64a5394eefdbb7f3fe7935c472ea3270e3a6c1bf8ffc68",
+       "graph": "fe4dcf26cdf686f0a8b1c6918e89c7dabeebab5b86670e5f18363c717f8ffc6a",
+       "policies": "2525bdfcd13279e4d31b0246d28b71b1d84bc445147a598aaacfe2020694a44b"
+      },
+      "schema_version": "1.0",
+      "seed": 2417,
+      "simulated": true
+     },
+     "outcomes": [
+      {
+       "approval_roles": [
+        "finance_ops_owner",
+        "tier2_analyst"
+       ],
+       "constraints": [
+        {
+         "constraint_id": "C-COVER",
+         "derivation": {
+          "denominator": 6,
+          "method": "Hard cuts intersected with each required path's live route",
+          "numerator": 6,
+          "source_ids": [
+           "P1",
+           "P2",
+           "P3",
+           "P4",
+           "P5",
+           "P6",
+           "C01",
+           "C02",
+           "C03",
+           "C04"
+          ]
+         },
+         "limit": "every enumerated path with simulated risk ≥ 0.2 (6 of 7)",
+         "state": "met",
+         "value": "6 of 6 required paths cut"
+        },
+        {
+         "constraint_id": "C-RESIDUAL",
+         "derivation": {
+          "denominator": 6000,
+          "method": "Sum of each open path's own simulated reach count (an upper bound): U1 502",
+          "numerator": 502,
+          "source_ids": [
+           "U1"
+          ]
+         },
+         "limit": "≤ 600 of 6,000",
+         "state": "met",
+         "value": "502 of 6,000 rollouts via U1"
+        },
+        {
+         "constraint_id": "C-DOWNTIME",
+         "derivation": {
+          "denominator": null,
+          "method": "Critical processes whose dependency closure the cuts break, x containment window (240 min): none",
+          "numerator": 0,
+          "source_ids": []
+         },
+         "limit": "≤ 0 min",
+         "state": "met",
+         "value": "0 min"
+        },
+        {
+         "constraint_id": "C-USERS",
+         "derivation": {
+          "denominator": null,
+          "method": "Distinct named users plus bulk groups (groups counted as disjoint)",
+          "numerator": 3,
+          "source_ids": [
+           "user.j_okafor",
+           "user.m_verma",
+           "user.s_iyer"
+          ]
+         },
+         "limit": "≤ 5 users",
+         "state": "met",
+         "value": "3 users"
+        },
+        {
+         "constraint_id": "C-REVERSIBLE",
+         "derivation": {
+          "denominator": 4,
+          "method": "Actions with a rollback plan inside the limit",
+          "numerator": 4,
+          "source_ids": [
+           "C01",
+           "C02",
+           "C03",
+           "C04"
+          ]
+         },
+         "limit": "≤ 300 s each",
+         "state": "met",
+         "value": "slowest rollback 60 s"
+        },
+        {
+         "constraint_id": "C-AUTH",
+         "derivation": {
+          "denominator": 4,
+          "method": "Required roles (policies plus active freeze exceptions) vs available approvers",
+          "numerator": 4,
+          "source_ids": [
+           "C01",
+           "C02",
+           "C03",
+           "C04"
+          ]
+         },
+         "limit": "every required role has an available approver",
+         "state": "met",
+         "value": "approvers available: A. Rahman (tier2_analyst), S. Iyer (finance_ops_owner)"
+        },
+        {
+         "constraint_id": "C-EVIDENCE",
+         "derivation": {
+          "denominator": 4,
+          "method": "Action evidence flags; the Gate refuses to execute an unsealed plan",
+          "numerator": 4,
+          "source_ids": [
+           "C01",
+           "C02",
+           "C03",
+           "C04"
+          ]
+         },
+         "limit": "all; seal first (IR-DATA-07)",
+         "state": "met",
+         "value": "4 of 4 preserve evidence; seal before execution"
+        }
+       ],
+       "critical_downtime_min": 0,
+       "display_actions": [
+        {
+         "blocks_path_ids": [
+          "P2",
+          "P5",
+          "P6"
+         ],
+         "candidate_ids": [
+          "C01"
+         ],
+         "id": "A1",
+         "title": "Revoke DocuSync Pro OAuth grant"
+        },
+        {
+         "blocks_path_ids": [
+          "P1",
+          "P3"
+         ],
+         "candidate_ids": [
+          "C02",
+          "C03"
+         ],
+         "id": "A2",
+         "title": "Revoke 2 compromised sessions"
+        },
+        {
+         "blocks_path_ids": [
+          "P4"
+         ],
+         "candidate_ids": [
+          "C04"
+         ],
+         "id": "A3",
+         "title": "Require phishing-resistant step-up for finance apps (60 min)"
+        }
+       ],
+       "infeasibility": null,
+       "plan_id": "PLAN-9ae8f880ad90",
+       "profile": {
+        "cover_min_risk": 0.2,
+        "id": "continuity_balanced",
+        "protected_asset_id": "db.finance_ledger",
+        "residual_reach_limit": 600,
+        "summary": "Cut every path to the finance ledger at or above the 0.20 high-risk threshold, with the least business disruption. Paths below the threshold may stay open only while, together, they reach the ledger in at most 600 of 6,000 simulated rollouts (10 %). The remaining routes are shown; the result is never described as zero risk.",
+        "title": "Continuity Balanced"
+       },
+       "residual": {
+        "enumerated_path_ids": [
+         "P1",
+         "P2",
+         "P3",
+         "P4",
+         "P5",
+         "P6",
+         "U1"
+        ],
+        "limit": 600,
+        "open_path_ids": [
+         "U1"
+        ],
+        "protected_asset_id": "db.finance_ledger",
+        "reach_bound": {
+         "denominator": 6000,
+         "method": "Sum of the open paths' own simulated reach counts (upper bound): U1 502",
+         "numerator": 502,
+         "source_ids": [
+          "U1"
+         ]
+        },
+        "required_path_ids": [
+         "P1",
+         "P2",
+         "P3",
+         "P4",
+         "P5",
+         "P6"
+        ],
+        "uncertainty": [
+         "U1 rests on inferred edge i.asn-support (confidence 0.55): The support portal shares an SSO application with the finance portal.",
+         "U1 is a forecast: no event has been observed along its route yet.",
+         "Reach counts are simulated (6,000 rollouts, seed 2417, 600 s horizon) from scenario transition probabilities, not measured; only paths in the modelled graph are counted."
+        ],
+        "within_limit": true
+       },
+       "selected_candidate_ids": [
+        "C01",
+        "C02",
+        "C03",
+        "C04"
+       ],
+       "simulated_reach": {
+        "denominator": 6000,
+        "method": "Rollouts reaching db.finance_ledger by any route within 600 s (seed 2417; soft cuts evaded with p=0.6)",
+        "numerator": 502,
+        "source_ids": []
+       },
+       "status": "optimal",
+       "users_affected": 3
+      },
+      {
+       "approval_roles": [],
+       "constraints": [
+        {
+         "constraint_id": "C-COVER",
+         "derivation": {
+          "denominator": 7,
+          "method": "Hard cuts intersected with each required path's live route; still open: P1, P2, P3, P4, P5, P6, U1",
+          "numerator": 0,
+          "source_ids": [
+           "P1",
+           "P2",
+           "P3",
+           "P4",
+           "P5",
+           "P6",
+           "U1"
+          ]
+         },
+         "limit": "every enumerated path with simulated risk ≥ 0 (7 of 7)",
+         "state": "violated",
+         "value": "0 of 7 required paths cut"
+        },
+        {
+         "constraint_id": "C-RESIDUAL",
+         "derivation": {
+          "denominator": 6000,
+          "method": "Sum of each open path's own simulated reach count (an upper bound): P1 4,335, P2 4,050, P3 3,431, P4 2,068, P5 1,884, P6 1,480, U1 502",
+          "numerator": 17750,
+          "source_ids": [
+           "P1",
+           "P2",
+           "P3",
+           "P4",
+           "P5",
+           "P6",
+           "U1"
+          ]
+         },
+         "limit": "≤ 0 of 6,000",
+         "state": "violated",
+         "value": "17,750 of 6,000 rollouts via P1, P2, P3, P4, P5, P6, U1"
+        },
+        {
+         "constraint_id": "C-DOWNTIME",
+         "derivation": {
+          "denominator": null,
+          "method": "Critical processes whose dependency closure the cuts break, x containment window (240 min): none",
+          "numerator": 0,
+          "source_ids": []
+         },
+         "limit": "≤ 0 min",
+         "state": "met",
+         "value": "0 min"
+        },
+        {
+         "constraint_id": "C-USERS",
+         "derivation": {
+          "denominator": null,
+          "method": "Distinct named users plus bulk groups (groups counted as disjoint)",
+          "numerator": 0,
+          "source_ids": []
+         },
+         "limit": "≤ 5 users",
+         "state": "met",
+         "value": "0 users"
+        },
+        {
+         "constraint_id": "C-REVERSIBLE",
+         "derivation": {
+          "denominator": null,
+          "method": "Actions with a rollback plan inside the limit",
+          "numerator": 0,
+          "source_ids": []
+         },
+         "limit": "≤ 300 s each",
+         "state": "met",
+         "value": "slowest rollback 0 s"
+        },
+        {
+         "constraint_id": "C-AUTH",
+         "derivation": {
+          "denominator": null,
+          "method": "Required roles (policies plus active freeze exceptions) vs available approvers",
+          "numerator": 0,
+          "source_ids": []
+         },
+         "limit": "every required role has an available approver",
+         "state": "met",
+         "value": "approvers available: none needed"
+        },
+        {
+         "constraint_id": "C-EVIDENCE",
+         "derivation": {
+          "denominator": null,
+          "method": "Action evidence flags; the Gate refuses to execute an unsealed plan",
+          "numerator": 0,
+          "source_ids": []
+         },
+         "limit": "all; seal first (IR-DATA-07)",
+         "state": "met",
+         "value": "0 of 0 preserve evidence; seal before execution"
+        }
+       ],
+       "critical_downtime_min": null,
+       "display_actions": [],
+       "infeasibility": {
+        "closest_options": [
+         {
+          "breaks": [
+           {
+            "constraint_id": "C-COVER",
+            "derivation": {
+             "denominator": 7,
+             "method": "Hard cuts intersected with each required path's live route; still open: U1",
+             "numerator": 6,
+             "source_ids": [
+              "P1",
+              "P2",
+              "P3",
+              "P4",
+              "P5",
+              "P6",
+              "U1",
+              "C01",
+              "C02",
+              "C03",
+              "C04"
+             ]
+            },
+            "limit": "every enumerated path with simulated risk ≥ 0 (7 of 7)",
+            "state": "violated",
+            "value": "6 of 7 required paths cut"
+           },
+           {
+            "constraint_id": "C-RESIDUAL",
+            "derivation": {
+             "denominator": 6000,
+             "method": "Sum of each open path's own simulated reach count (an upper bound): U1 502",
+             "numerator": 502,
+             "source_ids": [
+              "U1"
+             ]
+            },
+            "limit": "≤ 0 of 6,000",
+            "state": "violated",
+            "value": "502 of 6,000 rollouts via U1"
+           }
+          ],
+          "candidate_ids": [
+           "C01",
+           "C02",
+           "C03",
+           "C04"
+          ]
+         }
+        ],
+        "violated_constraint_ids": [
+         "C-COVER"
+        ]
+       },
+       "plan_id": "PLAN-a07414608682",
+       "profile": {
+        "cover_min_risk": 0.0,
+        "id": "critical_asset_zero_tolerance",
+        "protected_asset_id": "db.finance_ledger",
+        "residual_reach_limit": 0,
+        "summary": "No enumerated path to the finance ledger may stay open, whatever its simulated risk. SafeCut may add reversible actions; business impact is still measured against the same limits. It proves only what the modelled graph and evidence establish, not absolute security.",
+        "title": "Critical Asset Zero Tolerance"
+       },
+       "residual": null,
+       "selected_candidate_ids": [],
+       "simulated_reach": null,
+       "status": "infeasible",
+       "users_affected": null
+      }
+     ],
+     "tradeoff": {
+      "added_candidate_ids": [],
+      "added_roles": [],
+      "delta_actions": null,
+      "delta_critical_downtime_min": null,
+      "delta_reach_bound": null,
+      "delta_simulated_reach": null,
+      "delta_users": null,
+      "from_profile": "continuity_balanced",
+      "newly_cut_path_ids": [],
+      "reasons": [
+       "Critical Asset Zero Tolerance must cut U1 (attacker.as64500 → process.support → api.finance → db.finance_ledger). The only actions with a hard cut on it are C05 (Isolate Finance API): C-REVERSIBLE: rollback 14400 s exceeds 300 s, C-DOWNTIME: breaks process.payment, process.payroll, process.reconciliation for 240 min, C-USERS: would raise users affected to 310 (limit 5); C06 (Isolate finance ledger database): C-REVERSIBLE: rollback 15600 s exceeds 300 s, C-DOWNTIME: breaks process.payment, process.payroll, process.reconciliation for 240 min, C-USERS: would raise users affected to 412 (limit 5); C07 (Network-isolate finance subnet): C-REVERSIBLE: rollback 10800 s exceeds 300 s, C-DOWNTIME: breaks process.payment, process.payroll, process.reconciliation for 240 min, C-USERS: would raise users affected to 412 (limit 5).",
+       "So no plan satisfies every constraint of Critical Asset Zero Tolerance while U1 must be cut. Relaxing C-COVER would restore one; HALT does not run a partial plan without an analyst decision."
+      ],
+      "removed_candidate_ids": [],
+      "reopened_path_ids": [],
+      "to_profile": "critical_asset_zero_tolerance"
+     }
     },
     "status": 200
    },
@@ -4445,6 +5428,11 @@
        "description": "Guards against a plan that only wins because of the user limit.",
        "key": "relaxed_users_250",
        "title": "User-impact limit raised to 250"
+      },
+      {
+       "description": "The identity provider can refuse AS64500 sign-ins to the support portal outright, so the edge block on that route (C09) becomes a hard cut. Nothing else changes; under Critical Asset Zero Tolerance a plan that also closes U1 becomes feasible.",
+       "key": "support_route_blockable",
+       "title": "AS64500 can be blocked on the support route"
       }
      ],
      "meta": {
@@ -4452,10 +5440,10 @@
       "incident_id": "INC-2417",
       "input_hashes": {
        "actions": "4801e6cdc3ddf4e7aaa783cacb6d55bda3de3f0487364bfed5e0b6b78faad0fc",
-       "constraints": "13016acc0bb505e2e0e0fc80bdabf7a9e0ae62e5437c9e505152598631133fe7",
+       "constraints": "5a79931c38f33857c9f9e816b882751679aa53b550e2b1a1860a246c75585437",
        "events": "6139e6ddf6a5359a9e64a5394eefdbb7f3fe7935c472ea3270e3a6c1bf8ffc68",
        "graph": "fe4dcf26cdf686f0a8b1c6918e89c7dabeebab5b86670e5f18363c717f8ffc6a",
-       "policies": "d36e570c27b1cf94583cb037bf7e1ba4f1efe3501b9a6554c52f6494683cf4a4"
+       "policies": "2525bdfcd13279e4d31b0246d28b71b1d84bc445147a598aaacfe2020694a44b"
       },
       "schema_version": "1.0",
       "seed": 2417,
@@ -4464,25 +5452,45 @@
     },
     "status": 200
    },
-   "GET /api/v1/plans/PLAN-10e634719283": {
+   "GET /api/v1/plans/PLAN-9ae8f880ad90": {
     "body": {
      "constraints": [
       {
        "constraint_id": "C-COVER",
        "derivation": {
         "denominator": 6,
-        "method": "Hard cuts intersected with each path's live route",
+        "method": "Hard cuts intersected with each required path's live route",
         "numerator": 6,
         "source_ids": [
+         "P1",
+         "P2",
+         "P3",
+         "P4",
+         "P5",
+         "P6",
          "C01",
          "C02",
          "C03",
          "C04"
         ]
        },
-       "limit": "all 6",
+       "limit": "every enumerated path with simulated risk ≥ 0.2 (6 of 7)",
        "state": "met",
-       "value": "6 of 6 high-risk paths cut"
+       "value": "6 of 6 required paths cut"
+      },
+      {
+       "constraint_id": "C-RESIDUAL",
+       "derivation": {
+        "denominator": 6000,
+        "method": "Sum of each open path's own simulated reach count (an upper bound): U1 502",
+        "numerator": 502,
+        "source_ids": [
+         "U1"
+        ]
+       },
+       "limit": "≤ 600 of 6,000",
+       "state": "met",
+       "value": "502 of 6,000 rollouts via U1"
       },
       {
        "constraint_id": "C-DOWNTIME",
@@ -4600,24 +5608,24 @@
        "title": "Require phishing-resistant step-up for finance apps (60 min)"
       }
      ],
-     "id": "PLAN-10e634719283",
+     "id": "PLAN-9ae8f880ad90",
      "infeasibility": null,
      "input_hashes": {
       "actions": "4801e6cdc3ddf4e7aaa783cacb6d55bda3de3f0487364bfed5e0b6b78faad0fc",
       "graph": "fe4dcf26cdf686f0a8b1c6918e89c7dabeebab5b86670e5f18363c717f8ffc6a",
       "paths": "2915822e4520149e48a62ffff5126074b39f4ce2bcebf5fbc5ac75187e1f4e78",
-      "policies": "d36e570c27b1cf94583cb037bf7e1ba4f1efe3501b9a6554c52f6494683cf4a4"
+      "policies": "2525bdfcd13279e4d31b0246d28b71b1d84bc445147a598aaacfe2020694a44b"
      },
      "meta": {
       "generated_at": "2026-10-27T09:56:12Z",
       "incident_id": "INC-2417",
       "input_hashes": {
        "actions": "4801e6cdc3ddf4e7aaa783cacb6d55bda3de3f0487364bfed5e0b6b78faad0fc",
-       "constraints": "13016acc0bb505e2e0e0fc80bdabf7a9e0ae62e5437c9e505152598631133fe7",
+       "constraints": "8393719e80aa222a6574cf25c953aca6fe83610d05f79208dfa6572172b22937",
        "events": "6139e6ddf6a5359a9e64a5394eefdbb7f3fe7935c472ea3270e3a6c1bf8ffc68",
        "graph": "fe4dcf26cdf686f0a8b1c6918e89c7dabeebab5b86670e5f18363c717f8ffc6a",
-       "plan_body": "10e63471928386718a7a7101bd5d4d6d4487e229dfddf681dd9e6056d451d070",
-       "policies": "d36e570c27b1cf94583cb037bf7e1ba4f1efe3501b9a6554c52f6494683cf4a4"
+       "plan_body": "9ae8f880ad9074f76554d840cf24ac12a9d867ad6b8af0e6f54b86093b05041b",
+       "policies": "2525bdfcd13279e4d31b0246d28b71b1d84bc445147a598aaacfe2020694a44b"
       },
       "schema_version": "1.0",
       "seed": 2417,
@@ -4632,6 +5640,7 @@
       },
       "value": 345
      },
+     "profile_id": "continuity_balanced",
      "rejected": [
       {
        "candidate_id": "C05",
@@ -4666,7 +5675,7 @@
       {
        "candidate_id": "C09",
        "reasons": [
-        "Only soft cuts on P1, P3: the attacker can evade them"
+        "Only soft cuts on P1, P3, U1: the attacker can evade them"
        ]
       },
       {
@@ -4679,17 +5688,55 @@
       {
        "candidate_id": "C11",
        "reasons": [
-        "No hard cut on any high-risk path",
+        "No hard cut on any enumerated path to the protected asset",
         "C-REVERSIBLE: not reversible"
        ]
       },
       {
        "candidate_id": "C12",
        "reasons": [
-        "No hard cut on any high-risk path"
+        "No hard cut on any enumerated path to the protected asset"
        ]
       }
      ],
+     "residual": {
+      "enumerated_path_ids": [
+       "P1",
+       "P2",
+       "P3",
+       "P4",
+       "P5",
+       "P6",
+       "U1"
+      ],
+      "limit": 600,
+      "open_path_ids": [
+       "U1"
+      ],
+      "protected_asset_id": "db.finance_ledger",
+      "reach_bound": {
+       "denominator": 6000,
+       "method": "Sum of the open paths' own simulated reach counts (upper bound): U1 502",
+       "numerator": 502,
+       "source_ids": [
+        "U1"
+       ]
+      },
+      "required_path_ids": [
+       "P1",
+       "P2",
+       "P3",
+       "P4",
+       "P5",
+       "P6"
+      ],
+      "uncertainty": [
+       "U1 rests on inferred edge i.asn-support (confidence 0.55): The support portal shares an SSO application with the finance portal.",
+       "U1 is a forecast: no event has been observed along its route yet.",
+       "Reach counts are simulated (6,000 rollouts, seed 2417, 600 s horizon) from scenario transition probabilities, not measured; only paths in the modelled graph are counted."
+      ],
+      "within_limit": true
+     },
      "selected_candidate_ids": [
       "C01",
       "C02",
@@ -4706,7 +5753,7 @@
     },
     "status": 200
    },
-   "GET /api/v1/plans/PLAN-10e634719283/approvals": {
+   "GET /api/v1/plans/PLAN-9ae8f880ad90/approvals": {
     "body": {
      "items": [
       {
@@ -4715,7 +5762,7 @@
        "decision": "approved",
        "id": "AP-01",
        "note": null,
-       "plan_id": "PLAN-10e634719283",
+       "plan_id": "PLAN-9ae8f880ad90",
        "policy_id": "IR-OAUTH-02"
       },
       {
@@ -4724,7 +5771,7 @@
        "decision": "approved",
        "id": "AP-02",
        "note": null,
-       "plan_id": "PLAN-10e634719283",
+       "plan_id": "PLAN-9ae8f880ad90",
        "policy_id": "IR-CA-05"
       }
      ],
@@ -4733,10 +5780,10 @@
       "incident_id": "INC-2417",
       "input_hashes": {
        "actions": "4801e6cdc3ddf4e7aaa783cacb6d55bda3de3f0487364bfed5e0b6b78faad0fc",
-       "constraints": "13016acc0bb505e2e0e0fc80bdabf7a9e0ae62e5437c9e505152598631133fe7",
+       "constraints": "5a79931c38f33857c9f9e816b882751679aa53b550e2b1a1860a246c75585437",
        "events": "6139e6ddf6a5359a9e64a5394eefdbb7f3fe7935c472ea3270e3a6c1bf8ffc68",
        "graph": "fe4dcf26cdf686f0a8b1c6918e89c7dabeebab5b86670e5f18363c717f8ffc6a",
-       "policies": "d36e570c27b1cf94583cb037bf7e1ba4f1efe3501b9a6554c52f6494683cf4a4"
+       "policies": "2525bdfcd13279e4d31b0246d28b71b1d84bc445147a598aaacfe2020694a44b"
       },
       "schema_version": "1.0",
       "seed": 2417,
@@ -4746,9 +5793,9 @@
     },
     "status": 200
    },
-   "GET /api/v1/proofs/PS-2417-d7c66ecf": {
+   "GET /api/v1/proofs/PS-2417-33f20ba2": {
     "body": {
-     "certificate": "f857dd40875435602c5d22590d8e45e7fd58ef1aae7e7b2aae22db489af45d7c",
+     "certificate": "fa1a3d78556050fabf0ada24b77a11f894e9f77fd5a5df0346abd9e592d2f9c7",
      "claims": [
       {
        "evidence_ids": [],
@@ -4761,7 +5808,7 @@
         "source_ids": []
        },
        "status": "verified",
-       "text": "0 of 6 high-risk paths reachable after the plan"
+       "text": "0 of 6 paths Continuity Balanced requires cut are reachable after the plan"
       },
       {
        "evidence_ids": [],
@@ -4873,15 +5920,30 @@
       {
        "evidence_ids": [],
        "id": "CHK-09",
-       "method": "Leave-one-out coverage",
+       "method": "Leave-one-out against C-COVER and C-RESIDUAL",
        "result": {
         "denominator": 4,
-        "method": "Actions whose removal leaves a high-risk path uncut",
+        "method": "Actions whose removal still satisfies the policy",
         "numerator": 4,
         "source_ids": []
        },
        "status": "verified",
-       "text": "Removing any action re-opens at least one high-risk path"
+       "text": "Removing any action breaks the policy: a required path re-opens or the residual limit is exceeded"
+      },
+      {
+       "evidence_ids": [],
+       "id": "CHK-10",
+       "method": "Route check on post-action snapshot 7fe2deeb25c5; bound = sum of open paths' own reach (502); EchoLab measured 502 with seed 2417",
+       "result": {
+        "denominator": 6000,
+        "method": "Open paths' reach bound 502; limit 600 (continuity_balanced)",
+        "numerator": 502,
+        "source_ids": [
+         "U1"
+        ]
+       },
+       "status": "verified",
+       "text": "1 of 7 enumerated paths to db.finance_ledger stay open (U1): 502 of 6,000 simulated rollouts still reach it, within the Continuity Balanced limit of 600"
       }
      ],
      "enumeration": {
@@ -4890,38 +5952,39 @@
       "subsets_checked": 4096,
       "unique": true
      },
-     "id": "PS-2417-d7c66ecf",
+     "id": "PS-2417-33f20ba2",
      "meta": {
       "generated_at": "2026-10-27T09:56:12Z",
       "incident_id": "INC-2417",
       "input_hashes": {
        "actions": "4801e6cdc3ddf4e7aaa783cacb6d55bda3de3f0487364bfed5e0b6b78faad0fc",
-       "constraints": "13016acc0bb505e2e0e0fc80bdabf7a9e0ae62e5437c9e505152598631133fe7",
+       "constraints": "8393719e80aa222a6574cf25c953aca6fe83610d05f79208dfa6572172b22937",
        "events": "6139e6ddf6a5359a9e64a5394eefdbb7f3fe7935c472ea3270e3a6c1bf8ffc68",
        "events_bundle": "6139e6ddf6a5359a9e64a5394eefdbb7f3fe7935c472ea3270e3a6c1bf8ffc68",
        "graph": "fe4dcf26cdf686f0a8b1c6918e89c7dabeebab5b86670e5f18363c717f8ffc6a",
-       "plan": "10e63471928386718a7a7101bd5d4d6d4487e229dfddf681dd9e6056d451d070",
-       "policies": "d36e570c27b1cf94583cb037bf7e1ba4f1efe3501b9a6554c52f6494683cf4a4"
+       "plan": "9ae8f880ad9074f76554d840cf24ac12a9d867ad6b8af0e6f54b86093b05041b",
+       "policies": "2525bdfcd13279e4d31b0246d28b71b1d84bc445147a598aaacfe2020694a44b"
       },
       "schema_version": "1.0",
       "seed": 2417,
       "simulated": true
      },
      "not_covered": [
-      "U1 (attacker.as64500 → process.support → api.finance → db.finance_ledger) is below the high-risk threshold and stays open: 502 of 6000 simulated rollouts reach the target along it with this plan.",
+      "U1 (attacker.as64500 → process.support → api.finance → db.finance_ledger, simulated risk 0.0837) stays open under Continuity Balanced: 502 of 6,000 simulated rollouts reach db.finance_ledger along it with this plan. This is accepted residual risk, not containment.",
+      "Only paths enumerated in the modelled graph are proven; this is not a claim of zero real-world risk.",
       "Attacker capabilities outside the modelled graph (other accounts, devices or tokens).",
       "Transition probabilities are scenario inputs; reach counts are simulated, not measured.",
       "Execution is simulated; no real identity or network system is changed.",
       "The signature uses a per-deployment demo key."
      ],
-     "plan_id": "PLAN-10e634719283",
+     "plan_id": "PLAN-9ae8f880ad90",
      "post_snapshot_hash": "7fe2deeb25c5fe95f27f0e8adc0cc3087fbbe220b213baace820984e78e944a7",
      "sealed_at": "2026-10-27T09:56:12Z",
      "signature": {
       "alg": "Ed25519",
       "demo_key": true,
       "key_id": "demo-d6727cd4a775df3b",
-      "value": "4fxbmNx2yPc5iBzOa88NBjOie9JTCHVSp2D2O8ddJOfFGiji1yRx48XyKeIljrmcriHkd0K+WlGSvBZuJgj5AA=="
+      "value": "CrEodJRfTEbw6im0eCEo+ybc1yrkJVgyV6CJ8Grlee8c8DAhvY+Aw4oUxB9QdvnrQv/Hq1Xpm162Et6oxl+6CA=="
      },
      "snapshot_hash": "e76716ec301ea2778c3563ca3e95ee532cd12daa56f28cb94023e2a81f4d10c8",
      "valid_until": "2026-10-27T10:36:12Z",
@@ -4932,12 +5995,12 @@
       "SafeCut": "ortools 9.15.6755",
       "ThreadGraph": "schema 1.0",
       "graph": "fe4dcf26cdf6",
-      "policies": "d36e570c27b1"
+      "policies": "2525bdfcd132"
      }
     },
     "status": 200
    },
-   "GET /api/v1/simulations/SIM-e0786418e9b0": {
+   "GET /api/v1/simulations/SIM-c8f68619b6de": {
     "body": {
      "futures": [
       {
@@ -4981,16 +6044,17 @@
         "U1": 0
        },
        "paths_blocked": {
-        "denominator": 6,
-        "method": "High-risk paths with a hard cut on their live route",
-        "numerator": 6,
+        "denominator": 7,
+        "method": "Enumerated paths to db.finance_ledger with a hard cut on their live route",
+        "numerator": 7,
         "source_ids": [
          "P1",
          "P2",
          "P3",
          "P4",
          "P5",
-         "P6"
+         "P6",
+         "U1"
         ]
        },
        "reversible": false,
@@ -5043,8 +6107,8 @@
         "U1": 502
        },
        "paths_blocked": {
-        "denominator": 6,
-        "method": "High-risk paths with a hard cut on their live route",
+        "denominator": 7,
+        "method": "Enumerated paths to db.finance_ledger with a hard cut on their live route; open: P1, P2, P3, P4, P5, P6, U1",
         "numerator": 0,
         "source_ids": []
        },
@@ -5100,8 +6164,8 @@
         "U1": 502
        },
        "paths_blocked": {
-        "denominator": 6,
-        "method": "High-risk paths with a hard cut on their live route",
+        "denominator": 7,
+        "method": "Enumerated paths to db.finance_ledger with a hard cut on their live route; open: U1",
         "numerator": 6,
         "source_ids": [
          "P1",
@@ -5131,8 +6195,8 @@
        }
       }
      ],
-     "hash": "e0786418e9b0d405874a1600c564ea1e4ae57f1dc166a054e53bc0d0305cf855",
-     "id": "SIM-e0786418e9b0",
+     "hash": "c8f68619b6de477e0180ebac1dcf823ff2704780ef5b8658f074293383e24065",
+     "id": "SIM-c8f68619b6de",
      "meta": {
       "generated_at": "2026-10-27T09:41:12Z",
       "incident_id": "INC-2417",
@@ -5159,7 +6223,7 @@
        },
        {
         "label": "C",
-        "plan_id": "PLAN-10e634719283",
+        "plan_id": "PLAN-9ae8f880ad90",
         "source": "plan"
        }
       ],
@@ -5198,10 +6262,10 @@
       "incident_id": "INC-2417",
       "input_hashes": {
        "actions": "4801e6cdc3ddf4e7aaa783cacb6d55bda3de3f0487364bfed5e0b6b78faad0fc",
-       "constraints": "13016acc0bb505e2e0e0fc80bdabf7a9e0ae62e5437c9e505152598631133fe7",
+       "constraints": "5a79931c38f33857c9f9e816b882751679aa53b550e2b1a1860a246c75585437",
        "events": "6139e6ddf6a5359a9e64a5394eefdbb7f3fe7935c472ea3270e3a6c1bf8ffc68",
        "graph": "fe4dcf26cdf686f0a8b1c6918e89c7dabeebab5b86670e5f18363c717f8ffc6a",
-       "policies": "d36e570c27b1cf94583cb037bf7e1ba4f1efe3501b9a6554c52f6494683cf4a4"
+       "policies": "2525bdfcd13279e4d31b0246d28b71b1d84bc445147a598aaacfe2020694a44b"
       },
       "schema_version": "1.0",
       "seed": 2417,
@@ -5748,10 +6812,10 @@
       "incident_id": "INC-2417",
       "input_hashes": {
        "actions": "4801e6cdc3ddf4e7aaa783cacb6d55bda3de3f0487364bfed5e0b6b78faad0fc",
-       "constraints": "13016acc0bb505e2e0e0fc80bdabf7a9e0ae62e5437c9e505152598631133fe7",
+       "constraints": "5a79931c38f33857c9f9e816b882751679aa53b550e2b1a1860a246c75585437",
        "events": "6139e6ddf6a5359a9e64a5394eefdbb7f3fe7935c472ea3270e3a6c1bf8ffc68",
        "graph": "fe4dcf26cdf686f0a8b1c6918e89c7dabeebab5b86670e5f18363c717f8ffc6a",
-       "policies": "d36e570c27b1cf94583cb037bf7e1ba4f1efe3501b9a6554c52f6494683cf4a4"
+       "policies": "2525bdfcd13279e4d31b0246d28b71b1d84bc445147a598aaacfe2020694a44b"
       },
       "schema_version": "1.0",
       "seed": 2417,
@@ -5799,10 +6863,10 @@
       "incident_id": "INC-2417",
       "input_hashes": {
        "actions": "4801e6cdc3ddf4e7aaa783cacb6d55bda3de3f0487364bfed5e0b6b78faad0fc",
-       "constraints": "13016acc0bb505e2e0e0fc80bdabf7a9e0ae62e5437c9e505152598631133fe7",
+       "constraints": "5a79931c38f33857c9f9e816b882751679aa53b550e2b1a1860a246c75585437",
        "events": "6139e6ddf6a5359a9e64a5394eefdbb7f3fe7935c472ea3270e3a6c1bf8ffc68",
        "graph": "fe4dcf26cdf686f0a8b1c6918e89c7dabeebab5b86670e5f18363c717f8ffc6a",
-       "policies": "d36e570c27b1cf94583cb037bf7e1ba4f1efe3501b9a6554c52f6494683cf4a4"
+       "policies": "2525bdfcd13279e4d31b0246d28b71b1d84bc445147a598aaacfe2020694a44b"
       },
       "schema_version": "1.0",
       "seed": 2417,
@@ -6011,10 +7075,10 @@
       "incident_id": "INC-2417",
       "input_hashes": {
        "actions": "4801e6cdc3ddf4e7aaa783cacb6d55bda3de3f0487364bfed5e0b6b78faad0fc",
-       "constraints": "13016acc0bb505e2e0e0fc80bdabf7a9e0ae62e5437c9e505152598631133fe7",
+       "constraints": "5a79931c38f33857c9f9e816b882751679aa53b550e2b1a1860a246c75585437",
        "events": "6139e6ddf6a5359a9e64a5394eefdbb7f3fe7935c472ea3270e3a6c1bf8ffc68",
        "graph": "fe4dcf26cdf686f0a8b1c6918e89c7dabeebab5b86670e5f18363c717f8ffc6a",
-       "policies": "d36e570c27b1cf94583cb037bf7e1ba4f1efe3501b9a6554c52f6494683cf4a4"
+       "policies": "2525bdfcd13279e4d31b0246d28b71b1d84bc445147a598aaacfe2020694a44b"
       },
       "schema_version": "1.0",
       "seed": 2417,
@@ -6239,10 +7303,10 @@
       "incident_id": "INC-2417",
       "input_hashes": {
        "actions": "4801e6cdc3ddf4e7aaa783cacb6d55bda3de3f0487364bfed5e0b6b78faad0fc",
-       "constraints": "13016acc0bb505e2e0e0fc80bdabf7a9e0ae62e5437c9e505152598631133fe7",
+       "constraints": "5a79931c38f33857c9f9e816b882751679aa53b550e2b1a1860a246c75585437",
        "events": "6139e6ddf6a5359a9e64a5394eefdbb7f3fe7935c472ea3270e3a6c1bf8ffc68",
        "graph": "fe4dcf26cdf686f0a8b1c6918e89c7dabeebab5b86670e5f18363c717f8ffc6a",
-       "policies": "d36e570c27b1cf94583cb037bf7e1ba4f1efe3501b9a6554c52f6494683cf4a4"
+       "policies": "2525bdfcd13279e4d31b0246d28b71b1d84bc445147a598aaacfe2020694a44b"
       },
       "schema_version": "1.0",
       "seed": 2417,
@@ -6295,9 +7359,16 @@
       {
        "id": "C-COVER",
        "kind": "hard",
-       "label": "Every high-risk path has at least one hard cut",
+       "label": "Every enumerated path to the protected asset at or above the policy's risk threshold has a hard cut",
        "limit": null,
-       "unit": "paths"
+       "unit": "risk"
+      },
+      {
+       "id": "C-RESIDUAL",
+       "kind": "hard",
+       "label": "Simulated rollouts that may still reach the protected asset through the paths left open",
+       "limit": null,
+       "unit": "rollouts"
       },
       {
        "id": "C-DOWNTIME",
@@ -6340,10 +7411,10 @@
       "incident_id": "INC-2417",
       "input_hashes": {
        "actions": "4801e6cdc3ddf4e7aaa783cacb6d55bda3de3f0487364bfed5e0b6b78faad0fc",
-       "constraints": "13016acc0bb505e2e0e0fc80bdabf7a9e0ae62e5437c9e505152598631133fe7",
+       "constraints": "5a79931c38f33857c9f9e816b882751679aa53b550e2b1a1860a246c75585437",
        "events": "6139e6ddf6a5359a9e64a5394eefdbb7f3fe7935c472ea3270e3a6c1bf8ffc68",
        "graph": "fe4dcf26cdf686f0a8b1c6918e89c7dabeebab5b86670e5f18363c717f8ffc6a",
-       "policies": "d36e570c27b1cf94583cb037bf7e1ba4f1efe3501b9a6554c52f6494683cf4a4"
+       "policies": "2525bdfcd13279e4d31b0246d28b71b1d84bc445147a598aaacfe2020694a44b"
       },
       "schema_version": "1.0",
       "seed": 2417,
@@ -6529,7 +7600,463 @@
        "title": "Quarantine a mailbox",
        "window": null
       }
+     ],
+     "profiles": [
+      {
+       "cover_min_risk": 0.2,
+       "id": "continuity_balanced",
+       "protected_asset_id": "db.finance_ledger",
+       "residual_reach_limit": 600,
+       "summary": "Cut every path to the finance ledger at or above the 0.20 high-risk threshold, with the least business disruption. Paths below the threshold may stay open only while, together, they reach the ledger in at most 600 of 6,000 simulated rollouts (10 %). The remaining routes are shown; the result is never described as zero risk.",
+       "title": "Continuity Balanced"
+      },
+      {
+       "cover_min_risk": 0.0,
+       "id": "critical_asset_zero_tolerance",
+       "protected_asset_id": "db.finance_ledger",
+       "residual_reach_limit": 0,
+       "summary": "No enumerated path to the finance ledger may stay open, whatever its simulated risk. SafeCut may add reversible actions; business impact is still measured against the same limits. It proves only what the modelled graph and evidence establish, not absolute security.",
+       "title": "Critical Asset Zero Tolerance"
+      }
      ]
+    },
+    "status": 200
+   },
+   "GET /api/v1/incidents/INC-2417/policy-comparison": {
+    "body": {
+     "meta": {
+      "generated_at": "2026-10-27T09:56:12Z",
+      "incident_id": "INC-2417",
+      "input_hashes": {
+       "actions": "4801e6cdc3ddf4e7aaa783cacb6d55bda3de3f0487364bfed5e0b6b78faad0fc",
+       "constraints": "5a79931c38f33857c9f9e816b882751679aa53b550e2b1a1860a246c75585437",
+       "events": "6139e6ddf6a5359a9e64a5394eefdbb7f3fe7935c472ea3270e3a6c1bf8ffc68",
+       "graph": "fe4dcf26cdf686f0a8b1c6918e89c7dabeebab5b86670e5f18363c717f8ffc6a",
+       "policies": "2525bdfcd13279e4d31b0246d28b71b1d84bc445147a598aaacfe2020694a44b"
+      },
+      "schema_version": "1.0",
+      "seed": 2417,
+      "simulated": true
+     },
+     "outcomes": [
+      {
+       "approval_roles": [
+        "finance_ops_owner",
+        "tier2_analyst"
+       ],
+       "constraints": [
+        {
+         "constraint_id": "C-COVER",
+         "derivation": {
+          "denominator": 6,
+          "method": "Hard cuts intersected with each required path's live route",
+          "numerator": 6,
+          "source_ids": [
+           "P1",
+           "P2",
+           "P3",
+           "P4",
+           "P5",
+           "P6",
+           "C01",
+           "C02",
+           "C03",
+           "C04"
+          ]
+         },
+         "limit": "every enumerated path with simulated risk ≥ 0.2 (6 of 7)",
+         "state": "met",
+         "value": "6 of 6 required paths cut"
+        },
+        {
+         "constraint_id": "C-RESIDUAL",
+         "derivation": {
+          "denominator": 6000,
+          "method": "Sum of each open path's own simulated reach count (an upper bound): U1 502",
+          "numerator": 502,
+          "source_ids": [
+           "U1"
+          ]
+         },
+         "limit": "≤ 600 of 6,000",
+         "state": "met",
+         "value": "502 of 6,000 rollouts via U1"
+        },
+        {
+         "constraint_id": "C-DOWNTIME",
+         "derivation": {
+          "denominator": null,
+          "method": "Critical processes whose dependency closure the cuts break, x containment window (240 min): none",
+          "numerator": 0,
+          "source_ids": []
+         },
+         "limit": "≤ 0 min",
+         "state": "met",
+         "value": "0 min"
+        },
+        {
+         "constraint_id": "C-USERS",
+         "derivation": {
+          "denominator": null,
+          "method": "Distinct named users plus bulk groups (groups counted as disjoint)",
+          "numerator": 3,
+          "source_ids": [
+           "user.j_okafor",
+           "user.m_verma",
+           "user.s_iyer"
+          ]
+         },
+         "limit": "≤ 5 users",
+         "state": "met",
+         "value": "3 users"
+        },
+        {
+         "constraint_id": "C-REVERSIBLE",
+         "derivation": {
+          "denominator": 4,
+          "method": "Actions with a rollback plan inside the limit",
+          "numerator": 4,
+          "source_ids": [
+           "C01",
+           "C02",
+           "C03",
+           "C04"
+          ]
+         },
+         "limit": "≤ 300 s each",
+         "state": "met",
+         "value": "slowest rollback 60 s"
+        },
+        {
+         "constraint_id": "C-AUTH",
+         "derivation": {
+          "denominator": 4,
+          "method": "Required roles (policies plus active freeze exceptions) vs available approvers",
+          "numerator": 4,
+          "source_ids": [
+           "C01",
+           "C02",
+           "C03",
+           "C04"
+          ]
+         },
+         "limit": "every required role has an available approver",
+         "state": "met",
+         "value": "approvers available: A. Rahman (tier2_analyst), S. Iyer (finance_ops_owner)"
+        },
+        {
+         "constraint_id": "C-EVIDENCE",
+         "derivation": {
+          "denominator": 4,
+          "method": "Action evidence flags; the Gate refuses to execute an unsealed plan",
+          "numerator": 4,
+          "source_ids": [
+           "C01",
+           "C02",
+           "C03",
+           "C04"
+          ]
+         },
+         "limit": "all; seal first (IR-DATA-07)",
+         "state": "met",
+         "value": "4 of 4 preserve evidence; seal before execution"
+        }
+       ],
+       "critical_downtime_min": 0,
+       "display_actions": [
+        {
+         "blocks_path_ids": [
+          "P2",
+          "P5",
+          "P6"
+         ],
+         "candidate_ids": [
+          "C01"
+         ],
+         "id": "A1",
+         "title": "Revoke DocuSync Pro OAuth grant"
+        },
+        {
+         "blocks_path_ids": [
+          "P1",
+          "P3"
+         ],
+         "candidate_ids": [
+          "C02",
+          "C03"
+         ],
+         "id": "A2",
+         "title": "Revoke 2 compromised sessions"
+        },
+        {
+         "blocks_path_ids": [
+          "P4"
+         ],
+         "candidate_ids": [
+          "C04"
+         ],
+         "id": "A3",
+         "title": "Require phishing-resistant step-up for finance apps (60 min)"
+        }
+       ],
+       "infeasibility": null,
+       "plan_id": "PLAN-9ae8f880ad90",
+       "profile": {
+        "cover_min_risk": 0.2,
+        "id": "continuity_balanced",
+        "protected_asset_id": "db.finance_ledger",
+        "residual_reach_limit": 600,
+        "summary": "Cut every path to the finance ledger at or above the 0.20 high-risk threshold, with the least business disruption. Paths below the threshold may stay open only while, together, they reach the ledger in at most 600 of 6,000 simulated rollouts (10 %). The remaining routes are shown; the result is never described as zero risk.",
+        "title": "Continuity Balanced"
+       },
+       "residual": {
+        "enumerated_path_ids": [
+         "P1",
+         "P2",
+         "P3",
+         "P4",
+         "P5",
+         "P6",
+         "U1"
+        ],
+        "limit": 600,
+        "open_path_ids": [
+         "U1"
+        ],
+        "protected_asset_id": "db.finance_ledger",
+        "reach_bound": {
+         "denominator": 6000,
+         "method": "Sum of the open paths' own simulated reach counts (upper bound): U1 502",
+         "numerator": 502,
+         "source_ids": [
+          "U1"
+         ]
+        },
+        "required_path_ids": [
+         "P1",
+         "P2",
+         "P3",
+         "P4",
+         "P5",
+         "P6"
+        ],
+        "uncertainty": [
+         "U1 rests on inferred edge i.asn-support (confidence 0.55): The support portal shares an SSO application with the finance portal.",
+         "U1 is a forecast: no event has been observed along its route yet.",
+         "Reach counts are simulated (6,000 rollouts, seed 2417, 600 s horizon) from scenario transition probabilities, not measured; only paths in the modelled graph are counted."
+        ],
+        "within_limit": true
+       },
+       "selected_candidate_ids": [
+        "C01",
+        "C02",
+        "C03",
+        "C04"
+       ],
+       "simulated_reach": {
+        "denominator": 6000,
+        "method": "Rollouts reaching db.finance_ledger by any route within 600 s (seed 2417; soft cuts evaded with p=0.6)",
+        "numerator": 502,
+        "source_ids": []
+       },
+       "status": "optimal",
+       "users_affected": 3
+      },
+      {
+       "approval_roles": [],
+       "constraints": [
+        {
+         "constraint_id": "C-COVER",
+         "derivation": {
+          "denominator": 7,
+          "method": "Hard cuts intersected with each required path's live route; still open: P1, P2, P3, P4, P5, P6, U1",
+          "numerator": 0,
+          "source_ids": [
+           "P1",
+           "P2",
+           "P3",
+           "P4",
+           "P5",
+           "P6",
+           "U1"
+          ]
+         },
+         "limit": "every enumerated path with simulated risk ≥ 0 (7 of 7)",
+         "state": "violated",
+         "value": "0 of 7 required paths cut"
+        },
+        {
+         "constraint_id": "C-RESIDUAL",
+         "derivation": {
+          "denominator": 6000,
+          "method": "Sum of each open path's own simulated reach count (an upper bound): P1 4,335, P2 4,050, P3 3,431, P4 2,068, P5 1,884, P6 1,480, U1 502",
+          "numerator": 17750,
+          "source_ids": [
+           "P1",
+           "P2",
+           "P3",
+           "P4",
+           "P5",
+           "P6",
+           "U1"
+          ]
+         },
+         "limit": "≤ 0 of 6,000",
+         "state": "violated",
+         "value": "17,750 of 6,000 rollouts via P1, P2, P3, P4, P5, P6, U1"
+        },
+        {
+         "constraint_id": "C-DOWNTIME",
+         "derivation": {
+          "denominator": null,
+          "method": "Critical processes whose dependency closure the cuts break, x containment window (240 min): none",
+          "numerator": 0,
+          "source_ids": []
+         },
+         "limit": "≤ 0 min",
+         "state": "met",
+         "value": "0 min"
+        },
+        {
+         "constraint_id": "C-USERS",
+         "derivation": {
+          "denominator": null,
+          "method": "Distinct named users plus bulk groups (groups counted as disjoint)",
+          "numerator": 0,
+          "source_ids": []
+         },
+         "limit": "≤ 5 users",
+         "state": "met",
+         "value": "0 users"
+        },
+        {
+         "constraint_id": "C-REVERSIBLE",
+         "derivation": {
+          "denominator": null,
+          "method": "Actions with a rollback plan inside the limit",
+          "numerator": 0,
+          "source_ids": []
+         },
+         "limit": "≤ 300 s each",
+         "state": "met",
+         "value": "slowest rollback 0 s"
+        },
+        {
+         "constraint_id": "C-AUTH",
+         "derivation": {
+          "denominator": null,
+          "method": "Required roles (policies plus active freeze exceptions) vs available approvers",
+          "numerator": 0,
+          "source_ids": []
+         },
+         "limit": "every required role has an available approver",
+         "state": "met",
+         "value": "approvers available: none needed"
+        },
+        {
+         "constraint_id": "C-EVIDENCE",
+         "derivation": {
+          "denominator": null,
+          "method": "Action evidence flags; the Gate refuses to execute an unsealed plan",
+          "numerator": 0,
+          "source_ids": []
+         },
+         "limit": "all; seal first (IR-DATA-07)",
+         "state": "met",
+         "value": "0 of 0 preserve evidence; seal before execution"
+        }
+       ],
+       "critical_downtime_min": null,
+       "display_actions": [],
+       "infeasibility": {
+        "closest_options": [
+         {
+          "breaks": [
+           {
+            "constraint_id": "C-COVER",
+            "derivation": {
+             "denominator": 7,
+             "method": "Hard cuts intersected with each required path's live route; still open: U1",
+             "numerator": 6,
+             "source_ids": [
+              "P1",
+              "P2",
+              "P3",
+              "P4",
+              "P5",
+              "P6",
+              "U1",
+              "C01",
+              "C02",
+              "C03",
+              "C04"
+             ]
+            },
+            "limit": "every enumerated path with simulated risk ≥ 0 (7 of 7)",
+            "state": "violated",
+            "value": "6 of 7 required paths cut"
+           },
+           {
+            "constraint_id": "C-RESIDUAL",
+            "derivation": {
+             "denominator": 6000,
+             "method": "Sum of each open path's own simulated reach count (an upper bound): U1 502",
+             "numerator": 502,
+             "source_ids": [
+              "U1"
+             ]
+            },
+            "limit": "≤ 0 of 6,000",
+            "state": "violated",
+            "value": "502 of 6,000 rollouts via U1"
+           }
+          ],
+          "candidate_ids": [
+           "C01",
+           "C02",
+           "C03",
+           "C04"
+          ]
+         }
+        ],
+        "violated_constraint_ids": [
+         "C-COVER"
+        ]
+       },
+       "plan_id": "PLAN-a07414608682",
+       "profile": {
+        "cover_min_risk": 0.0,
+        "id": "critical_asset_zero_tolerance",
+        "protected_asset_id": "db.finance_ledger",
+        "residual_reach_limit": 0,
+        "summary": "No enumerated path to the finance ledger may stay open, whatever its simulated risk. SafeCut may add reversible actions; business impact is still measured against the same limits. It proves only what the modelled graph and evidence establish, not absolute security.",
+        "title": "Critical Asset Zero Tolerance"
+       },
+       "residual": null,
+       "selected_candidate_ids": [],
+       "simulated_reach": null,
+       "status": "infeasible",
+       "users_affected": null
+      }
+     ],
+     "tradeoff": {
+      "added_candidate_ids": [],
+      "added_roles": [],
+      "delta_actions": null,
+      "delta_critical_downtime_min": null,
+      "delta_reach_bound": null,
+      "delta_simulated_reach": null,
+      "delta_users": null,
+      "from_profile": "continuity_balanced",
+      "newly_cut_path_ids": [],
+      "reasons": [
+       "Critical Asset Zero Tolerance must cut U1 (attacker.as64500 → process.support → api.finance → db.finance_ledger). The only actions with a hard cut on it are C05 (Isolate Finance API): C-REVERSIBLE: rollback 14400 s exceeds 300 s, C-DOWNTIME: breaks process.payment, process.payroll, process.reconciliation for 240 min, C-USERS: would raise users affected to 310 (limit 5); C06 (Isolate finance ledger database): C-REVERSIBLE: rollback 15600 s exceeds 300 s, C-DOWNTIME: breaks process.payment, process.payroll, process.reconciliation for 240 min, C-USERS: would raise users affected to 412 (limit 5); C07 (Network-isolate finance subnet): C-REVERSIBLE: rollback 10800 s exceeds 300 s, C-DOWNTIME: breaks process.payment, process.payroll, process.reconciliation for 240 min, C-USERS: would raise users affected to 412 (limit 5).",
+       "So no plan satisfies every constraint of Critical Asset Zero Tolerance while U1 must be cut. Relaxing C-COVER would restore one; HALT does not run a partial plan without an analyst decision."
+      ],
+      "removed_candidate_ids": [],
+      "reopened_path_ids": [],
+      "to_profile": "critical_asset_zero_tolerance"
+     }
     },
     "status": 200
    },
@@ -6561,6 +8088,11 @@
        "description": "Guards against a plan that only wins because of the user limit.",
        "key": "relaxed_users_250",
        "title": "User-impact limit raised to 250"
+      },
+      {
+       "description": "The identity provider can refuse AS64500 sign-ins to the support portal outright, so the edge block on that route (C09) becomes a hard cut. Nothing else changes; under Critical Asset Zero Tolerance a plan that also closes U1 becomes feasible.",
+       "key": "support_route_blockable",
+       "title": "AS64500 can be blocked on the support route"
       }
      ],
      "meta": {
@@ -6568,10 +8100,10 @@
       "incident_id": "INC-2417",
       "input_hashes": {
        "actions": "4801e6cdc3ddf4e7aaa783cacb6d55bda3de3f0487364bfed5e0b6b78faad0fc",
-       "constraints": "13016acc0bb505e2e0e0fc80bdabf7a9e0ae62e5437c9e505152598631133fe7",
+       "constraints": "5a79931c38f33857c9f9e816b882751679aa53b550e2b1a1860a246c75585437",
        "events": "6139e6ddf6a5359a9e64a5394eefdbb7f3fe7935c472ea3270e3a6c1bf8ffc68",
        "graph": "fe4dcf26cdf686f0a8b1c6918e89c7dabeebab5b86670e5f18363c717f8ffc6a",
-       "policies": "d36e570c27b1cf94583cb037bf7e1ba4f1efe3501b9a6554c52f6494683cf4a4"
+       "policies": "2525bdfcd13279e4d31b0246d28b71b1d84bc445147a598aaacfe2020694a44b"
       },
       "schema_version": "1.0",
       "seed": 2417,
@@ -6597,10 +8129,10 @@
       "incident_id": "INC-2417",
       "input_hashes": {
        "actions": "4801e6cdc3ddf4e7aaa783cacb6d55bda3de3f0487364bfed5e0b6b78faad0fc",
-       "constraints": "13016acc0bb505e2e0e0fc80bdabf7a9e0ae62e5437c9e505152598631133fe7",
+       "constraints": "5a79931c38f33857c9f9e816b882751679aa53b550e2b1a1860a246c75585437",
        "events": "6139e6ddf6a5359a9e64a5394eefdbb7f3fe7935c472ea3270e3a6c1bf8ffc68",
        "graph": "fe4dcf26cdf686f0a8b1c6918e89c7dabeebab5b86670e5f18363c717f8ffc6a",
-       "policies": "d36e570c27b1cf94583cb037bf7e1ba4f1efe3501b9a6554c52f6494683cf4a4"
+       "policies": "2525bdfcd13279e4d31b0246d28b71b1d84bc445147a598aaacfe2020694a44b"
       },
       "schema_version": "1.0",
       "seed": 2417,
@@ -7147,10 +8679,10 @@
       "incident_id": "INC-2417",
       "input_hashes": {
        "actions": "4801e6cdc3ddf4e7aaa783cacb6d55bda3de3f0487364bfed5e0b6b78faad0fc",
-       "constraints": "13016acc0bb505e2e0e0fc80bdabf7a9e0ae62e5437c9e505152598631133fe7",
+       "constraints": "5a79931c38f33857c9f9e816b882751679aa53b550e2b1a1860a246c75585437",
        "events": "6139e6ddf6a5359a9e64a5394eefdbb7f3fe7935c472ea3270e3a6c1bf8ffc68",
        "graph": "fe4dcf26cdf686f0a8b1c6918e89c7dabeebab5b86670e5f18363c717f8ffc6a",
-       "policies": "d36e570c27b1cf94583cb037bf7e1ba4f1efe3501b9a6554c52f6494683cf4a4"
+       "policies": "2525bdfcd13279e4d31b0246d28b71b1d84bc445147a598aaacfe2020694a44b"
       },
       "schema_version": "1.0",
       "seed": 2417,
@@ -7180,10 +8712,10 @@
       "incident_id": "INC-2417",
       "input_hashes": {
        "actions": "4801e6cdc3ddf4e7aaa783cacb6d55bda3de3f0487364bfed5e0b6b78faad0fc",
-       "constraints": "13016acc0bb505e2e0e0fc80bdabf7a9e0ae62e5437c9e505152598631133fe7",
+       "constraints": "5a79931c38f33857c9f9e816b882751679aa53b550e2b1a1860a246c75585437",
        "events": "6139e6ddf6a5359a9e64a5394eefdbb7f3fe7935c472ea3270e3a6c1bf8ffc68",
        "graph": "fe4dcf26cdf686f0a8b1c6918e89c7dabeebab5b86670e5f18363c717f8ffc6a",
-       "policies": "d36e570c27b1cf94583cb037bf7e1ba4f1efe3501b9a6554c52f6494683cf4a4"
+       "policies": "2525bdfcd13279e4d31b0246d28b71b1d84bc445147a598aaacfe2020694a44b"
       },
       "schema_version": "1.0",
       "seed": 2417,
@@ -7201,10 +8733,10 @@
       "incident_id": "INC-2417",
       "input_hashes": {
        "actions": "4801e6cdc3ddf4e7aaa783cacb6d55bda3de3f0487364bfed5e0b6b78faad0fc",
-       "constraints": "13016acc0bb505e2e0e0fc80bdabf7a9e0ae62e5437c9e505152598631133fe7",
+       "constraints": "5a79931c38f33857c9f9e816b882751679aa53b550e2b1a1860a246c75585437",
        "events": "6139e6ddf6a5359a9e64a5394eefdbb7f3fe7935c472ea3270e3a6c1bf8ffc68",
        "graph": "fe4dcf26cdf686f0a8b1c6918e89c7dabeebab5b86670e5f18363c717f8ffc6a",
-       "policies": "d36e570c27b1cf94583cb037bf7e1ba4f1efe3501b9a6554c52f6494683cf4a4"
+       "policies": "2525bdfcd13279e4d31b0246d28b71b1d84bc445147a598aaacfe2020694a44b"
       },
       "schema_version": "1.0",
       "seed": 2417,
@@ -7266,9 +8798,16 @@
       {
        "id": "C-COVER",
        "kind": "hard",
-       "label": "Every high-risk path has at least one hard cut",
+       "label": "Every enumerated path to the protected asset at or above the policy's risk threshold has a hard cut",
        "limit": null,
-       "unit": "paths"
+       "unit": "risk"
+      },
+      {
+       "id": "C-RESIDUAL",
+       "kind": "hard",
+       "label": "Simulated rollouts that may still reach the protected asset through the paths left open",
+       "limit": null,
+       "unit": "rollouts"
       },
       {
        "id": "C-DOWNTIME",
@@ -7311,10 +8850,10 @@
       "incident_id": "INC-2417",
       "input_hashes": {
        "actions": "4801e6cdc3ddf4e7aaa783cacb6d55bda3de3f0487364bfed5e0b6b78faad0fc",
-       "constraints": "13016acc0bb505e2e0e0fc80bdabf7a9e0ae62e5437c9e505152598631133fe7",
+       "constraints": "5a79931c38f33857c9f9e816b882751679aa53b550e2b1a1860a246c75585437",
        "events": "6139e6ddf6a5359a9e64a5394eefdbb7f3fe7935c472ea3270e3a6c1bf8ffc68",
        "graph": "fe4dcf26cdf686f0a8b1c6918e89c7dabeebab5b86670e5f18363c717f8ffc6a",
-       "policies": "d36e570c27b1cf94583cb037bf7e1ba4f1efe3501b9a6554c52f6494683cf4a4"
+       "policies": "2525bdfcd13279e4d31b0246d28b71b1d84bc445147a598aaacfe2020694a44b"
       },
       "schema_version": "1.0",
       "seed": 2417,
@@ -7500,9 +9039,36 @@
        "title": "Quarantine a mailbox",
        "window": null
       }
+     ],
+     "profiles": [
+      {
+       "cover_min_risk": 0.2,
+       "id": "continuity_balanced",
+       "protected_asset_id": "db.finance_ledger",
+       "residual_reach_limit": 600,
+       "summary": "Cut every path to the finance ledger at or above the 0.20 high-risk threshold, with the least business disruption. Paths below the threshold may stay open only while, together, they reach the ledger in at most 600 of 6,000 simulated rollouts (10 %). The remaining routes are shown; the result is never described as zero risk.",
+       "title": "Continuity Balanced"
+      },
+      {
+       "cover_min_risk": 0.0,
+       "id": "critical_asset_zero_tolerance",
+       "protected_asset_id": "db.finance_ledger",
+       "residual_reach_limit": 0,
+       "summary": "No enumerated path to the finance ledger may stay open, whatever its simulated risk. SafeCut may add reversible actions; business impact is still measured against the same limits. It proves only what the modelled graph and evidence establish, not absolute security.",
+       "title": "Critical Asset Zero Tolerance"
+      }
      ]
     },
     "status": 200
+   },
+   "GET /api/v1/incidents/INC-2417/policy-comparison": {
+    "body": {
+     "code": "not_correlated",
+     "detail": null,
+     "message": "correlate the full incident before requesting paths",
+     "request_id": "fixture"
+    },
+    "status": 409
    },
    "GET /api/v1/incidents/INC-2417/variants": {
     "body": {
@@ -7532,6 +9098,11 @@
        "description": "Guards against a plan that only wins because of the user limit.",
        "key": "relaxed_users_250",
        "title": "User-impact limit raised to 250"
+      },
+      {
+       "description": "The identity provider can refuse AS64500 sign-ins to the support portal outright, so the edge block on that route (C09) becomes a hard cut. Nothing else changes; under Critical Asset Zero Tolerance a plan that also closes U1 becomes feasible.",
+       "key": "support_route_blockable",
+       "title": "AS64500 can be blocked on the support route"
       }
      ],
      "meta": {
@@ -7539,10 +9110,10 @@
       "incident_id": "INC-2417",
       "input_hashes": {
        "actions": "4801e6cdc3ddf4e7aaa783cacb6d55bda3de3f0487364bfed5e0b6b78faad0fc",
-       "constraints": "13016acc0bb505e2e0e0fc80bdabf7a9e0ae62e5437c9e505152598631133fe7",
+       "constraints": "5a79931c38f33857c9f9e816b882751679aa53b550e2b1a1860a246c75585437",
        "events": "6139e6ddf6a5359a9e64a5394eefdbb7f3fe7935c472ea3270e3a6c1bf8ffc68",
        "graph": "fe4dcf26cdf686f0a8b1c6918e89c7dabeebab5b86670e5f18363c717f8ffc6a",
-       "policies": "d36e570c27b1cf94583cb037bf7e1ba4f1efe3501b9a6554c52f6494683cf4a4"
+       "policies": "2525bdfcd13279e4d31b0246d28b71b1d84bc445147a598aaacfe2020694a44b"
       },
       "schema_version": "1.0",
       "seed": 2417,
@@ -7571,19 +9142,19 @@
      "id": "INC-2417",
      "latest": {
       "execution_id": null,
-      "plan_id": "PLAN-10e634719283",
-      "proof_id": "PS-2417-d7c66ecf",
-      "simulation_id": "SIM-e0786418e9b0"
+      "plan_id": "PLAN-9ae8f880ad90",
+      "proof_id": "PS-2417-33f20ba2",
+      "simulation_id": "SIM-c8f68619b6de"
      },
      "meta": {
       "generated_at": "2026-10-27T09:57:27Z",
       "incident_id": "INC-2417",
       "input_hashes": {
        "actions": "4801e6cdc3ddf4e7aaa783cacb6d55bda3de3f0487364bfed5e0b6b78faad0fc",
-       "constraints": "13016acc0bb505e2e0e0fc80bdabf7a9e0ae62e5437c9e505152598631133fe7",
+       "constraints": "5a79931c38f33857c9f9e816b882751679aa53b550e2b1a1860a246c75585437",
        "events": "6139e6ddf6a5359a9e64a5394eefdbb7f3fe7935c472ea3270e3a6c1bf8ffc68",
        "graph": "fe4dcf26cdf686f0a8b1c6918e89c7dabeebab5b86670e5f18363c717f8ffc6a",
-       "policies": "d36e570c27b1cf94583cb037bf7e1ba4f1efe3501b9a6554c52f6494683cf4a4"
+       "policies": "2525bdfcd13279e4d31b0246d28b71b1d84bc445147a598aaacfe2020694a44b"
       },
       "schema_version": "1.0",
       "seed": 2417,
@@ -8130,10 +9701,10 @@
       "incident_id": "INC-2417",
       "input_hashes": {
        "actions": "4801e6cdc3ddf4e7aaa783cacb6d55bda3de3f0487364bfed5e0b6b78faad0fc",
-       "constraints": "13016acc0bb505e2e0e0fc80bdabf7a9e0ae62e5437c9e505152598631133fe7",
+       "constraints": "5a79931c38f33857c9f9e816b882751679aa53b550e2b1a1860a246c75585437",
        "events": "6139e6ddf6a5359a9e64a5394eefdbb7f3fe7935c472ea3270e3a6c1bf8ffc68",
        "graph": "fe4dcf26cdf686f0a8b1c6918e89c7dabeebab5b86670e5f18363c717f8ffc6a",
-       "policies": "d36e570c27b1cf94583cb037bf7e1ba4f1efe3501b9a6554c52f6494683cf4a4"
+       "policies": "2525bdfcd13279e4d31b0246d28b71b1d84bc445147a598aaacfe2020694a44b"
       },
       "schema_version": "1.0",
       "seed": 2417,
@@ -8178,7 +9749,7 @@
       {
        "actor": "system",
        "at": "2026-10-27T09:56:57Z",
-       "hash": "ea255a16626b54e364dd88da01ca6b49b949470831ad5c6639dffa7f876206b9",
+       "hash": "3bbaef1a519d15e6e003342b846eda1b3fc300bb5bc0f280f0b8ff0265d80c70",
        "kind": "plan_received",
        "payload": {
         "state": "review",
@@ -8186,12 +9757,12 @@
        },
        "prev_hash": "1022710e806bd3a2cbc554b2e53f0ed931aa247094dc12f076c2b930a5736420",
        "seq": 3,
-       "subject_id": "PLAN-10e634719283"
+       "subject_id": "PLAN-9ae8f880ad90"
       },
       {
        "actor": "echolab",
        "at": "2026-10-27T09:57:12Z",
-       "hash": "225c46ca2d08fc7884eb496d351950bcacee5ef927b92888beb7c1f82975771c",
+       "hash": "685999d1d502faf189778c037d673047e261735f94db1c64490dd5dfd94263bb",
        "kind": "simulated",
        "payload": {
         "futures": [
@@ -8200,21 +9771,21 @@
          "C"
         ]
        },
-       "prev_hash": "ea255a16626b54e364dd88da01ca6b49b949470831ad5c6639dffa7f876206b9",
+       "prev_hash": "3bbaef1a519d15e6e003342b846eda1b3fc300bb5bc0f280f0b8ff0265d80c70",
        "seq": 4,
-       "subject_id": "SIM-e0786418e9b0"
+       "subject_id": "SIM-c8f68619b6de"
       },
       {
        "actor": "proofseal",
        "at": "2026-10-27T09:57:27Z",
-       "hash": "dd7335bfb4d5961a4323cd01293d38d10989d97690a302ab0bed954e3c8e0258",
+       "hash": "fbc5f914f5e450bb0eb40b698016b7270fa0371fab3f5b5c8bcd2e96204109ab",
        "kind": "proof_sealed",
        "payload": {
-        "certificate": "f857dd40875435602c5d22590d8e45e7fd58ef1aae7e7b2aae22db489af45d7c"
+        "certificate": "fa1a3d78556050fabf0ada24b77a11f894e9f77fd5a5df0346abd9e592d2f9c7"
        },
-       "prev_hash": "225c46ca2d08fc7884eb496d351950bcacee5ef927b92888beb7c1f82975771c",
+       "prev_hash": "685999d1d502faf189778c037d673047e261735f94db1c64490dd5dfd94263bb",
        "seq": 5,
-       "subject_id": "PS-2417-d7c66ecf"
+       "subject_id": "PS-2417-33f20ba2"
       }
      ],
      "meta": {
@@ -8222,10 +9793,10 @@
       "incident_id": "INC-2417",
       "input_hashes": {
        "actions": "4801e6cdc3ddf4e7aaa783cacb6d55bda3de3f0487364bfed5e0b6b78faad0fc",
-       "constraints": "13016acc0bb505e2e0e0fc80bdabf7a9e0ae62e5437c9e505152598631133fe7",
+       "constraints": "5a79931c38f33857c9f9e816b882751679aa53b550e2b1a1860a246c75585437",
        "events": "6139e6ddf6a5359a9e64a5394eefdbb7f3fe7935c472ea3270e3a6c1bf8ffc68",
        "graph": "fe4dcf26cdf686f0a8b1c6918e89c7dabeebab5b86670e5f18363c717f8ffc6a",
-       "policies": "d36e570c27b1cf94583cb037bf7e1ba4f1efe3501b9a6554c52f6494683cf4a4"
+       "policies": "2525bdfcd13279e4d31b0246d28b71b1d84bc445147a598aaacfe2020694a44b"
       },
       "schema_version": "1.0",
       "seed": 2417,
@@ -8434,10 +10005,10 @@
       "incident_id": "INC-2417",
       "input_hashes": {
        "actions": "4801e6cdc3ddf4e7aaa783cacb6d55bda3de3f0487364bfed5e0b6b78faad0fc",
-       "constraints": "13016acc0bb505e2e0e0fc80bdabf7a9e0ae62e5437c9e505152598631133fe7",
+       "constraints": "5a79931c38f33857c9f9e816b882751679aa53b550e2b1a1860a246c75585437",
        "events": "6139e6ddf6a5359a9e64a5394eefdbb7f3fe7935c472ea3270e3a6c1bf8ffc68",
        "graph": "fe4dcf26cdf686f0a8b1c6918e89c7dabeebab5b86670e5f18363c717f8ffc6a",
-       "policies": "d36e570c27b1cf94583cb037bf7e1ba4f1efe3501b9a6554c52f6494683cf4a4"
+       "policies": "2525bdfcd13279e4d31b0246d28b71b1d84bc445147a598aaacfe2020694a44b"
       },
       "schema_version": "1.0",
       "seed": 2417,
@@ -8662,10 +10233,10 @@
       "incident_id": "INC-2417",
       "input_hashes": {
        "actions": "4801e6cdc3ddf4e7aaa783cacb6d55bda3de3f0487364bfed5e0b6b78faad0fc",
-       "constraints": "13016acc0bb505e2e0e0fc80bdabf7a9e0ae62e5437c9e505152598631133fe7",
+       "constraints": "5a79931c38f33857c9f9e816b882751679aa53b550e2b1a1860a246c75585437",
        "events": "6139e6ddf6a5359a9e64a5394eefdbb7f3fe7935c472ea3270e3a6c1bf8ffc68",
        "graph": "fe4dcf26cdf686f0a8b1c6918e89c7dabeebab5b86670e5f18363c717f8ffc6a",
-       "policies": "d36e570c27b1cf94583cb037bf7e1ba4f1efe3501b9a6554c52f6494683cf4a4"
+       "policies": "2525bdfcd13279e4d31b0246d28b71b1d84bc445147a598aaacfe2020694a44b"
       },
       "schema_version": "1.0",
       "seed": 2417,
@@ -8718,9 +10289,16 @@
       {
        "id": "C-COVER",
        "kind": "hard",
-       "label": "Every high-risk path has at least one hard cut",
+       "label": "Every enumerated path to the protected asset at or above the policy's risk threshold has a hard cut",
        "limit": null,
-       "unit": "paths"
+       "unit": "risk"
+      },
+      {
+       "id": "C-RESIDUAL",
+       "kind": "hard",
+       "label": "Simulated rollouts that may still reach the protected asset through the paths left open",
+       "limit": null,
+       "unit": "rollouts"
       },
       {
        "id": "C-DOWNTIME",
@@ -8763,10 +10341,10 @@
       "incident_id": "INC-2417",
       "input_hashes": {
        "actions": "4801e6cdc3ddf4e7aaa783cacb6d55bda3de3f0487364bfed5e0b6b78faad0fc",
-       "constraints": "13016acc0bb505e2e0e0fc80bdabf7a9e0ae62e5437c9e505152598631133fe7",
+       "constraints": "5a79931c38f33857c9f9e816b882751679aa53b550e2b1a1860a246c75585437",
        "events": "6139e6ddf6a5359a9e64a5394eefdbb7f3fe7935c472ea3270e3a6c1bf8ffc68",
        "graph": "fe4dcf26cdf686f0a8b1c6918e89c7dabeebab5b86670e5f18363c717f8ffc6a",
-       "policies": "d36e570c27b1cf94583cb037bf7e1ba4f1efe3501b9a6554c52f6494683cf4a4"
+       "policies": "2525bdfcd13279e4d31b0246d28b71b1d84bc445147a598aaacfe2020694a44b"
       },
       "schema_version": "1.0",
       "seed": 2417,
@@ -8952,7 +10530,463 @@
        "title": "Quarantine a mailbox",
        "window": null
       }
+     ],
+     "profiles": [
+      {
+       "cover_min_risk": 0.2,
+       "id": "continuity_balanced",
+       "protected_asset_id": "db.finance_ledger",
+       "residual_reach_limit": 600,
+       "summary": "Cut every path to the finance ledger at or above the 0.20 high-risk threshold, with the least business disruption. Paths below the threshold may stay open only while, together, they reach the ledger in at most 600 of 6,000 simulated rollouts (10 %). The remaining routes are shown; the result is never described as zero risk.",
+       "title": "Continuity Balanced"
+      },
+      {
+       "cover_min_risk": 0.0,
+       "id": "critical_asset_zero_tolerance",
+       "protected_asset_id": "db.finance_ledger",
+       "residual_reach_limit": 0,
+       "summary": "No enumerated path to the finance ledger may stay open, whatever its simulated risk. SafeCut may add reversible actions; business impact is still measured against the same limits. It proves only what the modelled graph and evidence establish, not absolute security.",
+       "title": "Critical Asset Zero Tolerance"
+      }
      ]
+    },
+    "status": 200
+   },
+   "GET /api/v1/incidents/INC-2417/policy-comparison": {
+    "body": {
+     "meta": {
+      "generated_at": "2026-10-27T09:56:12Z",
+      "incident_id": "INC-2417",
+      "input_hashes": {
+       "actions": "4801e6cdc3ddf4e7aaa783cacb6d55bda3de3f0487364bfed5e0b6b78faad0fc",
+       "constraints": "5a79931c38f33857c9f9e816b882751679aa53b550e2b1a1860a246c75585437",
+       "events": "6139e6ddf6a5359a9e64a5394eefdbb7f3fe7935c472ea3270e3a6c1bf8ffc68",
+       "graph": "fe4dcf26cdf686f0a8b1c6918e89c7dabeebab5b86670e5f18363c717f8ffc6a",
+       "policies": "2525bdfcd13279e4d31b0246d28b71b1d84bc445147a598aaacfe2020694a44b"
+      },
+      "schema_version": "1.0",
+      "seed": 2417,
+      "simulated": true
+     },
+     "outcomes": [
+      {
+       "approval_roles": [
+        "finance_ops_owner",
+        "tier2_analyst"
+       ],
+       "constraints": [
+        {
+         "constraint_id": "C-COVER",
+         "derivation": {
+          "denominator": 6,
+          "method": "Hard cuts intersected with each required path's live route",
+          "numerator": 6,
+          "source_ids": [
+           "P1",
+           "P2",
+           "P3",
+           "P4",
+           "P5",
+           "P6",
+           "C01",
+           "C02",
+           "C03",
+           "C04"
+          ]
+         },
+         "limit": "every enumerated path with simulated risk ≥ 0.2 (6 of 7)",
+         "state": "met",
+         "value": "6 of 6 required paths cut"
+        },
+        {
+         "constraint_id": "C-RESIDUAL",
+         "derivation": {
+          "denominator": 6000,
+          "method": "Sum of each open path's own simulated reach count (an upper bound): U1 502",
+          "numerator": 502,
+          "source_ids": [
+           "U1"
+          ]
+         },
+         "limit": "≤ 600 of 6,000",
+         "state": "met",
+         "value": "502 of 6,000 rollouts via U1"
+        },
+        {
+         "constraint_id": "C-DOWNTIME",
+         "derivation": {
+          "denominator": null,
+          "method": "Critical processes whose dependency closure the cuts break, x containment window (240 min): none",
+          "numerator": 0,
+          "source_ids": []
+         },
+         "limit": "≤ 0 min",
+         "state": "met",
+         "value": "0 min"
+        },
+        {
+         "constraint_id": "C-USERS",
+         "derivation": {
+          "denominator": null,
+          "method": "Distinct named users plus bulk groups (groups counted as disjoint)",
+          "numerator": 3,
+          "source_ids": [
+           "user.j_okafor",
+           "user.m_verma",
+           "user.s_iyer"
+          ]
+         },
+         "limit": "≤ 5 users",
+         "state": "met",
+         "value": "3 users"
+        },
+        {
+         "constraint_id": "C-REVERSIBLE",
+         "derivation": {
+          "denominator": 4,
+          "method": "Actions with a rollback plan inside the limit",
+          "numerator": 4,
+          "source_ids": [
+           "C01",
+           "C02",
+           "C03",
+           "C04"
+          ]
+         },
+         "limit": "≤ 300 s each",
+         "state": "met",
+         "value": "slowest rollback 60 s"
+        },
+        {
+         "constraint_id": "C-AUTH",
+         "derivation": {
+          "denominator": 4,
+          "method": "Required roles (policies plus active freeze exceptions) vs available approvers",
+          "numerator": 4,
+          "source_ids": [
+           "C01",
+           "C02",
+           "C03",
+           "C04"
+          ]
+         },
+         "limit": "every required role has an available approver",
+         "state": "met",
+         "value": "approvers available: A. Rahman (tier2_analyst), S. Iyer (finance_ops_owner)"
+        },
+        {
+         "constraint_id": "C-EVIDENCE",
+         "derivation": {
+          "denominator": 4,
+          "method": "Action evidence flags; the Gate refuses to execute an unsealed plan",
+          "numerator": 4,
+          "source_ids": [
+           "C01",
+           "C02",
+           "C03",
+           "C04"
+          ]
+         },
+         "limit": "all; seal first (IR-DATA-07)",
+         "state": "met",
+         "value": "4 of 4 preserve evidence; seal before execution"
+        }
+       ],
+       "critical_downtime_min": 0,
+       "display_actions": [
+        {
+         "blocks_path_ids": [
+          "P2",
+          "P5",
+          "P6"
+         ],
+         "candidate_ids": [
+          "C01"
+         ],
+         "id": "A1",
+         "title": "Revoke DocuSync Pro OAuth grant"
+        },
+        {
+         "blocks_path_ids": [
+          "P1",
+          "P3"
+         ],
+         "candidate_ids": [
+          "C02",
+          "C03"
+         ],
+         "id": "A2",
+         "title": "Revoke 2 compromised sessions"
+        },
+        {
+         "blocks_path_ids": [
+          "P4"
+         ],
+         "candidate_ids": [
+          "C04"
+         ],
+         "id": "A3",
+         "title": "Require phishing-resistant step-up for finance apps (60 min)"
+        }
+       ],
+       "infeasibility": null,
+       "plan_id": "PLAN-9ae8f880ad90",
+       "profile": {
+        "cover_min_risk": 0.2,
+        "id": "continuity_balanced",
+        "protected_asset_id": "db.finance_ledger",
+        "residual_reach_limit": 600,
+        "summary": "Cut every path to the finance ledger at or above the 0.20 high-risk threshold, with the least business disruption. Paths below the threshold may stay open only while, together, they reach the ledger in at most 600 of 6,000 simulated rollouts (10 %). The remaining routes are shown; the result is never described as zero risk.",
+        "title": "Continuity Balanced"
+       },
+       "residual": {
+        "enumerated_path_ids": [
+         "P1",
+         "P2",
+         "P3",
+         "P4",
+         "P5",
+         "P6",
+         "U1"
+        ],
+        "limit": 600,
+        "open_path_ids": [
+         "U1"
+        ],
+        "protected_asset_id": "db.finance_ledger",
+        "reach_bound": {
+         "denominator": 6000,
+         "method": "Sum of the open paths' own simulated reach counts (upper bound): U1 502",
+         "numerator": 502,
+         "source_ids": [
+          "U1"
+         ]
+        },
+        "required_path_ids": [
+         "P1",
+         "P2",
+         "P3",
+         "P4",
+         "P5",
+         "P6"
+        ],
+        "uncertainty": [
+         "U1 rests on inferred edge i.asn-support (confidence 0.55): The support portal shares an SSO application with the finance portal.",
+         "U1 is a forecast: no event has been observed along its route yet.",
+         "Reach counts are simulated (6,000 rollouts, seed 2417, 600 s horizon) from scenario transition probabilities, not measured; only paths in the modelled graph are counted."
+        ],
+        "within_limit": true
+       },
+       "selected_candidate_ids": [
+        "C01",
+        "C02",
+        "C03",
+        "C04"
+       ],
+       "simulated_reach": {
+        "denominator": 6000,
+        "method": "Rollouts reaching db.finance_ledger by any route within 600 s (seed 2417; soft cuts evaded with p=0.6)",
+        "numerator": 502,
+        "source_ids": []
+       },
+       "status": "optimal",
+       "users_affected": 3
+      },
+      {
+       "approval_roles": [],
+       "constraints": [
+        {
+         "constraint_id": "C-COVER",
+         "derivation": {
+          "denominator": 7,
+          "method": "Hard cuts intersected with each required path's live route; still open: P1, P2, P3, P4, P5, P6, U1",
+          "numerator": 0,
+          "source_ids": [
+           "P1",
+           "P2",
+           "P3",
+           "P4",
+           "P5",
+           "P6",
+           "U1"
+          ]
+         },
+         "limit": "every enumerated path with simulated risk ≥ 0 (7 of 7)",
+         "state": "violated",
+         "value": "0 of 7 required paths cut"
+        },
+        {
+         "constraint_id": "C-RESIDUAL",
+         "derivation": {
+          "denominator": 6000,
+          "method": "Sum of each open path's own simulated reach count (an upper bound): P1 4,335, P2 4,050, P3 3,431, P4 2,068, P5 1,884, P6 1,480, U1 502",
+          "numerator": 17750,
+          "source_ids": [
+           "P1",
+           "P2",
+           "P3",
+           "P4",
+           "P5",
+           "P6",
+           "U1"
+          ]
+         },
+         "limit": "≤ 0 of 6,000",
+         "state": "violated",
+         "value": "17,750 of 6,000 rollouts via P1, P2, P3, P4, P5, P6, U1"
+        },
+        {
+         "constraint_id": "C-DOWNTIME",
+         "derivation": {
+          "denominator": null,
+          "method": "Critical processes whose dependency closure the cuts break, x containment window (240 min): none",
+          "numerator": 0,
+          "source_ids": []
+         },
+         "limit": "≤ 0 min",
+         "state": "met",
+         "value": "0 min"
+        },
+        {
+         "constraint_id": "C-USERS",
+         "derivation": {
+          "denominator": null,
+          "method": "Distinct named users plus bulk groups (groups counted as disjoint)",
+          "numerator": 0,
+          "source_ids": []
+         },
+         "limit": "≤ 5 users",
+         "state": "met",
+         "value": "0 users"
+        },
+        {
+         "constraint_id": "C-REVERSIBLE",
+         "derivation": {
+          "denominator": null,
+          "method": "Actions with a rollback plan inside the limit",
+          "numerator": 0,
+          "source_ids": []
+         },
+         "limit": "≤ 300 s each",
+         "state": "met",
+         "value": "slowest rollback 0 s"
+        },
+        {
+         "constraint_id": "C-AUTH",
+         "derivation": {
+          "denominator": null,
+          "method": "Required roles (policies plus active freeze exceptions) vs available approvers",
+          "numerator": 0,
+          "source_ids": []
+         },
+         "limit": "every required role has an available approver",
+         "state": "met",
+         "value": "approvers available: none needed"
+        },
+        {
+         "constraint_id": "C-EVIDENCE",
+         "derivation": {
+          "denominator": null,
+          "method": "Action evidence flags; the Gate refuses to execute an unsealed plan",
+          "numerator": 0,
+          "source_ids": []
+         },
+         "limit": "all; seal first (IR-DATA-07)",
+         "state": "met",
+         "value": "0 of 0 preserve evidence; seal before execution"
+        }
+       ],
+       "critical_downtime_min": null,
+       "display_actions": [],
+       "infeasibility": {
+        "closest_options": [
+         {
+          "breaks": [
+           {
+            "constraint_id": "C-COVER",
+            "derivation": {
+             "denominator": 7,
+             "method": "Hard cuts intersected with each required path's live route; still open: U1",
+             "numerator": 6,
+             "source_ids": [
+              "P1",
+              "P2",
+              "P3",
+              "P4",
+              "P5",
+              "P6",
+              "U1",
+              "C01",
+              "C02",
+              "C03",
+              "C04"
+             ]
+            },
+            "limit": "every enumerated path with simulated risk ≥ 0 (7 of 7)",
+            "state": "violated",
+            "value": "6 of 7 required paths cut"
+           },
+           {
+            "constraint_id": "C-RESIDUAL",
+            "derivation": {
+             "denominator": 6000,
+             "method": "Sum of each open path's own simulated reach count (an upper bound): U1 502",
+             "numerator": 502,
+             "source_ids": [
+              "U1"
+             ]
+            },
+            "limit": "≤ 0 of 6,000",
+            "state": "violated",
+            "value": "502 of 6,000 rollouts via U1"
+           }
+          ],
+          "candidate_ids": [
+           "C01",
+           "C02",
+           "C03",
+           "C04"
+          ]
+         }
+        ],
+        "violated_constraint_ids": [
+         "C-COVER"
+        ]
+       },
+       "plan_id": "PLAN-a07414608682",
+       "profile": {
+        "cover_min_risk": 0.0,
+        "id": "critical_asset_zero_tolerance",
+        "protected_asset_id": "db.finance_ledger",
+        "residual_reach_limit": 0,
+        "summary": "No enumerated path to the finance ledger may stay open, whatever its simulated risk. SafeCut may add reversible actions; business impact is still measured against the same limits. It proves only what the modelled graph and evidence establish, not absolute security.",
+        "title": "Critical Asset Zero Tolerance"
+       },
+       "residual": null,
+       "selected_candidate_ids": [],
+       "simulated_reach": null,
+       "status": "infeasible",
+       "users_affected": null
+      }
+     ],
+     "tradeoff": {
+      "added_candidate_ids": [],
+      "added_roles": [],
+      "delta_actions": null,
+      "delta_critical_downtime_min": null,
+      "delta_reach_bound": null,
+      "delta_simulated_reach": null,
+      "delta_users": null,
+      "from_profile": "continuity_balanced",
+      "newly_cut_path_ids": [],
+      "reasons": [
+       "Critical Asset Zero Tolerance must cut U1 (attacker.as64500 → process.support → api.finance → db.finance_ledger). The only actions with a hard cut on it are C05 (Isolate Finance API): C-REVERSIBLE: rollback 14400 s exceeds 300 s, C-DOWNTIME: breaks process.payment, process.payroll, process.reconciliation for 240 min, C-USERS: would raise users affected to 310 (limit 5); C06 (Isolate finance ledger database): C-REVERSIBLE: rollback 15600 s exceeds 300 s, C-DOWNTIME: breaks process.payment, process.payroll, process.reconciliation for 240 min, C-USERS: would raise users affected to 412 (limit 5); C07 (Network-isolate finance subnet): C-REVERSIBLE: rollback 10800 s exceeds 300 s, C-DOWNTIME: breaks process.payment, process.payroll, process.reconciliation for 240 min, C-USERS: would raise users affected to 412 (limit 5).",
+       "So no plan satisfies every constraint of Critical Asset Zero Tolerance while U1 must be cut. Relaxing C-COVER would restore one; HALT does not run a partial plan without an analyst decision."
+      ],
+      "removed_candidate_ids": [],
+      "reopened_path_ids": [],
+      "to_profile": "critical_asset_zero_tolerance"
+     }
     },
     "status": 200
    },
@@ -8984,6 +11018,11 @@
        "description": "Guards against a plan that only wins because of the user limit.",
        "key": "relaxed_users_250",
        "title": "User-impact limit raised to 250"
+      },
+      {
+       "description": "The identity provider can refuse AS64500 sign-ins to the support portal outright, so the edge block on that route (C09) becomes a hard cut. Nothing else changes; under Critical Asset Zero Tolerance a plan that also closes U1 becomes feasible.",
+       "key": "support_route_blockable",
+       "title": "AS64500 can be blocked on the support route"
       }
      ],
      "meta": {
@@ -8991,10 +11030,10 @@
       "incident_id": "INC-2417",
       "input_hashes": {
        "actions": "4801e6cdc3ddf4e7aaa783cacb6d55bda3de3f0487364bfed5e0b6b78faad0fc",
-       "constraints": "13016acc0bb505e2e0e0fc80bdabf7a9e0ae62e5437c9e505152598631133fe7",
+       "constraints": "5a79931c38f33857c9f9e816b882751679aa53b550e2b1a1860a246c75585437",
        "events": "6139e6ddf6a5359a9e64a5394eefdbb7f3fe7935c472ea3270e3a6c1bf8ffc68",
        "graph": "fe4dcf26cdf686f0a8b1c6918e89c7dabeebab5b86670e5f18363c717f8ffc6a",
-       "policies": "d36e570c27b1cf94583cb037bf7e1ba4f1efe3501b9a6554c52f6494683cf4a4"
+       "policies": "2525bdfcd13279e4d31b0246d28b71b1d84bc445147a598aaacfe2020694a44b"
       },
       "schema_version": "1.0",
       "seed": 2417,
@@ -9003,25 +11042,45 @@
     },
     "status": 200
    },
-   "GET /api/v1/plans/PLAN-10e634719283": {
+   "GET /api/v1/plans/PLAN-9ae8f880ad90": {
     "body": {
      "constraints": [
       {
        "constraint_id": "C-COVER",
        "derivation": {
         "denominator": 6,
-        "method": "Hard cuts intersected with each path's live route",
+        "method": "Hard cuts intersected with each required path's live route",
         "numerator": 6,
         "source_ids": [
+         "P1",
+         "P2",
+         "P3",
+         "P4",
+         "P5",
+         "P6",
          "C01",
          "C02",
          "C03",
          "C04"
         ]
        },
-       "limit": "all 6",
+       "limit": "every enumerated path with simulated risk ≥ 0.2 (6 of 7)",
        "state": "met",
-       "value": "6 of 6 high-risk paths cut"
+       "value": "6 of 6 required paths cut"
+      },
+      {
+       "constraint_id": "C-RESIDUAL",
+       "derivation": {
+        "denominator": 6000,
+        "method": "Sum of each open path's own simulated reach count (an upper bound): U1 502",
+        "numerator": 502,
+        "source_ids": [
+         "U1"
+        ]
+       },
+       "limit": "≤ 600 of 6,000",
+       "state": "met",
+       "value": "502 of 6,000 rollouts via U1"
       },
       {
        "constraint_id": "C-DOWNTIME",
@@ -9139,24 +11198,24 @@
        "title": "Require phishing-resistant step-up for finance apps (60 min)"
       }
      ],
-     "id": "PLAN-10e634719283",
+     "id": "PLAN-9ae8f880ad90",
      "infeasibility": null,
      "input_hashes": {
       "actions": "4801e6cdc3ddf4e7aaa783cacb6d55bda3de3f0487364bfed5e0b6b78faad0fc",
       "graph": "fe4dcf26cdf686f0a8b1c6918e89c7dabeebab5b86670e5f18363c717f8ffc6a",
       "paths": "2915822e4520149e48a62ffff5126074b39f4ce2bcebf5fbc5ac75187e1f4e78",
-      "policies": "d36e570c27b1cf94583cb037bf7e1ba4f1efe3501b9a6554c52f6494683cf4a4"
+      "policies": "2525bdfcd13279e4d31b0246d28b71b1d84bc445147a598aaacfe2020694a44b"
      },
      "meta": {
       "generated_at": "2026-10-27T09:56:12Z",
       "incident_id": "INC-2417",
       "input_hashes": {
        "actions": "4801e6cdc3ddf4e7aaa783cacb6d55bda3de3f0487364bfed5e0b6b78faad0fc",
-       "constraints": "13016acc0bb505e2e0e0fc80bdabf7a9e0ae62e5437c9e505152598631133fe7",
+       "constraints": "8393719e80aa222a6574cf25c953aca6fe83610d05f79208dfa6572172b22937",
        "events": "6139e6ddf6a5359a9e64a5394eefdbb7f3fe7935c472ea3270e3a6c1bf8ffc68",
        "graph": "fe4dcf26cdf686f0a8b1c6918e89c7dabeebab5b86670e5f18363c717f8ffc6a",
-       "plan_body": "10e63471928386718a7a7101bd5d4d6d4487e229dfddf681dd9e6056d451d070",
-       "policies": "d36e570c27b1cf94583cb037bf7e1ba4f1efe3501b9a6554c52f6494683cf4a4"
+       "plan_body": "9ae8f880ad9074f76554d840cf24ac12a9d867ad6b8af0e6f54b86093b05041b",
+       "policies": "2525bdfcd13279e4d31b0246d28b71b1d84bc445147a598aaacfe2020694a44b"
       },
       "schema_version": "1.0",
       "seed": 2417,
@@ -9171,6 +11230,7 @@
       },
       "value": 345
      },
+     "profile_id": "continuity_balanced",
      "rejected": [
       {
        "candidate_id": "C05",
@@ -9205,7 +11265,7 @@
       {
        "candidate_id": "C09",
        "reasons": [
-        "Only soft cuts on P1, P3: the attacker can evade them"
+        "Only soft cuts on P1, P3, U1: the attacker can evade them"
        ]
       },
       {
@@ -9218,17 +11278,55 @@
       {
        "candidate_id": "C11",
        "reasons": [
-        "No hard cut on any high-risk path",
+        "No hard cut on any enumerated path to the protected asset",
         "C-REVERSIBLE: not reversible"
        ]
       },
       {
        "candidate_id": "C12",
        "reasons": [
-        "No hard cut on any high-risk path"
+        "No hard cut on any enumerated path to the protected asset"
        ]
       }
      ],
+     "residual": {
+      "enumerated_path_ids": [
+       "P1",
+       "P2",
+       "P3",
+       "P4",
+       "P5",
+       "P6",
+       "U1"
+      ],
+      "limit": 600,
+      "open_path_ids": [
+       "U1"
+      ],
+      "protected_asset_id": "db.finance_ledger",
+      "reach_bound": {
+       "denominator": 6000,
+       "method": "Sum of the open paths' own simulated reach counts (upper bound): U1 502",
+       "numerator": 502,
+       "source_ids": [
+        "U1"
+       ]
+      },
+      "required_path_ids": [
+       "P1",
+       "P2",
+       "P3",
+       "P4",
+       "P5",
+       "P6"
+      ],
+      "uncertainty": [
+       "U1 rests on inferred edge i.asn-support (confidence 0.55): The support portal shares an SSO application with the finance portal.",
+       "U1 is a forecast: no event has been observed along its route yet.",
+       "Reach counts are simulated (6,000 rollouts, seed 2417, 600 s horizon) from scenario transition probabilities, not measured; only paths in the modelled graph are counted."
+      ],
+      "within_limit": true
+     },
      "selected_candidate_ids": [
       "C01",
       "C02",
@@ -9245,7 +11343,7 @@
     },
     "status": 200
    },
-   "GET /api/v1/plans/PLAN-10e634719283/approvals": {
+   "GET /api/v1/plans/PLAN-9ae8f880ad90/approvals": {
     "body": {
      "items": [],
      "meta": {
@@ -9253,10 +11351,10 @@
       "incident_id": "INC-2417",
       "input_hashes": {
        "actions": "4801e6cdc3ddf4e7aaa783cacb6d55bda3de3f0487364bfed5e0b6b78faad0fc",
-       "constraints": "13016acc0bb505e2e0e0fc80bdabf7a9e0ae62e5437c9e505152598631133fe7",
+       "constraints": "5a79931c38f33857c9f9e816b882751679aa53b550e2b1a1860a246c75585437",
        "events": "6139e6ddf6a5359a9e64a5394eefdbb7f3fe7935c472ea3270e3a6c1bf8ffc68",
        "graph": "fe4dcf26cdf686f0a8b1c6918e89c7dabeebab5b86670e5f18363c717f8ffc6a",
-       "policies": "d36e570c27b1cf94583cb037bf7e1ba4f1efe3501b9a6554c52f6494683cf4a4"
+       "policies": "2525bdfcd13279e4d31b0246d28b71b1d84bc445147a598aaacfe2020694a44b"
       },
       "schema_version": "1.0",
       "seed": 2417,
@@ -9269,9 +11367,9 @@
     },
     "status": 200
    },
-   "GET /api/v1/proofs/PS-2417-d7c66ecf": {
+   "GET /api/v1/proofs/PS-2417-33f20ba2": {
     "body": {
-     "certificate": "f857dd40875435602c5d22590d8e45e7fd58ef1aae7e7b2aae22db489af45d7c",
+     "certificate": "fa1a3d78556050fabf0ada24b77a11f894e9f77fd5a5df0346abd9e592d2f9c7",
      "claims": [
       {
        "evidence_ids": [],
@@ -9284,7 +11382,7 @@
         "source_ids": []
        },
        "status": "verified",
-       "text": "0 of 6 high-risk paths reachable after the plan"
+       "text": "0 of 6 paths Continuity Balanced requires cut are reachable after the plan"
       },
       {
        "evidence_ids": [],
@@ -9396,15 +11494,30 @@
       {
        "evidence_ids": [],
        "id": "CHK-09",
-       "method": "Leave-one-out coverage",
+       "method": "Leave-one-out against C-COVER and C-RESIDUAL",
        "result": {
         "denominator": 4,
-        "method": "Actions whose removal leaves a high-risk path uncut",
+        "method": "Actions whose removal still satisfies the policy",
         "numerator": 4,
         "source_ids": []
        },
        "status": "verified",
-       "text": "Removing any action re-opens at least one high-risk path"
+       "text": "Removing any action breaks the policy: a required path re-opens or the residual limit is exceeded"
+      },
+      {
+       "evidence_ids": [],
+       "id": "CHK-10",
+       "method": "Route check on post-action snapshot 7fe2deeb25c5; bound = sum of open paths' own reach (502); EchoLab measured 502 with seed 2417",
+       "result": {
+        "denominator": 6000,
+        "method": "Open paths' reach bound 502; limit 600 (continuity_balanced)",
+        "numerator": 502,
+        "source_ids": [
+         "U1"
+        ]
+       },
+       "status": "verified",
+       "text": "1 of 7 enumerated paths to db.finance_ledger stay open (U1): 502 of 6,000 simulated rollouts still reach it, within the Continuity Balanced limit of 600"
       }
      ],
      "enumeration": {
@@ -9413,38 +11526,39 @@
       "subsets_checked": 4096,
       "unique": true
      },
-     "id": "PS-2417-d7c66ecf",
+     "id": "PS-2417-33f20ba2",
      "meta": {
       "generated_at": "2026-10-27T09:56:12Z",
       "incident_id": "INC-2417",
       "input_hashes": {
        "actions": "4801e6cdc3ddf4e7aaa783cacb6d55bda3de3f0487364bfed5e0b6b78faad0fc",
-       "constraints": "13016acc0bb505e2e0e0fc80bdabf7a9e0ae62e5437c9e505152598631133fe7",
+       "constraints": "8393719e80aa222a6574cf25c953aca6fe83610d05f79208dfa6572172b22937",
        "events": "6139e6ddf6a5359a9e64a5394eefdbb7f3fe7935c472ea3270e3a6c1bf8ffc68",
        "events_bundle": "6139e6ddf6a5359a9e64a5394eefdbb7f3fe7935c472ea3270e3a6c1bf8ffc68",
        "graph": "fe4dcf26cdf686f0a8b1c6918e89c7dabeebab5b86670e5f18363c717f8ffc6a",
-       "plan": "10e63471928386718a7a7101bd5d4d6d4487e229dfddf681dd9e6056d451d070",
-       "policies": "d36e570c27b1cf94583cb037bf7e1ba4f1efe3501b9a6554c52f6494683cf4a4"
+       "plan": "9ae8f880ad9074f76554d840cf24ac12a9d867ad6b8af0e6f54b86093b05041b",
+       "policies": "2525bdfcd13279e4d31b0246d28b71b1d84bc445147a598aaacfe2020694a44b"
       },
       "schema_version": "1.0",
       "seed": 2417,
       "simulated": true
      },
      "not_covered": [
-      "U1 (attacker.as64500 → process.support → api.finance → db.finance_ledger) is below the high-risk threshold and stays open: 502 of 6000 simulated rollouts reach the target along it with this plan.",
+      "U1 (attacker.as64500 → process.support → api.finance → db.finance_ledger, simulated risk 0.0837) stays open under Continuity Balanced: 502 of 6,000 simulated rollouts reach db.finance_ledger along it with this plan. This is accepted residual risk, not containment.",
+      "Only paths enumerated in the modelled graph are proven; this is not a claim of zero real-world risk.",
       "Attacker capabilities outside the modelled graph (other accounts, devices or tokens).",
       "Transition probabilities are scenario inputs; reach counts are simulated, not measured.",
       "Execution is simulated; no real identity or network system is changed.",
       "The signature uses a per-deployment demo key."
      ],
-     "plan_id": "PLAN-10e634719283",
+     "plan_id": "PLAN-9ae8f880ad90",
      "post_snapshot_hash": "7fe2deeb25c5fe95f27f0e8adc0cc3087fbbe220b213baace820984e78e944a7",
      "sealed_at": "2026-10-27T09:56:12Z",
      "signature": {
       "alg": "Ed25519",
       "demo_key": true,
       "key_id": "demo-d6727cd4a775df3b",
-      "value": "4fxbmNx2yPc5iBzOa88NBjOie9JTCHVSp2D2O8ddJOfFGiji1yRx48XyKeIljrmcriHkd0K+WlGSvBZuJgj5AA=="
+      "value": "CrEodJRfTEbw6im0eCEo+ybc1yrkJVgyV6CJ8Grlee8c8DAhvY+Aw4oUxB9QdvnrQv/Hq1Xpm162Et6oxl+6CA=="
      },
      "snapshot_hash": "e76716ec301ea2778c3563ca3e95ee532cd12daa56f28cb94023e2a81f4d10c8",
      "valid_until": "2026-10-27T10:36:12Z",
@@ -9455,12 +11569,12 @@
       "SafeCut": "ortools 9.15.6755",
       "ThreadGraph": "schema 1.0",
       "graph": "fe4dcf26cdf6",
-      "policies": "d36e570c27b1"
+      "policies": "2525bdfcd132"
      }
     },
     "status": 200
    },
-   "GET /api/v1/simulations/SIM-e0786418e9b0": {
+   "GET /api/v1/simulations/SIM-c8f68619b6de": {
     "body": {
      "futures": [
       {
@@ -9504,16 +11618,17 @@
         "U1": 0
        },
        "paths_blocked": {
-        "denominator": 6,
-        "method": "High-risk paths with a hard cut on their live route",
-        "numerator": 6,
+        "denominator": 7,
+        "method": "Enumerated paths to db.finance_ledger with a hard cut on their live route",
+        "numerator": 7,
         "source_ids": [
          "P1",
          "P2",
          "P3",
          "P4",
          "P5",
-         "P6"
+         "P6",
+         "U1"
         ]
        },
        "reversible": false,
@@ -9566,8 +11681,8 @@
         "U1": 502
        },
        "paths_blocked": {
-        "denominator": 6,
-        "method": "High-risk paths with a hard cut on their live route",
+        "denominator": 7,
+        "method": "Enumerated paths to db.finance_ledger with a hard cut on their live route; open: P1, P2, P3, P4, P5, P6, U1",
         "numerator": 0,
         "source_ids": []
        },
@@ -9623,8 +11738,8 @@
         "U1": 502
        },
        "paths_blocked": {
-        "denominator": 6,
-        "method": "High-risk paths with a hard cut on their live route",
+        "denominator": 7,
+        "method": "Enumerated paths to db.finance_ledger with a hard cut on their live route; open: U1",
         "numerator": 6,
         "source_ids": [
          "P1",
@@ -9654,8 +11769,8 @@
        }
       }
      ],
-     "hash": "e0786418e9b0d405874a1600c564ea1e4ae57f1dc166a054e53bc0d0305cf855",
-     "id": "SIM-e0786418e9b0",
+     "hash": "c8f68619b6de477e0180ebac1dcf823ff2704780ef5b8658f074293383e24065",
+     "id": "SIM-c8f68619b6de",
      "meta": {
       "generated_at": "2026-10-27T09:41:12Z",
       "incident_id": "INC-2417",
@@ -9682,7 +11797,7 @@
        },
        {
         "label": "C",
-        "plan_id": "PLAN-10e634719283",
+        "plan_id": "PLAN-9ae8f880ad90",
         "source": "plan"
        }
       ],

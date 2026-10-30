@@ -75,8 +75,8 @@ What has actually been run, and what has not (2026-10-29, branch `stabilization/
 
 | Check | Status |
 |---|---|
-| API tests | 131 passed locally with PostgreSQL 16 (pgserver); 128 passed and 3 skipped without it |
-| Web unit tests | 86 passed locally |
+| API tests | 148 passed locally with PostgreSQL 16 (pgserver); 145 passed and 3 skipped without it |
+| Web unit tests | 88 passed locally |
 | E2E + accessibility | 27 passed locally against a production build (Chromium) |
 | `npm run check` | Passed (exit 0): checksums, ruff, format, mypy, pytest, lint, typecheck, vitest, tokens, contract drift |
 | Restart safety | Tested (AT-S.1–7), and checked live: the API restarted under an open Command Center restored INC-2417; the page reconnected and refetched without a reload |

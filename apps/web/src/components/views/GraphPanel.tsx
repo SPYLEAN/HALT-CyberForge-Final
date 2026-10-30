@@ -62,7 +62,17 @@ export function GraphPanel({ height = 360, showTable = false, showModes = false 
         <Skeleton variant="graph" label="Waiting for the replay to deliver the graph" />
       )}
       {showTable ? (
-        <GraphA11y paths={ops.paths} nodes={state.nodes} blocked={blocked} summary={model.summary} onFocus={setFocusPath} focusPath={focusPath} />
+        <GraphA11y
+          paths={ops.paths}
+          nodes={state.nodes}
+          blocked={blocked}
+          summary={model.summary}
+          onFocus={setFocusPath}
+          focusPath={focusPath}
+          plan={ops.plan}
+          policyTitle={ops.policySet?.profiles.find((p) => p.id === ops.plan?.profile_id)?.title}
+          threshold={ops.incident?.params.high_risk_threshold}
+        />
       ) : (
         <p className="sr-only" aria-live="polite">
           {model.summary}

@@ -85,7 +85,7 @@ def test_AT_3_4_aggressive_breaks_business_passive_reaches_target(
     run = _run(scenario, paths, [])
     a, b, _ = run.futures
     assert any(a.downtime_min.get(p, 0) > 0 for p in CRITICAL)
-    assert a.paths_blocked.numerator == 6
+    assert (a.paths_blocked.numerator, a.paths_blocked.denominator) == (7, 7)  # isolation also cuts U1
     assert a.target_reached.numerator == 0
     assert not a.reversible
     assert b.target_reached.numerator > 0

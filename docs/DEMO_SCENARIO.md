@@ -112,11 +112,11 @@ Cut strength `hard` removes a capability; `soft` can be evaded by the modelled a
 
 | Future | Actions | Measured, seed 2417 (AT-3.4) |
 |---|---|---|
-| A · Aggressive isolation | C07 + C08 | 6 of 6 blocked; ledger reached in 0 of 6,000; 4 processes down 240 min; 413 users; not reversible within 5 min |
-| B · Passive monitoring | none | 0 of 6 blocked; ledger reached in 5,782 of 6,000 |
+| A · Aggressive isolation | C07 + C08 | 7 of 7 enumerated paths blocked; ledger reached in 0 of 6,000; 4 processes down 240 min; 413 users; not reversible within 5 min |
+| B · Passive monitoring | none | 0 of 7 blocked; ledger reached in 5,782 of 6,000 |
 | C · SafeCut plan | derived in Phase 4 | — |
 
-Residual risk: a plan that cuts only the six high-risk paths leaves U1 open. With C01–C04 applied, the ledger is still reached in 502 of 6,000 rollouts, all via U1. ProofSeal must state this under `not_covered`; it is not hidden.
+Residual risk is a policy decision (PRODUCT_RFC §3a). Under **Continuity Balanced** (default) the plan C01–C04 cuts P1–P6 and leaves U1 open: the ledger is still reached in 502 of 6,000 rollouts, all via U1, within the profile's 600 allowance. EchoLab reports the plan as **6 of 7** paths blocked, the plan's residual names U1, ProofSeal's CHK-10 states it, and `not_covered` calls it "accepted residual risk, not containment". Under **Critical Asset Zero Tolerance** the baseline has no feasible plan: only C05, C06 and C07 hard-cut U1, and each breaks C-REVERSIBLE and C-DOWNTIME. With the `support_route_blockable` variant (C09's cut on the support route becomes hard), Zero Tolerance adds C09 and closes U1 (0 of 6,000) at no extra users or downtime. Measured: `POLICY_EVALUATION.md`.
 
 ## 5. Hard constraints (baseline variant)
 

@@ -21,6 +21,8 @@ import type { components } from "./schema";
 
 type PolicySet = components["schemas"]["PolicySet"];
 type VariantList = components["schemas"]["VariantList"];
+export type PolicyComparison = components["schemas"]["PolicyComparison"];
+export type ProfileId = components["schemas"]["PolicyProfile"]["id"];
 type ProofVerify = components["schemas"]["ProofVerify"];
 type ExplainResult = components["schemas"]["ExplainResult"];
 
@@ -35,6 +37,8 @@ export interface OpsState {
   actions: ResponseAction[];
   findings: Finding[];
   paths: AttackPath[];
+  /** SafeCut under every policy profile, each simulated by EchoLab, and the trade-off (read-only). */
+  comparison: PolicyComparison | null;
   plan: Plan | null;
   simulation: SimulationRun | null;
   proof: Proof | null;
@@ -50,7 +54,7 @@ export interface OpsState {
 export interface OpsApi extends OpsState {
   refresh: () => Promise<void>;
   correlate: () => Promise<void>;
-  createPlan: () => Promise<void>;
+  createPlan: (profileId?: ProfileId) => Promise<void>;
   simulate: () => Promise<void>;
   seal: () => Promise<void>;
   verify: () => Promise<void>;
@@ -69,6 +73,7 @@ const EMPTY: OpsState = {
   actions: [],
   findings: [],
   paths: [],
+  comparison: null,
   plan: null,
   simulation: null,
   proof: null,
@@ -175,6 +180,24 @@ export function OpsProvider({ incidentId, children }: { incidentId: string; chil
     };
   }, [replay.reconnects, fetchBase]);
 
+  // The policy comparison solves and simulates every profile: load it on its own once paths exist, so it never
+  // holds back the incident itself. A failure leaves it absent (the SafeCut view simply omits the panel).
+  const needsComparison = state.paths.length > 0 && state.comparison === null;
+  useEffect(() => {
+    if (!needsComparison) return;
+    let live = true;
+    api
+      .GET("/api/v1/incidents/{incident_id}/policy-comparison", path)
+      .then(unwrap)
+      .then(
+        (comparison) => live && setState((s) => ({ ...s, comparison })),
+        () => undefined,
+      );
+    return () => {
+      live = false;
+    };
+  }, [needsComparison, path]);
+
   const incidentNow = useCallback(async () => unwrap(await api.GET("/api/v1/incidents/{incident_id}", path)), [path]);
 
   const value = useMemo<OpsApi>(() => {
@@ -188,11 +211,14 @@ export function OpsProvider({ incidentId, children }: { incidentId: string; chil
         run("correlating", async () => {
           const findings = unwrap(await api.POST("/api/v1/incidents/{incident_id}/correlate", { ...path, body: {} }));
           const paths = unwrap(await api.GET("/api/v1/incidents/{incident_id}/paths", path));
-          return { findings: findings.items, paths: paths.items, incident: await incidentNow(), audit: await loadAudit() };
+          return { findings: findings.items, paths: paths.items, comparison: null, incident: await incidentNow(), audit: await loadAudit() };
         }),
-      createPlan: () =>
+      createPlan: (profileId) =>
         run("planning", async () => {
-          const plan = unwrap(await api.POST("/api/v1/incidents/{incident_id}/plans", { ...path, body: {} }));
+          // A different profile is a different set of constraint limits: SafeCut solves again from scratch.
+          const plan = unwrap(
+            await api.POST("/api/v1/incidents/{incident_id}/plans", { ...path, body: profileId ? { profile_id: profileId } : {} }),
+          );
           return {
             plan, simulation: null, proof: null, verification: null, approvals: [], outstandingRoles: null, execution: null,
             incident: await incidentNow(), audit: await loadAudit(),

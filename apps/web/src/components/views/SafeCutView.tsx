@@ -7,6 +7,7 @@ import { useIncident } from "@/lib/state/incident-store";
 
 import { grid, Panel, RunButton, ViewHeader } from "./common";
 import { GraphPanel } from "./GraphPanel";
+import { PolicyComparisonPanel, PolicyControl, ResidualPanel } from "./PolicyPanels";
 
 /** Constraint results named by the incident's own constraint labels (GET /policies). */
 function Constraints({ results }: { results: Plan["constraints"] }) {
@@ -31,6 +32,7 @@ export function SafeCutView({ onOpenGate }: { onOpenGate: () => void }) {
   const { select } = useIncident();
   const plan = ops.plan;
   const actionById = Object.fromEntries(ops.actions.map((a) => [a.id, a]));
+  const policy = ops.policySet?.profiles.find((p) => p.id === plan?.profile_id)?.title ?? plan?.profile_id;
 
   return (
     <>
@@ -38,16 +40,17 @@ export function SafeCutView({ onOpenGate }: { onOpenGate: () => void }) {
         <RunButton
           primary={!plan}
           label={plan ? "RE-SOLVE" : "DERIVE ENVELOPE"}
-          onClick={ops.createPlan}
-          blockedBy={ops.paths.length ? null : "Correlate the incident first: SafeCut needs the high-risk paths."}
+          onClick={() => ops.createPlan(ops.plan?.profile_id)}
+          blockedBy={ops.paths.length ? null : "Correlate the incident first: SafeCut needs the enumerated paths."}
         />
       </ViewHeader>
       <GraphPanel height={300} />
+      <PolicyControl />
       {plan?.status === "optimal" ? (
         <>
           <Panel title="Minimum safe containment envelope" chip={<StatusChip kind="success">OPTIMAL</StatusChip>}>
             <p className="telemetry" style={{ color: "var(--text-secondary)", marginTop: 0 }}>
-              {plan.id} · OR-Tools {plan.solver.version} · {plan.solver.wall_ms} ms · objective {plan.objective?.value} ={" "}
+              {plan.id} · policy {policy} · OR-Tools {plan.solver.version} · {plan.solver.wall_ms} ms · objective {plan.objective?.value} ={" "}
               {Object.entries(plan.objective?.terms ?? {})
                 .map(([k, v]) => `${k} ${v}`)
                 .join(", ")}
@@ -95,7 +98,7 @@ export function SafeCutView({ onOpenGate }: { onOpenGate: () => void }) {
       {plan?.status === "infeasible" && plan.infeasibility ? (
         <Panel title="No feasible safe plan" chip={<StatusChip kind="caution">INFEASIBLE</StatusChip>}>
           <p className="body">
-            No combination of actions satisfies every hard constraint. Relaxing any one of{" "}
+            Under {policy}, no combination of actions satisfies every hard constraint. Relaxing any one of{" "}
             <b>{plan.infeasibility.violated_constraint_ids.join(", ")}</b> would restore a plan. HALT will not run a partial plan without an analyst
             decision.
           </p>
@@ -109,6 +112,8 @@ export function SafeCutView({ onOpenGate }: { onOpenGate: () => void }) {
           </div>
         </Panel>
       ) : null}
+      <ResidualPanel />
+      <PolicyComparisonPanel />
       {plan ? (
         <Panel title="Rejected candidates">
           <table className="evidence-text" style={{ width: "100%", borderCollapse: "collapse" }}>

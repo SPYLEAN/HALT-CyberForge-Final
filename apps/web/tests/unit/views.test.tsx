@@ -39,7 +39,11 @@ describe("AT-8.1 views render recorded API data", () => {
     expect(await screen.findByText("16 of 16")).toBeInTheDocument();
     expect(screen.getByRole("group", { name: "High-risk paths" })).toHaveTextContent("6");
     expect(screen.getByRole("group", { name: "Users affected by the plan" })).toHaveTextContent("3 users");
-    expect(screen.getByRole("group", { name: "Paths reachable after plan" })).toHaveTextContent("0 of 6");
+    // 0 of the 6 paths Continuity Balanced requires cut: the label says "required", so U1 is not hidden in it.
+    expect(screen.getByRole("group", { name: "Required paths reachable after plan" })).toHaveTextContent("0 of 6");
+    expect(screen.getByRole("group", { name: "Residual reach under the plan" })).toHaveTextContent(
+      "accepted under Continuity Balanced, which allows 600. Not zero risk.",
+    );
   });
 
   it("Overview states the residual reach the plan leaves open, by route", async () => {
@@ -79,7 +83,9 @@ describe("AT-8.1 views render recorded API data", () => {
     const table = await screen.findByRole("table");
     expect(within(table).getAllByRole("row")).toHaveLength(8); // header + P1..P6 + U1
     expect(within(table).getByText("4,335 of 6,000")).toBeInTheDocument();
-    expect(within(table).getByText("Below threshold · uncertain")).toBeInTheDocument();
+    expect(within(table).getByText("Below the 0.2 threshold (risk 0.08) · rests on an inferred edge")).toBeInTheDocument();
+    // Contained under Continuity Balanced: U1 is open as accepted residual, never shown as cut.
+    expect(within(table).getByText("Open · accepted residual under Continuity Balanced")).toBeInTheDocument();
     expect(within(table).getAllByText("Cut")).toHaveLength(6);
     expect(screen.getByTestId("threadgraph")).toHaveAttribute("data-rings", "6");
   });
@@ -90,7 +96,9 @@ describe("AT-8.1 views render recorded API data", () => {
     const passive = await screen.findByRole("article", { name: "B · Passive monitoring" });
     expect(passive).toHaveTextContent("5,782 of 6,000");
     expect(screen.getByRole("article", { name: "A · Aggressive isolation" })).toHaveTextContent("NOT REVERSIBLE IN 300 S");
-    expect(screen.getByRole("article", { name: "C · SafeCut plan" })).toHaveTextContent("6 of 6");
+    // Counted over all 7 enumerated paths to the ledger, so the plan's open U1 shows: never "6 of 6".
+    expect(screen.getByRole("article", { name: "C · SafeCut plan" })).toHaveTextContent("6 of 7");
+    expect(screen.getByRole("article", { name: "C · SafeCut plan" })).toHaveTextContent("open: U1");
   });
 
   it("SafeCut shows the derived envelope, constraints and every rejection", async () => {
@@ -109,10 +117,11 @@ describe("AT-8.1 views render recorded API data", () => {
     expect(screen.getByText(/missing: C04 needs finance_ops_owner/)).toBeInTheDocument();
   });
 
-  it("ProofSeal shows nine verified claims, the enumeration and what is not covered", async () => {
+  it("ProofSeal shows ten verified claims, the enumeration and what is not covered", async () => {
     useStage("sealed");
     render(<Providers view="proofseal"><ProofSealView /></Providers>);
-    expect(await screen.findByText("9 of 9")).toBeInTheDocument();
+    expect(await screen.findByText("10 of 10")).toBeInTheDocument();
+    expect(screen.getByText(/accepted residual risk, not containment/)).toBeInTheDocument();
     expect(screen.getByRole("group", { name: "Subsets checked" })).toHaveTextContent("4,096");
     expect(screen.getByText(/U1 .* stays open/)).toBeInTheDocument();
   });
@@ -200,5 +209,53 @@ describe("AT-8.5 Action Gate", () => {
     render(<Providers><ActionGateDrawer open onClose={noop} /></Providers>);
     expect(await screen.findByRole("button", { name: /ROLL BACK ALL/ })).toBeEnabled();
     await waitFor(() => expect(screen.getAllByText("APPROVED")).toHaveLength(2));
+  });
+});
+
+describe("policy-aware residual risk in SafeCut", () => {
+  it("shows both policies, the residual left open, and the exact trade-off", async () => {
+    useStage("sealed");
+    render(<Providers view="safecut"><SafeCutView onOpenGate={noop} /></Providers>);
+    const control = await screen.findByRole("radiogroup", { name: "Containment policy" });
+    expect(within(control).getByRole("radio", { name: /Continuity Balanced/ })).toBeChecked();
+    expect(within(control).getByRole("radio", { name: /Critical Asset Zero Tolerance/ })).not.toBeChecked();
+    expect(control).toHaveTextContent("≤ 600 of 6,000 simulated rollouts through paths left open");
+    expect(control).toHaveTextContent("None: every enumerated path to the asset must be cut");
+
+    const residual = screen.getByRole("region", { name: "Residual risk under this policy" });
+    expect(residual).toHaveTextContent("U1 stays open as accepted residual risk: 502 of 6,000 rollouts at most");
+    expect(residual).toHaveTextContent("This plan is not zero-risk.");
+    expect(residual).toHaveTextContent("rests on inferred edge i.asn-support");
+
+    const table = await screen.findByRole("table", { name: "Policy comparison" }); // loaded after the incident
+    const row = (label: string) => within(table).getByRole("row", { name: new RegExp(`^${label}`) });
+    expect(row("Result")).toHaveTextContent("Feasible plan");
+    expect(row("Result")).toHaveTextContent("No feasible plan (relaxing C-COVER would restore one)");
+    expect(row("Paths left open")).toHaveTextContent("U1");
+    expect(row("Actions")).toHaveTextContent("Closest option: C01, C02, C03, C04 (not runnable)");
+    const why = screen.getByRole("list", { name: "Why the plans differ" });
+    expect(why).toHaveTextContent("Critical Asset Zero Tolerance must cut U1");
+    expect(why).toHaveTextContent("C05");
+  });
+
+  it("re-solves under the chosen policy", async () => {
+    const responses = useStage("sealed");
+    const recordedFetch = globalThis.fetch;
+    let body: unknown = null;
+    vi.stubGlobal("fetch", async (request: Request) => {
+      if (request.method === "POST" && request.url.endsWith("/plans")) {
+        body = await request.clone().json();
+        return new Response(JSON.stringify(responses[Object.keys(responses).find((k) => k.startsWith("GET /api/v1/plans/PLAN-") && !k.endsWith("approvals"))!]!.body), {
+          headers: { "content-type": "application/json" },
+        });
+      }
+      return recordedFetch(request);
+    });
+    render(<Providers view="safecut"><SafeCutView onOpenGate={noop} /></Providers>);
+    const zt = await screen.findByRole("radio", { name: /Critical Asset Zero Tolerance/ });
+    zt.click();
+    const solve = await screen.findByRole("button", { name: /SOLVE UNDER CRITICAL ASSET ZERO TOLERANCE/ });
+    solve.click();
+    await waitFor(() => expect(body).toEqual({ profile_id: "critical_asset_zero_tolerance" }));
   });
 });

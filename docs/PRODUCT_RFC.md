@@ -21,9 +21,22 @@ Given:
 - a catalogue of authorised, reversible candidate response actions, each with a declared cut set and impact;
 - hard constraints on business availability, downtime, user impact, reversibility, evidence preservation and approvals;
 
-find the subset of actions that **interrupts every high-risk path with at least one hard cut**, **satisfies every hard constraint**, and **minimises disruption**. Then prove it: recompute reachability on the post-action graph, recheck every constraint, confirm minimality by an independent method, and seal the result.
+find the subset of actions that **interrupts every path the containment policy requires cut with at least one hard cut**, **keeps the reach of the paths it leaves open within the policy's bound**, **satisfies every hard constraint**, and **minimises disruption**. Then prove it: recompute reachability on the post-action graph, recheck every constraint, confirm minimality by an independent method, and seal the result.
 
 The envelope is *derived*. Nothing in the UI or the API hardcodes which actions win.
+
+### 3a. Policy-dependent containment (residual risk)
+
+Containment is a policy decision, not a fact of the graph. INC-2417 shows why: ThreadGraph enumerates **seven** paths to the finance ledger. Six (P1–P6) are at or above the 0.20 high-risk threshold. The seventh, **U1** (AS64500 ⇢ support portal → Finance API → ledger), is below it, but on its own it still reaches the ledger in **502 of 6,000** simulated rollouts (8.37 %), and it rests on an inferred edge. The only actions that hard-cut U1 isolate the Finance API, the ledger or the finance subnet: none is reversible within 5 minutes and each stops three critical processes.
+
+HALT therefore makes the policy explicit and solves under it. A **policy profile** is two constraint limits, nothing else:
+
+| Profile | C-COVER: must cut every enumerated path with simulated risk ≥ | C-RESIDUAL: the paths left open may reach the asset in at most | Stance |
+|---|---|---|---|
+| **Continuity Balanced** (default) | 0.20 | 600 of 6,000 rollouts (summed own reach) | Minimise disruption; accept explicitly bounded residual risk; show the open routes and the uncertainty; never call the result zero-risk |
+| **Critical Asset Zero Tolerance** | 0 (every enumerated path) | 0 | No enumerated path to the ledger may stay open; SafeCut may add reversible actions; business impact still measured under the same limits; proves only what the model and evidence establish |
+
+SafeCut solves again when the profile changes; EchoLab simulates each profile's plan; ProofSeal checks the plan against the profile the plan names (CHK-01 required coverage, CHK-10 residual). In the baseline, Zero Tolerance is **infeasible**, and HALT says so with the reason (only C05, C06 and C07 cut U1, and each breaks reversibility and downtime limits) and the closest option. It never runs a partial plan, and never relabels the Continuity plan as complete containment. The `support_route_blockable` variant (AS64500 can be refused outright on the support route) makes Zero Tolerance feasible: it adds C09 and closes U1, at no extra users or downtime. Measured results: `docs/POLICY_EVALUATION.md`.
 
 ## 4. Systems
 
@@ -45,9 +58,10 @@ The envelope is *derived*. Nothing in the UI or the API hardcodes which actions 
 ## 6. Goals (MVP)
 
 1. One complete synthetic OAuth-finance incident (INC-2417) replayed deterministically end to end.
-2. Six high-risk attack paths derived by ThreadGraph + EchoLab from scenario inputs.
+2. Seven enumerated attack paths to the ledger derived by ThreadGraph + EchoLab from scenario inputs: six high-risk (P1–P6) and one below threshold (U1), all shown.
 3. SafeCut derives the envelope with OR-Tools CP-SAT; ProofSeal independently confirms it is the unique optimum among all 4,096 subsets of the 12-action catalogue.
-4. Proof that all six paths are interrupted, finance stays operational, user impact ≤ 5, every action reversible ≤ 5 min, evidence sealed before execution, required approvals enforced.
+4. Proof that every path the selected policy requires cut is interrupted, the residual reach of the paths left open is within the policy's bound (and named), finance stays operational, user impact ≤ 5, every action reversible ≤ 5 min, evidence sealed before execution, required approvals enforced.
+7. Two containment policies (Continuity Balanced, Critical Asset Zero Tolerance) solved, simulated, proven and compared side by side with the exact trade-off, including a truthful no-feasible-plan.
 5. Landing experience transitions into the Command Center without resetting the incident.
 6. Scenario variants prove the result is not hardcoded: changing one input changes the plan, or makes it infeasible, with an explanation.
 
@@ -83,6 +97,7 @@ The envelope is *derived*. Nothing in the UI or the API hardcodes which actions 
 
 | Risk | Mitigation |
 |---|---|
+| A plan that leaves a path open is read as complete containment | Residual risk is a first-class plan field and proof claim (CHK-10); every count is over all enumerated paths ("6 of 7"); the open path is named with its reach and uncertainty |
 | Scenario tuned so the "expected" plan wins looks rigged | Variants that flip the answer (§6.6), brute-force cross-check, all inputs in one reviewable scenario file |
 | Cytoscape cannot draw proof-ring-in-gap and business pulse natively | SVG overlay layer synced to the Cytoscape viewport |
 | Supplied 3D scene targets three.js r128 | Use it unmodified as a client-only island; no React Three Fiber |

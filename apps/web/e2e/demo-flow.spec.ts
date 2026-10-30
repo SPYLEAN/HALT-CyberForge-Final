@@ -25,7 +25,9 @@ test("AT-10.1 the full demo: landing → Command Center → approve → execute 
   await page.locator("#echolab").scrollIntoViewIfNeeded();
   await expect(page.getByRole("article", { name: "Passive monitoring" })).toContainText("5,782 of 6,000");
   await page.locator("#proofseal").scrollIntoViewIfNeeded();
-  await expect(page.getByRole("list", { name: "Proof claims" }).getByRole("listitem")).toHaveCount(9);
+  // Ten claims, CHK-10 being the residual one: U1 is stated, not hidden.
+  await expect(page.getByRole("list", { name: "Proof claims" }).getByRole("listitem")).toHaveCount(10);
+  await expect(page.locator("#proofseal")).toContainText("accepted residual risk, not containment");
 
   // Hand-off, then the two human approvals and execution in the Action Gate.
   await page.getByTestId("enter-command-center").scrollIntoViewIfNeeded();

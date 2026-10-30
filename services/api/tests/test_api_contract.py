@@ -43,6 +43,7 @@ DOCUMENTED = {
     ("get", "/incidents/{incident_id}/audit/verify"),
     ("post", "/incidents/{incident_id}/replay/reset"),
     ("get", "/incidents/{incident_id}/variants"),
+    ("get", "/incidents/{incident_id}/policy-comparison"),
     ("post", "/incidents/{incident_id}/reset-to-seed"),
     ("get", "/ready"),
     ("post", "/incidents/{incident_id}/explain"),
@@ -187,7 +188,13 @@ def test_AT_6_1_full_flow(demo: tuple[Recorder, dict[str, Any], TestClient]) -> 
     assert len(out["findings"]["items"]) == 4
     assert [p["id"] for p in out["paths"]["items"]] == ["P1", "P2", "P3", "P4", "P5", "P6", "U1"]
     assert out["plan"]["status"] == "optimal"
-    assert [f["paths_blocked"]["numerator"] for f in out["sim"]["futures"]] == [6, 0, 6]
+    # Counted over all 7 enumerated paths to the ledger: the plan leaves U1 open, and says so.
+    blocked = [
+        (f["paths_blocked"]["numerator"], f["paths_blocked"]["denominator"]) for f in out["sim"]["futures"]
+    ]
+    assert blocked == [(7, 7), (0, 7), (6, 7)]
+    assert "U1" not in out["sim"]["futures"][2]["paths_blocked"]["source_ids"]
+    assert "open: U1" in out["sim"]["futures"][2]["paths_blocked"]["method"]
     assert all(c["status"] == "verified" for c in out["proof"]["claims"])
     assert out["verify"]["certificate_match"] and out["verify"]["signature_valid"]
     assert out["outstanding"] == []

@@ -53,8 +53,9 @@ def snapshot(client: TestClient, extra: list[str]) -> dict[str, Any]:
     for p in paths:
         r = client.get(p)
         out[f"GET {p}"] = {"status": r.status_code, "body": r.json()}
-    paths_r = client.get(f"{I}/paths")
-    out[f"GET {I}/paths"] = {"status": paths_r.status_code, "body": paths_r.json()}
+    for p in (f"{I}/paths", f"{I}/policy-comparison"):  # 409 until correlated: recorded as such
+        r = client.get(p)
+        out[f"GET {p}"] = {"status": r.status_code, "body": r.json()}
     return out
 
 

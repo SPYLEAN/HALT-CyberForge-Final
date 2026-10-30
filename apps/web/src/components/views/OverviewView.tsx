@@ -17,6 +17,8 @@ export function OverviewView({ onOpenGate }: { onOpenGate: () => void }) {
   const high = ops.paths.filter((p) => p.high_risk);
   const users = ops.plan?.constraints.find((c) => c.constraint_id === "C-USERS");
   const coverage = ops.proof?.claims.find((c) => c.id === "CHK-01");
+  const policy = ops.policySet?.profiles.find((p) => p.id === ops.plan?.profile_id);
+  const residual = ops.plan?.status === "optimal" ? ops.plan.residual : null;
   // What the plan leaves open: EchoLab future C's rollouts that still reach the target, by route.
   const planned = ops.simulation?.futures.find((f) => f.label === "C");
   const residualRoutes = planned
@@ -61,9 +63,13 @@ export function OverviewView({ onOpenGate }: { onOpenGate: () => void }) {
           <MetricBlock label="Users affected by the plan" value="—" derivation="No SafeCut plan yet." />
         )}
         {coverage ? (
-          <MetricBlock label="Paths reachable after plan" value={`${coverage.result.numerator} of ${coverage.result.denominator}`} derivation={coverage.method} />
+          <MetricBlock
+            label="Required paths reachable after plan"
+            value={`${coverage.result.numerator} of ${coverage.result.denominator}`}
+            derivation={`Paths ${policy?.title ?? "the policy"} requires cut · ${coverage.method}`}
+          />
         ) : (
-          <MetricBlock label="Paths reachable after plan" value="—" derivation="Not sealed by ProofSeal yet." />
+          <MetricBlock label="Required paths reachable after plan" value="—" derivation="Not sealed by ProofSeal yet." />
         )}
         {planned ? (
           <MetricBlock
@@ -71,7 +77,9 @@ export function OverviewView({ onOpenGate }: { onOpenGate: () => void }) {
             value={count(planned.target_reached)}
             derivation={
               residualRoutes.length
-                ? `Via ${residualRoutes.map((r) => `${r.id} (${r.n.toLocaleString("en-GB")}${r.high ? ", high-risk" : ", below threshold"})`).join(", ")}. Stated in the proof as not covered.`
+                ? `Via ${residualRoutes.map((r) => `${r.id} (${r.n.toLocaleString("en-GB")}${r.high ? ", high-risk" : ", below threshold"})`).join(", ")}${
+                    residual && policy ? `: accepted under ${policy.title}, which allows ${residual.limit.toLocaleString("en-GB")}. Not zero risk.` : "."
+                  }`
                 : planned.target_reached.method
             }
             simulated

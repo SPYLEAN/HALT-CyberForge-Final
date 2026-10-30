@@ -208,7 +208,7 @@ interface SimulationRequest {
 interface FutureResult {
   label: "A" | "B" | "C";
   action_ids: string[];
-  paths_blocked: Derivation;      // "6 of 6"
+  paths_blocked: Derivation;      // over every enumerated path to the target: "6 of 7", method names the open ones
   target_reached: Derivation;     // rollouts reaching db within horizon, by any route
   path_reached: Record<string, number>;   // path id -> rollouts reaching db along it
   users_affected: Derivation;
@@ -227,6 +227,8 @@ interface SimulationRun { id: string; request: SimulationRequest; futures: Futur
 interface Plan {
   id: string;
   status: "optimal" | "infeasible";
+  profile_id: "continuity_balanced" | "critical_asset_zero_tolerance";   // the limits it was solved under
+  residual: ResidualRisk | null;              // null when infeasible
   selected_candidate_ids: string[];          // empty if infeasible
   display_actions: DisplayAction[];
   objective: { value: number; terms: Record<string, number> };
@@ -242,12 +244,48 @@ interface Plan {
 }
 ```
 
+### 7a. Policy profiles, residual risk and the comparison
+
+```ts
+interface PolicyProfile {            // profiles.json; applied as the limits of C-COVER and C-RESIDUAL
+  id: "continuity_balanced" | "critical_asset_zero_tolerance";
+  title: string; summary: string;
+  protected_asset_id: string;        // the incident target
+  cover_min_risk: number;            // C-COVER: cut every enumerated path with simulated risk ≥ this (0 = all)
+  residual_reach_limit: number;      // C-RESIDUAL: summed own reach the open paths may keep (rollouts)
+}
+
+interface ResidualRisk {             // on every optimal Plan
+  protected_asset_id: string;
+  enumerated_path_ids: string[];     // P1..P6, U1
+  required_path_ids: string[];       // those the profile requires cut
+  open_path_ids: string[];           // those left without a hard cut
+  reach_bound: Derivation;           // "502 of 6,000", sum of the open paths' own reach (upper bound)
+  limit: number; within_limit: boolean;
+  uncertainty: string[];             // inferred edges, forecasts, simulation basis
+}
+
+interface PolicyComparison {         // GET /incidents/{id}/policy-comparison (read-only; 409 before correlation)
+  outcomes: ProfileOutcome[];        // per profile: plan_id, status, actions, constraints, residual,
+                                     // simulated_reach (EchoLab), users, critical downtime, approval roles, infeasibility
+  tradeoff: {                        // first profile → last
+    added_candidate_ids; removed_candidate_ids; newly_cut_path_ids; reopened_path_ids;   // only when both are feasible
+    delta_users; delta_critical_downtime_min; delta_actions; added_roles;
+    delta_reach_bound; delta_simulated_reach;
+    reasons: string[];               // generated from the plans; each names actions and paths
+  };
+  meta: Meta;
+}
+```
+
+`POST /incidents/{id}/plans` takes `profile_id` (null = Continuity Balanced); the journal records it, so a restart restores it. `GET /policies` lists the profiles. In `constraints.json`, C-COVER and C-RESIDUAL have `limit: null`: only a profile sets them.
+
 ## 8. Proof (ProofSeal)
 
 ```ts
 interface ProofClaim {
   id: string;                     // "CHK-01"
-  text: string;                   // "0 of 6 high-risk paths reachable after the plan"
+  text: string;                   // "0 of 6 paths Continuity Balanced requires cut are reachable after the plan"
   method: string;                 // "NetworkX reachability on post-action snapshot <hash>"
   evidence_ids: string[];
   result: Derivation;
@@ -259,7 +297,9 @@ interface Proof {
   plan_id: string;
   snapshot_hash: Sha256;          // pre-action graph
   post_snapshot_hash: Sha256;
-  claims: ProofClaim[];           // coverage, business, downtime, users, auth, evidence, rollback, optimality, irredundancy
+  claims: ProofClaim[];           // CHK-01 coverage (paths the plan's policy requires cut), business, downtime, users, auth,
+                                  // evidence, rollback, optimality, irredundancy (against C-COVER and C-RESIDUAL),
+                                  // CHK-10 residual (open paths, reach bound and EchoLab's measured reach vs C-RESIDUAL)
   enumeration: { subsets_checked: number; feasible: number; optimal_count: number; unique: boolean };
   not_covered: string[];          // explicit scope limits
   versions: Record<string, string>;

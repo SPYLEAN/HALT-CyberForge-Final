@@ -17,16 +17,17 @@ About 6 minutes. Every number on screen comes from the API; nothing below needs 
 | 2 · Paradox | Scroll once | "The obvious answer, isolating finance, takes 3 of 3 critical processes offline for 4 hours and locks out 413 people. That's damage we'd do to ourselves." The chip shows the replay time moving. |
 | 3 · Incident | Scroll through the six events | "Six events, every one with a source record. Each row you pass replays that moment." The rail turns solid as each event arrives. |
 | 4 · Business context | Scroll | "Every node says what stops if it stops." |
-| 5 · EchoLab | Scroll | "Three futures, 6,000 rollouts each, same random draws. Doing nothing: the attacker reaches the ledger in 5,782 of 6,000. HALT's plan: 6 of 6 paths blocked, 3 users affected." |
+| 5 · EchoLab | Scroll | "Three futures, 6,000 rollouts each, same random draws. Doing nothing: the attacker reaches the ledger in 5,782 of 6,000. HALT's plan: 6 of 7 paths blocked, 3 users affected. The seventh, U1, stays open and HALT says so." |
 | 6 · SafeCut | Scroll | "Not the strongest response, the smallest one that works: three actions. SafeCut derived them; nothing is hardcoded." |
-| 7 · ProofSeal | Scroll | "Nine claims, re-checked independently of the optimiser, including all 4,096 combinations. And what it does not cover: the low-risk U1 route stays open." |
+| 7 · ProofSeal | Scroll | "Ten claims, re-checked independently of the optimiser, including all 4,096 combinations. And what it does not claim: U1, a below-threshold route, stays open as accepted residual risk, not containment." |
 | 8 · Hand-off | **ENTER LIVE COMMAND CENTER** | "Same incident, same cursor, same seal. Nothing has run yet." |
 
 ## The operation (Command Center)
 
 | Beat | Do | Say |
 |---|---|---|
-| 9 · Overview | Point at the five metrics | Confidence 16 of 16 rule conditions, 6 high-risk paths, 3 users, 0 of 6 reachable after the plan. "And this is what we don't claim: 502 of 6,000 rollouts still reach the ledger through U1, a below-threshold route. HALT says so instead of hiding it." The top bar names who is acting: A. Rahman, a demo identity. |
+| 9 · Overview | Point at the five metrics | Confidence 16 of 16 rule conditions, 6 high-risk paths, 3 users, 0 of 6 *required* paths reachable after the plan. "And this is what we don't claim: 502 of 6,000 rollouts still reach the ledger through U1, a below-threshold route. HALT says so instead of hiding it." The top bar names who is acting: A. Rahman, a demo identity. |
+| 9b · Policy | Rail → **SafeCut** → *Containment policy* → select **Critical Asset Zero Tolerance** → **SOLVE UNDER…** | "Same incident, stricter policy: no path to the ledger may stay open. HALT refuses: NO SAFE PLAN. It names U1 and the only three actions that could cut it, and why each breaks the business. Scroll to *Policy comparison*: the trade-off, line by line." Optional: Policies → variant `AS64500 can be blocked on the support route` → reset → correlate → compare: Zero Tolerance now adds one action, C09, closes U1, and costs 0 extra users. Select **Continuity Balanced** again before step 11. |
 | 10 · ThreadGraph | Rail → **ThreadGraph**, click a path in the table | "Solid is observed, dashed is inferred, dotted is forecast. The thick Verdigris line is the business, and it is never broken." The evidence rail shows events, policies and an **EXPLAIN** button. |
 | 11 · Action Gate | Overview → **OPEN ACTION GATE** | "Execute is disabled, and it says why: two humans must approve." Approve as **tier2 analyst**, then **Finance Ops owner** (the change freeze needs her). |
 | 12 · Execute | **EXECUTE 3 ACTIONS** | Top bar turns CONTAINED. Close the drawer → **ThreadGraph**: each cut opens, its proof ring draws in the gap, and the business thread keeps pulsing. Untick **Business dependencies** to show that the business thread stays. |

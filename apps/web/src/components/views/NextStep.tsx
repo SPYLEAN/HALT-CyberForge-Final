@@ -23,7 +23,7 @@ export function NextStep({ onOpenGate }: { onOpenGate: () => void }) {
       />
     );
   }
-  if (!ops.plan) return <RunButton primary label="DERIVE ENVELOPE WITH SAFECUT" onClick={ops.createPlan} />;
+  if (!ops.plan) return <RunButton primary label="DERIVE ENVELOPE WITH SAFECUT" onClick={() => ops.createPlan()} />;
   if (ops.plan.status === "infeasible") return <RunButton primary label="SEE CLOSEST OPTIONS" onClick={() => setView("safecut")} />;
   if (!ops.simulation) return <RunButton primary label="COMPARE FUTURES IN ECHOLAB" onClick={ops.simulate} />;
   if (!ops.proof) return <RunButton primary label="SEAL WITH PROOFSEAL" onClick={ops.seal} />;

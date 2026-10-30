@@ -9,24 +9,61 @@
     "key": "verma_not_releaser",
     "title": "M. Verma is not the supplier-run releaser",
     "description": "Removes the runbook dependency, so disabling the account no longer stops Payment processing. The plan is expected to change.",
-    "ops": [{ "op": "remove_edge", "edge_id": "d.payment-verma" }]
+    "ops": [
+      {
+        "op": "remove_edge",
+        "edge_id": "d.payment-verma"
+      }
+    ]
   },
   {
     "key": "approver_unavailable",
     "title": "Finance Ops owner unavailable",
     "description": "S. Iyer cannot approve and has no delegate, so the step-up cannot be authorised.",
-    "ops": [{ "op": "set_approver_availability", "approver_id": "s_iyer", "available": false }]
+    "ops": [
+      {
+        "op": "set_approver_availability",
+        "approver_id": "s_iyer",
+        "available": false
+      }
+    ]
   },
   {
     "key": "no_phish_resistant_mfa",
     "title": "Finance users lack phishing-resistant methods",
     "description": "Step-up falls back to methods the attacker controls, so its cut becomes soft.",
-    "ops": [{ "op": "set_cut_strength", "action_id": "C04", "ref": "f.user-s3", "strength": "soft" }]
+    "ops": [
+      {
+        "op": "set_cut_strength",
+        "action_id": "C04",
+        "ref": "f.user-s3",
+        "strength": "soft"
+      }
+    ]
   },
   {
     "key": "relaxed_users_250",
     "title": "User-impact limit raised to 250",
     "description": "Guards against a plan that only wins because of the user limit.",
-    "ops": [{ "op": "set_constraint_limit", "constraint_id": "C-USERS", "limit": 250 }]
+    "ops": [
+      {
+        "op": "set_constraint_limit",
+        "constraint_id": "C-USERS",
+        "limit": 250
+      }
+    ]
+  },
+  {
+    "key": "support_route_blockable",
+    "title": "AS64500 can be blocked on the support route",
+    "description": "The identity provider can refuse AS64500 sign-ins to the support portal outright, so the edge block on that route (C09) becomes a hard cut. Nothing else changes; under Critical Asset Zero Tolerance a plan that also closes U1 becomes feasible.",
+    "ops": [
+      {
+        "op": "set_cut_strength",
+        "action_id": "C09",
+        "ref": "i.asn-support",
+        "strength": "hard"
+      }
+    ]
   }
 ]
