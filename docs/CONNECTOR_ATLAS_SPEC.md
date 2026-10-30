@@ -8,8 +8,8 @@ Route `/atlas` (theatre: `/atlas/theatre`). Data: fixtures + the client engine (
 |---|---|
 | ≥ 1280 | Top bar · object list (left) · 3D Atlas (centre) · detail drawer (right) · 2D minimap (over the canvas, bottom-left) · flight timeline (bottom) |
 | 960–1279 | Same, drawer collapsible, fewer in-scene labels (zone names only) |
-| < 960 (tablet portrait, phone) | **Guided tour**: one stage per screen, large evidence panel, prev/next, "View complete 2D flow". The 3D scene is not shrunk onto a phone |
-| No WebGL / render error | 2D flow replaces the canvas; every panel and action still works |
+| < 960 (tablet portrait, phone) | **Guided pipeline**: one active stage with its input → output and evidence, the previous and next stages named, 44 px targets, and an optional "Complete flow" list. Nothing is shrunk onto a phone |
+| No WebGL / render error | The complete flow as DOM (zones → lanes → stage buttons) replaces the canvas; every panel and action still works, and three.js is never downloaded |
 
 ## Spatial grammar (original, restrained)
 
@@ -50,8 +50,11 @@ No buildings, no particles, no globe, no bloom by default. Light: one hemisphere
 
 ## Camera
 
-Controls: Home (whole atlas), Focus (selected object), Payload follow (track the packet), Reset (home +
-clear selection). Orbit, pan, zoom with limits (`minDistance`, `maxDistance`, polar clamp). Reduced motion:
+Controls: Home and Reset (both the canonical view), Focus (selected object), Payload follow (track the packet).
+The canonical view is computed from the scene's bounds and the canvas size with overlay padding
+(`lib/ps3/camera.ts`), so all five zones are always in frame; Drift Shockwave frames every affected mapping and
+broken destination. Payload Flight moves the packet for 600 ms per step with frames requested every animation
+frame, then rendering stops; scrubbing and reduced motion jump. Orbit, pan, zoom with limits (`minDistance`, `maxDistance`, polar clamp). Reduced motion:
 every transition is immediate (`setLookAt(..., false)`), no follow animation, packet jumps between stages.
 
 ## Rendering budget

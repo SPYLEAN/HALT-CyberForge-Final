@@ -2,20 +2,23 @@
 
 import dynamic from "next/dynamic";
 import Image from "next/image";
-import Link from "next/link";
 import { Component, useEffect, useMemo, useState, type ErrorInfo, type ReactNode } from "react";
 
-import { reachableSteps, type Panel } from "@/lib/ps3/atlas";
+import { PANEL_TITLES, reachableSteps, type Panel } from "@/lib/ps3/atlas";
 import { ZONES } from "@/lib/ps3/engine";
-import { pipelineOrder, STATUS_TEXT, toScene, ZONE_TITLES, type SceneModel } from "@/lib/ps3/scene";
+import { pipelineOrder, STATUS_TEXT, toScene, ZONE_TITLES, type NodeStatus, type SceneModel } from "@/lib/ps3/scene";
 import { stepNode } from "@/lib/ps3/store";
 
 import type { CameraCommand } from "./AtlasCanvas";
 import { Flow2D } from "./Flow2D";
+import { FlowGrid } from "./FlowGrid";
 import { useCompact, useReducedMotion, useWebGL, type AtlasStore } from "./hooks";
-import { PanelBody, Panels, Tag } from "./panels";
+import { diffFields, PanelBody, Panels, Tag } from "./panels";
 
 const AtlasCanvas = dynamic(() => import("./AtlasCanvas"), { ssr: false, loading: () => null });
+
+/** Time per replay step; the packet travels for FLIGHT_MS (600 ms) of it and the scene is idle for the rest. */
+export const STEP_MS = 900;
 
 /** A render failure inside WebGL never takes the page down: the 2D flow takes over. */
 class SceneBoundary extends Component<{ fallback: ReactNode; children: ReactNode }, { failed: boolean }> {
@@ -31,6 +34,8 @@ class SceneBoundary extends Component<{ fallback: ReactNode; children: ReactNode
   }
 }
 
+const TONE: Record<NodeStatus, string | undefined> = { passed: "ok", failed: "fail", drift: "drift", active: "active", idle: undefined, receded: undefined };
+
 export function AtlasView({ store, caption }: { store: AtlasStore; caption?: ReactNode }) {
   const { q, atlas, set, fx, focus } = store;
   const model = useMemo(() => toScene(atlas, q), [atlas, q]);
@@ -40,8 +45,6 @@ export function AtlasView({ store, caption }: { store: AtlasStore; caption?: Rea
   const [approvals, setApprovals] = useState<Record<string, string>>({});
   const approval = approvals[atlas.receipt.id] ?? null;
   const onApprove = (id: string) => setApprovals((a) => ({ ...a, [atlas.receipt.id]: id }));
-
-  // Selecting opens the stage's panel and moves the payload there (lib/ps3/store.ts) and asks the camera to frame it.
   const select = (id: string) => set({ node: id }, "push", { focus: true });
 
   // `[` and `]` step the selection along the pipeline (from the latest state, however fast they are pressed).
@@ -58,7 +61,18 @@ export function AtlasView({ store, caption }: { store: AtlasStore; caption?: Rea
     return () => window.removeEventListener("keydown", onKey);
   }, [set]);
 
-  if (compact) return <GuidedTour store={store} model={model} approval={approval} onApprove={onApprove} />;
+  const selectedLabel = q.node ? model.nodes.find((n) => n.id === q.node)?.label ?? q.node : "";
+  const probe = (
+    <span hidden data-testid="atlas-state" data-connector={q.connector} data-node={q.node ?? ""} data-t={q.t} data-panel={q.panel} data-drift={q.drift ?? ""} data-digest={atlas.trace.digest} data-fixtures={fx.connectors.length} />
+  );
+
+  if (compact)
+    return (
+      <>
+        <GuidedPipeline store={store} model={model} approval={approval} onApprove={onApprove} />
+        {probe}
+      </>
+    );
 
   return (
     <div className="ps3 ps3-shell">
@@ -75,10 +89,10 @@ export function AtlasView({ store, caption }: { store: AtlasStore; caption?: Rea
         <Panels store={store} approval={approval} onApprove={onApprove} />
       </aside>
       <Timeline store={store} />
-      <p className="sr-only" aria-live="polite">
-        {q.node ? `Selected ${model.nodes.find((n) => n.id === q.node)?.label ?? q.node}` : ""}
+      <p className="sr-only" aria-live="polite" data-testid="atlas-live">
+        {selectedLabel ? `Selected ${selectedLabel}` : ""}
       </p>
-      <span hidden data-testid="atlas-state" data-connector={q.connector} data-node={q.node ?? ""} data-t={q.t} data-drift={q.drift ?? ""} data-digest={atlas.trace.digest} data-fixtures={fx.connectors.length} />
+      {probe}
     </div>
   );
 }
@@ -87,10 +101,10 @@ function AtlasBar({ store }: { store: AtlasStore }) {
   const { fx, q, set, atlas } = store;
   return (
     <header className="ps3-bar" aria-label="Connector">
-      <Image src="/brand/halt-horizontal-bone.svg" alt="HALT" width={92} height={26} unoptimized priority />
+      <Image src="/brand/halt-horizontal-bone.svg" alt="HALT" width={92} height={26} unoptimized />
       <div style={{ minWidth: 0 }}>
         <p className="ps3-kicker">Connector Atlas</p>
-        <p style={{ margin: 0, fontSize: 14, fontWeight: 600, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>See the complete data journey before you activate it</p>
+        <p className="ps3-tagline">See the complete data journey before you activate it</p>
       </div>
       <label style={{ display: "flex", alignItems: "center", gap: 8, marginLeft: "auto" }}>
         <span className="ps3-meta">Connector</span>
@@ -102,9 +116,6 @@ function AtlasBar({ store }: { store: AtlasStore }) {
       </label>
       {atlas.plan.errors.length ? <Tag tone="fail">{`${atlas.plan.errors.length} COMPILE ERRORS`}</Tag> : <Tag tone="ok">COMPILED</Tag>}
       <span className="ps3-sim">SIMULATED</span>
-      <Link className="ps3-btn" href="/atlas/theatre">
-        Theatre
-      </Link>
     </header>
   );
 }
@@ -122,7 +133,7 @@ export function ObjectList({ model, selected, onSelect }: { model: SceneModel; s
                 <li key={n.id}>
                   <button type="button" className="ps3-obj" aria-pressed={n.id === selected} data-status={n.status} data-node={n.id} onClick={() => onSelect(n.id)}>
                     <span className="ps3-dot" aria-hidden />
-                    <span>{n.label}</span>
+                    <span>{n.label}</span>{" "}
                     <span className="ps3-meta">{`${n.connector ? `${n.connector.split("-")[0]} · ` : "shared · "}${STATUS_TEXT[n.status]}${n.proof ? " · proof" : ""}`}</span>
                   </button>
                 </li>
@@ -153,24 +164,25 @@ function StageView({
   const [command, setCommand] = useState<CameraCommand>({ kind: "focus", seq: 0 });
   const [follow, setFollow] = useState(false);
   const cmd = (kind: CameraCommand["kind"]) => setCommand((c) => ({ kind, seq: c.seq + 1 }));
-  const full2d = (
+  const grid = (
     <div className="ps3-flow-full">
-      <Flow2D model={model} selected={q.node} onSelect={onSelect} variant="full" />
+      <FlowGrid model={model} selected={q.node} onSelect={onSelect} />
     </div>
   );
-  const driftKey = atlas.analysis && !atlas.repaired ? `${q.connector}:${q.drift}` : null;
   if (webgl === false) {
     return (
-      <>
-        <p className="ps3-notice" role="status" style={{ position: "absolute", top: 12, left: 12, right: 12, zIndex: 2, background: "var(--ps3-bg)" }}>
+      <div className="ps3-fallback">
+        <p className="ps3-notice" role="status">
           3D is unavailable on this device (no WebGL). The complete 2D flow below has every object and action.
         </p>
-        {full2d}
-      </>
+        {grid}
+      </div>
     );
   }
+  const driftKey = atlas.analysis && !atlas.repaired ? `${q.connector}:${q.drift}` : null;
   return (
     <>
+      {webgl ? (
       <div className="ps3-cam" role="group" aria-label="Camera">
         <button type="button" className="ps3-btn" onClick={() => cmd("home")}>
           Home
@@ -192,10 +204,11 @@ function StageView({
           Reset camera
         </button>
       </div>
+      ) : null}
       {webgl === null ? (
-        full2d
+        grid
       ) : (
-        <SceneBoundary fallback={full2d}>
+        <SceneBoundary fallback={grid}>
           <div style={{ position: "absolute", inset: 0 }} data-atlas-scene>
             <AtlasCanvas model={model} selected={q.node} onSelect={onSelect} focus={focus} command={command} follow={follow} reduced={reduced} labels t={q.t} driftKey={driftKey} />
           </div>
@@ -203,15 +216,12 @@ function StageView({
       )}
       {webgl ? (
         <div className="ps3-minimap">
-          <Flow2D model={model} selected={q.node} onSelect={onSelect} variant="mini" />
+          <Flow2D model={model} selected={q.node} onSelect={onSelect} />
         </div>
       ) : null}
     </>
   );
 }
-
-/** Time per replay step; the packet travels for FLIGHT_MS (600 ms) of it and the scene is idle for the rest. */
-export const STEP_MS = 900;
 
 function Timeline({ store }: { store: AtlasStore }) {
   const { q, atlas, set } = store;
@@ -250,7 +260,15 @@ function Timeline({ store }: { store: AtlasStore }) {
           →
         </button>
       </div>
-      <input type="range" min={0} max={Math.max(0, n - 1)} value={q.t} onChange={(e) => set({ t: Number(e.target.value) }, "replace")} aria-label="Payload position" aria-valuetext={stage ? `Step ${q.t + 1} of ${n}: ${stage.title}` : "No steps"} />
+      <input
+        type="range"
+        min={0}
+        max={Math.max(0, n - 1)}
+        value={q.t}
+        onChange={(e) => set({ t: Number(e.target.value) }, "replace")}
+        aria-label="Payload position"
+        aria-valuetext={stage ? `Step ${q.t + 1} of ${n}: ${stage.title}` : "No steps"}
+      />
       <p className="ps3-meta" style={{ margin: 0, minWidth: 220 }} data-testid="flight-step">
         {rec && stage ? `${rec.source_id} · step ${q.t + 1} of ${n} · ${stage.title} · ${step!.status === "ok" ? "passed" : step!.status}` : "No records"}
       </p>
@@ -258,23 +276,46 @@ function Timeline({ store }: { store: AtlasStore }) {
   );
 }
 
-function GuidedTour({ store, model, approval, onApprove }: { store: AtlasStore; model: SceneModel; approval: string | null; onApprove: (id: string) => void }) {
+/** Phone: one stage at a time, its neighbours named, input → transformation → output in readable text. */
+function GuidedPipeline({ store, model, approval, onApprove }: { store: AtlasStore; model: SceneModel; approval: string | null; onApprove: (id: string) => void }) {
   const { q, atlas, set } = store;
-  const [flow, setFlow] = useState(false);
+  const [complete, setComplete] = useState(false);
   const order = pipelineOrder(atlas);
   const i = Math.max(0, q.node ? order.indexOf(q.node) : 0);
-  const node = model.nodes.find((n) => n.id === order[i])!;
+  const at = (j: number) => model.nodes.find((n) => n.id === order[j]);
+  const node = at(i)!;
+  const prev = i > 0 ? at(i - 1) : undefined;
+  const next = i < order.length - 1 ? at(i + 1) : undefined;
   const rec = atlas.trace.records[q.record];
-  const step = rec?.steps.find((s) => s.stage_id === node.stage.id);
-  const go = (j: number) => set({ node: order[j]! });
+  const reach = reachableSteps(rec);
+  const si = rec ? rec.steps.findIndex((s) => s.stage_id === node.stage.id) : -1;
+  // Evidence is shown only for a stage the payload has actually reached in this dry run (so status agrees with it);
+  // otherwise say where the record stopped, or where the payload is now.
+  const reached = si !== -1 && si < reach;
+  const step = reached && si <= q.t ? rec!.steps[si] : undefined;
+  const stoppedAt = rec && reach < rec.steps.length ? atlas.plan.stages.find((s) => s.id === rec.steps[reach - 1]?.stage_id)?.title : undefined;
+  const payloadAt = atlas.plan.stages.find((s) => s.id === rec?.steps[q.t]?.stage_id)?.title;
+  const go = (id: string) => set({ node: id });
+  const changes = step ? diffFields(step.before, step.after) : [];
+  const inputs = changes.filter((c) => c.before !== undefined);
+  const outputs = changes.filter((c) => c.after !== undefined);
+  const neighbour = (n: typeof prev, label: string) =>
+    n ? (
+      <button type="button" className="ps3-tour-peer" data-status={n.status} onClick={() => go(n.id)}>
+        <span className="ps3-meta">{label}</span> <span>{n.label}</span> <span className="ps3-meta">{STATUS_TEXT[n.status]}</span>
+      </button>
+    ) : (
+      <span className="ps3-tour-peer ps3-tour-peer-empty">{label === "Previous stage" ? "Start of the pipeline" : "End of the pipeline"}</span>
+    );
+
   return (
     <div className="ps3 ps3-tour">
       <header className="ps3-tour-bar" aria-label="Connector">
-        <Image src="/brand/halt-horizontal-bone.svg" alt="HALT" width={78} height={22} unoptimized priority />
+        <Image src="/brand/halt-horizontal-bone.svg" alt="HALT" width={78} height={22} unoptimized />
         <span className="ps3-sim">SIMULATED</span>
-        <label style={{ display: "flex", alignItems: "center", gap: 6, width: "100%" }}>
+        <label className="ps3-tour-connector">
           <span className="ps3-meta">Connector</span>
-          <select value={q.connector} onChange={(e) => set({ connector: e.target.value })} className="ps3-btn" style={{ flex: 1, textTransform: "none", fontFamily: "var(--font-display)" }}>
+          <select value={q.connector} onChange={(e) => set({ connector: e.target.value })}>
             {store.fx.connectors.map((c) => (
               <option key={c.id} value={c.id}>
                 {c.title}
@@ -283,50 +324,86 @@ function GuidedTour({ store, model, approval, onApprove }: { store: AtlasStore; 
           </select>
         </label>
       </header>
-      <main className="ps3-tour-main" aria-label="Guided tour">
+      <main className="ps3-tour-main" aria-label="Guided pipeline">
         <h1 className="ps3-title">Connector Atlas</h1>
-        <button type="button" className="ps3-btn" aria-pressed={flow} onClick={() => setFlow((f) => !f)}>
-          {flow ? "Back to the guided tour" : "View complete 2D flow"}
+        <button type="button" className="ps3-btn" aria-pressed={complete} onClick={() => setComplete((c) => !c)}>
+          {complete ? "Back to the guided pipeline" : "Complete flow"}
         </button>
-        {flow ? (
-          <Flow2D model={model} selected={q.node} onSelect={(id) => set({ node: id })} variant="full" />
+        {complete ? (
+          <FlowGrid model={model} selected={q.node} onSelect={(id) => (go(id), setComplete(false))} />
         ) : (
           <>
-            <section aria-label={`Stage ${i + 1} of ${order.length}`} className="ps3-notice" data-status={node.status} style={{ display: "grid", gap: 8 }}>
+            <div className="ps3-tour-peers">{neighbour(prev, "Previous stage")}</div>
+            <section aria-label={`Stage ${i + 1} of ${order.length}: ${node.stage.title}`} className="ps3-tour-stage" data-status={node.status} data-testid="tour-stage">
               <p className="ps3-kicker">{`${ZONE_TITLES[node.zone]} · stage ${i + 1} of ${order.length}`}</p>
               <h2 className="ps3-title" style={{ fontSize: 26 }}>
                 {node.label}
               </h2>
               <p style={{ margin: 0 }}>
-                <Tag tone={node.status === "passed" ? "ok" : node.status === "failed" ? "fail" : node.status === "drift" ? "drift" : node.status === "active" ? "active" : undefined}>{STATUS_TEXT[node.status]}</Tag>
+                <Tag tone={TONE[node.status]}>{STATUS_TEXT[node.status]}</Tag>
               </p>
               {step ? (
-                <ul className="ps3-body" style={{ margin: 0, paddingLeft: 18 }}>
-                  {step.evidence.map((e) => (
-                    <li key={e}>{e}</li>
-                  ))}
-                </ul>
-              ) : null}
+                <>
+                  <div className="ps3-tour-io">
+                    <h3>Transformation</h3>
+                    <ul>
+                      {step.evidence.map((e) => (
+                        <li key={e}>{e}</li>
+                      ))}
+                    </ul>
+                  </div>
+                  {changes.length ? (
+                    <>
+                      <div className="ps3-tour-io">
+                        <h3>Input</h3>
+                        <ul className="ps3-mono">
+                          {inputs.slice(0, 10).map((c) => (
+                            <li key={c.path}>{`${c.path}: ${JSON.stringify(c.before)}`}</li>
+                          ))}
+                        </ul>
+                      </div>
+                      <div className="ps3-tour-io">
+                        <h3>Output</h3>
+                        <ul className="ps3-mono">
+                          {outputs.slice(0, 10).map((c) => (
+                            <li key={c.path}>{`${c.path}: ${JSON.stringify(c.after)}`}</li>
+                          ))}
+                        </ul>
+                      </div>
+                    </>
+                  ) : (
+                    <div className="ps3-tour-io">
+                      <h3>Input → output</h3>
+                      <p>No field changes: this stage checks or routes the record.</p>
+                    </div>
+                  )}
+                </>
+              ) : (
+                <p className="ps3-body">
+                  {reached ? `Not reached yet: the payload is at ${payloadAt ?? "an earlier stage"}.` : `The record never reached this stage${stoppedAt ? `: it stopped at ${stoppedAt}` : ""}.`}
+                </p>
+              )}
             </section>
-            <div role="tablist" aria-label="Atlas panels" className="ps3-tabs" style={{ padding: 0 }}>
-              {(["lens", "mapping", "flight", "drift", "proof", "gate"] as Panel[]).map((p) => (
-                <button key={p} type="button" role="tab" aria-selected={q.panel === p} onClick={() => set({ panel: p })}>
-                  {p === "lens" ? "Source" : p === "gate" ? "Activation" : p[0]!.toUpperCase() + p.slice(1)}
+            <div className="ps3-tour-peers">{neighbour(next, "Next stage")}</div>
+            <div role="tablist" aria-label="Atlas panels" className="ps3-tabs ps3-tour-tabs">
+              {(Object.keys(PANEL_TITLES) as Panel[]).map((p) => (
+                <button key={p} type="button" role="tab" aria-selected={q.panel === p} aria-controls="ps3-tour-panel" onClick={() => set({ panel: p })}>
+                  {PANEL_TITLES[p]}
                 </button>
               ))}
             </div>
-            <div role="tabpanel" style={{ display: "flex", flexDirection: "column", gap: 16 }}>
+            <div role="tabpanel" id="ps3-tour-panel" className="ps3-tour-panel" aria-label={PANEL_TITLES[q.panel]}>
               <PanelBody store={store} approval={approval} onApprove={onApprove} />
             </div>
           </>
         )}
       </main>
-      <nav className="ps3-tour-nav" aria-label="Tour">
-        <button type="button" className="ps3-btn" onClick={() => go(Math.max(0, i - 1))} disabled={i === 0}>
+      <nav className="ps3-tour-nav" aria-label="Pipeline">
+        <button type="button" className="ps3-btn" onClick={() => prev && go(prev.id)} disabled={!prev}>
           ← Previous
         </button>
         <span className="ps3-meta" style={{ alignSelf: "center" }}>{`${i + 1} / ${order.length}`}</span>
-        <button type="button" className="ps3-btn ps3-btn-primary" onClick={() => go(Math.min(order.length - 1, i + 1))} disabled={i === order.length - 1}>
+        <button type="button" className="ps3-btn ps3-btn-primary" onClick={() => next && go(next.id)} disabled={!next}>
           Next →
         </button>
       </nav>

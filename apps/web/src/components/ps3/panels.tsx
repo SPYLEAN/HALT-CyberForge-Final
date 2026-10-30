@@ -122,18 +122,18 @@ function SourceLens({ store }: { store: AtlasStore }) {
           <div className="ps3-pair">
             <div>
               <p className="ps3-meta">Source (redacted)</p>
-              <pre className="ps3-code" data-testid="lens-input">{pretty(rec.steps[0]!.after)}</pre>
+              <pre className="ps3-code" data-testid="lens-input" tabIndex={0} role="region" aria-label={`Source payload ${rec.source_id}, redacted`}>{pretty(rec.steps[0]!.after)}</pre>
             </div>
             <div>
               <p className="ps3-meta">{atlas.plan.connector.mapping.target} output</p>
-              <pre className="ps3-code" data-testid="lens-output">{pretty(rec.steps.find((s) => s.stage_id === "xf.normalize")!.after)}</pre>
+              <pre className="ps3-code" data-testid="lens-output" tabIndex={0} role="region" aria-label={`Mapped ${atlas.plan.connector.mapping.target} output for ${rec.source_id}`}>{pretty(rec.steps.find((s) => s.stage_id === "xf.normalize")!.after)}</pre>
             </div>
           </div>
         </Section>
       ) : null}
       <details>
         <summary className="ps3-meta">Connector configuration {atlas.config.version} (JSON)</summary>
-        <pre className="ps3-code">{pretty(atlas.config as unknown as Json)}</pre>
+        <pre className="ps3-code" tabIndex={0} role="region" aria-label={`Connector configuration ${atlas.config.version}`}>{pretty(atlas.config as unknown as Json)}</pre>
       </details>
     </>
   );
@@ -170,7 +170,6 @@ function MappingChamber({ store }: { store: AtlasStore }) {
                 aria-pressed={sel?.rule.id === r.rule.id}
                 data-bad={RULE_TONE[r.status] === "fail"}
                 onClick={() => setPicked(r.rule.id)}
-                aria-label={`${r.rule.id}: ${r.rule.from ?? "constant"} to ${r.rule.to ?? "dropped"}, ${r.status.replace("-", " ")}`}
               >
                 <span style={{ overflowWrap: "anywhere" }}>{r.rule.from ?? <em>constant</em>}</span>
                 <Tag tone={RULE_TONE[r.status]}>{`${r.rule.op} · ${r.status === "unmapped-required" ? "UNMAPPED · REQUIRED" : r.status}`}</Tag>
@@ -183,7 +182,7 @@ function MappingChamber({ store }: { store: AtlasStore }) {
       {sel ? (
         <Section title={`Rule ${sel.rule.id}: configuration and test evidence`}>
           <div className="ps3-pair">
-            <pre className="ps3-code">{pretty(sel.rule as unknown as Json)}</pre>
+            <pre className="ps3-code" tabIndex={0} role="region" aria-label={`Rule ${sel.rule.id} configuration`}>{pretty(sel.rule as unknown as Json)}</pre>
             <dl className="ps3-kv">
               {store.atlas.trace.records.map((r) => {
                 const x = r.rules.find((y) => y.rule.id === sel.rule.id)!;
@@ -206,7 +205,8 @@ function MappingChamber({ store }: { store: AtlasStore }) {
   );
 }
 
-function diff(before: Json, after: Json) {
+/** Leaf-level differences between a stage's input and output. */
+export function diffFields(before: Json, after: Json) {
   const paths = [...new Set([...leafPaths(before), ...leafPaths(after)])];
   return paths.flatMap((p) => {
     const a = getPath(before, p);
@@ -223,7 +223,7 @@ function PayloadFlight({ store }: { store: AtlasStore }) {
   if (!rec) return <p className="ps3-body">No record in this dry run.</p>;
   const step = rec.steps[q.t]!;
   const stage = atlas.plan.stages.find((s) => s.id === step.stage_id)!;
-  const changes = diff(step.before, step.after);
+  const changes = diffFields(step.before, step.after);
   return (
     <>
       <div>

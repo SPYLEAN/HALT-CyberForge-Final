@@ -30,7 +30,7 @@
 .ps3-title { margin: 0; font-size: clamp(24px, 2.2vw, 32px); line-height: 1.15; font-weight: 700; font-stretch: 110%; }
 .ps3-body { font-size: 14.5px; line-height: 1.55; }
 .ps3-meta { font-size: 12.5px; color: var(--ps3-text-2); }
-.ps3-sim { display: inline-flex; align-items: center; gap: 6px; padding: 3px 8px; border: 1px dashed var(--ps3-line-strong); border-radius: 3px; font-family: var(--font-mono); font-size: 11.5px; letter-spacing: 0.06em; color: var(--ps3-text); }
+.ps3-sim { display: inline-flex; align-items: center; gap: 6px; padding: 3px 8px; border: 1px dashed var(--ps3-line-strong); border-radius: 3px; font-family: var(--font-mono); font-size: 12px; letter-spacing: 0.06em; color: var(--ps3-text); }
 
 /* ---------- shell ---------- */
 .ps3-shell { display: grid; height: 100vh; height: 100dvh; overflow: hidden; grid-template-columns: 260px minmax(0, 1fr) 420px; grid-template-rows: var(--ps3-bar-h) minmax(0, 1fr) var(--ps3-track-h); grid-template-areas: "bar bar bar" "list stage drawer" "list track drawer"; }
@@ -120,6 +120,46 @@
   .ps3 * { transition: none !important; animation: none !important; }
 }
 
-/* Zone labels: DOM text positioned from the camera projection (see AtlasCanvas ZoneLabelPositioner). */
+/* ---------- stabilisation: readable flow, guided pipeline, touch targets ---------- */
+.ps3-tagline { margin: 0; font-size: 14px; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.ps3-fallback { position: absolute; inset: 0; display: flex; flex-direction: column; gap: var(--space-3); padding: var(--space-4); overflow: auto; }
+.ps3-fallback .ps3-flow-full { position: static; display: block; padding: 0; overflow: visible; }
+.ps3-flow-full { overflow: auto; display: block; }
+.ps3-grid { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: var(--space-3); align-items: start; }
+.ps3-grid-zone { border: 1px solid var(--ps3-line); border-radius: 6px; padding: var(--space-3); min-width: 0; position: relative; }
+.ps3-grid-zone + .ps3-grid-zone::before { content: "→"; position: absolute; left: calc(-1 * var(--space-3)); top: 10px; width: var(--space-3); text-align: center; color: var(--ps3-text-2); }
+.ps3-grid-zone h3 { margin: 0 0 var(--space-2); }
+.ps3-grid-lane + .ps3-grid-lane { margin-top: var(--space-3); padding-top: var(--space-2); border-top: 1px dashed var(--ps3-line); }
+.ps3-grid-lane > .ps3-meta { margin: 0 0 4px; overflow-wrap: anywhere; }
+.ps3-grid-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 4px; }
+.ps3-grid-node { all: unset; box-sizing: border-box; display: grid; grid-template-columns: 12px minmax(0, 1fr); gap: 2px 8px; width: 100%; min-height: 44px; padding: 6px 8px; border: 1px solid var(--ps3-line); border-radius: 4px; cursor: pointer; font-size: 13.5px; line-height: 1.3; }
+.ps3-grid-node .ps3-grid-label { overflow-wrap: anywhere; }
+.ps3-grid-node .ps3-meta { grid-column: 2; font-size: 12px; }
+.ps3-grid-node[aria-pressed="true"] { border-color: var(--ps3-structure); background: var(--ps3-raised); }
+.ps3-grid-node[data-status="receded"] { opacity: 0.6; }
+
+.ps3-tour-connector { display: flex; align-items: center; gap: 8px; width: 100%; }
+.ps3-tour-connector select { flex: 1; min-height: 44px; background: var(--ps3-surface); color: var(--ps3-text); border: 1px solid var(--ps3-line-strong); border-radius: 4px; padding: 0 10px; font: inherit; font-size: 15px; }
+.ps3-tour-peers { display: flex; }
+.ps3-tour-peer { all: unset; box-sizing: border-box; display: grid; gap: 2px; width: 100%; min-height: 44px; padding: 8px 12px; border: 1px solid var(--ps3-line); border-radius: 6px; cursor: pointer; font-size: 15px; }
+.ps3-tour-peer-empty { cursor: default; color: var(--ps3-text-2); border-style: dashed; }
+.ps3-tour-stage { display: grid; gap: var(--space-3); padding: var(--space-4); border: 2px solid var(--ps3-structure); border-radius: 8px; background: var(--ps3-surface); }
+.ps3-tour-stage[data-status="failed"] { border-color: var(--ps3-failure); }
+.ps3-tour-io h3 { margin: 0 0 4px; font-size: 13px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--ps3-text-2); }
+.ps3-tour-io ul { margin: 0; padding-left: 18px; display: grid; gap: 4px; font-size: 14.5px; line-height: 1.5; overflow-wrap: anywhere; }
+.ps3-tour-io .ps3-mono { font-size: 13px; }
+.ps3-tour-tabs { padding: 0; }
+.ps3-tour-panel { display: flex; flex-direction: column; gap: var(--space-4); }
+
+@media (max-width: 959px) {
+  .ps3 .ps3-btn, .ps3 .ps3-tabs button, .ps3 .ps3-rule, .ps3 select { min-height: 44px; }
+  .ps3 .ps3-tabs button { display: inline-flex; align-items: center; }
+  .ps3-grid { grid-template-columns: minmax(0, 1fr); }
+  .ps3-grid-zone + .ps3-grid-zone::before { content: "↓"; left: 50%; top: calc(-1 * var(--space-3) - 2px); width: auto; transform: translateX(-50%); }
+  .ps3-rule { grid-template-columns: minmax(0, 1fr); text-align: left; }
+  .ps3-rule > span:last-child { text-align: left !important; }
+  .ps3-meta { font-size: 13px; }
+}
 .ps3-zone-labels { position: absolute; inset: 0; pointer-events: none; overflow: hidden; z-index: 1; }
 .ps3-zone-label { position: absolute; top: 0; left: 0; white-space: nowrap; will-change: transform; }
+@media (max-width: 1279px) { .ps3-grid { grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); } }

@@ -20,10 +20,10 @@ Repeated objects (stage blocks, proof markers) are `InstancedMesh`.
 
 | Package | Version | Licence | Use |
 |---|---|---|---|
-| `three` | 0.186.1 | MIT | renderer, geometry |
+| `three` | 0.182.0 | MIT | renderer, geometry. Pinned to r182: `@react-three/fiber` 9 creates a `THREE.Clock` in its store, which r183+ reports as deprecated on every page; r182 is the last release before that warning, and one deduped copy serves every consumer |
 | `@react-three/fiber` | 9.8.2 | MIT | React 19 renderer for three |
-| `@react-three/drei` | 10.7.9 | MIT | `CameraControls`, `PerformanceMonitor`, `AdaptiveDpr`, `Html` (zone labels) |
-| `@types/three` | 0.186.0 | MIT | types |
+| `@react-three/drei` | 10.7.9 | MIT | `CameraControls`, `Line`, `PerformanceMonitor`. `Html` is not used: it creates its own React roots, which lost the first label and logged unmount races; zone labels are plain DOM positioned from the camera projection |
+| `@types/three` | 0.182.0 | MIT | types |
 | `@react-three/postprocessing` | — | — | **Not added**: no effect justified its cost |
 
 `three@0.128.0` remains installed under the alias `three-r128` only to vendor the landing page's supplied
