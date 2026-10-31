@@ -1,6 +1,7 @@
 """FireX data contracts (docs/FIREX_CANONICAL_SCHEMA.md, docs/INCIDENT_GRAPH_CONTRACT.md).
 
-Everything an API returns is one of these. Candidates stay `unconfirmed`: nothing here asserts a confirmed attack.
+Everything an API returns is one of these. Candidates stay `unconfirmed`: nothing here asserts a confirmed
+attack.
 """
 
 from __future__ import annotations
@@ -199,7 +200,28 @@ class EvidenceEvent(Contract):
     message: str | None = None
 
 
+class DetectionStep(Contract):
+    """One labelled action inside a detection. Merged steps carry a count and sample evidence."""
+
+    label: str
+    utc: str
+    ns: int
+    last_utc: str
+    last_ns: int
+    offset: int
+    count: int
+    evidence_refs: list[str]
+    technique_id: str
+    technique_name: str
+    stage: KillChainStage
+    layer: Layer
+    actor: str | None = None
+    target: str | None = None
+
+
 class Detection(Contract):
+    steps: list[DetectionStep]
+    target_kind: Literal["device", "host", "service", "account"]
     detection_id: str
     rule_id: str
     rule_version: str
@@ -235,7 +257,9 @@ class ScoreComponent(Contract):
 
 class GraphNode(Contract):
     node_id: str
-    kind: Literal["event", "account", "host", "ip", "session", "application", "service", "critical_asset", "burst"]
+    kind: Literal[
+        "event", "account", "host", "ip", "session", "application", "service", "critical_asset", "burst"
+    ]
     label: str
     layer: Layer
     order: int  # source order within the incident; x in the 3D view

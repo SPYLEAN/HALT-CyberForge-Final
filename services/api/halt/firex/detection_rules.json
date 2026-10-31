@@ -1,0 +1,163 @@
+{
+  "version": "halt.firex.rules/1.0.0",
+  "storage": {
+    "chunk_bytes": 33554432,
+    "duckdb_memory_limit_gb": 4
+  },
+  "collapse": {
+    "threshold_records": 10000,
+    "config_version": "collapse/1.0"
+  },
+  "bursts": {
+    "rule_id": "burst.repeated_behaviour",
+    "rule_version": "1.0",
+    "bucket_seconds": 3600,
+    "min_records": 20,
+    "keep": 5000,
+    "evidence_refs": 20
+  },
+  "evidence_refs_per_detection": 200,
+  "rules": {
+    "account_lifecycle": {
+      "version": "1.0",
+      "enabled": true,
+      "title": "Account created, used, then removed",
+      "window_seconds": 86400,
+      "create_pattern": "(?i)\\bAdd\\s+\\S*admin\\S*\\s+(\\S+)",
+      "delete_pattern": "(?i)\\bDelete\\s+\\S*admin\\S*\\s+(\\S+)",
+      "risk": 0.9,
+      "confidence": 0.85,
+      "technique": ["T1136.001", "Create Account: Local Account", "persistence"],
+      "stage": "installation",
+      "basis": "observed"
+    },
+    "logging_tamper": {
+      "version": "1.0",
+      "enabled": true,
+      "title": "Security logging disabled around configuration changes",
+      "window_seconds": 86400,
+      "disable_pattern": "(?i)log\\S*\\s+\\S*\\s*setting.*changed from 'enable' to 'disable'",
+      "enable_pattern": "(?i)log\\S*\\s+\\S*\\s*setting.*changed from 'disable' to 'enable'",
+      "change_actions": ["Edit", "Add", "Delete"],
+      "risk": 0.85,
+      "confidence": 0.85,
+      "technique": ["T1562.002", "Impair Defenses: Disable Windows Event Logging", "defense-evasion"],
+      "stage": "defense_evasion",
+      "basis": "observed"
+    },
+    "web_attack_concentration": {
+      "version": "1.0",
+      "enabled": true,
+      "title": "Concentrated multi-technique web attack on one target",
+      "min_events": 50,
+      "min_signatures": 3,
+      "services": ["HTTP", "HTTPS"],
+      "risk": 0.8,
+      "confidence": 0.8,
+      "technique": ["T1190", "Exploit Public-Facing Application", "initial-access"],
+      "stage": "exploitation",
+      "basis": "observed"
+    },
+    "internal_fanout": {
+      "version": "1.0",
+      "enabled": true,
+      "title": "Internal SMB or RDP fan-out from one host",
+      "min_destinations": 10,
+      "ports": [445, 3389],
+      "internal_roles": ["lan", "dmz"],
+      "risk": 0.8,
+      "confidence": 0.8,
+      "technique": ["T1021", "Remote Services", "lateral-movement"],
+      "stage": "lateral_movement",
+      "basis": "observed"
+    },
+    "sustained_dns": {
+      "version": "1.0",
+      "enabled": true,
+      "title": "Sustained high-volume DNS from one host to one resolver",
+      "min_records": 500,
+      "min_duration_seconds": 600,
+      "risk": 0.65,
+      "confidence": 0.65,
+      "technique": ["T1071.004", "Application Layer Protocol: DNS", "command-and-control"],
+      "stage": "command_and_control",
+      "basis": "inferred"
+    },
+    "repeated_malware": {
+      "version": "1.0",
+      "enabled": true,
+      "title": "Repeated malware detections between one host and one destination",
+      "min_events": 3,
+      "max_window_seconds": 86400,
+      "risk": 0.7,
+      "confidence": 0.7,
+      "technique": ["T1105", "Ingress Tool Transfer", "command-and-control"],
+      "stage": "delivery",
+      "basis": "observed"
+    },
+    "denial_flood": {
+      "version": "1.0",
+      "enabled": true,
+      "title": "Denied-traffic flood against one target",
+      "min_events": 1000,
+      "min_sources": 100,
+      "bucket_seconds": 3600,
+      "min_bucket_events": 100,
+      "risk": 0.6,
+      "confidence": 0.6,
+      "technique": ["T1498", "Network Denial of Service", "impact"],
+      "stage": "impact",
+      "basis": "observed"
+    },
+    "vpn_alternation": {
+      "version": "1.0",
+      "enabled": true,
+      "title": "VPN identity alternating between source addresses",
+      "actions": ["tunnel-up"],
+      "min_sessions": 3,
+      "min_alternations": 2,
+      "window_seconds": 7200,
+      "risk": 0.6,
+      "confidence": 0.6,
+      "technique": ["T1133", "External Remote Services", "initial-access"],
+      "stage": "credential_access",
+      "basis": "inferred"
+    },
+    "failure_then_success": {
+      "version": "1.0",
+      "enabled": true,
+      "title": "Failed logins followed by a success for the same account or source",
+      "min_failures": 5,
+      "window_seconds": 3600,
+      "risk": 0.75,
+      "confidence": 0.75,
+      "technique": ["T1110", "Brute Force", "credential-access"],
+      "stage": "credential_access",
+      "basis": "inferred"
+    }
+  },
+  "correlation": {
+    "max_detections_per_incident": 12,
+    "max_join_gap_seconds": 604800,
+    "max_entity_detections": 8,
+    "follow_on_limit": 200,
+    "follow_on_max_groups": 40,
+    "reachability_limit": 12,
+    "stage_order": [
+      "reconnaissance",
+      "credential_access",
+      "delivery",
+      "exploitation",
+      "installation",
+      "defense_evasion",
+      "command_and_control",
+      "lateral_movement",
+      "actions_on_objectives",
+      "impact"
+    ]
+  },
+  "limits": {
+    "node_cap": 120,
+    "evidence_events_per_incident": 200
+  }
+}
