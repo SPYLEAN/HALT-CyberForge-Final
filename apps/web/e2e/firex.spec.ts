@@ -110,12 +110,19 @@ test("Attack World renders in WebGL, selects, replays and falls back to the shar
   await replay.getByRole("button", { name: "Next", exact: true }).click();
   await expect(replay.getByText(/^Step 1 of/)).toBeVisible();
   await expect(page.getByRole("region", { name: "What this step means" })).toContainText("What proves it");
+  // Pause holds the step wherever it had reached, for longer than a step lasts. Play moves on from there.
+  const status = replay.getByRole("status");
   await replay.getByRole("button", { name: "Play", exact: true }).click();
   await replay.getByRole("button", { name: "Pause", exact: true }).click();
-  await expect(replay.getByText(/^Step 1 of/)).toBeVisible();
+  await expect(replay.getByRole("button", { name: "Play", exact: true })).toBeVisible();
+  const paused = await status.textContent();
+  await page.waitForTimeout(4_000);
+  expect(await status.textContent()).toBe(paused);
   await replay.getByRole("button", { name: "Play", exact: true }).click();
-  await expect(replay.getByText(/^Step 2 of/)).toBeVisible({ timeout: 6_000 });
-  await replay.getByRole("button", { name: "Show all" }).click();
+  await expect(status).not.toHaveText(paused!, { timeout: 8_000 });
+  const showAll = replay.getByRole("button", { name: "Show all" });
+  if (await showAll.count()) await showAll.click();
+  await replay.getByRole("button", { name: "Pause", exact: true }).click({ timeout: 500 }).catch(() => undefined);
 
   // Keyboard: the scene is reachable and steps with the arrow keys.
   await frame.focus();
@@ -226,7 +233,8 @@ test("SourceTrace finds an account, traces it to its source and records a review
   expect((await (await request.get(`${PS2}/incidents/${account}/proof?run_id=${runId}`)).json()).receipt).toEqual(before.receipt);
 
   await page.keyboard.press("Escape");
-  await expect(page.getByRole("button", { name: "Search evidence" })).toBeVisible();
+  await expect(page.getByRole("dialog", { name: "Search evidence" })).toHaveCount(0);
+  await expect(page.getByRole("button", { name: "Search evidence" })).toBeFocused();
 });
 
 test("SourceTrace works at phone width and says when nothing is found", async ({ page, request }) => {

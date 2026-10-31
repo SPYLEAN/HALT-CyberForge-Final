@@ -62,7 +62,13 @@ export function SearchEvidence({ runId, runs, advanced }: { runId?: string; runs
       <button type="button" ref={opener} className={s.btn} onClick={open}>
         Search evidence
       </button>
-      <dialog ref={dialog} className={s.trace} aria-labelledby="trace-title" onClose={() => setIsOpen(false)} onCancel={() => setIsOpen(false)}>
+      <dialog ref={dialog} className={s.trace} aria-labelledby="trace-title" onClose={() => setIsOpen(false)} onCancel={() => setIsOpen(false)} onKeyDown={(e) => {
+          // A search field would otherwise spend Escape on clearing itself.
+          if (e.key === "Escape") {
+            e.preventDefault();
+            close();
+          }
+        }}>
         {isOpen && run ? (
           <div className={s.traceBody}>
             <div className={s.lensHead}>
