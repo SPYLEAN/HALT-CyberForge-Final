@@ -12,15 +12,15 @@ from fastapi import APIRouter, Query
 from halt.contracts.common import Contract
 from halt.firex import jobs
 from halt.firex.contracts import (
-    AttackStory,
     BenchmarkReceipt,
     DatasetQualitySummary,
     DatasetRun,
-    Hypotheses,
+    FirexAttackStory,
+    FirexHypotheses,
+    FirexIncidentList,
+    FirexIncidentSummary,
     IncidentDetail,
     IncidentGraph,
-    IncidentList,
-    IncidentSummary,
     NarrativeRequest,
     NarrativeResult,
     ProofReceipt,
@@ -93,16 +93,16 @@ def resume_run(run_id: str) -> DatasetRun:
     return jobs.to_contract(jobs.resume_run(run_id))
 
 
-@router.get("/runs/{run_id}/incidents", response_model=IncidentList)
-def list_incidents(run_id: str) -> IncidentList:
+@router.get("/runs/{run_id}/incidents", response_model=FirexIncidentList)
+def list_incidents(run_id: str) -> FirexIncidentList:
     state = jobs.read_state(run_id)
     folder = jobs.run_dir(run_id)
     index = folder / "incidents" / "index.json"
     items = read_json(index) if index.is_file() and state["status"] == "completed" else []
     quality = read_json(folder / "quality.json") if (folder / "quality.json").is_file() else None
-    return IncidentList(
+    return FirexIncidentList(
         run_id=run_id,
-        items=[IncidentSummary.model_validate(i) for i in items],
+        items=[FirexIncidentSummary.model_validate(i) for i in items],
         quality=DatasetQualitySummary.model_validate(quality) if quality else None,
     )
 
@@ -135,14 +135,14 @@ def get_incident_graph(incident_id: str, run_id: RunQuery = None) -> IncidentGra
     return IncidentGraph.model_validate(_load(jobs.find_incident(incident_id, run_id), "graph"))
 
 
-@router.get("/incidents/{incident_id}/story", response_model=AttackStory)
-def get_incident_story(incident_id: str, run_id: RunQuery = None) -> AttackStory:
-    return AttackStory.model_validate(_load(jobs.find_incident(incident_id, run_id), "story"))
+@router.get("/incidents/{incident_id}/story", response_model=FirexAttackStory)
+def get_incident_story(incident_id: str, run_id: RunQuery = None) -> FirexAttackStory:
+    return FirexAttackStory.model_validate(_load(jobs.find_incident(incident_id, run_id), "story"))
 
 
-@router.get("/incidents/{incident_id}/hypotheses", response_model=Hypotheses)
-def get_incident_hypotheses(incident_id: str, run_id: RunQuery = None) -> Hypotheses:
-    return Hypotheses.model_validate(_load(jobs.find_incident(incident_id, run_id), "hypotheses"))
+@router.get("/incidents/{incident_id}/hypotheses", response_model=FirexHypotheses)
+def get_incident_hypotheses(incident_id: str, run_id: RunQuery = None) -> FirexHypotheses:
+    return FirexHypotheses.model_validate(_load(jobs.find_incident(incident_id, run_id), "hypotheses"))
 
 
 @router.get("/incidents/{incident_id}/reachability", response_model=ReachabilityResult)

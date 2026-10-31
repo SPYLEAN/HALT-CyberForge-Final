@@ -1244,6 +1244,17 @@ export interface components {
             /** Uncertain */
             uncertain: boolean;
         };
+        /** AttackStory */
+        AttackStory: {
+            /** Checked Statements */
+            checked_statements: number;
+            /** Run Id */
+            run_id: string;
+            /** Statements */
+            statements: components["schemas"]["StoryStatement"][];
+            /** Unsupported Claims */
+            unsupported_claims: number;
+        };
         /** AttackTechnique */
         AttackTechnique: {
             /** Technique Id */
@@ -2337,6 +2348,199 @@ export interface components {
             /** Value */
             value: number;
         };
+        /** FirexAttackStory */
+        FirexAttackStory: {
+            /** Checked Statements */
+            checked_statements: number;
+            /** Incident Id */
+            incident_id: string;
+            /** Reachable Next */
+            reachable_next: string;
+            /** Statements */
+            statements: components["schemas"]["FirexStoryStatement"][];
+            /** Strongest Evidence */
+            strongest_evidence: string;
+            /** Systems Affected */
+            systems_affected: string;
+            /** Uncertain */
+            uncertain: string;
+            /** Unsupported Claims */
+            unsupported_claims: number;
+            /** What Happened */
+            what_happened: string;
+            /** Where Started */
+            where_started: string;
+            /** Who Compromised */
+            who_compromised: string;
+        };
+        /** FirexGraphEdge */
+        FirexGraphEdge: {
+            /**
+             * Classification
+             * @enum {string}
+             */
+            classification: "observed" | "inferred" | "reachable";
+            /** Components */
+            components: components["schemas"]["ScoreComponent"][];
+            /** Confidence */
+            confidence: number;
+            /** Contradictions */
+            contradictions: string[];
+            /** Edge Id */
+            edge_id: string;
+            /** Evidence Refs */
+            evidence_refs: string[];
+            /** First Utc */
+            first_utc: string | null;
+            /** Last Utc */
+            last_utc: string | null;
+            /**
+             * Missing Evidence
+             * @default false
+             */
+            missing_evidence: boolean;
+            /**
+             * On Selected Path
+             * @default false
+             */
+            on_selected_path: boolean;
+            /** Relation */
+            relation: string;
+            /** Rule */
+            rule: string;
+            /** Rule Version */
+            rule_version: string;
+            /** Source */
+            source: string;
+            /** Target */
+            target: string;
+        };
+        /** FirexGraphNode */
+        FirexGraphNode: {
+            /** Attributes */
+            attributes: {
+                [key: string]: string | number | boolean | null;
+            };
+            /**
+             * Count
+             * @default 1
+             */
+            count: number;
+            /** Detection Id */
+            detection_id: string | null;
+            /** Evidence Refs */
+            evidence_refs: string[];
+            /** First Utc */
+            first_utc: string | null;
+            /**
+             * Is Context
+             * @default false
+             */
+            is_context: boolean;
+            /**
+             * Kind
+             * @enum {string}
+             */
+            kind: "event" | "account" | "host" | "ip" | "session" | "application" | "service" | "critical_asset" | "burst";
+            /** Label */
+            label: string;
+            /** Last Utc */
+            last_utc: string | null;
+            /**
+             * Layer
+             * @enum {string}
+             */
+            layer: "external" | "network_edge" | "endpoint" | "identity" | "application" | "critical_asset";
+            /** Node Id */
+            node_id: string;
+            /**
+             * On Selected Path
+             * @default false
+             */
+            on_selected_path: boolean;
+            /** Order */
+            order: number;
+            /** Stage */
+            stage: ("reconnaissance" | "delivery" | "exploitation" | "installation" | "command_and_control" | "actions_on_objectives" | "defense_evasion" | "credential_access" | "lateral_movement" | "impact") | null;
+        };
+        /** FirexHypotheses */
+        FirexHypotheses: {
+            /** Alternates */
+            alternates: components["schemas"]["AttackHypothesis"][];
+            /** Incident Id */
+            incident_id: string;
+            selected: components["schemas"]["AttackHypothesis"];
+            /** Uncertainty Margin */
+            uncertainty_margin: number;
+        };
+        /** FirexIncidentList */
+        FirexIncidentList: {
+            /** Items */
+            items: components["schemas"]["FirexIncidentSummary"][];
+            quality: components["schemas"]["DatasetQualitySummary"] | null;
+            /** Run Id */
+            run_id: string;
+        };
+        /** FirexIncidentSummary */
+        FirexIncidentSummary: {
+            /** Affected Devices */
+            affected_devices: string[];
+            /** Affected Identity */
+            affected_identity: string | null;
+            /** Confidence */
+            confidence: number;
+            /** Critical Target */
+            critical_target: string | null;
+            /** Detection Count */
+            detection_count: number;
+            /** Entry Point */
+            entry_point: string;
+            /** Evidence Count */
+            evidence_count: number;
+            /** First Utc */
+            first_utc: string;
+            /** Incident Id */
+            incident_id: string;
+            /** Last Utc */
+            last_utc: string;
+            /** Merged Events */
+            merged_events: number;
+            /** Risk */
+            risk: number;
+            /** Run Id */
+            run_id: string;
+            /** Stages */
+            stages: string[];
+            /**
+             * Status
+             * @default unconfirmed
+             * @constant
+             */
+            status: "unconfirmed";
+            /** Techniques */
+            techniques: string[];
+            /**
+             * Timestamp Quality
+             * @enum {string}
+             */
+            timestamp_quality: "normal" | "collapsed" | "conflicting";
+            /** Title */
+            title: string;
+        };
+        /** FirexStoryStatement */
+        FirexStoryStatement: {
+            /** Evidence Ids */
+            evidence_ids: string[];
+            /**
+             * Kind
+             * @enum {string}
+             */
+            kind: "observed" | "inferred" | "gap" | "hypothetical";
+            /** Statement Id */
+            statement_id: string;
+            /** Text */
+            text: string;
+        };
         /** FutureResult */
         FutureResult: {
             /** Action Ids */
@@ -2399,10 +2603,7 @@ export interface components {
         GraphEdge: {
             /** Evidence Ids */
             evidence_ids: string[];
-            /**
-             * First Seen
-             * @default null
-             */
+            /** First Seen */
             first_seen: string | null;
             /**
              * Historical
@@ -2411,17 +2612,13 @@ export interface components {
             historical: boolean;
             /** Id */
             id: string;
-            /** @default null */
             inference: components["schemas"]["Inference"] | null;
             /**
              * Kind
              * @enum {string}
              */
             kind: "hostile" | "dependency" | "identity";
-            /**
-             * Origin
-             * @default null
-             */
+            /** Origin */
             origin: string | null;
             /**
              * Provenance
@@ -2434,7 +2631,6 @@ export interface components {
             source: string;
             /** Target */
             target: string;
-            /** @default null */
             transition: components["schemas"]["Transition"] | null;
         };
         /** GraphNode */
@@ -2444,7 +2640,6 @@ export interface components {
              * @default false
              */
             attacker_controlled: boolean;
-            /** @default null */
             business: components["schemas"]["BusinessInfo"] | null;
             /**
              * Criticality
@@ -2454,10 +2649,7 @@ export interface components {
             criticality: "none" | "standard" | "critical";
             /** Evidence Ids */
             evidence_ids: string[];
-            /**
-             * First Seen
-             * @default null
-             */
+            /** First Seen */
             first_seen: string | null;
             /** Id */
             id: string;
@@ -2469,10 +2661,7 @@ export interface components {
             /** Label */
             label: string;
             layout: components["schemas"]["Layout"];
-            /**
-             * Origin
-             * @default null
-             */
+            /** Origin */
             origin: string | null;
             /**
              * Provenance
@@ -2488,14 +2677,14 @@ export interface components {
              */
             at: string;
             /** Edges */
-            edges: components["schemas"]["halt__contracts__graph__GraphEdge"][];
+            edges: components["schemas"]["GraphEdge"][];
             /** Hash */
             hash: string;
             /** Id */
             id: string;
             meta: components["schemas"]["Meta"];
             /** Nodes */
-            nodes: components["schemas"]["halt__contracts__graph__GraphNode"][];
+            nodes: components["schemas"]["GraphNode"][];
             /**
              * @default {
              *       "edge_ids": [],
@@ -2554,6 +2743,18 @@ export interface components {
             python: string;
             /** Ram Gb */
             ram_gb: number | null;
+        };
+        /** Hypotheses */
+        Hypotheses: {
+            /** Alternates */
+            alternates: components["schemas"]["PathHypothesis"][];
+            /** Rejected Edges */
+            rejected_edges: components["schemas"]["CandidateEdge"][];
+            /** Rejected Paths */
+            rejected_paths: components["schemas"]["PathHypothesis"][];
+            /** Run Id */
+            run_id: string;
+            selected: components["schemas"]["PathHypothesis"] | null;
         };
         /** Impact */
         Impact: {
@@ -2621,7 +2822,7 @@ export interface components {
             root_cause: string;
             /** Selected Path Id */
             selected_path_id: string;
-            summary: components["schemas"]["halt__firex__contracts__IncidentSummary"];
+            summary: components["schemas"]["FirexIncidentSummary"];
             /** Timeline */
             timeline: components["schemas"]["TimelineEntry"][];
             /** Uncertainty Margin */
@@ -2630,7 +2831,7 @@ export interface components {
         /** IncidentGraph */
         IncidentGraph: {
             /** Edges */
-            edges: components["schemas"]["halt__firex__contracts__GraphEdge"][];
+            edges: components["schemas"]["FirexGraphEdge"][];
             /** Graph Hash */
             graph_hash: string;
             /** Incident Id */
@@ -2638,9 +2839,15 @@ export interface components {
             /** Node Cap */
             node_cap: number;
             /** Nodes */
-            nodes: components["schemas"]["halt__firex__contracts__GraphNode"][];
+            nodes: components["schemas"]["FirexGraphNode"][];
             /** Truncated */
             truncated: boolean;
+        };
+        /** IncidentList */
+        IncidentList: {
+            /** Items */
+            items: components["schemas"]["IncidentSummary"][];
+            meta: components["schemas"]["Meta"];
         };
         /** IncidentParams */
         IncidentParams: {
@@ -3998,6 +4205,33 @@ export interface components {
              */
             type: "stale";
         };
+        /** StoryStatement */
+        StoryStatement: {
+            /** Confidence */
+            confidence: number;
+            /** Edge Ids */
+            edge_ids: string[];
+            /** Event Ids */
+            event_ids: string[];
+            /** Facts */
+            facts: {
+                [key: string]: string;
+            };
+            /**
+             * Section
+             * @enum {string}
+             */
+            section: "observed" | "inferred" | "missing_evidence" | "forecast";
+            /** Statement Id */
+            statement_id: string;
+            /**
+             * Status
+             * @enum {string}
+             */
+            status: "observed" | "inferred" | "missing" | "forecast";
+            /** Text */
+            text: string;
+        };
         /** SubscribeCommand */
         SubscribeCommand: {
             /**
@@ -4157,342 +4391,6 @@ export interface components {
             items: components["schemas"]["VariantInfo"][];
             meta: components["schemas"]["Meta"];
         };
-        /** IncidentList */
-        halt__contracts__api__IncidentList: {
-            /** Items */
-            items: components["schemas"]["halt__contracts__incident__IncidentSummary"][];
-            meta: components["schemas"]["Meta"];
-        };
-        /** GraphEdge */
-        halt__contracts__graph__GraphEdge: {
-            /** Evidence Ids */
-            evidence_ids: string[];
-            /** First Seen */
-            first_seen: string | null;
-            /**
-             * Historical
-             * @default false
-             */
-            historical: boolean;
-            /** Id */
-            id: string;
-            inference: components["schemas"]["Inference"] | null;
-            /**
-             * Kind
-             * @enum {string}
-             */
-            kind: "hostile" | "dependency" | "identity";
-            /** Origin */
-            origin: string | null;
-            /**
-             * Provenance
-             * @enum {string}
-             */
-            provenance: "observed" | "inferred" | "forecast" | "structural";
-            /** Relation */
-            relation: string;
-            /** Source */
-            source: string;
-            /** Target */
-            target: string;
-            transition: components["schemas"]["Transition"] | null;
-        };
-        /** GraphNode */
-        halt__contracts__graph__GraphNode: {
-            /**
-             * Attacker Controlled
-             * @default false
-             */
-            attacker_controlled: boolean;
-            business: components["schemas"]["BusinessInfo"] | null;
-            /**
-             * Criticality
-             * @default none
-             * @enum {string}
-             */
-            criticality: "none" | "standard" | "critical";
-            /** Evidence Ids */
-            evidence_ids: string[];
-            /** First Seen */
-            first_seen: string | null;
-            /** Id */
-            id: string;
-            /**
-             * Kind
-             * @enum {string}
-             */
-            kind: "user" | "device" | "session" | "token" | "application" | "api" | "service" | "database" | "process" | "attacker";
-            /** Label */
-            label: string;
-            layout: components["schemas"]["Layout"];
-            /** Origin */
-            origin: string | null;
-            /**
-             * Provenance
-             * @enum {string}
-             */
-            provenance: "observed" | "inferred" | "forecast" | "structural";
-        };
-        /** IncidentSummary */
-        halt__contracts__incident__IncidentSummary: {
-            /** Id */
-            id: string;
-            /**
-             * State
-             * @enum {string}
-             */
-            state: "new" | "correlating" | "forecast_ready" | "simulating" | "plan_available" | "approval_pending" | "executing" | "contained" | "rollback_available" | "rolled_back" | "blocked_by_policy" | "no_safe_plan";
-            /**
-             * T0
-             * Format: date-time
-             */
-            t0: string;
-            /** Title */
-            title: string;
-        };
-        /** AttackStory */
-        halt__firex__contracts__AttackStory: {
-            /** Checked Statements */
-            checked_statements: number;
-            /** Incident Id */
-            incident_id: string;
-            /** Reachable Next */
-            reachable_next: string;
-            /** Statements */
-            statements: components["schemas"]["halt__firex__contracts__StoryStatement"][];
-            /** Strongest Evidence */
-            strongest_evidence: string;
-            /** Systems Affected */
-            systems_affected: string;
-            /** Uncertain */
-            uncertain: string;
-            /** Unsupported Claims */
-            unsupported_claims: number;
-            /** What Happened */
-            what_happened: string;
-            /** Where Started */
-            where_started: string;
-            /** Who Compromised */
-            who_compromised: string;
-        };
-        /** GraphEdge */
-        halt__firex__contracts__GraphEdge: {
-            /**
-             * Classification
-             * @enum {string}
-             */
-            classification: "observed" | "inferred" | "reachable";
-            /** Components */
-            components: components["schemas"]["ScoreComponent"][];
-            /** Confidence */
-            confidence: number;
-            /** Contradictions */
-            contradictions: string[];
-            /** Edge Id */
-            edge_id: string;
-            /** Evidence Refs */
-            evidence_refs: string[];
-            /** First Utc */
-            first_utc: string | null;
-            /** Last Utc */
-            last_utc: string | null;
-            /**
-             * Missing Evidence
-             * @default false
-             */
-            missing_evidence: boolean;
-            /**
-             * On Selected Path
-             * @default false
-             */
-            on_selected_path: boolean;
-            /** Relation */
-            relation: string;
-            /** Rule */
-            rule: string;
-            /** Rule Version */
-            rule_version: string;
-            /** Source */
-            source: string;
-            /** Target */
-            target: string;
-        };
-        /** GraphNode */
-        halt__firex__contracts__GraphNode: {
-            /** Attributes */
-            attributes: {
-                [key: string]: string | number | boolean | null;
-            };
-            /**
-             * Count
-             * @default 1
-             */
-            count: number;
-            /** Detection Id */
-            detection_id: string | null;
-            /** Evidence Refs */
-            evidence_refs: string[];
-            /** First Utc */
-            first_utc: string | null;
-            /**
-             * Is Context
-             * @default false
-             */
-            is_context: boolean;
-            /**
-             * Kind
-             * @enum {string}
-             */
-            kind: "event" | "account" | "host" | "ip" | "session" | "application" | "service" | "critical_asset" | "burst";
-            /** Label */
-            label: string;
-            /** Last Utc */
-            last_utc: string | null;
-            /**
-             * Layer
-             * @enum {string}
-             */
-            layer: "external" | "network_edge" | "endpoint" | "identity" | "application" | "critical_asset";
-            /** Node Id */
-            node_id: string;
-            /**
-             * On Selected Path
-             * @default false
-             */
-            on_selected_path: boolean;
-            /** Order */
-            order: number;
-            /** Stage */
-            stage: ("reconnaissance" | "delivery" | "exploitation" | "installation" | "command_and_control" | "actions_on_objectives" | "defense_evasion" | "credential_access" | "lateral_movement" | "impact") | null;
-        };
-        /** Hypotheses */
-        halt__firex__contracts__Hypotheses: {
-            /** Alternates */
-            alternates: components["schemas"]["AttackHypothesis"][];
-            /** Incident Id */
-            incident_id: string;
-            selected: components["schemas"]["AttackHypothesis"];
-            /** Uncertainty Margin */
-            uncertainty_margin: number;
-        };
-        /** IncidentList */
-        halt__firex__contracts__IncidentList: {
-            /** Items */
-            items: components["schemas"]["halt__firex__contracts__IncidentSummary"][];
-            quality: components["schemas"]["DatasetQualitySummary"] | null;
-            /** Run Id */
-            run_id: string;
-        };
-        /** IncidentSummary */
-        halt__firex__contracts__IncidentSummary: {
-            /** Affected Devices */
-            affected_devices: string[];
-            /** Affected Identity */
-            affected_identity: string | null;
-            /** Confidence */
-            confidence: number;
-            /** Critical Target */
-            critical_target: string | null;
-            /** Detection Count */
-            detection_count: number;
-            /** Entry Point */
-            entry_point: string;
-            /** Evidence Count */
-            evidence_count: number;
-            /** First Utc */
-            first_utc: string;
-            /** Incident Id */
-            incident_id: string;
-            /** Last Utc */
-            last_utc: string;
-            /** Merged Events */
-            merged_events: number;
-            /** Risk */
-            risk: number;
-            /** Run Id */
-            run_id: string;
-            /** Stages */
-            stages: string[];
-            /**
-             * Status
-             * @default unconfirmed
-             * @constant
-             */
-            status: "unconfirmed";
-            /** Techniques */
-            techniques: string[];
-            /**
-             * Timestamp Quality
-             * @enum {string}
-             */
-            timestamp_quality: "normal" | "collapsed" | "conflicting";
-            /** Title */
-            title: string;
-        };
-        /** StoryStatement */
-        halt__firex__contracts__StoryStatement: {
-            /** Evidence Ids */
-            evidence_ids: string[];
-            /**
-             * Kind
-             * @enum {string}
-             */
-            kind: "observed" | "inferred" | "gap" | "hypothetical";
-            /** Statement Id */
-            statement_id: string;
-            /** Text */
-            text: string;
-        };
-        /** AttackStory */
-        halt__ps2__schema__AttackStory: {
-            /** Checked Statements */
-            checked_statements: number;
-            /** Run Id */
-            run_id: string;
-            /** Statements */
-            statements: components["schemas"]["halt__ps2__schema__StoryStatement"][];
-            /** Unsupported Claims */
-            unsupported_claims: number;
-        };
-        /** Hypotheses */
-        halt__ps2__schema__Hypotheses: {
-            /** Alternates */
-            alternates: components["schemas"]["PathHypothesis"][];
-            /** Rejected Edges */
-            rejected_edges: components["schemas"]["CandidateEdge"][];
-            /** Rejected Paths */
-            rejected_paths: components["schemas"]["PathHypothesis"][];
-            /** Run Id */
-            run_id: string;
-            selected: components["schemas"]["PathHypothesis"] | null;
-        };
-        /** StoryStatement */
-        halt__ps2__schema__StoryStatement: {
-            /** Confidence */
-            confidence: number;
-            /** Edge Ids */
-            edge_ids: string[];
-            /** Event Ids */
-            event_ids: string[];
-            /** Facts */
-            facts: {
-                [key: string]: string;
-            };
-            /**
-             * Section
-             * @enum {string}
-             */
-            section: "observed" | "inferred" | "missing_evidence" | "forecast";
-            /** Statement Id */
-            statement_id: string;
-            /**
-             * Status
-             * @enum {string}
-             */
-            status: "observed" | "inferred" | "missing" | "forecast";
-            /** Text */
-            text: string;
-        };
     };
     responses: never;
     parameters: never;
@@ -4602,7 +4500,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["halt__contracts__api__IncidentList"];
+                    "application/json": components["schemas"]["IncidentList"];
                 };
             };
         };
@@ -5515,7 +5413,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["halt__firex__contracts__Hypotheses"];
+                    "application/json": components["schemas"]["FirexHypotheses"];
                 };
             };
             /** @description Validation Error */
@@ -5651,7 +5549,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["halt__firex__contracts__AttackStory"];
+                    "application/json": components["schemas"]["FirexAttackStory"];
                 };
             };
             /** @description Validation Error */
@@ -5988,7 +5886,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["halt__ps2__schema__Hypotheses"];
+                    "application/json": components["schemas"]["Hypotheses"];
                 };
             };
             /** @description Validation Error */
@@ -6081,7 +5979,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["halt__ps2__schema__AttackStory"];
+                    "application/json": components["schemas"]["AttackStory"];
                 };
             };
             /** @description Validation Error */
@@ -6258,7 +6156,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["halt__firex__contracts__IncidentList"];
+                    "application/json": components["schemas"]["FirexIncidentList"];
                 };
             };
             /** @description Validation Error */

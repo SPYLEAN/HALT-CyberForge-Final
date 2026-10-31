@@ -255,7 +255,7 @@ class ScoreComponent(Contract):
     detail: str
 
 
-class GraphNode(Contract):
+class FirexGraphNode(Contract):
     node_id: str
     kind: Literal[
         "event", "account", "host", "ip", "session", "application", "service", "critical_asset", "burst"
@@ -274,7 +274,7 @@ class GraphNode(Contract):
     attributes: dict[str, str | int | float | bool | None] = Field(default_factory=dict)
 
 
-class GraphEdge(Contract):
+class FirexGraphEdge(Contract):
     edge_id: str
     relation: str
     source: str
@@ -294,8 +294,8 @@ class GraphEdge(Contract):
 
 class IncidentGraph(Contract):
     incident_id: str
-    nodes: list[GraphNode]
-    edges: list[GraphEdge]
+    nodes: list[FirexGraphNode]
+    edges: list[FirexGraphEdge]
     graph_hash: str
     truncated: bool
     node_cap: int
@@ -315,7 +315,7 @@ class AttackHypothesis(Contract):
     evidence_gaps: list[str]
 
 
-class Hypotheses(Contract):
+class FirexHypotheses(Contract):
     incident_id: str
     selected: AttackHypothesis
     alternates: list[AttackHypothesis]
@@ -340,7 +340,7 @@ class ReachabilityResult(Contract):
     limitations: list[str]
 
 
-class IncidentSummary(Contract):
+class FirexIncidentSummary(Contract):
     incident_id: str
     run_id: str
     title: str
@@ -373,14 +373,14 @@ class TimelineEntry(Contract):
     evidence_refs: list[str]
 
 
-class StoryStatement(Contract):
+class FirexStoryStatement(Contract):
     statement_id: str
     text: str
     kind: Literal["observed", "inferred", "gap", "hypothetical"]
     evidence_ids: list[str]
 
 
-class AttackStory(Contract):
+class FirexAttackStory(Contract):
     incident_id: str
     what_happened: str
     where_started: str
@@ -389,13 +389,13 @@ class AttackStory(Contract):
     strongest_evidence: str
     uncertain: str
     reachable_next: str
-    statements: list[StoryStatement]
+    statements: list[FirexStoryStatement]
     checked_statements: int
     unsupported_claims: int
 
 
 class IncidentDetail(Contract):
-    summary: IncidentSummary
+    summary: FirexIncidentSummary
     root_cause: str
     selected_path_id: str
     affected_entities: dict[str, list[str]]
@@ -417,9 +417,9 @@ class ResponseEligibility(Contract):
     missing: list[str]
 
 
-class IncidentList(Contract):
+class FirexIncidentList(Contract):
     run_id: str
-    items: list[IncidentSummary]
+    items: list[FirexIncidentSummary]
     quality: DatasetQualitySummary | None
 
 

@@ -554,6 +554,38 @@
         "title": "AttackPath",
         "type": "object"
       },
+      "AttackStory": {
+        "additionalProperties": false,
+        "properties": {
+          "checked_statements": {
+            "title": "Checked Statements",
+            "type": "integer"
+          },
+          "run_id": {
+            "title": "Run Id",
+            "type": "string"
+          },
+          "statements": {
+            "items": {
+              "$ref": "#/components/schemas/StoryStatement"
+            },
+            "title": "Statements",
+            "type": "array"
+          },
+          "unsupported_claims": {
+            "title": "Unsupported Claims",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "run_id",
+          "statements",
+          "checked_statements",
+          "unsupported_claims"
+        ],
+        "title": "AttackStory",
+        "type": "object"
+      },
       "AttackTechnique": {
         "additionalProperties": false,
         "properties": {
@@ -4073,6 +4105,581 @@
         "title": "FindingScore",
         "type": "object"
       },
+      "FirexAttackStory": {
+        "additionalProperties": false,
+        "properties": {
+          "checked_statements": {
+            "title": "Checked Statements",
+            "type": "integer"
+          },
+          "incident_id": {
+            "title": "Incident Id",
+            "type": "string"
+          },
+          "reachable_next": {
+            "title": "Reachable Next",
+            "type": "string"
+          },
+          "statements": {
+            "items": {
+              "$ref": "#/components/schemas/FirexStoryStatement"
+            },
+            "title": "Statements",
+            "type": "array"
+          },
+          "strongest_evidence": {
+            "title": "Strongest Evidence",
+            "type": "string"
+          },
+          "systems_affected": {
+            "title": "Systems Affected",
+            "type": "string"
+          },
+          "uncertain": {
+            "title": "Uncertain",
+            "type": "string"
+          },
+          "unsupported_claims": {
+            "title": "Unsupported Claims",
+            "type": "integer"
+          },
+          "what_happened": {
+            "title": "What Happened",
+            "type": "string"
+          },
+          "where_started": {
+            "title": "Where Started",
+            "type": "string"
+          },
+          "who_compromised": {
+            "title": "Who Compromised",
+            "type": "string"
+          }
+        },
+        "required": [
+          "incident_id",
+          "what_happened",
+          "where_started",
+          "who_compromised",
+          "systems_affected",
+          "strongest_evidence",
+          "uncertain",
+          "reachable_next",
+          "statements",
+          "checked_statements",
+          "unsupported_claims"
+        ],
+        "title": "FirexAttackStory",
+        "type": "object"
+      },
+      "FirexGraphEdge": {
+        "additionalProperties": false,
+        "properties": {
+          "classification": {
+            "enum": [
+              "observed",
+              "inferred",
+              "reachable"
+            ],
+            "title": "Classification",
+            "type": "string"
+          },
+          "components": {
+            "items": {
+              "$ref": "#/components/schemas/ScoreComponent"
+            },
+            "title": "Components",
+            "type": "array"
+          },
+          "confidence": {
+            "title": "Confidence",
+            "type": "number"
+          },
+          "contradictions": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Contradictions",
+            "type": "array"
+          },
+          "edge_id": {
+            "title": "Edge Id",
+            "type": "string"
+          },
+          "evidence_refs": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Evidence Refs",
+            "type": "array"
+          },
+          "first_utc": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "First Utc"
+          },
+          "last_utc": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Last Utc"
+          },
+          "missing_evidence": {
+            "default": false,
+            "title": "Missing Evidence",
+            "type": "boolean"
+          },
+          "on_selected_path": {
+            "default": false,
+            "title": "On Selected Path",
+            "type": "boolean"
+          },
+          "relation": {
+            "title": "Relation",
+            "type": "string"
+          },
+          "rule": {
+            "title": "Rule",
+            "type": "string"
+          },
+          "rule_version": {
+            "title": "Rule Version",
+            "type": "string"
+          },
+          "source": {
+            "title": "Source",
+            "type": "string"
+          },
+          "target": {
+            "title": "Target",
+            "type": "string"
+          }
+        },
+        "required": [
+          "edge_id",
+          "relation",
+          "source",
+          "target",
+          "confidence",
+          "rule",
+          "rule_version",
+          "evidence_refs",
+          "first_utc",
+          "last_utc",
+          "classification",
+          "contradictions",
+          "components",
+          "on_selected_path",
+          "missing_evidence"
+        ],
+        "title": "FirexGraphEdge",
+        "type": "object"
+      },
+      "FirexGraphNode": {
+        "additionalProperties": false,
+        "properties": {
+          "attributes": {
+            "additionalProperties": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "integer"
+                },
+                {
+                  "type": "number"
+                },
+                {
+                  "type": "boolean"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "title": "Attributes",
+            "type": "object"
+          },
+          "count": {
+            "default": 1,
+            "title": "Count",
+            "type": "integer"
+          },
+          "detection_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Detection Id"
+          },
+          "evidence_refs": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Evidence Refs",
+            "type": "array"
+          },
+          "first_utc": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "First Utc"
+          },
+          "is_context": {
+            "default": false,
+            "title": "Is Context",
+            "type": "boolean"
+          },
+          "kind": {
+            "enum": [
+              "event",
+              "account",
+              "host",
+              "ip",
+              "session",
+              "application",
+              "service",
+              "critical_asset",
+              "burst"
+            ],
+            "title": "Kind",
+            "type": "string"
+          },
+          "label": {
+            "title": "Label",
+            "type": "string"
+          },
+          "last_utc": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Last Utc"
+          },
+          "layer": {
+            "enum": [
+              "external",
+              "network_edge",
+              "endpoint",
+              "identity",
+              "application",
+              "critical_asset"
+            ],
+            "title": "Layer",
+            "type": "string"
+          },
+          "node_id": {
+            "title": "Node Id",
+            "type": "string"
+          },
+          "on_selected_path": {
+            "default": false,
+            "title": "On Selected Path",
+            "type": "boolean"
+          },
+          "order": {
+            "title": "Order",
+            "type": "integer"
+          },
+          "stage": {
+            "anyOf": [
+              {
+                "enum": [
+                  "reconnaissance",
+                  "delivery",
+                  "exploitation",
+                  "installation",
+                  "command_and_control",
+                  "actions_on_objectives",
+                  "defense_evasion",
+                  "credential_access",
+                  "lateral_movement",
+                  "impact"
+                ],
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Stage"
+          }
+        },
+        "required": [
+          "node_id",
+          "kind",
+          "label",
+          "layer",
+          "order",
+          "stage",
+          "first_utc",
+          "last_utc",
+          "count",
+          "on_selected_path",
+          "is_context",
+          "evidence_refs",
+          "detection_id",
+          "attributes"
+        ],
+        "title": "FirexGraphNode",
+        "type": "object"
+      },
+      "FirexHypotheses": {
+        "additionalProperties": false,
+        "properties": {
+          "alternates": {
+            "items": {
+              "$ref": "#/components/schemas/AttackHypothesis"
+            },
+            "title": "Alternates",
+            "type": "array"
+          },
+          "incident_id": {
+            "title": "Incident Id",
+            "type": "string"
+          },
+          "selected": {
+            "$ref": "#/components/schemas/AttackHypothesis"
+          },
+          "uncertainty_margin": {
+            "title": "Uncertainty Margin",
+            "type": "number"
+          }
+        },
+        "required": [
+          "incident_id",
+          "selected",
+          "alternates",
+          "uncertainty_margin"
+        ],
+        "title": "FirexHypotheses",
+        "type": "object"
+      },
+      "FirexIncidentList": {
+        "additionalProperties": false,
+        "properties": {
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/FirexIncidentSummary"
+            },
+            "title": "Items",
+            "type": "array"
+          },
+          "quality": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/DatasetQualitySummary"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "run_id": {
+            "title": "Run Id",
+            "type": "string"
+          }
+        },
+        "required": [
+          "run_id",
+          "items",
+          "quality"
+        ],
+        "title": "FirexIncidentList",
+        "type": "object"
+      },
+      "FirexIncidentSummary": {
+        "additionalProperties": false,
+        "properties": {
+          "affected_devices": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Affected Devices",
+            "type": "array"
+          },
+          "affected_identity": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Affected Identity"
+          },
+          "confidence": {
+            "title": "Confidence",
+            "type": "number"
+          },
+          "critical_target": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Critical Target"
+          },
+          "detection_count": {
+            "title": "Detection Count",
+            "type": "integer"
+          },
+          "entry_point": {
+            "title": "Entry Point",
+            "type": "string"
+          },
+          "evidence_count": {
+            "title": "Evidence Count",
+            "type": "integer"
+          },
+          "first_utc": {
+            "title": "First Utc",
+            "type": "string"
+          },
+          "incident_id": {
+            "title": "Incident Id",
+            "type": "string"
+          },
+          "last_utc": {
+            "title": "Last Utc",
+            "type": "string"
+          },
+          "merged_events": {
+            "title": "Merged Events",
+            "type": "integer"
+          },
+          "risk": {
+            "title": "Risk",
+            "type": "number"
+          },
+          "run_id": {
+            "title": "Run Id",
+            "type": "string"
+          },
+          "stages": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Stages",
+            "type": "array"
+          },
+          "status": {
+            "const": "unconfirmed",
+            "default": "unconfirmed",
+            "title": "Status",
+            "type": "string"
+          },
+          "techniques": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Techniques",
+            "type": "array"
+          },
+          "timestamp_quality": {
+            "enum": [
+              "normal",
+              "collapsed",
+              "conflicting"
+            ],
+            "title": "Timestamp Quality",
+            "type": "string"
+          },
+          "title": {
+            "title": "Title",
+            "type": "string"
+          }
+        },
+        "required": [
+          "incident_id",
+          "run_id",
+          "title",
+          "status",
+          "first_utc",
+          "last_utc",
+          "timestamp_quality",
+          "entry_point",
+          "affected_identity",
+          "affected_devices",
+          "critical_target",
+          "evidence_count",
+          "merged_events",
+          "detection_count",
+          "confidence",
+          "risk",
+          "stages",
+          "techniques"
+        ],
+        "title": "FirexIncidentSummary",
+        "type": "object"
+      },
+      "FirexStoryStatement": {
+        "additionalProperties": false,
+        "properties": {
+          "evidence_ids": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Evidence Ids",
+            "type": "array"
+          },
+          "kind": {
+            "enum": [
+              "observed",
+              "inferred",
+              "gap",
+              "hypothetical"
+            ],
+            "title": "Kind",
+            "type": "string"
+          },
+          "statement_id": {
+            "title": "Statement Id",
+            "type": "string"
+          },
+          "text": {
+            "title": "Text",
+            "type": "string"
+          }
+        },
+        "required": [
+          "statement_id",
+          "text",
+          "kind",
+          "evidence_ids"
+        ],
+        "title": "FirexStoryStatement",
+        "type": "object"
+      },
       "FutureResult": {
         "additionalProperties": false,
         "properties": {
@@ -4243,7 +4850,6 @@
                 "type": "null"
               }
             ],
-            "default": null,
             "title": "First Seen"
           },
           "historical": {
@@ -4264,8 +4870,7 @@
               {
                 "type": "null"
               }
-            ],
-            "default": null
+            ]
           },
           "kind": {
             "enum": [
@@ -4285,7 +4890,6 @@
                 "type": "null"
               }
             ],
-            "default": null,
             "title": "Origin"
           },
           "provenance": {
@@ -4321,8 +4925,7 @@
               {
                 "type": "null"
               }
-            ],
-            "default": null
+            ]
           }
         },
         "required": [
@@ -4358,8 +4961,7 @@
               {
                 "type": "null"
               }
-            ],
-            "default": null
+            ]
           },
           "criticality": {
             "default": "none",
@@ -4389,7 +4991,6 @@
                 "type": "null"
               }
             ],
-            "default": null,
             "title": "First Seen"
           },
           "id": {
@@ -4430,7 +5031,6 @@
                 "type": "null"
               }
             ],
-            "default": null,
             "title": "Origin"
           },
           "provenance": {
@@ -4470,7 +5070,7 @@
           },
           "edges": {
             "items": {
-              "$ref": "#/components/schemas/halt__contracts__graph__GraphEdge"
+              "$ref": "#/components/schemas/GraphEdge"
             },
             "title": "Edges",
             "type": "array"
@@ -4489,7 +5089,7 @@
           },
           "nodes": {
             "items": {
-              "$ref": "#/components/schemas/halt__contracts__graph__GraphNode"
+              "$ref": "#/components/schemas/GraphNode"
             },
             "title": "Nodes",
             "type": "array"
@@ -4633,6 +5233,55 @@
           "node"
         ],
         "title": "HostInfo",
+        "type": "object"
+      },
+      "Hypotheses": {
+        "additionalProperties": false,
+        "properties": {
+          "alternates": {
+            "items": {
+              "$ref": "#/components/schemas/PathHypothesis"
+            },
+            "title": "Alternates",
+            "type": "array"
+          },
+          "rejected_edges": {
+            "items": {
+              "$ref": "#/components/schemas/CandidateEdge"
+            },
+            "title": "Rejected Edges",
+            "type": "array"
+          },
+          "rejected_paths": {
+            "items": {
+              "$ref": "#/components/schemas/PathHypothesis"
+            },
+            "title": "Rejected Paths",
+            "type": "array"
+          },
+          "run_id": {
+            "title": "Run Id",
+            "type": "string"
+          },
+          "selected": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/PathHypothesis"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "required": [
+          "run_id",
+          "selected",
+          "alternates",
+          "rejected_paths",
+          "rejected_edges"
+        ],
+        "title": "Hypotheses",
         "type": "object"
       },
       "Impact": {
@@ -4837,7 +5486,7 @@
             "type": "string"
           },
           "summary": {
-            "$ref": "#/components/schemas/halt__firex__contracts__IncidentSummary"
+            "$ref": "#/components/schemas/FirexIncidentSummary"
           },
           "timeline": {
             "items": {
@@ -4873,7 +5522,7 @@
         "properties": {
           "edges": {
             "items": {
-              "$ref": "#/components/schemas/halt__firex__contracts__GraphEdge"
+              "$ref": "#/components/schemas/FirexGraphEdge"
             },
             "title": "Edges",
             "type": "array"
@@ -4892,7 +5541,7 @@
           },
           "nodes": {
             "items": {
-              "$ref": "#/components/schemas/halt__firex__contracts__GraphNode"
+              "$ref": "#/components/schemas/FirexGraphNode"
             },
             "title": "Nodes",
             "type": "array"
@@ -4911,6 +5560,27 @@
           "node_cap"
         ],
         "title": "IncidentGraph",
+        "type": "object"
+      },
+      "IncidentList": {
+        "additionalProperties": false,
+        "properties": {
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/IncidentSummary"
+            },
+            "title": "Items",
+            "type": "array"
+          },
+          "meta": {
+            "$ref": "#/components/schemas/Meta"
+          }
+        },
+        "required": [
+          "items",
+          "meta"
+        ],
+        "title": "IncidentList",
         "type": "object"
       },
       "IncidentParams": {
@@ -8754,6 +9424,78 @@
         "title": "StaleMessage",
         "type": "object"
       },
+      "StoryStatement": {
+        "additionalProperties": false,
+        "properties": {
+          "confidence": {
+            "maximum": 1.0,
+            "minimum": 0.0,
+            "title": "Confidence",
+            "type": "number"
+          },
+          "edge_ids": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Edge Ids",
+            "type": "array"
+          },
+          "event_ids": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Event Ids",
+            "type": "array"
+          },
+          "facts": {
+            "additionalProperties": {
+              "type": "string"
+            },
+            "title": "Facts",
+            "type": "object"
+          },
+          "section": {
+            "enum": [
+              "observed",
+              "inferred",
+              "missing_evidence",
+              "forecast"
+            ],
+            "title": "Section",
+            "type": "string"
+          },
+          "statement_id": {
+            "title": "Statement Id",
+            "type": "string"
+          },
+          "status": {
+            "enum": [
+              "observed",
+              "inferred",
+              "missing",
+              "forecast"
+            ],
+            "title": "Status",
+            "type": "string"
+          },
+          "text": {
+            "title": "Text",
+            "type": "string"
+          }
+        },
+        "required": [
+          "statement_id",
+          "section",
+          "text",
+          "event_ids",
+          "edge_ids",
+          "confidence",
+          "status",
+          "facts"
+        ],
+        "title": "StoryStatement",
+        "type": "object"
+      },
       "SubscribeCommand": {
         "additionalProperties": false,
         "properties": {
@@ -9246,1031 +9988,6 @@
         ],
         "title": "VariantList",
         "type": "object"
-      },
-      "halt__contracts__api__IncidentList": {
-        "additionalProperties": false,
-        "properties": {
-          "items": {
-            "items": {
-              "$ref": "#/components/schemas/halt__contracts__incident__IncidentSummary"
-            },
-            "title": "Items",
-            "type": "array"
-          },
-          "meta": {
-            "$ref": "#/components/schemas/Meta"
-          }
-        },
-        "required": [
-          "items",
-          "meta"
-        ],
-        "title": "IncidentList",
-        "type": "object"
-      },
-      "halt__contracts__graph__GraphEdge": {
-        "additionalProperties": false,
-        "properties": {
-          "evidence_ids": {
-            "items": {
-              "pattern": "^EV-\\d{2}$",
-              "type": "string"
-            },
-            "title": "Evidence Ids",
-            "type": "array"
-          },
-          "first_seen": {
-            "anyOf": [
-              {
-                "format": "date-time",
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "First Seen"
-          },
-          "historical": {
-            "default": false,
-            "title": "Historical",
-            "type": "boolean"
-          },
-          "id": {
-            "pattern": "^[a-z]\\.[a-z0-9-]+$",
-            "title": "Id",
-            "type": "string"
-          },
-          "inference": {
-            "anyOf": [
-              {
-                "$ref": "#/components/schemas/Inference"
-              },
-              {
-                "type": "null"
-              }
-            ]
-          },
-          "kind": {
-            "enum": [
-              "hostile",
-              "dependency",
-              "identity"
-            ],
-            "title": "Kind",
-            "type": "string"
-          },
-          "origin": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Origin"
-          },
-          "provenance": {
-            "enum": [
-              "observed",
-              "inferred",
-              "forecast",
-              "structural"
-            ],
-            "title": "Provenance",
-            "type": "string"
-          },
-          "relation": {
-            "minLength": 1,
-            "title": "Relation",
-            "type": "string"
-          },
-          "source": {
-            "pattern": "^[a-z]+\\.[a-z0-9_]+$",
-            "title": "Source",
-            "type": "string"
-          },
-          "target": {
-            "pattern": "^[a-z]+\\.[a-z0-9_]+$",
-            "title": "Target",
-            "type": "string"
-          },
-          "transition": {
-            "anyOf": [
-              {
-                "$ref": "#/components/schemas/Transition"
-              },
-              {
-                "type": "null"
-              }
-            ]
-          }
-        },
-        "required": [
-          "id",
-          "source",
-          "target",
-          "kind",
-          "relation",
-          "provenance",
-          "evidence_ids",
-          "origin",
-          "inference",
-          "transition",
-          "historical",
-          "first_seen"
-        ],
-        "title": "GraphEdge",
-        "type": "object"
-      },
-      "halt__contracts__graph__GraphNode": {
-        "additionalProperties": false,
-        "properties": {
-          "attacker_controlled": {
-            "default": false,
-            "title": "Attacker Controlled",
-            "type": "boolean"
-          },
-          "business": {
-            "anyOf": [
-              {
-                "$ref": "#/components/schemas/BusinessInfo"
-              },
-              {
-                "type": "null"
-              }
-            ]
-          },
-          "criticality": {
-            "default": "none",
-            "enum": [
-              "none",
-              "standard",
-              "critical"
-            ],
-            "title": "Criticality",
-            "type": "string"
-          },
-          "evidence_ids": {
-            "items": {
-              "pattern": "^EV-\\d{2}$",
-              "type": "string"
-            },
-            "title": "Evidence Ids",
-            "type": "array"
-          },
-          "first_seen": {
-            "anyOf": [
-              {
-                "format": "date-time",
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "First Seen"
-          },
-          "id": {
-            "pattern": "^[a-z]+\\.[a-z0-9_]+$",
-            "title": "Id",
-            "type": "string"
-          },
-          "kind": {
-            "enum": [
-              "user",
-              "device",
-              "session",
-              "token",
-              "application",
-              "api",
-              "service",
-              "database",
-              "process",
-              "attacker"
-            ],
-            "title": "Kind",
-            "type": "string"
-          },
-          "label": {
-            "minLength": 1,
-            "title": "Label",
-            "type": "string"
-          },
-          "layout": {
-            "$ref": "#/components/schemas/Layout"
-          },
-          "origin": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Origin"
-          },
-          "provenance": {
-            "enum": [
-              "observed",
-              "inferred",
-              "forecast",
-              "structural"
-            ],
-            "title": "Provenance",
-            "type": "string"
-          }
-        },
-        "required": [
-          "id",
-          "kind",
-          "label",
-          "provenance",
-          "attacker_controlled",
-          "criticality",
-          "business",
-          "evidence_ids",
-          "origin",
-          "first_seen",
-          "layout"
-        ],
-        "title": "GraphNode",
-        "type": "object"
-      },
-      "halt__contracts__incident__IncidentSummary": {
-        "additionalProperties": false,
-        "properties": {
-          "id": {
-            "pattern": "^INC-\\d{4}$",
-            "title": "Id",
-            "type": "string"
-          },
-          "state": {
-            "enum": [
-              "new",
-              "correlating",
-              "forecast_ready",
-              "simulating",
-              "plan_available",
-              "approval_pending",
-              "executing",
-              "contained",
-              "rollback_available",
-              "rolled_back",
-              "blocked_by_policy",
-              "no_safe_plan"
-            ],
-            "title": "State",
-            "type": "string"
-          },
-          "t0": {
-            "format": "date-time",
-            "title": "T0",
-            "type": "string"
-          },
-          "title": {
-            "title": "Title",
-            "type": "string"
-          }
-        },
-        "required": [
-          "id",
-          "title",
-          "state",
-          "t0"
-        ],
-        "title": "IncidentSummary",
-        "type": "object"
-      },
-      "halt__firex__contracts__AttackStory": {
-        "additionalProperties": false,
-        "properties": {
-          "checked_statements": {
-            "title": "Checked Statements",
-            "type": "integer"
-          },
-          "incident_id": {
-            "title": "Incident Id",
-            "type": "string"
-          },
-          "reachable_next": {
-            "title": "Reachable Next",
-            "type": "string"
-          },
-          "statements": {
-            "items": {
-              "$ref": "#/components/schemas/halt__firex__contracts__StoryStatement"
-            },
-            "title": "Statements",
-            "type": "array"
-          },
-          "strongest_evidence": {
-            "title": "Strongest Evidence",
-            "type": "string"
-          },
-          "systems_affected": {
-            "title": "Systems Affected",
-            "type": "string"
-          },
-          "uncertain": {
-            "title": "Uncertain",
-            "type": "string"
-          },
-          "unsupported_claims": {
-            "title": "Unsupported Claims",
-            "type": "integer"
-          },
-          "what_happened": {
-            "title": "What Happened",
-            "type": "string"
-          },
-          "where_started": {
-            "title": "Where Started",
-            "type": "string"
-          },
-          "who_compromised": {
-            "title": "Who Compromised",
-            "type": "string"
-          }
-        },
-        "required": [
-          "incident_id",
-          "what_happened",
-          "where_started",
-          "who_compromised",
-          "systems_affected",
-          "strongest_evidence",
-          "uncertain",
-          "reachable_next",
-          "statements",
-          "checked_statements",
-          "unsupported_claims"
-        ],
-        "title": "AttackStory",
-        "type": "object"
-      },
-      "halt__firex__contracts__GraphEdge": {
-        "additionalProperties": false,
-        "properties": {
-          "classification": {
-            "enum": [
-              "observed",
-              "inferred",
-              "reachable"
-            ],
-            "title": "Classification",
-            "type": "string"
-          },
-          "components": {
-            "items": {
-              "$ref": "#/components/schemas/ScoreComponent"
-            },
-            "title": "Components",
-            "type": "array"
-          },
-          "confidence": {
-            "title": "Confidence",
-            "type": "number"
-          },
-          "contradictions": {
-            "items": {
-              "type": "string"
-            },
-            "title": "Contradictions",
-            "type": "array"
-          },
-          "edge_id": {
-            "title": "Edge Id",
-            "type": "string"
-          },
-          "evidence_refs": {
-            "items": {
-              "type": "string"
-            },
-            "title": "Evidence Refs",
-            "type": "array"
-          },
-          "first_utc": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "First Utc"
-          },
-          "last_utc": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Last Utc"
-          },
-          "missing_evidence": {
-            "default": false,
-            "title": "Missing Evidence",
-            "type": "boolean"
-          },
-          "on_selected_path": {
-            "default": false,
-            "title": "On Selected Path",
-            "type": "boolean"
-          },
-          "relation": {
-            "title": "Relation",
-            "type": "string"
-          },
-          "rule": {
-            "title": "Rule",
-            "type": "string"
-          },
-          "rule_version": {
-            "title": "Rule Version",
-            "type": "string"
-          },
-          "source": {
-            "title": "Source",
-            "type": "string"
-          },
-          "target": {
-            "title": "Target",
-            "type": "string"
-          }
-        },
-        "required": [
-          "edge_id",
-          "relation",
-          "source",
-          "target",
-          "confidence",
-          "rule",
-          "rule_version",
-          "evidence_refs",
-          "first_utc",
-          "last_utc",
-          "classification",
-          "contradictions",
-          "components",
-          "on_selected_path",
-          "missing_evidence"
-        ],
-        "title": "GraphEdge",
-        "type": "object"
-      },
-      "halt__firex__contracts__GraphNode": {
-        "additionalProperties": false,
-        "properties": {
-          "attributes": {
-            "additionalProperties": {
-              "anyOf": [
-                {
-                  "type": "string"
-                },
-                {
-                  "type": "integer"
-                },
-                {
-                  "type": "number"
-                },
-                {
-                  "type": "boolean"
-                },
-                {
-                  "type": "null"
-                }
-              ]
-            },
-            "title": "Attributes",
-            "type": "object"
-          },
-          "count": {
-            "default": 1,
-            "title": "Count",
-            "type": "integer"
-          },
-          "detection_id": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Detection Id"
-          },
-          "evidence_refs": {
-            "items": {
-              "type": "string"
-            },
-            "title": "Evidence Refs",
-            "type": "array"
-          },
-          "first_utc": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "First Utc"
-          },
-          "is_context": {
-            "default": false,
-            "title": "Is Context",
-            "type": "boolean"
-          },
-          "kind": {
-            "enum": [
-              "event",
-              "account",
-              "host",
-              "ip",
-              "session",
-              "application",
-              "service",
-              "critical_asset",
-              "burst"
-            ],
-            "title": "Kind",
-            "type": "string"
-          },
-          "label": {
-            "title": "Label",
-            "type": "string"
-          },
-          "last_utc": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Last Utc"
-          },
-          "layer": {
-            "enum": [
-              "external",
-              "network_edge",
-              "endpoint",
-              "identity",
-              "application",
-              "critical_asset"
-            ],
-            "title": "Layer",
-            "type": "string"
-          },
-          "node_id": {
-            "title": "Node Id",
-            "type": "string"
-          },
-          "on_selected_path": {
-            "default": false,
-            "title": "On Selected Path",
-            "type": "boolean"
-          },
-          "order": {
-            "title": "Order",
-            "type": "integer"
-          },
-          "stage": {
-            "anyOf": [
-              {
-                "enum": [
-                  "reconnaissance",
-                  "delivery",
-                  "exploitation",
-                  "installation",
-                  "command_and_control",
-                  "actions_on_objectives",
-                  "defense_evasion",
-                  "credential_access",
-                  "lateral_movement",
-                  "impact"
-                ],
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Stage"
-          }
-        },
-        "required": [
-          "node_id",
-          "kind",
-          "label",
-          "layer",
-          "order",
-          "stage",
-          "first_utc",
-          "last_utc",
-          "count",
-          "on_selected_path",
-          "is_context",
-          "evidence_refs",
-          "detection_id",
-          "attributes"
-        ],
-        "title": "GraphNode",
-        "type": "object"
-      },
-      "halt__firex__contracts__Hypotheses": {
-        "additionalProperties": false,
-        "properties": {
-          "alternates": {
-            "items": {
-              "$ref": "#/components/schemas/AttackHypothesis"
-            },
-            "title": "Alternates",
-            "type": "array"
-          },
-          "incident_id": {
-            "title": "Incident Id",
-            "type": "string"
-          },
-          "selected": {
-            "$ref": "#/components/schemas/AttackHypothesis"
-          },
-          "uncertainty_margin": {
-            "title": "Uncertainty Margin",
-            "type": "number"
-          }
-        },
-        "required": [
-          "incident_id",
-          "selected",
-          "alternates",
-          "uncertainty_margin"
-        ],
-        "title": "Hypotheses",
-        "type": "object"
-      },
-      "halt__firex__contracts__IncidentList": {
-        "additionalProperties": false,
-        "properties": {
-          "items": {
-            "items": {
-              "$ref": "#/components/schemas/halt__firex__contracts__IncidentSummary"
-            },
-            "title": "Items",
-            "type": "array"
-          },
-          "quality": {
-            "anyOf": [
-              {
-                "$ref": "#/components/schemas/DatasetQualitySummary"
-              },
-              {
-                "type": "null"
-              }
-            ]
-          },
-          "run_id": {
-            "title": "Run Id",
-            "type": "string"
-          }
-        },
-        "required": [
-          "run_id",
-          "items",
-          "quality"
-        ],
-        "title": "IncidentList",
-        "type": "object"
-      },
-      "halt__firex__contracts__IncidentSummary": {
-        "additionalProperties": false,
-        "properties": {
-          "affected_devices": {
-            "items": {
-              "type": "string"
-            },
-            "title": "Affected Devices",
-            "type": "array"
-          },
-          "affected_identity": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Affected Identity"
-          },
-          "confidence": {
-            "title": "Confidence",
-            "type": "number"
-          },
-          "critical_target": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Critical Target"
-          },
-          "detection_count": {
-            "title": "Detection Count",
-            "type": "integer"
-          },
-          "entry_point": {
-            "title": "Entry Point",
-            "type": "string"
-          },
-          "evidence_count": {
-            "title": "Evidence Count",
-            "type": "integer"
-          },
-          "first_utc": {
-            "title": "First Utc",
-            "type": "string"
-          },
-          "incident_id": {
-            "title": "Incident Id",
-            "type": "string"
-          },
-          "last_utc": {
-            "title": "Last Utc",
-            "type": "string"
-          },
-          "merged_events": {
-            "title": "Merged Events",
-            "type": "integer"
-          },
-          "risk": {
-            "title": "Risk",
-            "type": "number"
-          },
-          "run_id": {
-            "title": "Run Id",
-            "type": "string"
-          },
-          "stages": {
-            "items": {
-              "type": "string"
-            },
-            "title": "Stages",
-            "type": "array"
-          },
-          "status": {
-            "const": "unconfirmed",
-            "default": "unconfirmed",
-            "title": "Status",
-            "type": "string"
-          },
-          "techniques": {
-            "items": {
-              "type": "string"
-            },
-            "title": "Techniques",
-            "type": "array"
-          },
-          "timestamp_quality": {
-            "enum": [
-              "normal",
-              "collapsed",
-              "conflicting"
-            ],
-            "title": "Timestamp Quality",
-            "type": "string"
-          },
-          "title": {
-            "title": "Title",
-            "type": "string"
-          }
-        },
-        "required": [
-          "incident_id",
-          "run_id",
-          "title",
-          "status",
-          "first_utc",
-          "last_utc",
-          "timestamp_quality",
-          "entry_point",
-          "affected_identity",
-          "affected_devices",
-          "critical_target",
-          "evidence_count",
-          "merged_events",
-          "detection_count",
-          "confidence",
-          "risk",
-          "stages",
-          "techniques"
-        ],
-        "title": "IncidentSummary",
-        "type": "object"
-      },
-      "halt__firex__contracts__StoryStatement": {
-        "additionalProperties": false,
-        "properties": {
-          "evidence_ids": {
-            "items": {
-              "type": "string"
-            },
-            "title": "Evidence Ids",
-            "type": "array"
-          },
-          "kind": {
-            "enum": [
-              "observed",
-              "inferred",
-              "gap",
-              "hypothetical"
-            ],
-            "title": "Kind",
-            "type": "string"
-          },
-          "statement_id": {
-            "title": "Statement Id",
-            "type": "string"
-          },
-          "text": {
-            "title": "Text",
-            "type": "string"
-          }
-        },
-        "required": [
-          "statement_id",
-          "text",
-          "kind",
-          "evidence_ids"
-        ],
-        "title": "StoryStatement",
-        "type": "object"
-      },
-      "halt__ps2__schema__AttackStory": {
-        "additionalProperties": false,
-        "properties": {
-          "checked_statements": {
-            "title": "Checked Statements",
-            "type": "integer"
-          },
-          "run_id": {
-            "title": "Run Id",
-            "type": "string"
-          },
-          "statements": {
-            "items": {
-              "$ref": "#/components/schemas/halt__ps2__schema__StoryStatement"
-            },
-            "title": "Statements",
-            "type": "array"
-          },
-          "unsupported_claims": {
-            "title": "Unsupported Claims",
-            "type": "integer"
-          }
-        },
-        "required": [
-          "run_id",
-          "statements",
-          "checked_statements",
-          "unsupported_claims"
-        ],
-        "title": "AttackStory",
-        "type": "object"
-      },
-      "halt__ps2__schema__Hypotheses": {
-        "additionalProperties": false,
-        "properties": {
-          "alternates": {
-            "items": {
-              "$ref": "#/components/schemas/PathHypothesis"
-            },
-            "title": "Alternates",
-            "type": "array"
-          },
-          "rejected_edges": {
-            "items": {
-              "$ref": "#/components/schemas/CandidateEdge"
-            },
-            "title": "Rejected Edges",
-            "type": "array"
-          },
-          "rejected_paths": {
-            "items": {
-              "$ref": "#/components/schemas/PathHypothesis"
-            },
-            "title": "Rejected Paths",
-            "type": "array"
-          },
-          "run_id": {
-            "title": "Run Id",
-            "type": "string"
-          },
-          "selected": {
-            "anyOf": [
-              {
-                "$ref": "#/components/schemas/PathHypothesis"
-              },
-              {
-                "type": "null"
-              }
-            ]
-          }
-        },
-        "required": [
-          "run_id",
-          "selected",
-          "alternates",
-          "rejected_paths",
-          "rejected_edges"
-        ],
-        "title": "Hypotheses",
-        "type": "object"
-      },
-      "halt__ps2__schema__StoryStatement": {
-        "additionalProperties": false,
-        "properties": {
-          "confidence": {
-            "maximum": 1.0,
-            "minimum": 0.0,
-            "title": "Confidence",
-            "type": "number"
-          },
-          "edge_ids": {
-            "items": {
-              "type": "string"
-            },
-            "title": "Edge Ids",
-            "type": "array"
-          },
-          "event_ids": {
-            "items": {
-              "type": "string"
-            },
-            "title": "Event Ids",
-            "type": "array"
-          },
-          "facts": {
-            "additionalProperties": {
-              "type": "string"
-            },
-            "title": "Facts",
-            "type": "object"
-          },
-          "section": {
-            "enum": [
-              "observed",
-              "inferred",
-              "missing_evidence",
-              "forecast"
-            ],
-            "title": "Section",
-            "type": "string"
-          },
-          "statement_id": {
-            "title": "Statement Id",
-            "type": "string"
-          },
-          "status": {
-            "enum": [
-              "observed",
-              "inferred",
-              "missing",
-              "forecast"
-            ],
-            "title": "Status",
-            "type": "string"
-          },
-          "text": {
-            "title": "Text",
-            "type": "string"
-          }
-        },
-        "required": [
-          "statement_id",
-          "section",
-          "text",
-          "event_ids",
-          "edge_ids",
-          "confidence",
-          "status",
-          "facts"
-        ],
-        "title": "StoryStatement",
-        "type": "object"
       }
     }
   },
@@ -10397,7 +10114,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/halt__contracts__api__IncidentList"
+                  "$ref": "#/components/schemas/IncidentList"
                 }
               }
             },
@@ -11682,7 +11399,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/halt__firex__contracts__Hypotheses"
+                  "$ref": "#/components/schemas/FirexHypotheses"
                 }
               }
             },
@@ -11928,7 +11645,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/halt__firex__contracts__AttackStory"
+                  "$ref": "#/components/schemas/FirexAttackStory"
                 }
               }
             },
@@ -12390,7 +12107,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/halt__ps2__schema__Hypotheses"
+                  "$ref": "#/components/schemas/Hypotheses"
                 }
               }
             },
@@ -12516,7 +12233,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/halt__ps2__schema__AttackStory"
+                  "$ref": "#/components/schemas/AttackStory"
                 }
               }
             },
@@ -12744,7 +12461,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/halt__firex__contracts__IncidentList"
+                  "$ref": "#/components/schemas/FirexIncidentList"
                 }
               }
             },

@@ -16,20 +16,20 @@ import duckdb
 
 from halt.firex.contracts import (
     AttackHypothesis,
-    AttackStory,
     Detection,
     EvidenceEvent,
-    GraphEdge,
-    GraphNode,
-    Hypotheses,
+    FirexAttackStory,
+    FirexGraphEdge,
+    FirexGraphNode,
+    FirexHypotheses,
+    FirexIncidentSummary,
+    FirexStoryStatement,
     IncidentDetail,
     IncidentGraph,
-    IncidentSummary,
     ReachabilityResult,
     ReachableTarget,
     ResponseEligibility,
     ScoreComponent,
-    StoryStatement,
     TimelineEntry,
 )
 from halt.firex.detect import behavioural_bursts, run_detection
@@ -253,12 +253,12 @@ class _IncidentBuilder:
         self.steps = sorted(
             [(d, s) for d in group for s in d["steps"]], key=lambda x: (x[1]["ns"], x[1]["offset"])
         )
-        self.nodes: dict[str, GraphNode] = {}
-        self.edges: dict[str, GraphEdge] = {}
+        self.nodes: dict[str, FirexGraphNode] = {}
+        self.edges: dict[str, FirexGraphEdge] = {}
         self.node_cap = int(rules["limits"]["node_cap"])
         self.truncated = False
 
-    def _node(self, node: GraphNode) -> str:
+    def _node(self, node: FirexGraphNode) -> str:
         if node.node_id in self.nodes:
             return node.node_id
         if len(self.nodes) >= self.node_cap:
@@ -273,7 +273,7 @@ class _IncidentBuilder:
         edge_id = "fedge-" + stable_hash([source, target, relation])
         if edge_id not in self.edges:
             kwargs.setdefault("rule", relation)
-            self.edges[edge_id] = GraphEdge(
+            self.edges[edge_id] = FirexGraphEdge(
                 edge_id=edge_id,
                 relation=relation,
                 source=source,
@@ -293,7 +293,7 @@ class _IncidentBuilder:
         if kind == "device":
             layer = "critical_asset"
         return self._node(
-            GraphNode(
+            FirexGraphNode(
                 node_id=f"entity:{kind}:{value}",
                 kind=node_kind,
                 label=value,
@@ -310,7 +310,7 @@ class _IncidentBuilder:
         for order, (det, step) in enumerate(self.steps):
             node_id = f"step:{det['detection_id']}:{order}"
             created = self._node(
-                GraphNode(
+                FirexGraphNode(
                     node_id=node_id,
                     kind="burst" if step["count"] > 1 else "event",
                     label=step["label"],
@@ -449,7 +449,7 @@ class _IncidentBuilder:
                     [src, item["dst"], item["kind"], item["action"], item["service"]]
                 )
                 created = self._node(
-                    GraphNode(
+                    FirexGraphNode(
                         node_id=node_id,
                         kind="burst" if item["count"] > 1 else "event",
                         label=_context_label(item),
@@ -482,7 +482,7 @@ class _IncidentBuilder:
         ips = {ip for d in self.group for key in ("src_ips", "dst_ips") for ip in d["entities"].get(key, [])}
         return sorted(ip for ip in ips if _is_private(ip))
 
-    def hypotheses(self, path_nodes: list[str], path_edges: list[str]) -> Hypotheses:
+    def hypotheses(self, path_nodes: list[str], path_edges: list[str]) -> FirexHypotheses:
         confidence = sum(d["confidence"] for d in self.group) / len(self.group)
         edges = [self.edges[e] for e in path_edges]
         continuity = sum(1 for e in edges if not e.missing_evidence) / len(edges) if edges else 1.0
@@ -582,7 +582,7 @@ class _IncidentBuilder:
             )
         )
         margin = round(score - max(a.score for a in alternates), 3)
-        return Hypotheses(
+        return FirexHypotheses(
             incident_id=self.incident_id, selected=selected, alternates=alternates, uncertainty_margin=margin
         )
 
@@ -601,11 +601,13 @@ class _IncidentBuilder:
         )
         return gaps
 
-    def story(self, hypotheses: Hypotheses, reach: ReachabilityResult, valid: set[str]) -> AttackStory:
-        statements: list[StoryStatement] = []
+    def story(
+        self, hypotheses: FirexHypotheses, reach: ReachabilityResult, valid: set[str]
+    ) -> FirexAttackStory:
+        statements: list[FirexStoryStatement] = []
         for index, (det, step) in enumerate(self.steps):
             statements.append(
-                StoryStatement(
+                FirexStoryStatement(
                     statement_id=f"s{index + 1}",
                     text=f"{step['utc']}: {step['label']}.",
                     kind="observed",
@@ -617,7 +619,7 @@ class _IncidentBuilder:
             edge = self.edges[edge_id]
             if edge.missing_evidence:
                 statements.append(
-                    StoryStatement(
+                    FirexStoryStatement(
                         statement_id=f"g{len(statements) + 1}",
                         text="This link in the sequence has no shared entity behind it.",
                         kind="gap",
@@ -635,7 +637,7 @@ class _IncidentBuilder:
             else "No reachable next system could be established from these logs."
         )
         del first_det
-        return AttackStory(
+        return FirexAttackStory(
             incident_id=self.incident_id,
             what_happened=" ".join(d["reason"] for d in self.group[:3]),
             where_started=f"{first['label']} at {first['utc']}.",
@@ -659,7 +661,7 @@ class _IncidentBuilder:
             unsupported_claims=unsupported,
         )
 
-    def summary(self) -> IncidentSummary:
+    def summary(self) -> FirexIncidentSummary:
         hosts = self.internal_hosts()
         users = sorted({u for d in self.group for u in d["entities"].get("users", [])})
         devices = sorted({x for d in self.group for x in d["entities"].get("devices", [])})
@@ -675,7 +677,7 @@ class _IncidentBuilder:
         quality: Any = (
             "collapsed" if any(d["timestamp_quality"] == "collapsed" for d in self.group) else "normal"
         )
-        return IncidentSummary(
+        return FirexIncidentSummary(
             incident_id=self.incident_id,
             run_id=self.run_id,
             title=target_det["title"]
@@ -795,7 +797,7 @@ def reconstruct_run(runner: Runner, plan: dict[str, Any], quality: dict[str, Any
             builder._edge(
                 builder._entity("ip", target.via, len(builder.steps), target.evidence_refs),
                 builder._node(
-                    GraphNode(
+                    FirexGraphNode(
                         node_id=f"reach:{target.target}",
                         kind="host",
                         label=target.target,
