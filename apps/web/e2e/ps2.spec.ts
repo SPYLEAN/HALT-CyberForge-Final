@@ -9,7 +9,7 @@ import { expect, test, type APIRequestContext, type Page } from "@playwright/tes
 import { API } from "./support";
 
 const PS2 = `${API}/ps2`;
-const SHOTS = join(__dirname, "../../../artifacts/ps2-workspace");
+const SHOTS = process.env.HALT_E2E_SHOTS ?? join(__dirname, "../../../artifacts/ps2-workspace");
 mkdirSync(SHOTS, { recursive: true });
 
 async function runFor(request: APIRequestContext, dataset: "scenario-a" | "scenario-b"): Promise<string> {

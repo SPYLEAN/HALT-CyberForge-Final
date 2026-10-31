@@ -359,3 +359,9 @@
 
 /* The Synthetic Response Lab's label. It stays above any full-screen presentation. */
 .v2-lab-notice { position: relative; z-index: 60; margin: 0; padding: var(--space-2) var(--space-4); font-family: var(--font-display); font-size: 13px; line-height: 1.4; color: var(--v2-text); background: var(--v2-command); border-bottom: var(--border-hairline) solid var(--v2-border-strong); }
+
+/* The label takes its height from a full-height Command Center rather than pushing its controls out of view. */
+.v2-lab-frame { display: flex; flex-direction: column; min-height: 100dvh; }
+.v2-lab-frame > * { min-width: 0; }
+.v2-lab-frame:has(> .v2-cc) { height: 100dvh; }
+.v2-lab-frame > .v2-cc { height: auto; flex: 1 1 0; min-height: 0; }

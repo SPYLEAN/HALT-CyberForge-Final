@@ -78,6 +78,7 @@ test("dataset, run and incident use real data, never the authored demo", async (
 });
 
 test("Attack World renders in WebGL, selects, replays and falls back to the shared 2D view", async ({ page, request }) => {
+  test.setTimeout(180_000); // software WebGL on a test machine, and a real pause longer than a replay step
   const { runId } = await finishedRun(request);
   const list = await (await request.get(`${PS2}/runs/${runId}/incidents`)).json();
   // The incident with the most steps exercises the most of the view.

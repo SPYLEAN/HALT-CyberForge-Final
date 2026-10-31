@@ -26,11 +26,11 @@ export function FirexIncidentRooms() {
   useEffect(() => {
     let live = true;
     (async () => {
-      const runs = (await firex.runs()).filter((r) => r.status === "completed" && !r.byte_range?.[1]);
+      const runs = (await firex.runs()).filter((r) => r.status === "completed");
       const found = await Promise.all(
         runs.map(async (r) => {
           const [health, list] = await Promise.all([firex.health(r.run_id), firex.incidents(r.run_id)]);
-          return { run_id: r.run_id, dataset_id: r.dataset_id, headline: health.headline, state: health.state, incidents: list.items };
+          return { run_id: r.run_id, dataset_id: health.is_sample ? `${r.dataset_id} (sample)` : r.dataset_id, headline: health.headline, state: health.state, incidents: list.items };
         }),
       );
       if (live) setRooms(found);
