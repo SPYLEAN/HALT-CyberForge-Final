@@ -118,7 +118,7 @@
       "visual": "world"
      },
      {
-      "body": "SMB to 15 internal hosts Then: Malware detections to 198.51.100.34: W0/x!tr, W1/x!tr, W2/x!tr, W3/x!tr.",
+      "body": "SMB to 15 internal hosts. Then: Malware detections to 198.51.100.34: W0/x!tr, W1/x!tr, W2/x!tr, W3/x!tr.",
       "camera": {
        "node_ids": [
         "step:fdet-69f27285ef14777e:0",
@@ -145,7 +145,7 @@
       "metrics": [
        {
         "label": "Stages",
-        "value": "delivery, lateral movement"
+        "value": "Delivery, lateral movement"
        }
       ],
       "presenter_notes": "Follow the route. Steps are ordered by evidence; links between them are inferred by rules.",
@@ -5576,7 +5576,7 @@
         "is_hash": true,
         "label": "Git commit",
         "status": null,
-        "value": "af66a64233dfa8e830f59a61daba057801922013"
+        "value": "2ef8c063faa4e93c370b3465473ad176560105bd"
        },
        {
         "is_hash": false,
@@ -6013,7 +6013,7 @@
          "is_hash": true,
          "label": "Git commit",
          "status": null,
-         "value": "af66a64233dfa8e830f59a61daba057801922013"
+         "value": "2ef8c063faa4e93c370b3465473ad176560105bd"
         },
         {
          "is_hash": false,
@@ -6271,7 +6271,7 @@
       "visual": "world"
      },
      {
-      "body": "SMB to 15 internal hosts Then: Malware detections to 198.51.100.34: W0/x!tr, W1/x!tr, W2/x!tr, W3/x!tr.",
+      "body": "SMB to 15 internal hosts. Then: Malware detections to 198.51.100.34: W0/x!tr, W1/x!tr, W2/x!tr, W3/x!tr.",
       "camera": {
        "node_ids": [
         "step:fdet-69f27285ef14777e:0",
@@ -6298,7 +6298,7 @@
       "metrics": [
        {
         "label": "Stages",
-        "value": "delivery, lateral movement"
+        "value": "Delivery, lateral movement"
        }
       ],
       "presenter_notes": "Follow the route. Steps are ordered by evidence; links between them are inferred by rules.",

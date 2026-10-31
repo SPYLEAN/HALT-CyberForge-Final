@@ -30,6 +30,20 @@ When at least 99% of valid records share a collapsed timestamp, no trustworthy t
 `Needs review`, overall state is Degraded, and the Quality Case explains it. Zero incidents is never presented as zero threats, and
 incident-open latency is `Not applicable`.
 
+## Partial reconstruction
+
+At or above two thirds of valid records in a collapsed timestamp, and below the withheld threshold, reconstruction is
+`partial`. Overall state is Degraded, reconstruction trust is `Needs review`, and the verdict says the incidents do not
+cover the complete source. The threshold (`PARTIAL_COLLAPSED_FRACTION`) labels a stored result. It changes no detection.
+It is a judgement call: FireX 10G sits below it at 57.83%, still discloses its collapse, and stays `ran`.
+
+## Time scope
+
+For any run with a collapsed timestamp, the Trust Centre shows the usable and collapsed regions and what each incident
+rests on: the trustworthy region only, the collapsed region only, or both. Cited records are checked by line, and
+detection and step spans by time, which also covers merged records a detection counts without citing. All of this is
+read from stored files. Incidents stay unconfirmed whatever their scope.
+
 ## Proof
 
 Benchmark receipt, each incident's proof, artifact hashes, the seal algorithm and live re-verification. Seals are SHA-256 over canonical

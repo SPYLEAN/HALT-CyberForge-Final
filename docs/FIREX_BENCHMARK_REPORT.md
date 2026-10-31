@@ -65,14 +65,34 @@ are not scored: the temporary admin account and the VPN alternation.
 
 Outputs: `C:\HALT-DATA\results\firex-validation-1g\`.
 
+## Recorded whole-file runs
+
+Read from each run's stored receipt and quality file on the recorded machine. These are measurements of one machine, not
+guarantees. Peak memory is an upper bound (highest worker peak × workers + driver peak).
+
+| Dataset | Run | Bytes | Valid records | Exact duplicates | Collapsed time | Incidents | Duration | Throughput | Peak memory | Incident open |
+|---|---|---|---:|---:|---:|---:|---:|---:|---:|---:|
+| FireX 10G | `frun-69553b2c1dfeb3fe` | 6,543,120,032 | 9,125,382 | 812,235 | 5,277,135 | 11 | 497.45 s | 13.15 MB/s | 3,621.9 MB | 87.3 ms |
+| FireX 30G | `frun-65a98ab95c55af35` | 19,621,285,387 | 8,138,878 | 1,310,857 | 8,138,878 | 0 | 543.53 s | 36.1 MB/s | 2,558.6 MB | Not applicable |
+| FireX 50G | `frun-49e56859504c8df7` | 32,702,905,053 | 61,970,767 | 7,645,803 | 43,681,473 | 11 | 4,216.33 s | 7.76 MB/s | 6,439.2 MB | 79.52 ms |
+
+Three sources gave three different answers, and they must not be conflated:
+
+- **10G: reconstructed, unconfirmed incidents.** 57.83% of its valid records also share one timestamp, and 26.40% of its
+  bytes are quarantined, so reconstruction trust is `Needs review`.
+- **30G: reconstruction withheld.** Every valid record shares one timestamp. Zero incidents does not mean zero threats.
+- **50G: partial reconstruction from a degraded source.** 70.49% of its records share one timestamp, and a time-zone
+  conflict affects every record. Zero rejected records means every line parsed, not that its time can be trusted.
+
+In both the 10G and 50G runs, all 11 incidents rest only on the trustworthy time region: no cited record and no detection
+span reaches the collapsed timestamp. Activity among the collapsed records is unknown, not absent. The 11 incidents do
+not cover the complete source.
+
 ## Unmeasured
 
 | Item | Status |
 |---|---|
-| 10G and 30G HALT duration, throughput and memory | Unmeasured |
-| Behaviour on the real binary tail and collapsed timestamp | Fixtures only |
 | Official detection, labelling and false-positive rates | Unmeasured; no ground truth |
-| 50G tier | Not available |
 | Live Groq or xAI responses | Stub tested only |
 
 ## Official targets (not claims)

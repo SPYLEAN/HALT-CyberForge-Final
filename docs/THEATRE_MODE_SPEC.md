@@ -16,6 +16,11 @@ Incident: Situation, Entry point, Attack progression, Evidence, Uncertainty, Rea
 Quality: 19.62 GB received (from the source size), Every byte accounted for, Valid and invalid regions separated, Timestamp collapse
 discovered, Temporal reconstruction withheld, Why zero incidents does not mean zero threats, Receipt sealed, Analyst handoff.
 
+A partial reconstruction has its own eight chapters, built from stored values: bytes received, records processed,
+duplicates removed, records with usable ordering, records with collapsed time, unconfirmed incidents reconstructed, proof
+receipts verified, and analyst review required. It draws a region map, not an Attack World, because it describes the
+whole source. Its hand-off is the Trust Centre.
+
 ## Controls
 
 Right and Left arrows change chapter, Space plays or pauses autoplay, Escape leaves, F toggles full screen, N toggles presenter notes.

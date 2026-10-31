@@ -147,6 +147,10 @@ function DatasetCard({ dataset, health, onError }: { dataset: DatasetDescriptor;
               <dd>{health.duration_s !== null && health.duration_s !== undefined ? `${health.duration_s.toLocaleString("en-US")} s` : "Not measured"}</dd>
             </div>
             <div>
+              <dt>Throughput</dt>
+              <dd>{health.mb_per_second !== null && health.mb_per_second !== undefined ? `${health.mb_per_second} MB/s` : "Not measured"}</dd>
+            </div>
+            <div>
               <dt>Peak memory</dt>
               <dd>{health.peak_memory_mb !== null && health.peak_memory_mb !== undefined ? `${health.peak_memory_mb.toLocaleString("en-US")} MB` : "Not measured"}</dd>
             </div>

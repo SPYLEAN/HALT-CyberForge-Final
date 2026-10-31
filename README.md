@@ -294,7 +294,8 @@ The official Great targets include over 90% detection, over 85% correct labels, 
 - Response simulation is disabled for FireX incidents, because the log has no business topology or control context.
 - Peak memory in receipts is an upper bound (highest worker peak × workers + driver peak), not a sampled total.
 - The Groq and xAI paths are tested against a stub, not a live provider.
-- The original landing page remains the authored incident demo. The PS2 story is at `/firex/story`, linked from its hero.
+- The earlier authored incident landing is preserved at `/response-demo`. The home page presents log analysis from recorded results.
+- The official sources differ: FireX 10G gave reconstructed, unconfirmed incidents; FireX 30G had reconstruction withheld; FireX 50G gave a partial reconstruction from a degraded source, whose 11 incidents do not cover the complete file. See the [benchmark report](docs/FIREX_BENCHMARK_REPORT.md).
 - Authentication, tenant management, cloud deployment and active blocking are outside the challenge scope.
 
 ## Roadmap
