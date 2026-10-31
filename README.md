@@ -19,21 +19,23 @@ The official challenge requires teams to process large security-log datasets wit
 
 ## Current status
 
-The repository currently contains a complete, deterministic reconstruction workflow for bundled synthetic scenarios and small manual JSON/JSONL/CSV inputs.
+The repository contains two reconstruction paths: a deterministic workflow for bundled synthetic scenarios and small uploads, and a production FireX pipeline for FortiGate-style `key=value` logs that does not load the source into memory.
 
-The official FireX datasets have since been received and identified as FortiGate-style `key=value` telemetry. A bounded-memory streaming parser and disk-backed processing path for the 10 GB, 30 GB and 50 GB tiers are the next production retrofit. **This README does not claim that the complete FireX tiers have already been processed or evaluated.**
+**The complete 10G and 30G tiers have not yet been run through HALT.** Controlled byte ranges have (see [docs/FIREX_BENCHMARK_REPORT.md](docs/FIREX_BENCHMARK_REPORT.md)). Full-tier commands are in [docs/POWERSHELL_OPERATOR_COMMANDS.md](docs/POWERSHELL_OPERATOR_COMMANDS.md). Official detection accuracy is unknown, because no organiser ground truth has been provided.
 
-| Area | Current position |
+| Area | Position |
 | --- | --- |
 | Synthetic reconstruction | Implemented and tested |
-| JSON, JSONL and CSV ingestion | Implemented |
-| Canonical event model | Implemented |
-| Evidence graph and hypotheses | Implemented |
-| ATT&CK mapping | Implemented with basis disclosure |
-| Explicit kill-chain stage output | Being verified/extended |
-| Reachable-next analysis | Planned production addition |
-| Official FireX streaming pipeline | In progress |
-| Official-dataset accuracy and performance | Not yet measured |
+| FireX streaming parser, quarantine and byte accounting | Implemented and tested; measured on controlled ranges only |
+| Disk-backed storage (DuckDB + Parquet), duplicates, bursts | Implemented and tested; measured on controlled ranges only |
+| Config-driven detection and ATT&CK/kill-chain labels | Implemented and tested; accuracy unmeasured |
+| Incident graphs, hypotheses and hypothetical reachable-next | Implemented and tested |
+| Benchmark and proof receipts (SHA-256 seal) | Implemented and tested |
+| Persistent run API with resume and recovery | Implemented and tested |
+| Evidence-grounded Groq/xAI explanation | Implemented and tested against a stub; never called against a live provider |
+| Simplified UI, real Open Incident, semantic 3D graph, Theatre | Implemented and tested |
+| Complete 10G and 30G runs | Not yet run |
+| Official-dataset accuracy | Not measured |
 
 ## Why HALT is different
 
@@ -150,21 +152,19 @@ The secondary scenario demonstrates ambiguity. Multiple plausible paths are reta
 
 Both bundled scenarios are synthetic and labelled as such in the application.
 
-## Official FireX data strategy
+## Official FireX pipeline
 
-The official datasets remain outside Git and outside the web application's upload flow. The production retrofit is designed to:
+The official datasets stay outside Git and outside the upload flow. They are registered by id on the server, and no request can supply a path.
 
-1. Read the source line-by-line in bounded chunks.
-2. Parse FortiGate-style `key=value` records, including quoted values and malformed-line reporting.
-3. Normalise timestamps while preserving the original timezone and source value.
-4. Generate deterministic evidence IDs from source identity and record position.
-5. Persist canonical and suspicious events to a disk-backed store.
-6. Index by user, host, IP, account, session, token and time bucket.
-7. Correlate within bounded windows.
-8. Materialise only incident-level graphs.
-9. Measure throughput, peak memory, processing time and incident-open latency.
+1. **Plan:** one sequential read computes the SHA-256, chunk boundaries and line numbers.
+2. **Parse:** worker processes parse chunks into Parquet with deterministic evidence ids. Invalid data becomes coalesced quarantine segments, and every byte is accounted for.
+3. **Prepare:** DuckDB finds exact duplicates, collapsed timestamps and time-zone conflicts, with a memory limit and spill to disk.
+4. **Reconstruct:** configurable rules produce candidates, which join into incidents only through shared accounts, sources or pivots.
+5. **Explain:** graphs, hypotheses, reachable-next, Attack Story and sealed receipts are written per incident.
 
-No official-dataset metric will be published until it has been measured against organiser ground truth.
+Start it from `/firex` in the app, or from the operator commands. Details: [architecture](docs/FIREX_PRODUCTION_ARCHITECTURE.md), [schema](docs/FIREX_CANONICAL_SCHEMA.md), [rules](docs/FIREX_DETECTION_RULES.md), [reconstruction](docs/FIREX_GRAPH_RECONSTRUCTION.md), [graph contract](docs/INCIDENT_GRAPH_CONTRACT.md), [LLM boundary](docs/LLM_EVIDENCE_BOUNDARY.md), [3D view](docs/3D_INVESTIGATION_SPEC.md), [benchmarks](docs/FIREX_BENCHMARK_REPORT.md), [demo runbook](docs/FINAL_DEMO_RUNBOOK.md).
+
+Every incident is **unconfirmed** until validated.
 
 ## Technology
 
@@ -264,13 +264,13 @@ These results verify the current repository workflow. They are not official Fire
 
 | Requirement | Status |
 | --- | --- |
-| Stream the full dataset without loading it entirely into memory | Production FireX retrofit in progress |
-| Detect suspicious events | Implemented on synthetic inputs; FireX validation pending |
-| Map detections to ATT&CK and kill-chain stages | ATT&CK implemented; explicit kill-chain output being completed |
-| Link events across host, user, IP and time | Implemented foundation; bounded large-data correlation pending |
-| Show timeline and attack graph | Implemented |
-| Show reachable-next systems | Planned production addition |
-| Provide an API/page and README | Implemented |
+| Read the full dataset without loading it into memory | Implemented; measured on controlled ranges, full tiers not yet run |
+| Detect suspicious events | Implemented; accuracy on official data unmeasured |
+| Map detections to ATT&CK and kill-chain stages | Implemented through configuration |
+| Link events across host, user, IP, account and time | Implemented with bounded entity joins |
+| Show timeline and graph views | Implemented, in 2D and 3D |
+| Show what the attacker could reach next | Implemented, labelled hypothetical, limited to connections in the log |
+| Provide a page, API and README | Implemented |
 
 ## Evaluation policy
 
@@ -286,24 +286,24 @@ The official Great targets include over 90% detection, over 85% correct labels, 
 
 ## Current limitations
 
-- The official multi-gigabyte FireX pipeline is not yet complete or benchmarked.
-- Official attack-detection accuracy is currently unknown.
-- Upload-based runs are process-memory scoped.
-- Entity resolution is primarily exact-match based.
-- Explicit reachable-next results are not yet exposed as a PS2 output.
-- Current browser upload limits are intentionally unsuitable for official datasets.
-- Authentication, tenant management, cloud deployment and active blocking are outside the official challenge scope.
+- Complete 10G and 30G runs have not been performed, so full-tier time, memory and results are unmeasured.
+- Official detection accuracy is unknown. Candidate patterns from profiling are not ground truth.
+- Rules that need a duration or rate cannot use records inside a collapsed timestamp, so activity there can be missed.
+- These logs carry no payloads or endpoint data, so success of an action cannot be proven from them.
+- Reachable-next uses recorded connections only, with no asset inventory or permissions data.
+- Response simulation is disabled for FireX incidents, because the log has no business topology or control context.
+- Peak memory in receipts is an upper bound (highest worker peak × workers + driver peak), not a sampled total.
+- The Groq and xAI paths are tested against a stub, not a live provider.
+- The original landing page remains the authored incident demo. The PS2 story is at `/firex/story`, linked from its hero.
+- Authentication, tenant management, cloud deployment and active blocking are outside the challenge scope.
 
 ## Roadmap
 
-1. Complete and validate the streaming FireX parser.
-2. Add disk-backed canonical storage and bounded-memory reduction.
-3. Implement configuration-driven detections and explicit kill-chain labels.
-4. Scale entity/time correlation and materialise incident-level graphs only.
-5. Add authorised reachable-next analysis.
-6. Benchmark the smallest official tier before attempting 30 GB and 50 GB.
-7. Connect measured official results to the investigation workspace.
-8. Complete the cinematic landing and Theatre presentation mode after the working pipeline is verified.
+1. Run the full 10G tier, then 30G, and record their receipts.
+2. Validate candidates against organiser ground truth when it is provided.
+3. Add the 50G tier when it is available.
+4. Sample total process-tree memory during a run.
+5. Make the PS2 story the default landing narrative.
 
 ## Responsible use
 

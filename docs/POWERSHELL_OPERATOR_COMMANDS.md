@@ -59,7 +59,7 @@ To test a hard stop, end the runner process with `Stop-Process`, then run the sa
 
 ## Deterministic replay
 
-Rebuilds into a separate folder and compares evidence, graph and proof hashes with the first run:
+Rebuilds detections and incidents from the stored parts, keeps a copy of the previous incidents folder, and compares graph hashes with it:
 
 ```powershell
 & $py -m halt.firex replay --dataset firex-10g
@@ -87,6 +87,14 @@ npm run dev
 ```
 
 Open `http://localhost:3000/firex`.
+
+## Independent validation
+
+Runs outside the product. These are profile candidates, not organiser ground truth. Replace `<run_id>` with the id the run printed:
+
+```powershell
+& $py -m validation.firex_validator --run-dir "C:\HALT-DATA\results\firex-runs\<run_id>" --candidates "C:\HALT-DATA\results\firex-10G-profile" --out "C:\HALT-DATA\results\firex-validation-10g"
+```
 
 ## Results location
 

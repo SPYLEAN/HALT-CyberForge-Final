@@ -24,6 +24,7 @@ Phase 0 (2026-10-27). Lockfile: `package-lock.json`. Python is not lock-filed ye
 | pytest / ruff / mypy | 9.1.1 / 0.17.3 / 2.4.0 |
 | networkx | 3.7 (Phase 2) |
 | numpy | 2.5.4 (Phase 2) |
+| duckdb / pyarrow | 2.0.0 / 26.0.0 (FireX) |
 | scikit-learn | 1.9.1 (Phase 2) |
 | ortools | 9.15.6755 (Phase 4) |
 | cryptography | 50.0.2 (Phase 5) |
@@ -89,6 +90,8 @@ npm 11 blocked the `unrs-resolver` postinstall script (used by ESLint import res
 | networkx | Graph algorithms | BSD-3 | Required |
 | ortools | CP-SAT solver | Apache-2.0 | Required |
 | numpy | Seeded simulation | BSD-3 | Required |
+| duckdb | Disk-backed FireX queries over Parquet, with spill to disk | MIT | Required |
+| pyarrow | Writes FireX Parquet parts in parser workers | Apache-2.0 | Required |
 | scikit-learn | Baseline model (logistic regression) | BSD-3 | Required |
 | lightgbm / xgboost | Gradient boosting | MIT / Apache-2.0 | **Not added.** The AT-2.6 candidate is scikit-learn's HistGradientBoosting (no new dependency); it beat logistic regression by 0.0064 PR-AUC, short of the 0.02 margin, so logistic regression is configured (`services/api/reports/r1_eval.json`) |
 | torch | — | BSD-3 | **Not planned**; only if a model beats GBM and LR |
