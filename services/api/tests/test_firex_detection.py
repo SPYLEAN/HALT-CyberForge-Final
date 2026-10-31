@@ -219,6 +219,31 @@ def deny(i: int, dst: str = "10.20.0.20") -> str:
 
 def test_denial_flood_needs_volume_and_many_sources(tmp_path: Path) -> None:
     assert rules_of(run_fixture(tmp_path / "a", [deny(i) for i in range(1200)])) == ["denial_flood"]
+    [flood] = read_json(
+        run_fixture(
+            tmp_path / "labelled",
+            [
+                traffic(
+                    DAY - 5,
+                    "198.51.100.9",
+                    "10.20.0.20",
+                    action="deny",
+                    srcrole="wan",
+                    dstrole="dmz",
+                    port=0,
+                    service="ICMP_ANY",
+                ),
+                *[deny(i) for i in range(1200)],
+            ],
+        ).dir
+        / "detections.json"
+    )
+    # The label names the most common service, not whichever record came first.
+    assert "Denied HTTPS flood" in flood["steps"][0]["label"]
+    assert (
+        read_json(next((tmp_path / "labelled").rglob("incidents/index.json")))[0]["entry_point"]
+        == "Multiple sources"
+    )
     one_source = [
         traffic(DAY + i, "198.51.100.1", "10.20.0.20", action="deny", srcrole="wan", dstrole="dmz")
         for i in range(1200)

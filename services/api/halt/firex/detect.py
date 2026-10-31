@@ -520,8 +520,7 @@ def denial_flood(ctx: _Context) -> list[dict[str, Any]]:
                 hours GROUP BY dst_ip)
            SELECT d.dst_ip, count(*) AS n, count(DISTINCT d.src_ip) AS sources, min(d.event_ns),
            max(d.event_ns),
-                  min(d.byte_offset), min_by(d.evidence_id, d.byte_offset, 20), min_by(d.service,
-                  d.byte_offset), p.peak_n,
+                  min(d.byte_offset), min_by(d.evidence_id, d.byte_offset, 20), p.peak_n,
                   p.active_hours
            FROM deny d JOIN peak p USING (dst_ip)
            GROUP BY d.dst_ip, p.peak_n, p.active_hours
@@ -530,7 +529,15 @@ def denial_flood(ctx: _Context) -> list[dict[str, Any]]:
         [bucket, rule["min_events"], rule["min_sources"], rule["min_bucket_events"]],
     ).fetchall()
     out = []
-    for dst, count, sources, low, high, first, refs, service, peak, _hours in rows:
+    for dst, count, sources, low, high, first, refs, peak, _hours in rows:
+        # The most common service; ties break by name, so the label is the same on every replay.
+        top = ctx.con.execute(
+            """SELECT service FROM timed_events WHERE event_type = 'traffic' AND action = 'deny' AND dst_ip =
+            ?
+               GROUP BY service ORDER BY count(*) DESC, service LIMIT 1""",
+            [dst],
+        ).fetchone()
+        service = top[0] if top else None
         out.append(
             _detection(
                 ctx,

@@ -687,7 +687,7 @@ class _IncidentBuilder:
             first_utc=min(d["first_utc"] for d in self.group),
             last_utc=max(d["last_utc"] for d in self.group),
             timestamp_quality=quality,
-            entry_point=first["actor"] or first["label"],
+            entry_point=first["actor"] or "Multiple sources",
             affected_identity=users[0] if users else None,
             affected_devices=(devices + hosts)[:8],
             critical_target=critical,
