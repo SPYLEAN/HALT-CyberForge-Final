@@ -135,7 +135,7 @@ export function MissionControl() {
           </div>
           <p className="v2-decision" style={{ color: "var(--v2-text-2)" }}>{incident?.summary}</p>
           <div className="v2-btn-row" style={{ marginTop: "var(--space-5)" }}>
-            <Link className="halt-btn halt-btn-primary" href="/">
+            <Link className="halt-btn halt-btn-primary" href="/response-demo">
               <span>WATCH THE INCIDENT</span>
               <span aria-hidden>→</span>
             </Link>

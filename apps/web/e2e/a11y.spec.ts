@@ -12,7 +12,7 @@ test.beforeAll(async ({ request }) => {
 });
 
 test("landing page · dark", async ({ page }) => {
-  await page.goto("/");
+  await page.goto("/response-demo");
   await expect(page.getByRole("heading", { level: 1 })).toHaveText("Stop the attack. Not the business.");
   await expect(page.getByRole("list", { name: "Proof claims" })).toBeAttached();
   const results = await new AxeBuilder({ page }).withTags(["wcag2a", "wcag2aa", "wcag21a", "wcag21aa"]).analyze();

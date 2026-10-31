@@ -15,7 +15,7 @@ test("AT-10.1 the full demo: landing → Command Center → approve → execute 
   await resetIncident(request);
 
   const errors = collectConsoleErrors(page);
-  await page.goto("/");
+  await page.goto("/response-demo");
   await expect(page.getByRole("heading", { level: 1 })).toHaveText("Stop the attack. Not the business.");
 
   // The story: scroll through the incident; HALT's analysis arrives from the API on the way down.

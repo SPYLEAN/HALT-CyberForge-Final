@@ -11,7 +11,7 @@ test("AT-9.1 scrolling drives the replay and the hand-off keeps incident and cur
   await warm.goto("/incidents/INC-2417?view=overview");
   await expect(warm.getByRole("banner", { name: "Incident" })).toBeVisible({ timeout: 60_000 });
   await warm.close();
-  await page.goto("/");
+  await page.goto("/response-demo");
   const chip = page.getByTestId("landing-cursor");
   await expect(chip).toHaveText("INC-2417 · T+00:00");
 
@@ -48,7 +48,7 @@ test.describe("AT-9.3 reduced motion", () => {
   test.use({ reducedMotion: "reduce" });
 
   test("shows the supplied SVG poster and never creates a WebGL context", async ({ page }) => {
-    await page.goto("/");
+    await page.goto("/response-demo");
     await expect(page.getByTestId("halt-3d")).toHaveAttribute("data-mode", "poster");
     await expect(page.getByTestId("halt-3d-poster")).toHaveAttribute("src", "/3d/svg/halt-fallback-dormant.svg");
     expect(await page.evaluate(() => typeof (window as unknown as { THREE?: unknown }).THREE)).toBe("undefined");
@@ -56,9 +56,9 @@ test.describe("AT-9.3 reduced motion", () => {
 });
 
 test("AT-9.4 landing LCP under 2.5 s (local API, production build)", async ({ page }) => {
-  await page.goto("/"); // warm: compile and cache
+  await page.goto("/response-demo"); // warm: compile and cache
   await page.goto("about:blank");
-  await page.goto("/");
+  await page.goto("/response-demo");
   const lcp = await page.evaluate(
     () =>
       new Promise<number>((resolve) => {

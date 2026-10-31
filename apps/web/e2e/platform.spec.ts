@@ -54,7 +54,7 @@ test("presentation mode: nine steps on the arrow keys, Esc returns to the Comman
 
 test.describe("phone width (390 × 844)", () => {
   test.use({ viewport: { width: 390, height: 844 } });
-  for (const route of ["/", "/mission", "/incidents", "/architecture", "/incidents/INC-2417?view=overview", "/incidents/INC-2417?view=safecut", "/incidents/INC-2417/theatre"]) {
+  for (const route of ["/", "/response-demo", "/trust", "/firex", "/mission", "/incidents", "/architecture", "/incidents/INC-2417?view=overview", "/incidents/INC-2417?view=safecut", "/incidents/INC-2417/theatre"]) {
     test(`no horizontal scroll · ${route}`, async ({ page }) => {
       await page.goto(route);
       await page.waitForLoadState("networkidle");
