@@ -9,7 +9,7 @@ import { IncidentWorkspace } from "@/components/firex/IncidentWorkspace";
 import { RunView } from "@/components/firex/RunView";
 import { TheatreView } from "@/components/firex/TheatreView";
 import { TrustIndex, TrustRun } from "@/components/firex/TrustCentre";
-import { stageState, type CaseManifest, type DatasetRun, type IncidentDetail, type IncidentGraph, type IncidentList, type Hypotheses } from "@/lib/firex/api";
+import { stageState, type CaseManifest, type DatasetHealth, type DatasetRun, type IncidentDetail, type IncidentGraph, type IncidentList, type Hypotheses, type TrustReport } from "@/lib/firex/api";
 import { ALL_ON, CAMERA_PRESETS, edgeState, frameOf, layoutGraph, nodeState, pathSteps, presetNodes, replayedNode, visibleEdge, visibleNode } from "@/lib/firex/scene";
 import { buildWorld, formOf } from "@/lib/firex/world";
 import { edgeMeaning, graphSummary, nodeMeaning } from "@/lib/firex/lens";
@@ -394,5 +394,52 @@ describe("case manifest and theatre", () => {
     const hyp = body<Hypotheses>(`GET ${B}/incidents/${topId()}/hypotheses?run_id=${RUN}`);
     expect(hyp.alternates.length).toBeGreaterThan(0);
     expect(hyp.selected.status).toBe("selected");
+  });
+});
+
+describe("the three reconstruction outcomes stay apart", () => {
+  const healthKey = `GET ${B}/runs/${RUN}/health`;
+  const trustKey = `GET ${B}/runs/${RUN}/trust`;
+  const base = () => body<DatasetHealth>(healthKey);
+  const time = { total_records: 1000, usable_records: 295, collapsed_records: 705, usable_fraction: 0.295, collapsed_fraction: 0.705, collapsed_utc: "2026-01-01T00:00:00Z", collapsed_first_line: 296, collapsed_last_line: 1000, collapsed_first_offset: 1, collapsed_last_offset: 2, earliest_utc: "2025-12-31T00:00:00Z", latest_utc: "2026-01-01T00:00:00Z", timezone_conflict_records: 1000, records_rejected: 0 };
+  const partialHealth = () => ({ ...base(), state: "Degraded", reconstruction: "partial", narrative: "Partial reconstruction from a degraded source", headline: "Partial reconstruction: 3 unconfirmed incidents from a degraded source.", reconstruction_reason: "705 of 1,000 valid records share one timestamp, so these results do not cover the complete source.", time_quality: time }) as DatasetHealth;
+
+  it("a partial run shows its regions and its incidents, and offers no Quality Case", async () => {
+    stub({ [healthKey]: { status: 200, body: partialHealth() } });
+    render(<RunView runId={RUN} />);
+    expect(await screen.findByRole("heading", { name: "Partial reconstruction" })).toBeInTheDocument();
+    expect(screen.getByRole("img", { name: /29\.50% of the records retain usable time order and 70\.50%/ })).toBeInTheDocument();
+    expect(screen.queryByRole("link", { name: "Open the Quality Case" })).toBeNull();
+    expect(screen.queryByText("HALT refused to invent a story from this source.")).toBeNull();
+    await waitFor(() => expect(document.querySelector(`a[href^="/firex/incidents/"]`)).not.toBeNull());
+  });
+
+  it("a withheld run shows the Quality Case and no incidents, and is not called partial", async () => {
+    stub({ [healthKey]: { status: 200, body: { ...base(), state: "Degraded", reconstruction: "withheld", narrative: "Reconstruction withheld", headline: "Reconstruction withheld: this source has no trustworthy time axis." } } });
+    render(<RunView runId={RUN} />);
+    expect(await screen.findByRole("link", { name: "Open the Quality Case" })).toBeInTheDocument();
+    expect(screen.queryByRole("heading", { name: "Partial reconstruction" })).toBeNull();
+    expect(document.querySelector(`a[href^="/firex/incidents/"]`)).toBeNull();
+  });
+
+  it("a reconstructed run shows incidents, with neither of the others' findings", async () => {
+    stub();
+    render(<RunView runId={RUN} />);
+    await waitFor(() => expect(document.querySelector(`a[href^="/firex/incidents/"]`)).not.toBeNull());
+    expect(base().reconstruction).toBe("ran");
+    expect(screen.queryByRole("heading", { name: "Partial reconstruction" })).toBeNull();
+    expect(screen.queryByRole("link", { name: "Open the Quality Case" })).toBeNull();
+  });
+
+  it("the Trust Centre lists what each incident rests on, and keeps it unconfirmed", async () => {
+    const report = body<TrustReport>(trustKey);
+    const id = topId();
+    stub({ [trustKey]: { status: 200, body: { ...report, health: partialHealth(), scope_note: "All 3 incidents rest only on the trustworthy time region.", incident_scopes: [{ incident_id: id, title: "Scoped incident", status: "unconfirmed", scope: "trustworthy_only", scope_label: "Trustworthy time region only", cited_records: 5, cited_in_collapsed: 0, first_utc: "a", last_utc: "b", span_includes_collapsed: false }] } } });
+    render(<TrustRun runId={RUN} />);
+    const table = await screen.findByRole("table", { name: "What each incident rests on" });
+    expect(within(table).getByText("Trustworthy time region only")).toBeInTheDocument();
+    expect(within(table).getByText("0 of 5")).toBeInTheDocument();
+    expect(within(table).getByText("Unconfirmed")).toBeInTheDocument();
+    expect(screen.getByText(/rest only on the trustworthy time region/)).toBeInTheDocument();
   });
 });

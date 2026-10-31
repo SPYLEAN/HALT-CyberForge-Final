@@ -16,9 +16,11 @@ from halt.firex.contracts import (
     DatasetHealth,
     FactsResponse,
     IncidentProofStatus,
+    IncidentTimeScope,
     QualityCase,
     QualitySegment,
     RecordedFact,
+    TimeQuality,
     TrustDimension,
     TrustItem,
     TrustReport,
@@ -29,6 +31,21 @@ from halt.firex.util import read_json
 
 # At or above this share of valid records in one collapsed timestamp, the source has no usable time axis.
 WITHHOLD_COLLAPSED_FRACTION = 0.99
+# At or above this share, more than two thirds of the source cannot be ordered: incidents may be reported,
+# but only as a partial reconstruction from a degraded source. This labels a stored result. It changes no
+# detection.
+PARTIAL_COLLAPSED_FRACTION = 2 / 3
+NARRATIVE = {
+    "ran": "Reconstructed, unconfirmed incidents",
+    "partial": "Partial reconstruction from a degraded source",
+    "withheld": "Reconstruction withheld",
+    "not_run": "No reconstruction result yet",
+}
+SCOPE_LABEL = {
+    "trustworthy_only": "Trustworthy time region only",
+    "collapsed_only": "Collapsed timestamp region only",
+    "both": "Both regions",
+}
 GROUND_TRUTH_NOTE = "Organiser ground truth was not provided, so accuracy has not been measured."
 
 
@@ -58,6 +75,15 @@ def _reconstruction_state(state: dict[str, Any], quality: dict[str, Any] | None)
             "no usable records, "
             "and rules that group by entity found no candidate.",
         )
+    if valid and collapsed / valid >= PARTIAL_COLLAPSED_FRACTION:
+        usable = valid - collapsed
+        return (
+            "partial",
+            f"{collapsed:,} of {valid:,} valid records ({collapsed / valid:.2%}) share one timestamp, "
+            "so they "
+            f"cannot be ordered. Time-based rules could use only the other {usable:,} records "
+            f"({usable / valid:.2%}), so these results do not cover the complete source.",
+        )
     if collapsed:
         return (
             "ran",
@@ -66,6 +92,79 @@ def _reconstruction_state(state: dict[str, Any], quality: dict[str, Any] | None)
             "rule that needs a duration or rate.",
         )
     return "ran", "Reconstruction ran on a usable time axis."
+
+
+def _time_quality(quality: dict[str, Any] | None) -> TimeQuality | None:
+    if not quality or not quality["collapsed_timestamps"]:
+        return None
+    total = quality["records_valid"]
+    collapsed = quality["records_in_collapsed_timestamps"]
+    largest = max(quality["collapsed_timestamps"], key=lambda c: c["affected_records"])
+    conflict = quality["timezone_conflict"]
+    return TimeQuality(
+        total_records=total,
+        usable_records=total - collapsed,
+        collapsed_records=collapsed,
+        usable_fraction=round((total - collapsed) / total, 4) if total else 0.0,
+        collapsed_fraction=round(collapsed / total, 4) if total else 0.0,
+        collapsed_utc=largest["event_utc"],
+        collapsed_first_line=largest["first_line"],
+        collapsed_last_line=largest["last_line"],
+        collapsed_first_offset=largest["first_offset"],
+        collapsed_last_offset=largest["last_offset"],
+        earliest_utc=quality["earliest_utc"],
+        latest_utc=quality["latest_utc"],
+        timezone_conflict_records=conflict["affected_records"] if conflict else 0,
+        records_rejected=quality["records_rejected"],
+    )
+
+
+def _incident_scope(folder: Path, summary: dict[str, Any], stamps: list[dict[str, Any]]) -> IncidentTimeScope:
+    """Cited records are checked by line. Detection and step spans are checked by time, which also covers
+    merged records that a detection counts but does not cite: every collapsed record has exactly that time."""
+    detail = read_json(folder / "incidents" / summary["incident_id"] / "detail.json")
+    cited = detail["evidence"]
+    inside = sum(1 for e in cited if any(s["first_line"] <= e["line"] <= s["last_line"] for s in stamps))
+    spans = [(d["first_ns"], d["last_ns"]) for d in detail["detections"]]
+    spans += [(step["ns"], step["last_ns"]) for d in detail["detections"] for step in d["steps"]]
+    touches = any(first <= s["event_ns"] <= last for first, last in spans for s in stamps)
+    scope: Any = "both"
+    if not inside and not touches:
+        scope = "trustworthy_only"
+    elif cited and inside == len(cited):
+        scope = "collapsed_only"
+    return IncidentTimeScope(
+        incident_id=summary["incident_id"],
+        title=summary["title"],
+        status=summary["status"],
+        scope=scope,
+        scope_label=SCOPE_LABEL[scope],
+        cited_records=len(cited),
+        cited_in_collapsed=inside,
+        first_utc=summary["first_utc"],
+        last_utc=summary["last_utc"],
+        span_includes_collapsed=touches,
+    )
+
+
+def _scope_note(scopes: list[IncidentTimeScope], time: TimeQuality | None) -> str | None:
+    if not time:
+        return None
+    if not scopes:
+        return (
+            f"No incident exists to place in either region. {time.collapsed_records:,} records are collapsed."
+        )
+    only = sum(1 for s in scopes if s.scope == "trustworthy_only")
+    if only == len(scopes):
+        return (
+            f"All {len(scopes)} incidents rest only on the trustworthy time region. No cited record and no "
+            f"detection span reaches the {time.collapsed_records:,} records at {time.collapsed_utc}. Those "
+            "records are not represented in these incidents, so activity among them is unknown, not absent."
+        )
+    return (
+        f"{only} of {len(scopes)} incidents rest only on the trustworthy time region. The others reach "
+        f"records at {time.collapsed_utc}, whose order cannot be relied on."
+    )
 
 
 def _incident_links(folder: Path, index: list[dict[str, Any]]) -> dict[str, Any]:
@@ -214,7 +313,15 @@ def build_health(
     ]
 
     # Reconstruction trust
-    if reconstruction == "withheld":
+    time_quality = _time_quality(quality)
+    if reconstruction == "partial" and time_quality:
+        reconstruction_status = "Needs review"
+        reconstruction_verdict = (
+            f"Partial and unconfirmed. {time_quality.collapsed_fraction:.2%} of the records have collapsed "
+            "time, "
+            "so these incidents do not cover the complete source."
+        )
+    elif reconstruction == "withheld":
         reconstruction_status, reconstruction_verdict = (
             "Needs review",
             "Withheld: this source has no trustworthy time axis.",
@@ -253,6 +360,19 @@ def build_health(
             status=None if latency is not None else "Not applicable",
         ),
     ]
+
+    if time_quality:
+        reconstruction_items[1:1] = [
+            TrustItem(
+                label="Records with usable time order",
+                value=f"{time_quality.usable_records:,} ({time_quality.usable_fraction:.2%})",
+            ),
+            TrustItem(
+                label="Records with collapsed time",
+                value=f"{time_quality.collapsed_records:,} ({time_quality.collapsed_fraction:.2%})",
+                status="Needs review",
+            ),
+        ]
 
     ground_items = [
         TrustItem(label="Ground truth available", value="No", status="Not measured"),
@@ -303,6 +423,21 @@ def build_health(
             "Processing is sound, but the source cannot support an attack story. "
             "Zero incidents does not mean zero threats."
         )
+    elif reconstruction == "partial":
+        overall = "Degraded"
+        found = (
+            f"{incidents} unconfirmed incident{'s' if incidents != 1 else ''}" if incidents else "no incident"
+        )
+        headline = f"Partial reconstruction: {found} from a degraded source."
+        explanation = (
+            "The file and the processing check out, but most records cannot be ordered in time, so "
+            "the result "
+            "does not cover the complete source."
+        )
+        if quality and not quality["records_rejected"]:
+            explanation += (
+                " Zero rejected records means every line parsed. It does not make its time trustworthy."
+            )
     elif incidents:
         overall = "Unconfirmed"
         headline = f"{incidents} incident{'s' if incidents != 1 else ''} reconstructed, all unconfirmed."
@@ -328,6 +463,8 @@ def build_health(
         is_sample=is_sample,
         reconstruction=reconstruction,
         reconstruction_reason=reason,
+        narrative=NARRATIVE[reconstruction],
+        time_quality=time_quality,
         incident_count=incidents,
         source_bytes=(plan or {}).get("source_size"),
         valid_fraction=round(quality["bytes_valid"] / bytes_total, 4) if bytes_total else None,
@@ -347,6 +484,11 @@ def build_health(
 def build_trust(run_id: str, root: Path | None = None) -> TrustReport:
     health, proofs, receipt = build_health(run_id, root)
     seal = verify_seal(receipt) if receipt else None
+    folder = run_dir(run_id, root)
+    quality = _optional(folder / "quality.json")
+    stamps = quality["collapsed_timestamps"] if quality else []
+    index = _optional(folder / "incidents" / "index.json") or []
+    scopes = [_incident_scope(folder, s, stamps) for s in index] if stamps else []
     return TrustReport(
         health=health,
         benchmark_seal_valid=seal.valid if seal else None,
@@ -354,6 +496,8 @@ def build_trust(run_id: str, root: Path | None = None) -> TrustReport:
         seal_algorithm=receipt.get("seal_algorithm"),
         artifact_hashes=receipt.get("artifact_hashes", {}),
         proofs=proofs,
+        incident_scopes=scopes,
+        scope_note=_scope_note(scopes, health.time_quality),
     )
 
 
@@ -416,9 +560,11 @@ def build_facts(root: Path | None = None) -> FactsResponse:
     for state in list_runs(root):
         if state["status"] != "completed" or state.get("max_bytes"):
             continue
-        health, _, _ = build_health(state["run_id"], root)
+        health, proofs, receipt = build_health(state["run_id"], root)
         if health.state == "Failed":
             continue
+        time = health.time_quality
+        total = health.canonical_records or 0
         facts.append(
             RecordedFact(
                 run_id=health.run_id,
@@ -430,6 +576,12 @@ def build_facts(root: Path | None = None) -> FactsResponse:
                 incidents=health.incident_count,
                 reconstruction=health.reconstruction,
                 state=health.state,
+                narrative=health.narrative,
+                canonical_records=total,
+                usable_records=time.usable_records if time else total,
+                collapsed_records=time.collapsed_records if time else 0,
+                proofs_valid=sum(1 for p in proofs if p.seal_valid),
+                benchmark_seal_valid=verify_seal(receipt).valid if receipt else False,
             )
         )
     return FactsResponse(

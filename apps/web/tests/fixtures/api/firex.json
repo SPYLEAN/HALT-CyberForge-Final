@@ -405,15 +405,21 @@
    "body": {
     "items": [
      {
+      "benchmark_seal_valid": true,
+      "canonical_records": 143,
+      "collapsed_records": 0,
       "dataset_id": "fixture",
       "duration_s": "fixture",
       "exact_duplicates": 0,
       "incidents": 3,
+      "narrative": "Reconstructed, unconfirmed incidents",
       "peak_memory_mb": "fixture",
+      "proofs_valid": 3,
       "reconstruction": "ran",
       "run_id": "frun-370ac3a914901431",
       "source_bytes": 51343,
-      "state": "Unconfirmed"
+      "state": "Unconfirmed",
+      "usable_records": 143
      }
     ],
     "note": "Recorded FireX benchmark results on the recorded machine. Not a performance guarantee."
@@ -5478,6 +5484,7 @@
      }
     ],
     "note": "Recommended means this incident has the most to show. It does not mean the incident is confirmed.",
+    "partial_case_available": false,
     "quality_case_available": false,
     "run_id": "frun-370ac3a914901431"
    },
@@ -5569,7 +5576,7 @@
         "is_hash": true,
         "label": "Git commit",
         "status": null,
-        "value": "b7102156ae8679a14ea7ad5f5c4e6496bc8be980"
+        "value": "af66a64233dfa8e830f59a61daba057801922013"
        },
        {
         "is_hash": false,
@@ -5698,6 +5705,7 @@
     "incident_open_latency_ms": "fixture",
     "is_sample": false,
     "mb_per_second": "fixture",
+    "narrative": "Reconstructed, unconfirmed incidents",
     "peak_memory_mb": "fixture",
     "quarantined_fraction": 0.0004,
     "reconstruction": "ran",
@@ -5705,6 +5713,7 @@
     "run_id": "frun-370ac3a914901431",
     "source_bytes": 51343,
     "state": "Unconfirmed",
+    "time_quality": null,
     "valid_fraction": 0.9996
    },
    "status": 200
@@ -6004,7 +6013,7 @@
          "is_hash": true,
          "label": "Git commit",
          "status": null,
-         "value": "b7102156ae8679a14ea7ad5f5c4e6496bc8be980"
+         "value": "af66a64233dfa8e830f59a61daba057801922013"
         },
         {
          "is_hash": false,
@@ -6133,6 +6142,7 @@
      "incident_open_latency_ms": "fixture",
      "is_sample": false,
      "mb_per_second": "fixture",
+     "narrative": "Reconstructed, unconfirmed incidents",
      "peak_memory_mb": "fixture",
      "quarantined_fraction": 0.0004,
      "reconstruction": "ran",
@@ -6140,8 +6150,10 @@
      "run_id": "frun-370ac3a914901431",
      "source_bytes": 51343,
      "state": "Unconfirmed",
+     "time_quality": null,
      "valid_fraction": 0.9996
     },
+    "incident_scopes": [],
     "proofs": [
      {
       "evidence_coverage": 1.0,
@@ -6168,6 +6180,7 @@
       "unsupported_claims": 0
      }
     ],
+    "scope_note": null,
     "seal_algorithm": "sha256-canonical-json"
    },
    "status": 200

@@ -8,6 +8,7 @@ import { classify } from "@/lib/ps2/api";
 import { ps2Vars } from "@/styles/ps2-palette";
 
 import s from "./firex.module.css";
+import { TimeRegionMap } from "./QualityCaseView";
 import { HealthVerdict, StatusBadge } from "./Verdict";
 
 /** The first view is a verdict for each run. Hashes are one expansion away. */
@@ -126,6 +127,46 @@ export function TrustRun({ runId }: { runId: string }) {
           </article>
         ))}
       </section>
+
+      {health.time_quality ? (
+        <section className={s.card} aria-labelledby="trust-scope">
+          <h2 id="trust-scope">Time scope</h2>
+          <p>{data.scope_note}</p>
+          <TimeRegionMap time={health.time_quality} />
+          <p className={s.meta}>
+            Time range <span className={s.mono}>{health.time_quality.earliest_utc}</span> to <span className={s.mono}>{health.time_quality.latest_utc}</span>. The collapsed region is lines{" "}
+            {health.time_quality.collapsed_first_line.toLocaleString("en-US")} to {health.time_quality.collapsed_last_line.toLocaleString("en-US")}. A time-zone conflict affects {health.time_quality.timezone_conflict_records.toLocaleString("en-US")} records.
+          </p>
+          {data.incident_scopes.length ? (
+            <div className={s.tableWrap}>
+              <table className={s.table} aria-label="What each incident rests on">
+                <thead>
+                  <tr>
+                    <th>Incident</th>
+                    <th>Rests on</th>
+                    <th>Cited records in the collapsed region</th>
+                    <th>Status</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {data.incident_scopes.map((i) => (
+                    <tr key={i.incident_id}>
+                      <td>
+                        <Link href={`/firex/incidents/${i.incident_id}?run=${health.run_id}`}>{i.title}</Link>
+                      </td>
+                      <td>{i.scope_label}</td>
+                      <td>
+                        {i.cited_in_collapsed} of {i.cited_records}
+                      </td>
+                      <td>Unconfirmed</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          ) : null}
+        </section>
+      ) : null}
 
       <section className={s.card} aria-labelledby="trust-proof">
         <div className={s.actions} style={{ justifyContent: "space-between" }}>

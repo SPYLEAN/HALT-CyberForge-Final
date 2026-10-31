@@ -22,6 +22,7 @@ import { ps2Vars } from "@/styles/ps2-palette";
 
 import { CaseBuilder } from "./CaseBuilder";
 import s from "./firex.module.css";
+import { TimeRegionMap } from "./QualityCaseView";
 import { HealthVerdict, StatusBadge } from "./Verdict";
 
 const POLL_MS = 1500;
@@ -151,6 +152,7 @@ export function RunView({ runId }: { runId: string }) {
       {finished && health ? <HealthVerdict health={health} titleLevel={1} /> : null}
       {!finished ? <Progress run={run} onAct={act} /> : null}
       {finished && health?.reconstruction === "withheld" ? <QualityFinding runId={run.run_id} health={health} /> : null}
+      {finished && health?.reconstruction === "partial" ? <PartialFinding runId={run.run_id} health={health} /> : null}
       {finished && incidents && health?.reconstruction !== "withheld" ? <Incidents list={incidents} /> : null}
       {finished ? <CaseBuilder runId={run.run_id} /> : null}
       {finished ? <RunDetails run={run} list={incidents} /> : null}
@@ -227,6 +229,21 @@ function QualityFinding({ runId, health }: { runId: string; health: DatasetHealt
       <div className={s.actions}>
         <Link className={s.btnPrimary} href={`/firex/runs/${runId}/quality`}>
           Open the Quality Case
+        </Link>
+      </div>
+    </section>
+  );
+}
+
+function PartialFinding({ runId, health }: { runId: string; health: DatasetHealth }) {
+  return (
+    <section className={s.card} aria-labelledby="partial-finding">
+      <h2 id="partial-finding">Partial reconstruction</h2>
+      <p>{health.reconstruction_reason}</p>
+      {health.time_quality ? <TimeRegionMap time={health.time_quality} /> : null}
+      <div className={s.actions}>
+        <Link className={s.btnPrimary} href={`/trust/${runId}`}>
+          See what each incident rests on
         </Link>
       </div>
     </section>

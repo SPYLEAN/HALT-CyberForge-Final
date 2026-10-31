@@ -550,6 +550,40 @@ class TrustDimension(Contract):
     items: list[TrustItem]
 
 
+class TimeQuality(Contract):
+    """Which records can be ordered in time, and which share one collapsed timestamp."""
+
+    total_records: int
+    usable_records: int
+    collapsed_records: int
+    usable_fraction: float
+    collapsed_fraction: float
+    collapsed_utc: str
+    collapsed_first_line: int
+    collapsed_last_line: int
+    collapsed_first_offset: int
+    collapsed_last_offset: int
+    earliest_utc: str | None
+    latest_utc: str | None
+    timezone_conflict_records: int
+    records_rejected: int
+
+
+class IncidentTimeScope(Contract):
+    """Whether an incident's stored evidence reaches the collapsed region. Read from stored files only."""
+
+    incident_id: str
+    title: str
+    status: str
+    scope: Literal["trustworthy_only", "collapsed_only", "both"]
+    scope_label: str
+    cited_records: int
+    cited_in_collapsed: int
+    first_utc: str
+    last_utc: str
+    span_includes_collapsed: bool
+
+
 class DatasetHealth(Contract):
     """A verdict derived from stored files. Verified source or processing never means an incident is true."""
 
@@ -559,8 +593,10 @@ class DatasetHealth(Contract):
     headline: str
     explanation: str
     is_sample: bool
-    reconstruction: Literal["ran", "withheld", "not_run"]
+    reconstruction: Literal["ran", "partial", "withheld", "not_run"]
     reconstruction_reason: str
+    narrative: str
+    time_quality: TimeQuality | None
     incident_count: int
     source_bytes: int | None
     valid_fraction: float | None
@@ -591,6 +627,8 @@ class TrustReport(Contract):
     seal_algorithm: str | None
     artifact_hashes: dict[str, str]
     proofs: list[IncidentProofStatus]
+    incident_scopes: list[IncidentTimeScope]
+    scope_note: str | None
 
 
 class QualitySegment(Contract):
@@ -638,8 +676,14 @@ class RecordedFact(Contract):
     exact_duplicates: int
     peak_memory_mb: float | None
     incidents: int
-    reconstruction: Literal["ran", "withheld", "not_run"]
+    reconstruction: Literal["ran", "partial", "withheld", "not_run"]
     state: HealthState
+    narrative: str
+    canonical_records: int
+    usable_records: int
+    collapsed_records: int
+    proofs_valid: int
+    benchmark_seal_valid: bool
 
 
 class FactsResponse(Contract):
@@ -662,12 +706,13 @@ class CaseCandidates(Contract):
     run_id: str
     items: list[CaseCandidate]
     quality_case_available: bool
+    partial_case_available: bool
     note: str
 
 
 class CaseRequest(Contract):
     run_id: str = Field(pattern=r"^frun-[0-9a-f]{16}$")
-    subject: Literal["incident", "quality"]
+    subject: Literal["incident", "quality", "partial"]
     incident_id: str | None = Field(default=None, pattern=r"^finc-[0-9a-f]{12}$")
 
 
@@ -690,7 +735,7 @@ class CaseChapter(Contract):
     evidence_refs: list[str]
     camera: CaseCamera
     metrics: list[CaseMetric]
-    visual: Literal["world", "bytes", "time", "withheld"]
+    visual: Literal["world", "bytes", "time", "withheld", "regions"]
 
 
 class CaseManifest(Contract):
@@ -700,7 +745,7 @@ class CaseManifest(Contract):
     builder_version: str
     run_id: str
     dataset_id: str
-    subject: Literal["incident", "quality"]
+    subject: Literal["incident", "quality", "partial"]
     incident_id: str | None
     title: str
     status: str

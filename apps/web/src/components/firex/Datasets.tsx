@@ -133,6 +133,30 @@ function DatasetCard({ dataset, health, onError }: { dataset: DatasetDescriptor;
       {health ? (
         <>
           <p>{health.headline}</p>
+          <dl className={s.facts} aria-label="Measured on the recorded run">
+            <div>
+              <dt>Records</dt>
+              <dd>{health.canonical_records?.toLocaleString("en-US") ?? "Not measured"}</dd>
+            </div>
+            <div>
+              <dt>Duplicates</dt>
+              <dd>{health.exact_duplicates?.toLocaleString("en-US") ?? "Not measured"}</dd>
+            </div>
+            <div>
+              <dt>Duration</dt>
+              <dd>{health.duration_s !== null && health.duration_s !== undefined ? `${health.duration_s.toLocaleString("en-US")} s` : "Not measured"}</dd>
+            </div>
+            <div>
+              <dt>Peak memory</dt>
+              <dd>{health.peak_memory_mb !== null && health.peak_memory_mb !== undefined ? `${health.peak_memory_mb.toLocaleString("en-US")} MB` : "Not measured"}</dd>
+            </div>
+            {health.time_quality ? (
+              <div>
+                <dt>Usable time order</dt>
+                <dd>{(health.time_quality.usable_fraction * 100).toFixed(2)}% of records</dd>
+              </div>
+            ) : null}
+          </dl>
           <div className={s.actions}>
             <Link className={s.btnPrimary} href={`/firex/runs/${health.run_id}`}>
               Open result

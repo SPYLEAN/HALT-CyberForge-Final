@@ -1888,6 +1888,10 @@
             "title": "Note",
             "type": "string"
           },
+          "partial_case_available": {
+            "title": "Partial Case Available",
+            "type": "boolean"
+          },
           "quality_case_available": {
             "title": "Quality Case Available",
             "type": "boolean"
@@ -1901,6 +1905,7 @@
           "run_id",
           "items",
           "quality_case_available",
+          "partial_case_available",
           "note"
         ],
         "title": "CaseCandidates",
@@ -1951,7 +1956,8 @@
               "world",
               "bytes",
               "time",
-              "withheld"
+              "withheld",
+              "regions"
             ],
             "title": "Visual",
             "type": "string"
@@ -2042,7 +2048,8 @@
           "subject": {
             "enum": [
               "incident",
-              "quality"
+              "quality",
+              "partial"
             ],
             "title": "Subject",
             "type": "string"
@@ -2112,7 +2119,8 @@
           "subject": {
             "enum": [
               "incident",
-              "quality"
+              "quality",
+              "partial"
             ],
             "title": "Subject",
             "type": "string"
@@ -2676,6 +2684,10 @@
             ],
             "title": "Mb Per Second"
           },
+          "narrative": {
+            "title": "Narrative",
+            "type": "string"
+          },
           "peak_memory_mb": {
             "anyOf": [
               {
@@ -2701,6 +2713,7 @@
           "reconstruction": {
             "enum": [
               "ran",
+              "partial",
               "withheld",
               "not_run"
             ],
@@ -2736,6 +2749,16 @@
             "title": "State",
             "type": "string"
           },
+          "time_quality": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/TimeQuality"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
           "valid_fraction": {
             "anyOf": [
               {
@@ -2757,6 +2780,8 @@
           "is_sample",
           "reconstruction",
           "reconstruction_reason",
+          "narrative",
+          "time_quality",
           "incident_count",
           "source_bytes",
           "valid_fraction",
@@ -6372,6 +6397,71 @@
         "title": "IncidentSummary",
         "type": "object"
       },
+      "IncidentTimeScope": {
+        "additionalProperties": false,
+        "description": "Whether an incident's stored evidence reaches the collapsed region. Read from stored files only.",
+        "properties": {
+          "cited_in_collapsed": {
+            "title": "Cited In Collapsed",
+            "type": "integer"
+          },
+          "cited_records": {
+            "title": "Cited Records",
+            "type": "integer"
+          },
+          "first_utc": {
+            "title": "First Utc",
+            "type": "string"
+          },
+          "incident_id": {
+            "title": "Incident Id",
+            "type": "string"
+          },
+          "last_utc": {
+            "title": "Last Utc",
+            "type": "string"
+          },
+          "scope": {
+            "enum": [
+              "trustworthy_only",
+              "collapsed_only",
+              "both"
+            ],
+            "title": "Scope",
+            "type": "string"
+          },
+          "scope_label": {
+            "title": "Scope Label",
+            "type": "string"
+          },
+          "span_includes_collapsed": {
+            "title": "Span Includes Collapsed",
+            "type": "boolean"
+          },
+          "status": {
+            "title": "Status",
+            "type": "string"
+          },
+          "title": {
+            "title": "Title",
+            "type": "string"
+          }
+        },
+        "required": [
+          "incident_id",
+          "title",
+          "status",
+          "scope",
+          "scope_label",
+          "cited_records",
+          "cited_in_collapsed",
+          "first_utc",
+          "last_utc",
+          "span_includes_collapsed"
+        ],
+        "title": "IncidentTimeScope",
+        "type": "object"
+      },
       "Infeasibility": {
         "additionalProperties": false,
         "properties": {
@@ -9235,6 +9325,18 @@
       "RecordedFact": {
         "additionalProperties": false,
         "properties": {
+          "benchmark_seal_valid": {
+            "title": "Benchmark Seal Valid",
+            "type": "boolean"
+          },
+          "canonical_records": {
+            "title": "Canonical Records",
+            "type": "integer"
+          },
+          "collapsed_records": {
+            "title": "Collapsed Records",
+            "type": "integer"
+          },
           "dataset_id": {
             "title": "Dataset Id",
             "type": "string"
@@ -9251,6 +9353,10 @@
             "title": "Incidents",
             "type": "integer"
           },
+          "narrative": {
+            "title": "Narrative",
+            "type": "string"
+          },
           "peak_memory_mb": {
             "anyOf": [
               {
@@ -9262,9 +9368,14 @@
             ],
             "title": "Peak Memory Mb"
           },
+          "proofs_valid": {
+            "title": "Proofs Valid",
+            "type": "integer"
+          },
           "reconstruction": {
             "enum": [
               "ran",
+              "partial",
               "withheld",
               "not_run"
             ],
@@ -9288,6 +9399,10 @@
             ],
             "title": "State",
             "type": "string"
+          },
+          "usable_records": {
+            "title": "Usable Records",
+            "type": "integer"
           }
         },
         "required": [
@@ -9299,7 +9414,13 @@
           "peak_memory_mb",
           "incidents",
           "reconstruction",
-          "state"
+          "state",
+          "narrative",
+          "canonical_records",
+          "usable_records",
+          "collapsed_records",
+          "proofs_valid",
+          "benchmark_seal_valid"
         ],
         "title": "RecordedFact",
         "type": "object"
@@ -10660,6 +10781,100 @@
         "title": "ThreadNode",
         "type": "object"
       },
+      "TimeQuality": {
+        "additionalProperties": false,
+        "description": "Which records can be ordered in time, and which share one collapsed timestamp.",
+        "properties": {
+          "collapsed_first_line": {
+            "title": "Collapsed First Line",
+            "type": "integer"
+          },
+          "collapsed_first_offset": {
+            "title": "Collapsed First Offset",
+            "type": "integer"
+          },
+          "collapsed_fraction": {
+            "title": "Collapsed Fraction",
+            "type": "number"
+          },
+          "collapsed_last_line": {
+            "title": "Collapsed Last Line",
+            "type": "integer"
+          },
+          "collapsed_last_offset": {
+            "title": "Collapsed Last Offset",
+            "type": "integer"
+          },
+          "collapsed_records": {
+            "title": "Collapsed Records",
+            "type": "integer"
+          },
+          "collapsed_utc": {
+            "title": "Collapsed Utc",
+            "type": "string"
+          },
+          "earliest_utc": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Earliest Utc"
+          },
+          "latest_utc": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Latest Utc"
+          },
+          "records_rejected": {
+            "title": "Records Rejected",
+            "type": "integer"
+          },
+          "timezone_conflict_records": {
+            "title": "Timezone Conflict Records",
+            "type": "integer"
+          },
+          "total_records": {
+            "title": "Total Records",
+            "type": "integer"
+          },
+          "usable_fraction": {
+            "title": "Usable Fraction",
+            "type": "number"
+          },
+          "usable_records": {
+            "title": "Usable Records",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "total_records",
+          "usable_records",
+          "collapsed_records",
+          "usable_fraction",
+          "collapsed_fraction",
+          "collapsed_utc",
+          "collapsed_first_line",
+          "collapsed_last_line",
+          "collapsed_first_offset",
+          "collapsed_last_offset",
+          "earliest_utc",
+          "latest_utc",
+          "timezone_conflict_records",
+          "records_rejected"
+        ],
+        "title": "TimeQuality",
+        "type": "object"
+      },
       "TimelineEntry": {
         "additionalProperties": false,
         "properties": {
@@ -10914,12 +11129,30 @@
           "health": {
             "$ref": "#/components/schemas/DatasetHealth"
           },
+          "incident_scopes": {
+            "items": {
+              "$ref": "#/components/schemas/IncidentTimeScope"
+            },
+            "title": "Incident Scopes",
+            "type": "array"
+          },
           "proofs": {
             "items": {
               "$ref": "#/components/schemas/IncidentProofStatus"
             },
             "title": "Proofs",
             "type": "array"
+          },
+          "scope_note": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Scope Note"
           },
           "seal_algorithm": {
             "anyOf": [
@@ -10939,7 +11172,9 @@
           "benchmark_seal",
           "seal_algorithm",
           "artifact_hashes",
-          "proofs"
+          "proofs",
+          "incident_scopes",
+          "scope_note"
         ],
         "title": "TrustReport",
         "type": "object"

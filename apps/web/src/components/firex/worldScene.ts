@@ -447,7 +447,8 @@ export function createWorldScene(kit: ThreeKit, host: HTMLElement, world: WorldM
   const frameDistance = (radius: number, pad: number) => {
     const half = (camera.fov * Math.PI) / 360;
     const horizontal = Math.atan(Math.tan(half) * (camera.aspect || 1.6));
-    return Math.max(5.5, (radius * pad) / Math.sin(Math.min(half, horizontal)));
+    const portrait = (camera.aspect || 1.6) < 1.4 ? 1.14 : 1;
+    return Math.max(5.5, (radius * pad * portrait) / Math.sin(Math.min(half, horizontal)));
   };
   const placeCamera = () => {
     camera.position.set(

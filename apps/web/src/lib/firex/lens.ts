@@ -44,6 +44,6 @@ export function graphSummary(graph: IncidentGraph): string {
   return (
     `Attack World: ${steps} step${steps === 1 ? "" : "s"} on the selected path, ${context} context item${context === 1 ? "" : "s"}, ` +
     `${reachable} hypothetical reachable system${reachable === 1 ? "" : "s"}, ${gaps} missing-evidence link${gaps === 1 ? "" : "s"}. ` +
-    "The list of steps beside the scene has the same content."
+    "The list of attack steps has the same content."
   );
 }

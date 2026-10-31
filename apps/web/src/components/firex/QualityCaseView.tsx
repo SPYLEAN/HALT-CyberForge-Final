@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 
-import { firex, formatBytes, formatCount, type QualityCase } from "@/lib/firex/api";
+import { firex, formatBytes, formatCount, type QualityCase, type TimeQuality } from "@/lib/firex/api";
 import { classify } from "@/lib/ps2/api";
 import { ps2Vars } from "@/styles/ps2-palette";
 
@@ -25,6 +25,28 @@ export function ByteMap({ data }: { data: QualityCase }) {
         </span>
         <span>
           <strong>{(data.quarantined_fraction * 100).toFixed(2)}%</strong> quarantined ({formatBytes(data.bytes_quarantined)})
+        </span>
+      </figcaption>
+    </figure>
+  );
+}
+
+/** The file in source order: the part that can be ordered in time, and the part that shares one timestamp. */
+export function TimeRegionMap({ time }: { time: TimeQuality }) {
+  const usable = time.usable_fraction * 100;
+  const collapsed = time.collapsed_fraction * 100;
+  return (
+    <figure style={{ margin: 0, display: "flex", flexDirection: "column", gap: "var(--space-2)" }}>
+      <div className={s.byteMap} role="img" aria-label={`${usable.toFixed(2)}% of the records retain usable time order and ${collapsed.toFixed(2)}% share one collapsed timestamp`}>
+        <div className={s.byteValid} style={{ width: `${usable}%` }} />
+        <div className={s.timeCollapsed} style={{ width: `${collapsed}%` }} />
+      </div>
+      <figcaption className={s.byteLegend}>
+        <span>
+          <strong>{usable.toFixed(2)}%</strong> usable time order ({formatCount(time.usable_records)} records)
+        </span>
+        <span>
+          <strong>{collapsed.toFixed(2)}%</strong> collapsed time ({formatCount(time.collapsed_records)} records at <span className={s.mono}>{time.collapsed_utc}</span>)
         </span>
       </figcaption>
     </figure>

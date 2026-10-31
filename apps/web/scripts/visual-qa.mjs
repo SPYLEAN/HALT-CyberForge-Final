@@ -66,6 +66,7 @@ const played = (steps) => async (page) => {
 const runs = (await (await fetch(`${API}/runs`)).json()).items;
 const ten = runs.find((r) => r.dataset_id === "firex-10g" && !r.byte_range?.[1] === false && r.metrics.incidents === 11)?.run_id;
 const thirty = runs.find((r) => r.dataset_id === "firex-30g" && r.status === "completed")?.run_id;
+const fifty = runs.find((r) => r.dataset_id === "firex-50g" && r.status === "completed")?.run_id;
 const incidents = ten ? (await (await fetch(`${API}/runs/${ten}/incidents`)).json()).items : [];
 const find = (text) => incidents.find((i) => i.title.toLowerCase().includes(text))?.incident_id;
 const inc = (id) => `/firex/incidents/${id}?run=${ten}`;
@@ -81,6 +82,20 @@ for (const [w, h] of SIZES) {
     await shot("world-web-attack", w, h, inc(find("web attack")), worldTab(), { full: false });
   }
   if (thirty) await shot("quality-30g", w, h, `/firex/runs/${thirty}/quality`);
+  if (fifty) {
+    await shot("run-50g", w, h, `/firex/runs/${fifty}`);
+    await shot("trust-50g", w, h, `/trust/${fifty}`);
+  }
+}
+for (const [w, h] of [[1440, 900], [390, 844]]) {
+  for (let scene = 1; scene <= 8; scene += 1) {
+    await shot(`landing-scene-${scene}`, w, h, `/#scene-${scene}`, async (p) => {
+      await p.waitForSelector("[data-testid=product-landing]");
+      await p.waitForTimeout(800);
+      await p.evaluate((n) => document.getElementById(`scene-${n}`)?.scrollIntoView({ behavior: "instant" }), scene);
+      await p.waitForTimeout(3500);
+    }, { full: false });
+  }
 }
 if (ten) {
   await shot("world-web-attack-step2", 1440, 900, inc(find("web attack")), played(2));
@@ -106,6 +121,16 @@ if (thirty) {
   const qualityCase = await post({ run_id: thirty, subject: "quality" });
   for (const [w, h] of [[1440, 900], [390, 844]]) {
     await shot("theatre-quality", w, h, `/theatre/${qualityCase}`, async (p) => {
+      await p.waitForSelector("[data-testid=theatre]", { timeout: 60000 });
+      for (let i = 0; i < 4; i += 1) await p.keyboard.press("ArrowRight");
+      await p.waitForTimeout(1200);
+    }, { full: false });
+  }
+}
+if (fifty) {
+  const partialCase = await post({ run_id: fifty, subject: "partial" });
+  for (const [w, h] of [[1440, 900], [390, 844]]) {
+    await shot("theatre-partial", w, h, `/theatre/${partialCase}`, async (p) => {
       await p.waitForSelector("[data-testid=theatre]", { timeout: 60000 });
       for (let i = 0; i < 4; i += 1) await p.keyboard.press("ArrowRight");
       await p.waitForTimeout(1200);

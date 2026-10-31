@@ -146,6 +146,12 @@ function Workspace({ data, incidentId, runId }: { data: Loaded; incidentId: stri
         </div>
       </header>
 
+      {health?.reconstruction === "partial" ? (
+        <p className={s.notice}>
+          From a partial reconstruction of a degraded source. {health.reconstruction_reason} <Link href={`/trust/${health.run_id}`}>See the time scope</Link>.
+        </p>
+      ) : null}
+
       <div className={s.tabs} role="tablist" aria-label="Incident views">
         {tabs.map((name) => (
           <button key={name} type="button" role="tab" className={s.tab} aria-selected={tab === name} onClick={() => setTab(name)}>
@@ -469,7 +475,7 @@ function TheatreTab({ runId, incidentId }: { runId: string; incidentId: string }
   async function present() {
     setBusy(true);
     try {
-      const manifest = await firex.createCase(runId, incidentId);
+      const manifest = await firex.createCase(runId, "incident", incidentId);
       router.push(`/theatre/${manifest.case_id}`);
     } catch (e) {
       setError(classify(e).message);

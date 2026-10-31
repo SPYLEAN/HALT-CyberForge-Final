@@ -12,9 +12,10 @@ from fastapi.testclient import TestClient
 
 from halt.firex.cases import create_case, list_candidates, read_case
 from halt.firex.contracts import CaseRequest
-from halt.firex.jobs import RunError
+from halt.firex.jobs import RunError, run_dir
 from halt.firex.pipeline import Runner
-from halt.firex.trust import build_facts, build_health, build_quality_case, build_trust
+from halt.firex.trust import _incident_scope, build_facts, build_health, build_quality_case, build_trust
+from halt.firex.util import read_json
 from tests.firex_support import DAY, admin, background, line, run_fixture, traffic
 
 BASE = "/api/v1/ps2"
@@ -321,3 +322,107 @@ def test_api_serves_the_guide(client: TestClient, normal: Runner) -> None:
     [summary] = json.loads((normal.dir / "incidents" / "index.json").read_text())
     body = client.get(f"{BASE}/incidents/{summary['incident_id']}/guide").json()
     assert body["steps"] and body["next_checks"]
+
+
+def partial_source() -> list[str | bytes]:
+    return [
+        *lifecycle(),
+        *background(DAY - 1000, 40),
+        *[traffic(DAY + 5000, "10.1.0.1", "198.51.100.1", sid=i, sent=i) for i in range(120)],
+    ]
+
+
+@pytest.fixture
+def partial(root: Path) -> Runner:
+    return run_fixture(root, partial_source(), rules=COLLAPSE)
+
+
+def test_three_outcomes_are_never_conflated(root: Path) -> None:
+    ran = run_fixture(root, [*background(DAY - 100, 20), *lifecycle()])
+    withheld = run_fixture(root, collapsed_source(), rules=COLLAPSE)
+    part = run_fixture(root, partial_source(), rules=COLLAPSE)
+    a, b, c = (build_health(r.run_id)[0] for r in (ran, withheld, part))
+    assert (a.reconstruction, a.state) == ("ran", "Unconfirmed")
+    assert (b.reconstruction, b.state) == ("withheld", "Degraded")
+    assert (c.reconstruction, c.state) == ("partial", "Degraded")
+    assert a.narrative == "Reconstructed, unconfirmed incidents"
+    assert b.narrative == "Reconstruction withheld"
+    assert c.narrative == "Partial reconstruction from a degraded source"
+    assert "partial" not in a.headline.lower() and "withheld" not in a.headline.lower()
+    assert "withheld" not in c.headline.lower() and "partial" not in b.headline.lower()
+    assert "do not cover the complete source" in c.reconstruction_reason
+    assert "do not cover the complete source" not in a.reconstruction_reason
+    assert b.incident_count == 0 and c.incident_count > 0
+    facts = {f.run_id: f for f in build_facts().items}
+    assert facts[part.run_id].narrative == c.narrative and facts[withheld.run_id].incidents == 0
+
+
+def test_partial_is_degraded_with_regions_and_stays_unconfirmed(partial: Runner) -> None:
+    health, _, _ = build_health(partial.run_id)
+    assert health.state == "Degraded" and health.reconstruction == "partial"
+    assert dimension(health, "source").status == "Verified"
+    assert dimension(health, "processing").status == "Verified"
+    assert dimension(health, "ground_truth").status == "Not measured"
+    assert "Partial and unconfirmed" in dimension(health, "reconstruction").verdict
+    assert "do not cover the complete source" in health.reconstruction_reason
+    time = health.time_quality
+    assert time is not None and time.collapsed_records == 120 and time.usable_records == 43
+    assert time.usable_records + time.collapsed_records == time.total_records
+
+
+def test_zero_rejected_records_are_not_read_as_trustworthy_time(partial: Runner) -> None:
+    health, _, _ = build_health(partial.run_id)
+    assert health.time_quality is not None and health.time_quality.records_rejected == 0
+    assert "does not make its time trustworthy" in health.explanation
+
+
+def test_scope_is_read_from_stored_evidence_and_incidents_stay_unconfirmed(partial: Runner) -> None:
+    report = build_trust(partial.run_id)
+    assert report.incident_scopes and all(s.status == "unconfirmed" for s in report.incident_scopes)
+    assert {s.scope for s in report.incident_scopes} == {"trustworthy_only"}
+    assert all(s.cited_in_collapsed == 0 and not s.span_includes_collapsed for s in report.incident_scopes)
+    assert report.scope_note and "unknown, not absent" in report.scope_note
+
+
+def test_scope_detects_evidence_in_the_collapsed_region(partial: Runner) -> None:
+    folder = run_dir(partial.run_id)
+    summary = read_json(folder / "incidents" / "index.json")[0]
+    first_ns = read_json(folder / "incidents" / summary["incident_id"] / "detail.json")["detections"][0][
+        "first_ns"
+    ]
+    everything = {"first_line": 1, "last_line": 10**9, "event_ns": first_ns}
+    assert _incident_scope(folder, summary, [everything]).scope == "collapsed_only"
+    time_only = {"first_line": 10**8, "last_line": 10**9, "event_ns": first_ns}
+    scope = _incident_scope(folder, summary, [time_only])
+    assert scope.scope == "both" and scope.span_includes_collapsed and scope.cited_in_collapsed == 0
+    elsewhere = {"first_line": 10**8, "last_line": 10**9, "event_ns": first_ns - 1}
+    assert _incident_scope(folder, summary, [elsewhere]).scope == "trustworthy_only"
+
+
+def test_partial_case_has_the_eight_chapters_from_stored_values(partial: Runner) -> None:
+    before = snapshot(run_dir(partial.run_id))
+    manifest = create_case(CaseRequest(run_id=partial.run_id, subject="partial"))
+    assert manifest.status == "Degraded" and manifest.incident_id is None
+    assert [c.chapter_id for c in manifest.chapters] == [
+        "received",
+        "processed",
+        "duplicates",
+        "usable",
+        "collapsed",
+        "incidents",
+        "proofs",
+        "review",
+    ]
+    assert all(c.visual == "regions" for c in manifest.chapters)
+    assert "0.00 million records retained usable ordering" in manifest.chapters[3].title
+    assert "not describe the complete source" in manifest.chapters[5].body
+    assert snapshot(run_dir(partial.run_id)) == before
+    assert list_candidates(partial.run_id).partial_case_available is True
+    assert read_case(manifest.case_id).case_id == manifest.case_id
+
+
+def test_partial_case_is_refused_for_other_outcomes(normal: Runner, withheld: Runner) -> None:
+    for runner in (normal, withheld):
+        with pytest.raises(RunError):
+            create_case(CaseRequest(run_id=runner.run_id, subject="partial"))
+    assert list_candidates(withheld.run_id).partial_case_available is False

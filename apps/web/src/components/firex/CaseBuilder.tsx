@@ -23,7 +23,7 @@ export function CaseBuilder({ runId }: { runId: string }) {
       .then((c) => {
         if (!live) return;
         setData(c);
-        setChoice(c.quality_case_available ? "quality" : (c.items.find((i) => i.recommended)?.incident_id ?? ""));
+        setChoice(c.partial_case_available ? "partial" : c.quality_case_available ? "quality" : (c.items.find((i) => i.recommended)?.incident_id ?? ""));
       })
       .catch((e: unknown) => live && setError(classify(e).message));
     return () => {
@@ -32,13 +32,13 @@ export function CaseBuilder({ runId }: { runId: string }) {
   }, [runId]);
 
   if (error && !data) return <p className={s.alert}>{error}</p>;
-  if (!data || (!data.items.length && !data.quality_case_available)) return null;
+  if (!data || (!data.items.length && !data.quality_case_available && !data.partial_case_available)) return null;
 
   async function build() {
     setBusy(true);
     setError(null);
     try {
-      const manifest = await firex.createCase(runId, choice === "quality" ? null : choice);
+      const manifest = await (choice === "quality" || choice === "partial" ? firex.createCase(runId, choice) : firex.createCase(runId, "incident", choice));
       router.push(`/theatre/${manifest.case_id}`);
     } catch (e) {
       setError(classify(e).message);
@@ -55,6 +55,7 @@ export function CaseBuilder({ runId }: { runId: string }) {
         What to present
         <select value={choice} onChange={(e) => setChoice(e.target.value)}>
           {data.quality_case_available ? <option value="quality">Quality Case: reconstruction withheld</option> : null}
+          {data.partial_case_available ? <option value="partial">Partial reconstruction: the whole source</option> : null}
           {data.items.map((i) => (
             <option key={i.incident_id} value={i.incident_id}>
               {i.title}

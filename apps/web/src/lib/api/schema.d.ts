@@ -1773,6 +1773,8 @@ export interface components {
             items: components["schemas"]["CaseCandidate"][];
             /** Note */
             note: string;
+            /** Partial Case Available */
+            partial_case_available: boolean;
             /** Quality Case Available */
             quality_case_available: boolean;
             /** Run Id */
@@ -1799,7 +1801,7 @@ export interface components {
              * Visual
              * @enum {string}
              */
-            visual: "world" | "bytes" | "time" | "withheld";
+            visual: "world" | "bytes" | "time" | "withheld" | "regions";
         };
         /**
          * CaseManifest
@@ -1832,7 +1834,7 @@ export interface components {
              * Subject
              * @enum {string}
              */
-            subject: "incident" | "quality";
+            subject: "incident" | "quality" | "partial";
             /** Title */
             title: string;
         };
@@ -1853,7 +1855,7 @@ export interface components {
              * Subject
              * @enum {string}
              */
-            subject: "incident" | "quality";
+            subject: "incident" | "quality" | "partial";
         };
         /** ClockMessage */
         ClockMessage: {
@@ -2041,6 +2043,8 @@ export interface components {
             is_sample: boolean;
             /** Mb Per Second */
             mb_per_second: number | null;
+            /** Narrative */
+            narrative: string;
             /** Peak Memory Mb */
             peak_memory_mb: number | null;
             /** Quarantined Fraction */
@@ -2049,7 +2053,7 @@ export interface components {
              * Reconstruction
              * @enum {string}
              */
-            reconstruction: "ran" | "withheld" | "not_run";
+            reconstruction: "ran" | "partial" | "withheld" | "not_run";
             /** Reconstruction Reason */
             reconstruction_reason: string;
             /** Run Id */
@@ -2061,6 +2065,7 @@ export interface components {
              * @enum {string}
              */
             state: "Verified" | "Degraded" | "Unconfirmed" | "Failed";
+            time_quality: components["schemas"]["TimeQuality"] | null;
             /** Valid Fraction */
             valid_fraction: number | null;
         };
@@ -3253,6 +3258,35 @@ export interface components {
             /** Title */
             title: string;
         };
+        /**
+         * IncidentTimeScope
+         * @description Whether an incident's stored evidence reaches the collapsed region. Read from stored files only.
+         */
+        IncidentTimeScope: {
+            /** Cited In Collapsed */
+            cited_in_collapsed: number;
+            /** Cited Records */
+            cited_records: number;
+            /** First Utc */
+            first_utc: string;
+            /** Incident Id */
+            incident_id: string;
+            /** Last Utc */
+            last_utc: string;
+            /**
+             * Scope
+             * @enum {string}
+             */
+            scope: "trustworthy_only" | "collapsed_only" | "both";
+            /** Scope Label */
+            scope_label: string;
+            /** Span Includes Collapsed */
+            span_includes_collapsed: boolean;
+            /** Status */
+            status: string;
+            /** Title */
+            title: string;
+        };
         /** Infeasibility */
         Infeasibility: {
             /** Closest Options */
@@ -4232,6 +4266,12 @@ export interface components {
         };
         /** RecordedFact */
         RecordedFact: {
+            /** Benchmark Seal Valid */
+            benchmark_seal_valid: boolean;
+            /** Canonical Records */
+            canonical_records: number;
+            /** Collapsed Records */
+            collapsed_records: number;
             /** Dataset Id */
             dataset_id: string;
             /** Duration S */
@@ -4240,13 +4280,17 @@ export interface components {
             exact_duplicates: number;
             /** Incidents */
             incidents: number;
+            /** Narrative */
+            narrative: string;
             /** Peak Memory Mb */
             peak_memory_mb: number | null;
+            /** Proofs Valid */
+            proofs_valid: number;
             /**
              * Reconstruction
              * @enum {string}
              */
-            reconstruction: "ran" | "withheld" | "not_run";
+            reconstruction: "ran" | "partial" | "withheld" | "not_run";
             /** Run Id */
             run_id: string;
             /** Source Bytes */
@@ -4256,6 +4300,8 @@ export interface components {
              * @enum {string}
              */
             state: "Verified" | "Degraded" | "Unconfirmed" | "Failed";
+            /** Usable Records */
+            usable_records: number;
         };
         /** Rejection */
         Rejection: {
@@ -4753,6 +4799,40 @@ export interface components {
             /** Tactic */
             tactic: ("reconnaissance" | "resource-development" | "initial-access" | "execution" | "persistence" | "privilege-escalation" | "defense-evasion" | "credential-access" | "discovery" | "lateral-movement" | "collection" | "command-and-control" | "exfiltration" | "impact") | null;
         };
+        /**
+         * TimeQuality
+         * @description Which records can be ordered in time, and which share one collapsed timestamp.
+         */
+        TimeQuality: {
+            /** Collapsed First Line */
+            collapsed_first_line: number;
+            /** Collapsed First Offset */
+            collapsed_first_offset: number;
+            /** Collapsed Fraction */
+            collapsed_fraction: number;
+            /** Collapsed Last Line */
+            collapsed_last_line: number;
+            /** Collapsed Last Offset */
+            collapsed_last_offset: number;
+            /** Collapsed Records */
+            collapsed_records: number;
+            /** Collapsed Utc */
+            collapsed_utc: string;
+            /** Earliest Utc */
+            earliest_utc: string | null;
+            /** Latest Utc */
+            latest_utc: string | null;
+            /** Records Rejected */
+            records_rejected: number;
+            /** Timezone Conflict Records */
+            timezone_conflict_records: number;
+            /** Total Records */
+            total_records: number;
+            /** Usable Fraction */
+            usable_fraction: number;
+            /** Usable Records */
+            usable_records: number;
+        };
         /** TimelineEntry */
         TimelineEntry: {
             /**
@@ -4846,8 +4926,12 @@ export interface components {
             /** Benchmark Seal Valid */
             benchmark_seal_valid: boolean | null;
             health: components["schemas"]["DatasetHealth"];
+            /** Incident Scopes */
+            incident_scopes: components["schemas"]["IncidentTimeScope"][];
             /** Proofs */
             proofs: components["schemas"]["IncidentProofStatus"][];
+            /** Scope Note */
+            scope_note: string | null;
             /** Seal Algorithm */
             seal_algorithm: string | null;
         };

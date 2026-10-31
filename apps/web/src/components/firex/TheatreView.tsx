@@ -5,7 +5,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
-import { firex, type CaseChapter, type CaseManifest, type IncidentGraph, type QualityCase } from "@/lib/firex/api";
+import { firex, type CaseChapter, type CaseManifest, type IncidentGraph, type QualityCase, type TimeQuality } from "@/lib/firex/api";
 import { ALL_ON, layoutGraph } from "@/lib/firex/scene";
 import { buildWorld, type Shot } from "@/lib/firex/world";
 import { classify } from "@/lib/ps2/api";
@@ -14,7 +14,7 @@ import { ps2Vars } from "@/styles/ps2-palette";
 import { useMedia } from "./AttackWorldView";
 import s from "./firex.module.css";
 import { Graph2D } from "./Graph2D";
-import { ByteMap } from "./QualityCaseView";
+import { ByteMap, TimeRegionMap } from "./QualityCaseView";
 import { StatusBadge } from "./Verdict";
 
 const AttackWorld = dynamic(() => import("./AttackWorld"), { ssr: false, loading: () => <p role="status">Loading the scene…</p> });
@@ -24,6 +24,7 @@ interface Loaded {
   manifest: CaseManifest;
   graph: IncidentGraph | null;
   quality: QualityCase | null;
+  time: TimeQuality | null;
 }
 
 /** Full-screen presentation from a case manifest: the live model and scene, with no authored figures and no video. */
@@ -34,11 +35,12 @@ export function TheatreView({ caseId }: { caseId: string }) {
     let live = true;
     (async () => {
       const manifest = await firex.getCase(caseId);
-      const [graph, quality] = await Promise.all([
+      const [graph, quality, health] = await Promise.all([
         manifest.incident_id ? firex.graph(manifest.incident_id, manifest.run_id) : null,
         manifest.subject === "quality" ? firex.qualityCase(manifest.run_id) : null,
+        manifest.subject === "partial" ? firex.health(manifest.run_id) : null,
       ]);
-      if (live) setData({ manifest, graph, quality });
+      if (live) setData({ manifest, graph, quality, time: health?.time_quality ?? null });
     })().catch((e: unknown) => live && setFailure(classify(e).message));
     return () => {
       live = false;
@@ -71,7 +73,7 @@ export function TheatreView({ caseId }: { caseId: string }) {
 }
 
 function Stage({ data }: { data: Loaded }) {
-  const { manifest, graph, quality } = data;
+  const { manifest, graph, quality, time } = data;
   const router = useRouter();
   const reducedMotion = useMedia("(prefers-reduced-motion: reduce)");
   const [index, setIndex] = useState(0);
@@ -83,7 +85,7 @@ function Stage({ data }: { data: Loaded }) {
   const last = manifest.chapters.length - 1;
   const world = useMemo(() => (graph ? buildWorld(graph) : null), [graph]);
   const positions = useMemo(() => (graph ? layoutGraph(graph) : null), [graph]);
-  const handoff = manifest.subject === "incident" ? `/firex/incidents/${manifest.incident_id}?run=${manifest.run_id}` : `/firex/runs/${manifest.run_id}/quality`;
+  const handoff = manifest.subject === "incident" ? `/firex/incidents/${manifest.incident_id}?run=${manifest.run_id}` : manifest.subject === "partial" ? `/trust/${manifest.run_id}` : `/firex/runs/${manifest.run_id}/quality`;
 
   const go = useCallback((delta: number) => setIndex((i) => Math.max(0, Math.min(last, i + delta))), [last]);
   const fullscreen = useCallback(() => {
@@ -164,6 +166,10 @@ function Stage({ data }: { data: Loaded }) {
             <Graph2D graph={graph} positions={positions} selected={null} onSelect={() => undefined} toggles={ALL_ON} replayStep={null} />
           ) : quality ? (
             <QualityVisual chapter={chapter} quality={quality} />
+          ) : time ? (
+            <div className={s.bigBytes}>
+              <TimeRegionMap time={time} />
+            </div>
           ) : null}
           {world ? (
             <p id="world-summary" className={s.axisNote} style={{ position: "absolute", clip: "rect(0 0 0 0)" }}>
@@ -204,7 +210,7 @@ function Stage({ data }: { data: Loaded }) {
             Full screen
           </button>
           <Link className={s.btnPrimary} href={handoff}>
-            {manifest.subject === "incident" ? "Open live evidence" : "Open Quality Case"}
+            {manifest.subject === "incident" ? "Open live evidence" : manifest.subject === "partial" ? "Open Trust Centre" : "Open Quality Case"}
           </Link>
         </div>
       </footer>

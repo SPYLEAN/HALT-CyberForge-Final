@@ -186,6 +186,7 @@
   .theatreStage { grid-template-columns: minmax(0, 1fr); grid-template-rows: auto minmax(200px, 1fr); overflow: auto; }
   .theatreText { padding: var(--space-4); justify-content: flex-start; }
 }
+.timeCollapsed { background: repeating-linear-gradient(135deg, var(--v2-border-strong) 0 6px, transparent 6px 12px); }
 .bigBytes { width: 100%; max-width: 760px; display: flex; flex-direction: column; gap: var(--space-4); }
 .bigBytes .byteMap { height: clamp(90px, 18vh, 180px); }
 .withheld { width: 100%; max-width: 620px; border: 1px dashed var(--v2-border-strong); border-radius: var(--v2-radius-l); padding: var(--space-6); text-align: center; color: var(--v2-text-2); font-size: clamp(16px, 1.6vw, 22px); }

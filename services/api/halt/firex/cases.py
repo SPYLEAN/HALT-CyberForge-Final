@@ -22,7 +22,7 @@ from halt.firex.contracts import (
 )
 from halt.firex.jobs import RunError, read_state, run_dir
 from halt.firex.registry import runs_dir
-from halt.firex.trust import build_health, build_quality_case
+from halt.firex.trust import build_health, build_quality_case, build_trust
 from halt.firex.util import atomic_write_json, read_json, stable_hash
 
 BUILDER_VERSION = "halt.firex.case/1.0"
@@ -89,6 +89,7 @@ def list_candidates(run_id: str, root: Path | None = None) -> CaseCandidates:
         run_id=run_id,
         items=candidates,
         quality_case_available=health.reconstruction == "withheld",
+        partial_case_available=health.reconstruction == "partial",
         note=RECOMMENDATION_NOTE,
     )
 
@@ -333,7 +334,142 @@ def _quality_chapters(run_id: str, root: Path | None) -> tuple[list[CaseChapter]
             metrics=[("Status", "Degraded")],
         ),
     ]
-    subject = {"title": f"{q.dataset_id}: reconstruction withheld", "status": "Degraded", "incident_id": None}
+    subject = {"title": "Reconstruction withheld", "status": "Degraded", "incident_id": None}
+    return chapters, subject, []
+
+
+def _millions(value: int) -> str:
+    return f"{value / 1e6:.2f} million"
+
+
+def _counted(value: int) -> str:
+    words = (
+        "zero",
+        "one",
+        "two",
+        "three",
+        "four",
+        "five",
+        "six",
+        "seven",
+        "eight",
+        "nine",
+        "ten",
+        "eleven",
+        "twelve",
+    )
+    return words[value] if value < len(words) else f"{value:,}"
+
+
+def _partial_chapters(run_id: str, root: Path | None) -> tuple[list[CaseChapter], dict[str, Any], list[str]]:
+    report = build_trust(run_id, root)
+    health = report.health
+    time = health.time_quality
+    if health.reconstruction != "partial" or not time:
+        raise RunError(404, "not_found", "this run has no partial case: its reconstruction was not partial")
+    gb = f"{(health.source_bytes or 0) / 1e9:.2f} GB"
+    source = next(d for d in health.dimensions if d.id == "source")
+    hash_status = next(i.status for i in source.items if i.label == "Hash verification")
+    duplicates = health.exact_duplicates or 0
+    count = health.incident_count
+    incidents = (
+        f"{_counted(count).capitalize()} unconfirmed incident{'s' if count != 1 else ''} reconstructed"
+    )
+    valid_proofs = sum(1 for p in report.proofs if p.seal_valid)
+    only = sum(1 for s in report.incident_scopes if s.scope == "trustworthy_only")
+    matched = "matches the registered value" if hash_status == "Verified" else "was not verified"
+    chapters = [
+        _chapter(
+            "received",
+            f"{gb} received",
+            f"{gb} received",
+            f"The whole-file hash {matched}, and every byte is accounted for.",
+            "Start with what arrived, before any conclusion. A verified file is not a verified story.",
+            visual="regions",
+            metrics=[("Source bytes", f"{health.source_bytes or 0:,}"), ("Source hash", str(hash_status))],
+        ),
+        _chapter(
+            "processed",
+            f"{_millions(time.total_records)} records processed",
+            f"{_millions(time.total_records)} records processed",
+            f"{time.records_rejected:,} records were rejected. That means every line parsed. It says nothing "
+            "about whether their timestamps can be trusted.",
+            "Do not let zero rejected records sound like a clean source.",
+            visual="regions",
+            metrics=[("Records", f"{time.total_records:,}"), ("Rejected", f"{time.records_rejected:,}")],
+        ),
+        _chapter(
+            "duplicates",
+            f"{_millions(duplicates)} duplicates removed",
+            f"{_millions(duplicates)} exact duplicates removed",
+            "Identical records were collapsed into one, and the originals stay accounted for.",
+            "This shrinks the noise. It does not change what the evidence says.",
+            visual="regions",
+            metrics=[("Exact duplicates", f"{duplicates:,}")],
+        ),
+        _chapter(
+            "usable",
+            f"{_millions(time.usable_records)} records retained usable ordering",
+            f"{_millions(time.usable_records)} records retained usable ordering",
+            f"That is {time.usable_fraction:.2%} of the source, from line 1 to line "
+            f"{time.collapsed_first_line - 1:,}, between {time.earliest_utc} and {time.collapsed_utc}.",
+            "This is the only part of the file that time-based rules could use.",
+            visual="regions",
+            metrics=[("Usable", f"{time.usable_fraction:.2%}"), ("Records", f"{time.usable_records:,}")],
+        ),
+        _chapter(
+            "collapsed",
+            f"{_millions(time.collapsed_records)} records have collapsed time",
+            f"{_millions(time.collapsed_records)} records share one timestamp",
+            f"{time.collapsed_fraction:.2%} of the source, all at {time.collapsed_utc}. With no time between "
+            "them, these records cannot be ordered, timed or connected in sequence.",
+            "This is why the source is degraded, even though its hash and processing verify.",
+            visual="regions",
+            metrics=[
+                ("Collapsed", f"{time.collapsed_fraction:.2%}"),
+                ("Time-zone conflict", f"{time.timezone_conflict_records:,} records"),
+            ],
+        ),
+        _chapter(
+            "incidents",
+            incidents,
+            incidents,
+            f"{report.scope_note or ''} They do not describe the complete source.",
+            "Say both halves: the incidents have evidence, and they cover only part of the file.",
+            visual="regions",
+            metrics=[
+                ("Incidents", str(count)),
+                ("Resting only on the trustworthy region", f"{only} of {len(report.incident_scopes)}"),
+            ],
+        ),
+        _chapter(
+            "proofs",
+            "Proof receipts verified",
+            f"{valid_proofs} of {len(report.proofs)} proof receipts verify",
+            "A seal shows that a receipt has not changed. It does not show that a conclusion is true.",
+            "Offer to open the Trust Centre. The seal is tamper evidence, not a legal signature.",
+            visual="regions",
+            metrics=[
+                ("Benchmark seal", "Valid" if report.benchmark_seal_valid else "Failed"),
+                ("Proof receipts", f"{valid_proofs} of {len(report.proofs)}"),
+            ],
+        ),
+        _chapter(
+            "review",
+            "Analyst review required",
+            "An analyst must review this before anyone relies on it",
+            "Every incident stays unconfirmed. Ask for a source with usable time for the collapsed region. "
+            "No ground truth was provided, so accuracy has not been measured.",
+            "Hand off to the Trust Centre, where each incident's time scope is listed.",
+            visual="regions",
+            metrics=[("Dataset health", health.state), ("Accuracy", "Not measured")],
+        ),
+    ]
+    subject = {
+        "title": "Partial reconstruction",
+        "status": health.state,
+        "incident_id": None,
+    }
     return chapters, subject, []
 
 
@@ -344,6 +480,8 @@ def create_case(request: CaseRequest, root: Path | None = None) -> CaseManifest:
     folder = run_dir(request.run_id, root)
     if request.subject == "quality":
         chapters, subject, proofs = _quality_chapters(request.run_id, root)
+    elif request.subject == "partial":
+        chapters, subject, proofs = _partial_chapters(request.run_id, root)
     else:
         if not request.incident_id:
             raise RunError(422, "incident_required", "an incident case needs an incident id")

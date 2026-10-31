@@ -26,6 +26,8 @@ export type DatasetQualitySummary = S["DatasetQualitySummary"];
 export type QuarantineSegment = S["QuarantineSegment"];
 export type DatasetHealth = S["DatasetHealth"];
 export type TrustReport = S["TrustReport"];
+export type TimeQuality = S["TimeQuality"];
+export type IncidentTimeScope = S["IncidentTimeScope"];
 export type QualityCase = S["QualityCase"];
 export type CaseCandidates = S["CaseCandidates"];
 export type CaseManifest = S["CaseManifest"];
@@ -58,8 +60,8 @@ export const firex = {
   trust: async (run_id: string) => unwrap(await api.GET("/api/v1/ps2/runs/{run_id}/trust", runPath(run_id))),
   qualityCase: async (run_id: string) => unwrap(await api.GET("/api/v1/ps2/runs/{run_id}/quality-case", runPath(run_id))),
   candidates: async (run_id: string) => unwrap(await api.GET("/api/v1/ps2/runs/{run_id}/case-candidates", runPath(run_id))),
-  createCase: async (run_id: string, incident_id: string | null) =>
-    unwrap(await api.POST("/api/v1/ps2/cases", { body: { run_id, subject: incident_id ? "incident" : "quality", incident_id } })),
+  createCase: async (run_id: string, subject: "incident" | "quality" | "partial", incident_id: string | null = null) =>
+    unwrap(await api.POST("/api/v1/ps2/cases", { body: { run_id, subject, incident_id } })),
   getCase: async (case_id: string) => unwrap(await api.GET("/api/v1/ps2/cases/{case_id}", { params: { path: { case_id } } })),
   facts: async () => unwrap(await api.GET("/api/v1/ps2/facts")),
   incident: async (id: string, run?: string) => unwrap(await api.GET("/api/v1/ps2/incidents/{incident_id}", incidentPath(id, run))),
