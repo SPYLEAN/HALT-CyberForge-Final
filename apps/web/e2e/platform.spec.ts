@@ -46,6 +46,7 @@ test("the synthetic lab is labelled wherever it opens, and is not in the primary
   }
   await page.goto("/firex/incidents");
   await expect(page.getByTestId("synthetic-lab-notice")).toHaveCount(0);
+  await expect(page.getByRole("navigation", { name: "Platform", exact: true }).locator('[aria-current="page"]')).toHaveText(["Incident Rooms"]);
   await expect(page.locator("body")).not.toContainText("INC-2417");
 });
 

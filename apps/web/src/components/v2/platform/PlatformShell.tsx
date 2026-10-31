@@ -21,7 +21,7 @@ const ITEMS: Array<{ href: string; label: string; icon: IconName }> = [
 function currentFor(path: string, href: string): boolean {
   if (path === href) return true;
   if (href === "/firex/incidents") return path.startsWith("/firex/incidents/");
-  if (href === "/firex") return path.startsWith("/firex/") || path === "/reconstruct" || path.startsWith("/reconstructions/");
+  if (href === "/firex") return (path.startsWith("/firex/") && !path.startsWith("/firex/incidents")) || path === "/reconstruct" || path.startsWith("/reconstructions/");
   return href === "/trust" && path.startsWith("/trust/");
 }
 
