@@ -7,10 +7,10 @@ from __future__ import annotations
 from pathlib import Path
 from typing import Annotated, Any, Literal
 
-from fastapi import APIRouter, Query
+from fastapi import APIRouter, Header, HTTPException, Query, Request, Response
 
 from halt.contracts.common import Contract
-from halt.firex import jobs
+from halt.firex import jobs, live
 from halt.firex.cases import create_case, list_candidates, read_case
 from halt.firex.contracts import (
     AnalystReview,
@@ -29,6 +29,10 @@ from halt.firex.contracts import (
     IncidentDetail,
     IncidentGraph,
     IncidentGuide,
+    LiveFile,
+    LiveFileList,
+    LivePreflight,
+    LiveStartRequest,
     NarrativeRequest,
     NarrativeResult,
     ProofReceipt,
@@ -44,6 +48,8 @@ from halt.firex.contracts import (
     SearchResponse,
     SearchSuggestions,
     TrustReport,
+    UploadRequest,
+    UploadState,
 )
 from halt.firex.guide import build_guide
 from halt.firex.llm import explain
@@ -246,6 +252,58 @@ def get_reviews(run_id: str) -> ReviewList:
 @router.post("/runs/{run_id}/reviews", response_model=AnalystReview, status_code=201)
 def post_review(run_id: str, body: ReviewRequest) -> AnalystReview:
     return add_review(run_id, body)
+
+
+@router.get("/live/files", response_model=LiveFileList)
+def get_live_files() -> LiveFileList:
+    return live.list_files()
+
+
+@router.get("/live/files/{name}/preflight", response_model=LivePreflight)
+def get_live_preflight(name: str) -> LivePreflight:
+    return live.preflight(name)
+
+
+@router.post("/live/files/{name}/start", response_model=DatasetRun)
+def post_live_start(name: str, body: LiveStartRequest) -> DatasetRun:
+    return jobs.to_contract(live.start(name, confirm_duplicate=body.confirm_duplicate))
+
+
+@router.post("/live/uploads", response_model=UploadState, status_code=201)
+def post_live_upload(body: UploadRequest) -> UploadState:
+    return live.create_upload(body)
+
+
+@router.get("/live/uploads/{upload_id}", response_model=UploadState)
+def get_live_upload(upload_id: str) -> UploadState:
+    return live.upload_state(upload_id)
+
+
+@router.put("/live/uploads/{upload_id}/chunks/{index}", response_model=UploadState)
+async def put_live_chunk(
+    upload_id: str,
+    index: int,
+    request: Request,
+    x_chunk_sha256: Annotated[str | None, Header(max_length=64)] = None,
+) -> UploadState:
+    # One bounded chunk at a time. A request that sends more stops being read as soon as it passes the limit.
+    data = bytearray()
+    async for block in request.stream():
+        data += block
+        if len(data) > live.CHUNK_BYTES:
+            raise HTTPException(status_code=413, detail="this chunk is larger than the limit")
+    return live.write_chunk(upload_id, index, bytes(data), x_chunk_sha256)
+
+
+@router.post("/live/uploads/{upload_id}/complete", response_model=LiveFile)
+def post_live_complete(upload_id: str) -> LiveFile:
+    return live.complete_upload(upload_id)
+
+
+@router.delete("/live/uploads/{upload_id}", status_code=204)
+def delete_live_upload(upload_id: str) -> Response:
+    live.cancel_upload(upload_id)
+    return Response(status_code=204)
 
 
 @router.get("/facts", response_model=FactsResponse)

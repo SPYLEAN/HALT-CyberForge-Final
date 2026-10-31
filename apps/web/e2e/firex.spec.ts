@@ -10,6 +10,8 @@ import { expect, test, type APIRequestContext, type Page } from "@playwright/tes
 import { API } from "./support";
 
 const PS2 = `${API}/ps2`;
+const SHOTS = join(__dirname, "../../../artifacts/immersive-product-rebirth");
+mkdirSync(SHOTS, { recursive: true });
 const ROOT = process.env.HALT_FIREX_DATA_ROOT ?? join(tmpdir(), "halt-e2e-firex");
 
 const DAY = 1_800_000_000;
@@ -235,6 +237,59 @@ test("SourceTrace works at phone width and says when nothing is found", async ({
   await page.keyboard.type("no-such-value");
   await page.keyboard.press("Enter");
   await expect(page.getByText(/has not substituted data from another dataset/)).toBeVisible();
+  const overflow = await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth);
+  expect(overflow).toBeLessThanOrEqual(1);
+  expect(await axe(page)).toEqual([]);
+});
+
+test("Live Intake: a new file in the incoming folder is previewed, analysed, searched and presented", async ({ page, request }) => {
+  // A fresh source for each run of the suite, so the first press really starts an analysis.
+  const name = `intake-${Date.now()}.log`;
+  mkdirSync(join(ROOT, "incoming"), { recursive: true });
+  writeFileSync(join(ROOT, "incoming", name), `${fixtureLog()}${stamp(DAY + 900)} logid="0000000013" type="traffic" subtype="forward" level="notice" vd="root" srcip=10.1.0.9 dstip=198.51.100.200 dstport=443 sessionid=${Date.now() % 100000} proto=6 action="accept" service="HTTPS" sentbyte=1 rcvdbyte=1\n`);
+  await page.goto("/firex");
+  const intake = page.getByTestId("live-intake");
+  await intake.getByRole("button", { name: "Check for new files" }).click();
+  const row = intake.getByRole("listitem").filter({ hasText: name });
+  await expect(row).toContainText("FortiGate key-value log");
+  await row.getByRole("button", { name: "Select" }).click();
+  const check = page.getByTestId("live-preflight");
+  await expect(check.getByText(/SHA-256:/)).toBeVisible();
+  await expect(check.getByRole("button", { name: "START ANALYSIS" })).toBeEnabled({ timeout: 30_000 });
+  expect(await axe(page)).toEqual([]);
+  await page.screenshot({ path: join(SHOTS, "live-intake-preflight-1440x900.png"), fullPage: true });
+  await check.getByRole("button", { name: "START ANALYSIS" }).click();
+  await expect(page).toHaveURL(/\/firex\/runs\/frun-/);
+  await expect(page.getByTestId("firex-run")).toBeVisible();
+  const runId = page.url().split("/").pop()!;
+  await expect
+    .poll(async () => (await (await request.get(`${PS2}/runs/${runId}/progress`)).json()).status, { timeout: 60_000 })
+    .toBe("completed");
+  await expect(page.getByText(/Ready for review|More evidence required/)).toBeVisible({ timeout: 20_000 });
+  await expect(page.getByTestId("provisional")).toHaveCount(0);
+
+  await page.getByRole("button", { name: "Search evidence" }).click();
+  await page.keyboard.type("temp1");
+  await page.keyboard.press("Enter");
+  await expect(page.getByRole("region", { name: "Source records" }).getByText("RAW RECORD").first()).toBeVisible();
+  await page.keyboard.press("Escape");
+
+  await page.getByRole("button", { name: "Present in Theatre" }).click();
+  await expect(page.getByTestId("theatre")).toBeVisible();
+  await page.goto(`/firex/runs/${runId}`);
+  await page.locator(`a[href^="/firex/incidents/"]`).first().click();
+  await page.getByRole("tab", { name: "Attack World" }).click();
+  await expect(page.getByTestId("firex-3d").locator("canvas")).toBeVisible();
+  await expect(page.getByText(/Replay of stored events only/)).toBeVisible();
+});
+
+test("Live Intake refuses an unsupported upload with a clear reason, at phone width", async ({ page }) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.goto("/firex");
+  const intake = page.getByTestId("live-intake");
+  await intake.getByLabel("Choose a log to upload").setInputFiles({ name: "records.jsonl", mimeType: "application/json", buffer: Buffer.from('{"a":1}\n{"a":2}\n') });
+  await expect(intake.getByRole("alert")).toContainText("No adapter here reads this format");
+  await page.screenshot({ path: join(SHOTS, "live-intake-unsupported-390x844.png"), fullPage: true });
   const overflow = await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth);
   expect(overflow).toBeLessThanOrEqual(1);
   expect(await axe(page)).toEqual([]);

@@ -43,6 +43,8 @@ VOLATILE = {
     "seal",
     "expected",
     "recorded",
+    "incoming_path",
+    "modified_utc",
     "receipt_id",
     "request_id",
     "benchmark_receipt_id",
@@ -143,6 +145,7 @@ def record() -> dict[str, Any]:
                 get(f"{B}/runs/{run_id}{part}")
             get(f"{B}/runs/{run_id}/case-candidates")
             get(f"{B}/facts")
+            get(f"{B}/live/files")
             get(f"{B}/runs/{run_id}/provenance-summary")
             get(f"{B}/runs/{run_id}/search?q=temp1")
             get(f"{B}/runs/{run_id}/search?q=no-such-value")

@@ -139,6 +139,7 @@ export function AttackWorldView({
           <p className={s.meta} id="world-summary">
             {graphSummary(graph)}
           </p>
+          <p className={s.meta}>Replay of stored events only. It sends no traffic, executes nothing and invents no event. Anything hypothetical is labelled.</p>
           <section className={s.controls} aria-label="Replay">
             <button
               type="button"

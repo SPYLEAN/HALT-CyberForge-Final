@@ -18,7 +18,9 @@
   "git_commit",
   "host",
   "incident_open_latency_ms",
+  "incoming_path",
   "mb_per_second",
+  "modified_utc",
   "output_bytes",
   "peak_memory_mb",
   "pid",
@@ -5235,6 +5237,15 @@
    },
    "status": 200
   },
+  "GET /api/v1/ps2/live/files": {
+   "body": {
+    "chunk_bytes": 8388608,
+    "incoming_path": "fixture",
+    "items": [],
+    "max_upload_bytes": 2147483648
+   },
+   "status": 200
+  },
   "GET /api/v1/ps2/runs": {
    "body": {
     "items": [
@@ -5576,7 +5587,7 @@
         "is_hash": true,
         "label": "Git commit",
         "status": null,
-        "value": "4f9a572431bf763f562baa720a1f163ebfe80846"
+        "value": "7abf1988bfdd7c2088f3a8af131223a45483d5c9"
        },
        {
         "is_hash": false,
@@ -6771,7 +6782,7 @@
       "evidence_refs": [],
       "id": "proof",
       "input": "The graph, the cited evidence and the versions.",
-      "output": "Graph hash a96998c8faf70ebebbd5677566c5e785624a4e2945486a9661cb7becc33e1793, seal 337f6593737578dde90ccf770d003a4646f99f7a4d085ed8e073f03ff55180a7",
+      "output": "Graph hash a96998c8faf70ebebbd5677566c5e785624a4e2945486a9661cb7becc33e1793, seal c4372d8067967336bef78d1f75fff7dbbe2b192c922d7e66c987674240cb4447",
       "plain": "Receipt fprf-89042af3d73bdf39 seals this incident. A seal shows the receipt has not changed. It does not show the conclusion is true.",
       "rule": "sha256-canonical-json",
       "state": "observed",
@@ -7601,7 +7612,7 @@
       "evidence_refs": [],
       "id": "proof",
       "input": "The graph, the cited evidence and the versions.",
-      "output": "Graph hash 01abc3fdccd2dbff919e23c934ff9800e80869ee6fa9fec824fd0e12b829f644, seal 2e2847182e4980b9dc148726ff0b641b9d9d8d07c80c17b9dfa62c1416027291",
+      "output": "Graph hash 01abc3fdccd2dbff919e23c934ff9800e80869ee6fa9fec824fd0e12b829f644, seal 0ce3a2247ce920e3f3ae90c6732451fe4661029602414869b18e9317363dad16",
       "plain": "Receipt fprf-43e6554c3b6a527f seals this incident. A seal shows the receipt has not changed. It does not show the conclusion is true.",
       "rule": "sha256-canonical-json",
       "state": "observed",
@@ -7979,7 +7990,7 @@
       "evidence_refs": [],
       "id": "proof",
       "input": "The graph, the cited evidence and the versions.",
-      "output": "Graph hash 7246cf94f64e19f607e6171a0a59faccc8f316f6becf98e58d2e3be81215ac72, seal 6e3ff53152c49a912555e6a4966ea062d8f3eda11eae03db622e2cbb2cdfba71",
+      "output": "Graph hash 7246cf94f64e19f607e6171a0a59faccc8f316f6becf98e58d2e3be81215ac72, seal 84bb38314d602cf9206ded78facd4ce5277bde55d46b6e3eb273196ed83fc197",
       "plain": "Receipt fprf-99fbc300bcf1939a seals this incident. A seal shows the receipt has not changed. It does not show the conclusion is true.",
       "rule": "sha256-canonical-json",
       "state": "observed",
@@ -8742,7 +8753,7 @@
          "is_hash": true,
          "label": "Git commit",
          "status": null,
-         "value": "4f9a572431bf763f562baa720a1f163ebfe80846"
+         "value": "7abf1988bfdd7c2088f3a8af131223a45483d5c9"
         },
         {
          "is_hash": false,

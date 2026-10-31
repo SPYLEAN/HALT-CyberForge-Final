@@ -24,6 +24,7 @@ class RegisteredDataset:
     title: str
     filename: str
     sha256: str | None
+    folder: str = "raw"
 
 
 BUILT_IN = (
@@ -58,11 +59,17 @@ def datasets(root: Path | None = None) -> dict[str, RegisteredDataset]:
     if extra.is_file():
         for dataset_id, spec in read_json(extra).items():
             if ID_PATTERN.match(dataset_id) and NAME_PATTERN.match(str(spec.get("filename", ""))):
+                # Only the two server folders are allowed: a registry entry cannot point anywhere else.
+                folder = "incoming" if spec.get("folder") == "incoming" else "raw"
                 out[dataset_id] = RegisteredDataset(
-                    dataset_id, str(spec.get("title", dataset_id)), spec["filename"], spec.get("sha256")
+                    dataset_id,
+                    str(spec.get("title", dataset_id)),
+                    spec["filename"],
+                    spec.get("sha256"),
+                    folder,
                 )
     return out
 
 
 def source_path(dataset: RegisteredDataset, root: Path | None = None) -> Path:
-    return (root or data_root()) / "raw" / dataset.filename
+    return (root or data_root()) / dataset.folder / dataset.filename

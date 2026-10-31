@@ -7028,6 +7028,357 @@
         "title": "Layout",
         "type": "object"
       },
+      "LiveFile": {
+        "additionalProperties": false,
+        "properties": {
+          "detected_format": {
+            "title": "Detected Format",
+            "type": "string"
+          },
+          "format_label": {
+            "title": "Format Label",
+            "type": "string"
+          },
+          "modified_utc": {
+            "title": "Modified Utc",
+            "type": "string"
+          },
+          "name": {
+            "title": "Name",
+            "type": "string"
+          },
+          "problem": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Problem"
+          },
+          "selectable": {
+            "title": "Selectable",
+            "type": "boolean"
+          },
+          "size_bytes": {
+            "title": "Size Bytes",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "name",
+          "size_bytes",
+          "modified_utc",
+          "detected_format",
+          "format_label",
+          "selectable",
+          "problem"
+        ],
+        "title": "LiveFile",
+        "type": "object"
+      },
+      "LiveFileList": {
+        "additionalProperties": false,
+        "properties": {
+          "chunk_bytes": {
+            "title": "Chunk Bytes",
+            "type": "integer"
+          },
+          "incoming_path": {
+            "title": "Incoming Path",
+            "type": "string"
+          },
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/LiveFile"
+            },
+            "title": "Items",
+            "type": "array"
+          },
+          "max_upload_bytes": {
+            "title": "Max Upload Bytes",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "incoming_path",
+          "items",
+          "max_upload_bytes",
+          "chunk_bytes"
+        ],
+        "title": "LiveFileList",
+        "type": "object"
+      },
+      "LivePreflight": {
+        "additionalProperties": false,
+        "description": "What an operator sees before analysis. `can_start` waits for the hash and for no problem to stand.",
+        "properties": {
+          "adapter": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Adapter"
+          },
+          "can_start": {
+            "title": "Can Start",
+            "type": "boolean"
+          },
+          "detected_format": {
+            "title": "Detected Format",
+            "type": "string"
+          },
+          "duplicates": {
+            "items": {
+              "additionalProperties": {
+                "type": "string"
+              },
+              "type": "object"
+            },
+            "title": "Duplicates",
+            "type": "array"
+          },
+          "engine_version": {
+            "title": "Engine Version",
+            "type": "string"
+          },
+          "expected_destination": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Expected Destination"
+          },
+          "format_label": {
+            "title": "Format Label",
+            "type": "string"
+          },
+          "hashed_bytes": {
+            "title": "Hashed Bytes",
+            "type": "integer"
+          },
+          "modified_utc": {
+            "title": "Modified Utc",
+            "type": "string"
+          },
+          "name": {
+            "title": "Name",
+            "type": "string"
+          },
+          "parser_version": {
+            "title": "Parser Version",
+            "type": "string"
+          },
+          "parsing_confidence": {
+            "enum": [
+              "High",
+              "Medium",
+              "None"
+            ],
+            "title": "Parsing Confidence",
+            "type": "string"
+          },
+          "parsing_detail": {
+            "title": "Parsing Detail",
+            "type": "string"
+          },
+          "privacy_warning": {
+            "title": "Privacy Warning",
+            "type": "string"
+          },
+          "problems": {
+            "items": {
+              "$ref": "#/components/schemas/LiveProblem"
+            },
+            "title": "Problems",
+            "type": "array"
+          },
+          "sample_records": {
+            "items": {
+              "$ref": "#/components/schemas/LiveSample"
+            },
+            "title": "Sample Records",
+            "type": "array"
+          },
+          "sha256": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Sha256"
+          },
+          "size_bytes": {
+            "title": "Size Bytes",
+            "type": "integer"
+          },
+          "time_interpretation": {
+            "title": "Time Interpretation",
+            "type": "string"
+          },
+          "warnings": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Warnings",
+            "type": "array"
+          }
+        },
+        "required": [
+          "name",
+          "size_bytes",
+          "modified_utc",
+          "sha256",
+          "hashed_bytes",
+          "detected_format",
+          "format_label",
+          "adapter",
+          "parser_version",
+          "engine_version",
+          "parsing_confidence",
+          "parsing_detail",
+          "time_interpretation",
+          "sample_records",
+          "expected_destination",
+          "privacy_warning",
+          "duplicates",
+          "problems",
+          "warnings",
+          "can_start"
+        ],
+        "title": "LivePreflight",
+        "type": "object"
+      },
+      "LiveProblem": {
+        "additionalProperties": false,
+        "properties": {
+          "code": {
+            "title": "Code",
+            "type": "string"
+          },
+          "message": {
+            "title": "Message",
+            "type": "string"
+          }
+        },
+        "required": [
+          "code",
+          "message"
+        ],
+        "title": "LiveProblem",
+        "type": "object"
+      },
+      "LiveSample": {
+        "additionalProperties": false,
+        "properties": {
+          "action": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Action"
+          },
+          "destination": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Destination"
+          },
+          "kind": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Kind"
+          },
+          "message": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Message"
+          },
+          "source": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Source"
+          },
+          "time": {
+            "title": "Time",
+            "type": "string"
+          },
+          "user": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "User"
+          }
+        },
+        "required": [
+          "time",
+          "kind",
+          "user",
+          "source",
+          "destination",
+          "action",
+          "message"
+        ],
+        "title": "LiveSample",
+        "type": "object"
+      },
+      "LiveStartRequest": {
+        "additionalProperties": false,
+        "properties": {
+          "confirm_duplicate": {
+            "default": false,
+            "title": "Confirm Duplicate",
+            "type": "boolean"
+          }
+        },
+        "title": "LiveStartRequest",
+        "type": "object"
+      },
       "Meta": {
         "additionalProperties": false,
         "properties": {
@@ -12419,6 +12770,80 @@
         "title": "Uncertainty",
         "type": "object"
       },
+      "UploadRequest": {
+        "additionalProperties": false,
+        "properties": {
+          "filename": {
+            "maxLength": 255,
+            "minLength": 1,
+            "title": "Filename",
+            "type": "string"
+          },
+          "size_bytes": {
+            "minimum": 0.0,
+            "title": "Size Bytes",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "filename",
+          "size_bytes"
+        ],
+        "title": "UploadRequest",
+        "type": "object"
+      },
+      "UploadState": {
+        "additionalProperties": false,
+        "properties": {
+          "chunk_bytes": {
+            "title": "Chunk Bytes",
+            "type": "integer"
+          },
+          "complete": {
+            "title": "Complete",
+            "type": "boolean"
+          },
+          "filename": {
+            "title": "Filename",
+            "type": "string"
+          },
+          "received_bytes": {
+            "title": "Received Bytes",
+            "type": "integer"
+          },
+          "received_chunks": {
+            "items": {
+              "type": "integer"
+            },
+            "title": "Received Chunks",
+            "type": "array"
+          },
+          "size_bytes": {
+            "title": "Size Bytes",
+            "type": "integer"
+          },
+          "total_chunks": {
+            "title": "Total Chunks",
+            "type": "integer"
+          },
+          "upload_id": {
+            "title": "Upload Id",
+            "type": "string"
+          }
+        },
+        "required": [
+          "upload_id",
+          "filename",
+          "size_bytes",
+          "chunk_bytes",
+          "total_chunks",
+          "received_chunks",
+          "received_bytes",
+          "complete"
+        ],
+        "title": "UploadState",
+        "type": "object"
+      },
       "UserGroupImpact": {
         "additionalProperties": false,
         "properties": {
@@ -14538,6 +14963,347 @@
         "summary": "Intake Capabilities",
         "tags": [
           "ps2"
+        ]
+      }
+    },
+    "/api/v1/ps2/live/files": {
+      "get": {
+        "operationId": "get_live_files_api_v1_ps2_live_files_get",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LiveFileList"
+                }
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "summary": "Get Live Files",
+        "tags": [
+          "firex"
+        ]
+      }
+    },
+    "/api/v1/ps2/live/files/{name}/preflight": {
+      "get": {
+        "operationId": "get_live_preflight_api_v1_ps2_live_files__name__preflight_get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "name",
+            "required": true,
+            "schema": {
+              "title": "Name",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LivePreflight"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Get Live Preflight",
+        "tags": [
+          "firex"
+        ]
+      }
+    },
+    "/api/v1/ps2/live/files/{name}/start": {
+      "post": {
+        "operationId": "post_live_start_api_v1_ps2_live_files__name__start_post",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "name",
+            "required": true,
+            "schema": {
+              "title": "Name",
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LiveStartRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DatasetRun"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Post Live Start",
+        "tags": [
+          "firex"
+        ]
+      }
+    },
+    "/api/v1/ps2/live/uploads": {
+      "post": {
+        "operationId": "post_live_upload_api_v1_ps2_live_uploads_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UploadRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UploadState"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Post Live Upload",
+        "tags": [
+          "firex"
+        ]
+      }
+    },
+    "/api/v1/ps2/live/uploads/{upload_id}": {
+      "delete": {
+        "operationId": "delete_live_upload_api_v1_ps2_live_uploads__upload_id__delete",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "upload_id",
+            "required": true,
+            "schema": {
+              "title": "Upload Id",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Delete Live Upload",
+        "tags": [
+          "firex"
+        ]
+      },
+      "get": {
+        "operationId": "get_live_upload_api_v1_ps2_live_uploads__upload_id__get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "upload_id",
+            "required": true,
+            "schema": {
+              "title": "Upload Id",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UploadState"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Get Live Upload",
+        "tags": [
+          "firex"
+        ]
+      }
+    },
+    "/api/v1/ps2/live/uploads/{upload_id}/chunks/{index}": {
+      "put": {
+        "operationId": "put_live_chunk_api_v1_ps2_live_uploads__upload_id__chunks__index__put",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "upload_id",
+            "required": true,
+            "schema": {
+              "title": "Upload Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "path",
+            "name": "index",
+            "required": true,
+            "schema": {
+              "title": "Index",
+              "type": "integer"
+            }
+          },
+          {
+            "in": "header",
+            "name": "x-chunk-sha256",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "maxLength": 64,
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "X-Chunk-Sha256"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UploadState"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Put Live Chunk",
+        "tags": [
+          "firex"
+        ]
+      }
+    },
+    "/api/v1/ps2/live/uploads/{upload_id}/complete": {
+      "post": {
+        "operationId": "post_live_complete_api_v1_ps2_live_uploads__upload_id__complete_post",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "upload_id",
+            "required": true,
+            "schema": {
+              "title": "Upload Id",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LiveFile"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Post Live Complete",
+        "tags": [
+          "firex"
         ]
       }
     },

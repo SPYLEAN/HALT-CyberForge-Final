@@ -11,6 +11,9 @@ import {
   formatBytes,
   formatCount,
   percentOf,
+  LIVE_CHECKS,
+  plainProgress,
+  plainResult,
   stageState,
   type DatasetHealth,
   type DatasetRun,
@@ -128,8 +131,14 @@ export function RunView({ runId }: { runId: string }) {
         <p className={s.crumbs}>
           <Link href="/firex">Log analysis</Link> / {run.dataset_id}
         </p>
-        {finished && health ? null : <h1 className={s.title}>{STATUS_TEXT[run.status]}</h1>}
-        {finished && health ? <span className={s.meta}>Result for {run.dataset_id}</span> : null}
+        {finished && health ? null : <h1 className={s.title}>{ACTIVE_STATUSES.includes(run.status) ? plainProgress(run) : STATUS_TEXT[run.status]}</h1>}
+        {finished && health ? <span className={s.meta}>Result for {run.dataset_id}: {plainResult(health)}</span> : null}
+        {!finished ? (
+          <p className={s.provisional} data-testid="provisional">
+            PROVISIONAL
+            <span style={{ fontWeight: 400, letterSpacing: 0 }}>No story or receipt exists until this run completes.</span>
+          </p>
+        ) : null}
         {finished ? (
           <div style={{ marginTop: "var(--space-3)" }}>
             <SearchEvidence runId={run.run_id} advanced />
@@ -179,6 +188,17 @@ function Progress({ run, onAct }: { run: DatasetRun; onAct: (action: "cancel" | 
           </li>
         ))}
       </ol>
+      <details className={s.card}>
+        <summary>The ten checks</summary>
+        <p className={s.meta}>The pipeline reports four phases. Each check shows its phase&apos;s state, and no percentage is invented for it.</p>
+        <ul className={s.checks10} aria-label="Live checks">
+          {LIVE_CHECKS.map((check) => (
+            <li key={check.label} data-state={stageState(run, check.phase)}>
+              {check.label}: {stageState(run, check.phase) === "done" ? "done" : stageState(run, check.phase) === "active" ? "in progress" : stageState(run, check.phase) === "stopped" ? "stopped" : "waiting"}
+            </li>
+          ))}
+        </ul>
+      </details>
       <section className={s.card} aria-label="Progress">
         <div className={s.bar} role="progressbar" aria-valuenow={percentOf(run)} aria-valuemin={0} aria-valuemax={100} aria-label="Bytes read">
           <div className={s.barFill} style={{ width: `${percentOf(run)}%` }} />

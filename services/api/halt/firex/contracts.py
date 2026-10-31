@@ -999,3 +999,80 @@ class ProvenanceSummary(Contract):
     cited_records: int
     failed_incidents: int
     note: str
+
+
+class LiveFile(Contract):
+    name: str
+    size_bytes: int
+    modified_utc: str
+    detected_format: str
+    format_label: str
+    selectable: bool
+    problem: str | None
+
+
+class LiveFileList(Contract):
+    incoming_path: str
+    items: list[LiveFile]
+    max_upload_bytes: int
+    chunk_bytes: int
+
+
+class LiveSample(Contract):
+    time: str
+    kind: str | None
+    user: str | None
+    source: str | None
+    destination: str | None
+    action: str | None
+    message: str | None
+
+
+class LiveProblem(Contract):
+    code: str
+    message: str
+
+
+class LivePreflight(Contract):
+    """What an operator sees before analysis. `can_start` waits for the hash and for no problem to stand."""
+
+    name: str
+    size_bytes: int
+    modified_utc: str
+    sha256: str | None
+    hashed_bytes: int
+    detected_format: str
+    format_label: str
+    adapter: str | None
+    parser_version: str
+    engine_version: str
+    parsing_confidence: Literal["High", "Medium", "None"]
+    parsing_detail: str
+    time_interpretation: str
+    sample_records: list[LiveSample]
+    expected_destination: str | None
+    privacy_warning: str
+    duplicates: list[dict[str, str]]
+    problems: list[LiveProblem]
+    warnings: list[str]
+    can_start: bool
+
+
+class LiveStartRequest(Contract):
+    confirm_duplicate: bool = False
+
+
+class UploadRequest(Contract):
+    filename: str = Field(min_length=1, max_length=255)
+    size_bytes: int = Field(ge=0)
+
+
+class UploadState(Contract):
+    upload_id: str
+    filename: str
+    size_bytes: int
+    chunk_bytes: int
+    total_chunks: int
+    received_chunks: list[int]
+    received_bytes: int
+    complete: bool

@@ -7,10 +7,11 @@ import { Datasets } from "@/components/firex/Datasets";
 import { Graph2D } from "@/components/firex/Graph2D";
 import { SearchEvidence, WhyHere } from "@/components/firex/SourceTrace";
 import { IncidentWorkspace } from "@/components/firex/IncidentWorkspace";
+import { LiveIntake } from "@/components/firex/LiveIntake";
 import { RunView } from "@/components/firex/RunView";
 import { TheatreView } from "@/components/firex/TheatreView";
 import { TrustIndex, TrustRun } from "@/components/firex/TrustCentre";
-import { stageState, type CaseManifest, type DatasetHealth, type DatasetRun, type IncidentDetail, type ProvenanceChain, type IncidentGraph, type IncidentList, type Hypotheses, type TrustReport } from "@/lib/firex/api";
+import { plainResult, stageState, type CaseManifest, type DatasetHealth, type DatasetRun, type IncidentDetail, type ProvenanceChain, type IncidentGraph, type IncidentList, type Hypotheses, type TrustReport } from "@/lib/firex/api";
 import { ALL_ON, CAMERA_PRESETS, edgeState, frameOf, layoutGraph, nodeState, pathSteps, presetNodes, replayedNode, visibleEdge, visibleNode } from "@/lib/firex/scene";
 import { presentTitle } from "@/lib/firex/wording";
 import { buildWorld, formOf } from "@/lib/firex/world";
@@ -515,5 +516,90 @@ describe("SourceTrace", () => {
     const rows = await screen.findByRole("list", { name: "Provenance of each incident" });
     expect(within(rows).getAllByRole("listitem").length).toBeGreaterThanOrEqual(list().items.length);
     expect(within(rows).getAllByRole("button", { name: "Why is this here?" }).length).toBe(list().items.length);
+  });
+});
+
+describe("Live Intake", () => {
+  const file = { name: "new.log", size_bytes: 2048, modified_utc: "2026-11-01T00:00:00Z", detected_format: "fortigate_kv", format_label: "FortiGate key-value log", selectable: true, problem: null };
+  const listing = { incoming_path: "C:\\HALT-DATA\\incoming", items: [file, { ...file, name: "other.csv", detected_format: "csv", format_label: "CSV", selectable: false, problem: "This analysis reads FortiGate key-value logs. No adapter here reads this format." }], max_upload_bytes: 2147483648, chunk_bytes: 8388608 };
+  const check = { name: "new.log", size_bytes: 2048, modified_utc: "2026-11-01T00:00:00Z", sha256: "a".repeat(64), hashed_bytes: 2048, detected_format: "fortigate_kv", format_label: "FortiGate key-value log", adapter: "FortiGate key-value parser", parser_version: "p", engine_version: "e", parsing_confidence: "High", parsing_detail: "9 of 9 sample lines parsed.", time_interpretation: "eventtime is read as UTC.", sample_records: [], expected_destination: "results/firex-runs/frun-x", privacy_warning: "Logs can contain names.", duplicates: [], problems: [], warnings: [], can_start: true };
+  const live = (preflight: unknown = check) => ({
+    [`GET ${B}/live/files`]: { status: 200, body: listing },
+    [`GET ${B}/live/files/new.log/preflight`]: { status: 200, body: preflight },
+  });
+
+  it("shows only add, start and open, with detail under Advanced, and starts on one press", async () => {
+    stub({ ...live(), [`POST ${B}/live/files/new.log/start`]: responses[`GET ${B}/runs/${RUN}`]! });
+    const user = userEvent.setup();
+    render(<LiveIntake />);
+    expect(await screen.findByRole("heading", { name: "Add data" })).toBeInTheDocument();
+    expect(screen.getByText("C:\\HALT-DATA\\incoming")).toBeInTheDocument();
+    expect(within(screen.getByRole("list", { name: "Journey" })).getAllByRole("listitem").map((l) => l.textContent)).toEqual(["Add logs", "Analyse", "Understand", "Verify", "Present"]);
+    const files = screen.getByRole("list", { name: "Files in the incoming folder" });
+    expect(within(files).getAllByRole("button", { name: "Select" })).toHaveLength(1);
+    expect(within(files).getByText(/No adapter here reads this format/)).toBeInTheDocument();
+    await user.click(within(files).getByRole("button", { name: "Select" }));
+    const start = await screen.findByRole("button", { name: "START ANALYSIS" });
+    expect(screen.getByText("a".repeat(64))).toBeInTheDocument();
+    expect(screen.getByText("Logs can contain names.")).toBeInTheDocument();
+    await user.click(start);
+    await waitFor(() => expect(push).toHaveBeenCalledWith(`/firex/runs/${RUN}`));
+  });
+
+  it("will not start until the hash is known, and shows real hashing progress", async () => {
+    stub(live({ ...check, sha256: null, hashed_bytes: 1024, can_start: false }));
+    const user = userEvent.setup();
+    render(<LiveIntake />);
+    await user.click(await screen.findByRole("button", { name: "Select" }));
+    expect(await screen.findByRole("button", { name: "START ANALYSIS" })).toBeDisabled();
+    expect(screen.getByText(/calculating/)).toBeInTheDocument();
+  });
+
+  it("offers the earlier result for a duplicate source, not a second run", async () => {
+    stub(live({ ...check, duplicates: [{ run_id: RUN, dataset_id: "live-x", status: "completed" }], warnings: ["These exact bytes were already analysed."] }));
+    const user = userEvent.setup();
+    render(<LiveIntake />);
+    await user.click(await screen.findByRole("button", { name: "Select" }));
+    expect(await screen.findByRole("link", { name: "Open results" })).toHaveAttribute("href", `/firex/runs/${RUN}`);
+    expect(screen.queryByRole("button", { name: "START ANALYSIS" })).toBeNull();
+    expect(screen.getByText(/already analysed/)).toBeInTheDocument();
+  });
+
+  it("states a problem instead of offering a start", async () => {
+    stub(live({ ...check, problems: [{ code: "insufficient_disk", message: "There may not be enough free disk space." }], can_start: false }));
+    const user = userEvent.setup();
+    render(<LiveIntake />);
+    await user.click(await screen.findByRole("button", { name: "Select" }));
+    expect(await screen.findByRole("alert")).toHaveTextContent("enough free disk space");
+    expect(screen.getByRole("button", { name: "START ANALYSIS" })).toBeDisabled();
+  });
+
+  it("labels a running result provisional, in plain language, and drops the label when complete", async () => {
+    const base = body<DatasetRun>(`GET ${B}/runs/${RUN}/progress`);
+    stub({ [`GET ${B}/runs/${RUN}/progress`]: { status: 200, body: { ...base, status: "running", stage: "prepare" } } });
+    const { unmount } = render(<RunView runId={RUN} />);
+    expect(await screen.findByRole("heading", { name: "Removing repeated activity" })).toBeInTheDocument();
+    expect(screen.getByTestId("provisional")).toHaveTextContent("PROVISIONAL");
+    expect(within(screen.getByRole("list", { name: "Live checks" })).getAllByRole("listitem")).toHaveLength(10);
+    expect(document.body.textContent).not.toMatch(/Deduplication: \d+%/);
+    unmount();
+    stub();
+    render(<RunView runId={RUN} />);
+    await screen.findByText(/Ready for review|More evidence required/);
+    expect(screen.queryByTestId("provisional")).toBeNull();
+  });
+
+  it("gives each outcome its own plain state", () => {
+    const h = (over: Partial<DatasetHealth>) => ({ reconstruction: "ran", incident_count: 2, ...over }) as DatasetHealth;
+    expect(plainResult(h({}))).toBe("Ready for review");
+    expect(plainResult(h({ reconstruction: "withheld", incident_count: 0 }))).toBe("Source quality prevents reconstruction");
+    expect(plainResult(h({ reconstruction: "partial" }))).toBe("More evidence required");
+    expect(plainResult(h({ incident_count: 0 }))).toBe("More evidence required");
+  });
+
+  it("says so if adding files is unavailable, and leaves the rest of the page working", async () => {
+    apiDown();
+    render(<LiveIntake />);
+    expect(await screen.findByRole("status")).toHaveTextContent("not available");
   });
 });

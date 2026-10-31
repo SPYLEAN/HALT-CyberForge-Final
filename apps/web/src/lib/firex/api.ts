@@ -27,6 +27,10 @@ export type QuarantineSegment = S["QuarantineSegment"];
 export type DatasetHealth = S["DatasetHealth"];
 export type TrustReport = S["TrustReport"];
 export type TimeQuality = S["TimeQuality"];
+export type LiveFile = S["LiveFile"];
+export type LiveFileList = S["LiveFileList"];
+export type LivePreflight = S["LivePreflight"];
+export type UploadState = S["UploadState"];
 export type SearchResponse = S["SearchResponse"];
 export type TraceRecord = S["TraceRecord"];
 export type ProvenanceChain = S["ProvenanceChain"];
@@ -72,6 +76,24 @@ export const firex = {
     unwrap(await api.POST("/api/v1/ps2/cases", { body: { run_id, subject, incident_id } })),
   getCase: async (case_id: string) => unwrap(await api.GET("/api/v1/ps2/cases/{case_id}", { params: { path: { case_id } } })),
   facts: async () => unwrap(await api.GET("/api/v1/ps2/facts")),
+  liveFiles: async () => unwrap(await api.GET("/api/v1/ps2/live/files")),
+  livePreflight: async (name: string) => unwrap(await api.GET("/api/v1/ps2/live/files/{name}/preflight", { params: { path: { name } } })),
+  liveStart: async (name: string, confirm_duplicate = false) => unwrap(await api.POST("/api/v1/ps2/live/files/{name}/start", { params: { path: { name } }, body: { confirm_duplicate } })),
+  liveCreateUpload: async (body: S["UploadRequest"]) => unwrap(await api.POST("/api/v1/ps2/live/uploads", { body })),
+  liveUpload: async (upload_id: string) => unwrap(await api.GET("/api/v1/ps2/live/uploads/{upload_id}", { params: { path: { upload_id } } })),
+  liveSendChunk: async (upload_id: string, index: number, chunk: Blob, checksum?: string) =>
+    unwrap(
+      await api.PUT("/api/v1/ps2/live/uploads/{upload_id}/chunks/{index}", {
+        params: { path: { upload_id, index }, header: checksum ? { "x-chunk-sha256": checksum } : {} },
+        body: chunk as never,
+        bodySerializer: (body: unknown) => body as BodyInit,
+        headers: { "content-type": "application/octet-stream" },
+      }),
+    ),
+  liveCompleteUpload: async (upload_id: string) => unwrap(await api.POST("/api/v1/ps2/live/uploads/{upload_id}/complete", { params: { path: { upload_id } } })),
+  liveCancelUpload: async (upload_id: string) => {
+    await api.DELETE("/api/v1/ps2/live/uploads/{upload_id}", { params: { path: { upload_id } } });
+  },
   search: async (run_id: string, q: string, options: { field?: string; relationship?: string; cursor?: string } = {}) =>
     unwrap(await api.GET("/api/v1/ps2/runs/{run_id}/search", { params: { path: { run_id }, query: { q, ...options } as never } })),
   suggest: async (run_id: string, q: string) => unwrap(await api.GET("/api/v1/ps2/runs/{run_id}/search/suggestions", { params: { path: { run_id }, query: { q } } })),
@@ -113,6 +135,36 @@ export const STAGES: ReadonlyArray<{ id: DatasetRun["stage"]; label: string; des
   { id: "reconstruct", label: "Reconstruct", description: "Suspicious activity detected and connected" },
   { id: "explain", label: "Explain", description: "Graph, story, hypotheses and receipts created" },
 ];
+
+/** The ten checks a run passes through. The pipeline reports four phases, so each check shares its phase's state. It never invents a percentage. */
+export const LIVE_CHECKS: ReadonlyArray<{ label: string; phase: DatasetRun["stage"] }> = [
+  { label: "Source validation", phase: "read" },
+  { label: "Reading", phase: "read" },
+  { label: "Parsing", phase: "read" },
+  { label: "Normalisation", phase: "read" },
+  { label: "Deduplication", phase: "prepare" },
+  { label: "Behavioural grouping", phase: "reconstruct" },
+  { label: "Candidate detection", phase: "reconstruct" },
+  { label: "Reconstruction", phase: "reconstruct" },
+  { label: "Provenance verification", phase: "explain" },
+  { label: "Receipt sealing", phase: "explain" },
+];
+
+/** A plain sentence for where a run has got to. */
+export function plainProgress(run: DatasetRun): string {
+  if (run.status === "queued") return "Preparing file";
+  if (run.stage === "prepare") return "Removing repeated activity";
+  if (run.stage === "reconstruct") return "Connecting suspicious events";
+  if (run.stage === "explain") return "Checking evidence";
+  return run.metrics.bytes_processed ? "Reading records" : "Preparing file";
+}
+
+/** A plain sentence for a finished run. Only the backend's verdict decides it. */
+export function plainResult(health: DatasetHealth): string {
+  if (health.reconstruction === "withheld") return "Source quality prevents reconstruction";
+  if (!health.incident_count || health.reconstruction === "partial") return "More evidence required";
+  return "Ready for review";
+}
 
 export function stageState(run: DatasetRun, stage: DatasetRun["stage"]): "done" | "active" | "waiting" | "stopped" {
   const order = STAGES.map((s) => s.id);

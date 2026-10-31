@@ -9,6 +9,7 @@ import { classify } from "@/lib/ps2/api";
 import { ps2Vars } from "@/styles/ps2-palette";
 
 import s from "./firex.module.css";
+import { LiveIntake } from "./LiveIntake";
 import { SearchEvidence } from "./SourceTrace";
 import { StatusBadge } from "./Verdict";
 
@@ -66,6 +67,7 @@ export function Datasets() {
         <p role="status">Loading datasets…</p>
       ) : (
         <>
+          <LiveIntake />
           <section className={s.grid} aria-label="Datasets">
             {datasets.map((d) => (
               <DatasetCard key={d.dataset_id} dataset={d} health={d.latest_run_id ? health[d.latest_run_id] : undefined} onError={setError} />

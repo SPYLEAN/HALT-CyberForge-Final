@@ -771,6 +771,126 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/v1/ps2/live/files": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get Live Files */
+        get: operations["get_live_files_api_v1_ps2_live_files_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/ps2/live/files/{name}/preflight": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get Live Preflight */
+        get: operations["get_live_preflight_api_v1_ps2_live_files__name__preflight_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/ps2/live/files/{name}/start": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Post Live Start */
+        post: operations["post_live_start_api_v1_ps2_live_files__name__start_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/ps2/live/uploads": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Post Live Upload */
+        post: operations["post_live_upload_api_v1_ps2_live_uploads_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/ps2/live/uploads/{upload_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get Live Upload */
+        get: operations["get_live_upload_api_v1_ps2_live_uploads__upload_id__get"];
+        put?: never;
+        post?: never;
+        /** Delete Live Upload */
+        delete: operations["delete_live_upload_api_v1_ps2_live_uploads__upload_id__delete"];
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/ps2/live/uploads/{upload_id}/chunks/{index}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        /** Put Live Chunk */
+        put: operations["put_live_chunk_api_v1_ps2_live_uploads__upload_id__chunks__index__put"];
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/ps2/live/uploads/{upload_id}/complete": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Post Live Complete */
+        post: operations["post_live_complete_api_v1_ps2_live_uploads__upload_id__complete_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/v1/ps2/reconstructions": {
         parameters: {
             query?: never;
@@ -3561,6 +3681,117 @@ export interface components {
             /** Y */
             y: number;
         };
+        /** LiveFile */
+        LiveFile: {
+            /** Detected Format */
+            detected_format: string;
+            /** Format Label */
+            format_label: string;
+            /** Modified Utc */
+            modified_utc: string;
+            /** Name */
+            name: string;
+            /** Problem */
+            problem: string | null;
+            /** Selectable */
+            selectable: boolean;
+            /** Size Bytes */
+            size_bytes: number;
+        };
+        /** LiveFileList */
+        LiveFileList: {
+            /** Chunk Bytes */
+            chunk_bytes: number;
+            /** Incoming Path */
+            incoming_path: string;
+            /** Items */
+            items: components["schemas"]["LiveFile"][];
+            /** Max Upload Bytes */
+            max_upload_bytes: number;
+        };
+        /**
+         * LivePreflight
+         * @description What an operator sees before analysis. `can_start` waits for the hash and for no problem to stand.
+         */
+        LivePreflight: {
+            /** Adapter */
+            adapter: string | null;
+            /** Can Start */
+            can_start: boolean;
+            /** Detected Format */
+            detected_format: string;
+            /** Duplicates */
+            duplicates: {
+                [key: string]: string;
+            }[];
+            /** Engine Version */
+            engine_version: string;
+            /** Expected Destination */
+            expected_destination: string | null;
+            /** Format Label */
+            format_label: string;
+            /** Hashed Bytes */
+            hashed_bytes: number;
+            /** Modified Utc */
+            modified_utc: string;
+            /** Name */
+            name: string;
+            /** Parser Version */
+            parser_version: string;
+            /**
+             * Parsing Confidence
+             * @enum {string}
+             */
+            parsing_confidence: "High" | "Medium" | "None";
+            /** Parsing Detail */
+            parsing_detail: string;
+            /** Privacy Warning */
+            privacy_warning: string;
+            /** Problems */
+            problems: components["schemas"]["LiveProblem"][];
+            /** Sample Records */
+            sample_records: components["schemas"]["LiveSample"][];
+            /** Sha256 */
+            sha256: string | null;
+            /** Size Bytes */
+            size_bytes: number;
+            /** Time Interpretation */
+            time_interpretation: string;
+            /** Warnings */
+            warnings: string[];
+        };
+        /** LiveProblem */
+        LiveProblem: {
+            /** Code */
+            code: string;
+            /** Message */
+            message: string;
+        };
+        /** LiveSample */
+        LiveSample: {
+            /** Action */
+            action: string | null;
+            /** Destination */
+            destination: string | null;
+            /** Kind */
+            kind: string | null;
+            /** Message */
+            message: string | null;
+            /** Source */
+            source: string | null;
+            /** Time */
+            time: string;
+            /** User */
+            user: string | null;
+        };
+        /** LiveStartRequest */
+        LiveStartRequest: {
+            /**
+             * Confirm Duplicate
+             * @default false
+             */
+            confirm_duplicate: boolean;
+        };
         /** Meta */
         Meta: {
             /**
@@ -5409,6 +5640,32 @@ export interface components {
             /** Score Margin */
             score_margin: number;
         };
+        /** UploadRequest */
+        UploadRequest: {
+            /** Filename */
+            filename: string;
+            /** Size Bytes */
+            size_bytes: number;
+        };
+        /** UploadState */
+        UploadState: {
+            /** Chunk Bytes */
+            chunk_bytes: number;
+            /** Complete */
+            complete: boolean;
+            /** Filename */
+            filename: string;
+            /** Received Bytes */
+            received_bytes: number;
+            /** Received Chunks */
+            received_chunks: number[];
+            /** Size Bytes */
+            size_bytes: number;
+            /** Total Chunks */
+            total_chunks: number;
+            /** Upload Id */
+            upload_id: string;
+        };
         /** UserGroupImpact */
         UserGroupImpact: {
             /** Group Id */
@@ -6852,6 +7109,250 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["IntakeCapabilities"];
+                };
+            };
+        };
+    };
+    get_live_files_api_v1_ps2_live_files_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["LiveFileList"];
+                };
+            };
+        };
+    };
+    get_live_preflight_api_v1_ps2_live_files__name__preflight_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                name: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["LivePreflight"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    post_live_start_api_v1_ps2_live_files__name__start_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                name: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["LiveStartRequest"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["DatasetRun"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    post_live_upload_api_v1_ps2_live_uploads_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["UploadRequest"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["UploadState"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    get_live_upload_api_v1_ps2_live_uploads__upload_id__get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                upload_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["UploadState"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    delete_live_upload_api_v1_ps2_live_uploads__upload_id__delete: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                upload_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    put_live_chunk_api_v1_ps2_live_uploads__upload_id__chunks__index__put: {
+        parameters: {
+            query?: never;
+            header?: {
+                "x-chunk-sha256"?: string | null;
+            };
+            path: {
+                upload_id: string;
+                index: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["UploadState"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    post_live_complete_api_v1_ps2_live_uploads__upload_id__complete_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                upload_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["LiveFile"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
                 };
             };
         };
