@@ -1,14 +1,6 @@
-import type { Metadata } from "next";
+import { redirect } from "next/navigation";
 
-import { RunStory } from "@/components/firex/RunStory";
-import { PlatformShell } from "@/components/v2/platform/PlatformShell";
-
-export const metadata: Metadata = { title: "Kill Chain Intelligence · HALT" };
-
+/** The run story became Case Builder and Theatre, which start from a run. */
 export default function FirexStoryPage() {
-  return (
-    <PlatformShell>
-      <RunStory theatre={false} />
-    </PlatformShell>
-  );
+  redirect("/firex");
 }
