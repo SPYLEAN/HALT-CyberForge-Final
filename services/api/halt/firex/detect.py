@@ -386,7 +386,8 @@ def internal_fanout(ctx: _Context) -> list[dict[str, Any]]:
     for src, count, destinations in groups:
         rows = ctx.con.execute(
             f"""SELECT dst_port, service, count(*), count(DISTINCT dst_ip), min(event_ns), min(byte_offset),
-                       min_by(evidence_id, byte_offset, 10), list(DISTINCT dst_ip)[:20], max(event_ns)
+                       min_by(evidence_id, byte_offset, 10), list_sort(list(DISTINCT dst_ip))[:20],
+                       max(event_ns)
                 FROM events WHERE event_type = 'traffic' AND src_ip = ? AND dst_port IN ({port_marks})
                   AND src_role IN ({role_marks}) AND dst_role IN ({role_marks})
                 GROUP BY dst_port, service ORDER BY min(byte_offset) LIMIT 6""",
@@ -468,7 +469,8 @@ def repeated_malware(ctx: _Context) -> list[dict[str, Any]]:
     rows = ctx.con.execute(
         """SELECT src_ip, dst_ip, count(*) AS n, count(DISTINCT virus), min(event_ns), max(event_ns),
         min(byte_offset),
-                  min_by(evidence_id, byte_offset, 20), list(DISTINCT virus)[:5], list(DISTINCT hostname)[:5]
+                  min_by(evidence_id, byte_offset, 20), list_sort(list(DISTINCT virus))[:5],
+                  list_sort(list(DISTINCT hostname))[:5]
            FROM events WHERE subtype = 'virus' AND src_ip IS NOT NULL AND dst_ip IS NOT NULL
            GROUP BY src_ip, dst_ip
            HAVING count(*) >= ? AND (max(event_ns) - min(event_ns)) <= ?
@@ -518,7 +520,8 @@ def denial_flood(ctx: _Context) -> list[dict[str, Any]]:
                 hours GROUP BY dst_ip)
            SELECT d.dst_ip, count(*) AS n, count(DISTINCT d.src_ip) AS sources, min(d.event_ns),
            max(d.event_ns),
-                  min(d.byte_offset), min_by(d.evidence_id, d.byte_offset, 20), mode(d.service), p.peak_n,
+                  min(d.byte_offset), min_by(d.evidence_id, d.byte_offset, 20), min_by(d.service,
+                  d.byte_offset), p.peak_n,
                   p.active_hours
            FROM deny d JOIN peak p USING (dst_ip)
            GROUP BY d.dst_ip, p.peak_n, p.active_hours

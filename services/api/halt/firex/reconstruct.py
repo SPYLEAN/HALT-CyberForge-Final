@@ -197,7 +197,8 @@ def _context_activity(
         max(event_ns),
                   min(byte_offset), min_by(evidence_id, byte_offset, 5)
            FROM events JOIN watch_ips w ON src_ip = w.ip
-           GROUP BY ALL ORDER BY n DESC, min(byte_offset) LIMIT 2000"""
+           GROUP BY ALL ORDER BY n DESC, min(byte_offset), src_ip, dst_ip, subtype, action, service LIMIT
+           2000"""
     ).fetchall()
     out: dict[str, list[dict[str, Any]]] = defaultdict(list)
     for src, dst, kind, subtype, action, service, n, low, high, first, refs in rows:
@@ -230,7 +231,7 @@ def _reachable(con: duckdb.DuckDBPyConnection, ips: list[str], limit: int) -> di
         """SELECT src_ip, dst_ip, service, count(*) AS n, min_by(evidence_id, byte_offset, 3)
            FROM events JOIN reach_ips r ON src_ip = r.ip
            WHERE event_type = 'traffic' AND action = 'accept' AND dst_role IN ('lan', 'dmz')
-           GROUP BY src_ip, dst_ip, service ORDER BY n DESC, dst_ip LIMIT 20000"""
+           GROUP BY src_ip, dst_ip, service ORDER BY n DESC, dst_ip, src_ip, service LIMIT 20000"""
     ).fetchall()
     out: dict[str, list[dict[str, Any]]] = defaultdict(list)
     for src, dst, service, n, refs in rows:

@@ -5,6 +5,7 @@ ids."""
 
 from __future__ import annotations
 
+import re
 from pathlib import Path
 from typing import Any
 
@@ -454,3 +455,49 @@ def test_canonical_hash_matches_between_parse_and_store(tmp_path: Path) -> None:
     fields, _ = parse_text(text)
     assert fields is not None
     assert pq.read_table(runner.dir / "parts").column("canonical_sha256")[0].as_py() == canonical_hash(fields)
+
+
+def test_every_detection_query_has_a_deterministic_order() -> None:
+    """Unordered aggregates vary under parallel execution and would break replay on real data sizes."""
+    from pathlib import Path as P
+
+    import halt.firex.detect as detect
+    import halt.firex.reconstruct as reconstruct
+
+    for module in (detect, reconstruct):
+        text = P(module.__file__).read_text(encoding="utf-8")  # type: ignore[arg-type]
+        assert "mode(" not in text
+        for found in re.findall(r"(\w*)\(list\(DISTINCT", text):
+            assert found == "list_sort"
+        assert not re.search(r"(?<!list_sort\()list\(DISTINCT", text)
+
+
+def test_replay_of_a_larger_run_reproduces_every_graph_hash(tmp_path: Path) -> None:
+    """Rebuilds from the same parts several times, as the operator replay command does."""
+    from halt.firex.reconstruct import reconstruct_run
+
+    lines = [
+        *background(DAY - 3000, 3000),
+        *fanout(40),
+        *[
+            virus(DAY + i * 30, "10.1.0.44", "198.51.100.34", f"W{i % 9}/x!tr", sid=900 + i)
+            for i in range(30)
+        ],
+        *[
+            ips(DAY + 500 + i, f"203.0.113.{i % 9 + 1}", "10.20.0.5", NAMES[i % 3], 100 + i, sid=3000 + i)
+            for i in range(300)
+        ],
+    ]
+    runner = run_fixture(tmp_path, lines, workers=2, chunk_bytes=65536)
+    plan, quality = read_json(runner.dir / "plan.json"), read_json(runner.dir / "quality.json")
+
+    def hashes() -> dict[str, str]:
+        return {
+            p.parent.name: read_json(p)["graph_hash"] for p in (runner.dir / "incidents").glob("*/graph.json")
+        }
+
+    first = hashes()
+    assert first
+    for _ in range(3):
+        reconstruct_run(runner, plan, quality)
+        assert hashes() == first

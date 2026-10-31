@@ -41,7 +41,7 @@
       "change_actions": ["Edit", "Add", "Delete"],
       "risk": 0.85,
       "confidence": 0.85,
-      "technique": ["T1562.002", "Impair Defenses: Disable Windows Event Logging", "defense-evasion"],
+      "technique": ["T1562", "Impair Defenses", "defense-evasion"],
       "stage": "defense_evasion",
       "basis": "observed"
     },

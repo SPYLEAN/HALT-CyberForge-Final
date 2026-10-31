@@ -104,7 +104,7 @@
       "dataset_id": "fixture",
       "expected_sha256": null,
       "filename": "fixture.log",
-      "latest_run_id": "frun-8d438edb00df36e8",
+      "latest_run_id": "frun-370ac3a914901431",
       "size_bytes": 51343,
       "title": "Fixture"
      }
@@ -112,7 +112,7 @@
    },
    "status": 200
   },
-  "GET /api/v1/ps2/incidents/finc-0526ba4f57ac/graph?run_id=frun-8d438edb00df36e8": {
+  "GET /api/v1/ps2/incidents/finc-0526ba4f57ac/graph?run_id=frun-370ac3a914901431": {
    "body": {
     "edges": [
      {
@@ -512,7 +512,7 @@
    },
    "status": 200
   },
-  "GET /api/v1/ps2/incidents/finc-0526ba4f57ac/hypotheses?run_id=frun-8d438edb00df36e8": {
+  "GET /api/v1/ps2/incidents/finc-0526ba4f57ac/hypotheses?run_id=frun-370ac3a914901431": {
    "body": {
     "alternates": [
      {
@@ -593,7 +593,7 @@
    },
    "status": 200
   },
-  "GET /api/v1/ps2/incidents/finc-0526ba4f57ac/proof?run_id=frun-8d438edb00df36e8": {
+  "GET /api/v1/ps2/incidents/finc-0526ba4f57ac/proof?run_id=frun-370ac3a914901431": {
    "body": {
     "receipt": {
      "cited_evidence": [
@@ -614,8 +614,8 @@
       "ev-e756c5ad7af222a1f3e2f2a2"
      ],
      "dataset_id": "fixture",
-     "detection_config_hash": "9a2dec75574992c8fe51e48a93a53e39778b231e7575534e8d32cb9c858c6236",
-     "deterministic_replay_id": "replay-3ef6e7b2ef5ecced459d18da",
+     "detection_config_hash": "eefb381b8c5245ad29e40c6eecc58aae24cc1b2e8e7a6a4d90f5e0ba8fe63da6",
+     "deterministic_replay_id": "replay-fcd50f7967d7cd618b4be9a9",
      "engine_version": "halt.firex.engine/1.0.0",
      "evidence_coverage": 1.0,
      "git_commit": "fixture",
@@ -627,7 +627,7 @@
       51343
      ],
      "receipt_id": "fixture",
-     "run_id": "frun-8d438edb00df36e8",
+     "run_id": "frun-370ac3a914901431",
      "schema_version": "halt.firex.proof/1.0",
      "seal": "fixture",
      "seal_algorithm": "sha256-canonical-json",
@@ -645,7 +645,7 @@
    },
    "status": 200
   },
-  "GET /api/v1/ps2/incidents/finc-0526ba4f57ac/reachability?run_id=frun-8d438edb00df36e8": {
+  "GET /api/v1/ps2/incidents/finc-0526ba4f57ac/reachability?run_id=frun-370ac3a914901431": {
    "body": {
     "incident_id": "finc-0526ba4f57ac",
     "label": "Hypothetical: what could be reached next. This is not observed attacker activity.",
@@ -657,7 +657,7 @@
    },
    "status": 200
   },
-  "GET /api/v1/ps2/incidents/finc-0526ba4f57ac/story?run_id=frun-8d438edb00df36e8": {
+  "GET /api/v1/ps2/incidents/finc-0526ba4f57ac/story?run_id=frun-370ac3a914901431": {
    "body": {
     "checked_statements": 3,
     "incident_id": "finc-0526ba4f57ac",
@@ -710,7 +710,7 @@
    },
    "status": 200
   },
-  "GET /api/v1/ps2/incidents/finc-0526ba4f57ac?run_id=frun-8d438edb00df36e8": {
+  "GET /api/v1/ps2/incidents/finc-0526ba4f57ac?run_id=frun-370ac3a914901431": {
    "body": {
     "affected_entities": {
      "dst_ips": [
@@ -727,7 +727,7 @@
      {
       "basis": "observed",
       "confidence": 0.8,
-      "config_hash": "9a2dec75574992c8fe51e48a93a53e39778b231e7575534e8d32cb9c858c6236",
+      "config_hash": "eefb381b8c5245ad29e40c6eecc58aae24cc1b2e8e7a6a4d90f5e0ba8fe63da6",
       "detection_id": "fdet-3afaf7d5231488bd",
       "entities": {
        "dst_ips": [
@@ -1433,7 +1433,7 @@
      "last_utc": "2027-01-15T08:17:39Z",
      "merged_events": 60,
      "risk": 0.8,
-     "run_id": "frun-8d438edb00df36e8",
+     "run_id": "frun-370ac3a914901431",
      "stages": [
       "exploitation"
      ],
@@ -1501,7 +1501,7 @@
    },
    "status": 200
   },
-  "GET /api/v1/ps2/incidents/finc-06dbcd7d8183/graph?run_id=frun-8d438edb00df36e8": {
+  "GET /api/v1/ps2/incidents/finc-06dbcd7d8183/graph?run_id=frun-370ac3a914901431": {
    "body": {
     "edges": [
      {
@@ -1957,7 +1957,7 @@
       "target": "context:9756d8122c00377b"
      }
     ],
-    "graph_hash": "1f54bda10c09b2cfaf34edf6c8d8518d01142779b57057657d33cfe508981149",
+    "graph_hash": "01abc3fdccd2dbff919e23c934ff9800e80869ee6fa9fec824fd0e12b829f644",
     "incident_id": "finc-06dbcd7d8183",
     "node_cap": 120,
     "nodes": [
@@ -2050,7 +2050,7 @@
       "first_utc": "2027-01-15T08:01:40Z",
       "is_context": false,
       "kind": "burst",
-      "label": "Malware detections to 198.51.100.34: W0/x!tr, W3/x!tr, W1/x!tr, W2/x!tr",
+      "label": "Malware detections to 198.51.100.34: W0/x!tr, W1/x!tr, W2/x!tr, W3/x!tr",
       "last_utc": "2027-01-15T08:04:40Z",
       "layer": "endpoint",
       "node_id": "step:fdet-2e9aa05295d60bd1:1",
@@ -2423,7 +2423,7 @@
    },
    "status": 200
   },
-  "GET /api/v1/ps2/incidents/finc-06dbcd7d8183/hypotheses?run_id=frun-8d438edb00df36e8": {
+  "GET /api/v1/ps2/incidents/finc-06dbcd7d8183/hypotheses?run_id=frun-370ac3a914901431": {
    "body": {
     "alternates": [
      {
@@ -2529,7 +2529,7 @@
    },
    "status": 200
   },
-  "GET /api/v1/ps2/incidents/finc-06dbcd7d8183/proof?run_id=frun-8d438edb00df36e8": {
+  "GET /api/v1/ps2/incidents/finc-06dbcd7d8183/proof?run_id=frun-370ac3a914901431": {
    "body": {
     "receipt": {
      "cited_evidence": [
@@ -2544,12 +2544,12 @@
       "ev-cc6555c6c13d9a75ee5655e0"
      ],
      "dataset_id": "fixture",
-     "detection_config_hash": "9a2dec75574992c8fe51e48a93a53e39778b231e7575534e8d32cb9c858c6236",
-     "deterministic_replay_id": "replay-3ef6e7b2ef5ecced459d18da",
+     "detection_config_hash": "eefb381b8c5245ad29e40c6eecc58aae24cc1b2e8e7a6a4d90f5e0ba8fe63da6",
+     "deterministic_replay_id": "replay-fcd50f7967d7cd618b4be9a9",
      "engine_version": "halt.firex.engine/1.0.0",
      "evidence_coverage": 1.0,
      "git_commit": "fixture",
-     "graph_hash": "1f54bda10c09b2cfaf34edf6c8d8518d01142779b57057657d33cfe508981149",
+     "graph_hash": "01abc3fdccd2dbff919e23c934ff9800e80869ee6fa9fec824fd0e12b829f644",
      "incident_id": "finc-06dbcd7d8183",
      "parser_version": "halt.firex.parser/1.0.0",
      "processed_byte_range": [
@@ -2557,7 +2557,7 @@
       51343
      ],
      "receipt_id": "fixture",
-     "run_id": "frun-8d438edb00df36e8",
+     "run_id": "frun-370ac3a914901431",
      "schema_version": "halt.firex.proof/1.0",
      "seal": "fixture",
      "seal_algorithm": "sha256-canonical-json",
@@ -2575,7 +2575,7 @@
    },
    "status": 200
   },
-  "GET /api/v1/ps2/incidents/finc-06dbcd7d8183/reachability?run_id=frun-8d438edb00df36e8": {
+  "GET /api/v1/ps2/incidents/finc-06dbcd7d8183/reachability?run_id=frun-370ac3a914901431": {
    "body": {
     "incident_id": "finc-06dbcd7d8183",
     "label": "Hypothetical: what could be reached next. This is not observed attacker activity.",
@@ -2600,7 +2600,7 @@
    },
    "status": 200
   },
-  "GET /api/v1/ps2/incidents/finc-06dbcd7d8183/story?run_id=frun-8d438edb00df36e8": {
+  "GET /api/v1/ps2/incidents/finc-06dbcd7d8183/story?run_id=frun-370ac3a914901431": {
    "body": {
     "checked_statements": 2,
     "incident_id": "finc-06dbcd7d8183",
@@ -2627,7 +2627,7 @@
       ],
       "kind": "observed",
       "statement_id": "s2",
-      "text": "2027-01-15T08:01:40Z: Malware detections to 198.51.100.34: W0/x!tr, W3/x!tr, W1/x!tr, W2/x!tr."
+      "text": "2027-01-15T08:01:40Z: Malware detections to 198.51.100.34: W0/x!tr, W1/x!tr, W2/x!tr, W3/x!tr."
      }
     ],
     "strongest_evidence": "Internal SMB or RDP fan-out from one host: 15 record(s), confidence 0.8.",
@@ -2640,7 +2640,7 @@
    },
    "status": 200
   },
-  "GET /api/v1/ps2/incidents/finc-06dbcd7d8183?run_id=frun-8d438edb00df36e8": {
+  "GET /api/v1/ps2/incidents/finc-06dbcd7d8183?run_id=frun-370ac3a914901431": {
    "body": {
     "affected_entities": {
      "dst_ips": [
@@ -2673,7 +2673,7 @@
      {
       "basis": "observed",
       "confidence": 0.8,
-      "config_hash": "9a2dec75574992c8fe51e48a93a53e39778b231e7575534e8d32cb9c858c6236",
+      "config_hash": "eefb381b8c5245ad29e40c6eecc58aae24cc1b2e8e7a6a4d90f5e0ba8fe63da6",
       "detection_id": "fdet-69f27285ef14777e",
       "entities": {
        "dst_ips": [
@@ -2761,7 +2761,7 @@
      {
       "basis": "observed",
       "confidence": 0.7,
-      "config_hash": "9a2dec75574992c8fe51e48a93a53e39778b231e7575534e8d32cb9c858c6236",
+      "config_hash": "eefb381b8c5245ad29e40c6eecc58aae24cc1b2e8e7a6a4d90f5e0ba8fe63da6",
       "detection_id": "fdet-2e9aa05295d60bd1",
       "entities": {
        "dst_ips": [
@@ -2803,7 +2803,7 @@
          "ev-b4f14b8600219e7e590bbcd5",
          "ev-b56338cb340e4c85d30abdd3"
         ],
-        "label": "Malware detections to 198.51.100.34: W0/x!tr, W3/x!tr, W1/x!tr, W2/x!tr",
+        "label": "Malware detections to 198.51.100.34: W0/x!tr, W1/x!tr, W2/x!tr, W3/x!tr",
         "last_ns": 1800000280000000000,
         "last_utc": "2027-01-15T08:04:40Z",
         "layer": "endpoint",
@@ -3641,7 +3641,7 @@
      "last_utc": "2027-01-15T08:04:40Z",
      "merged_events": 19,
      "risk": 0.94,
-     "run_id": "frun-8d438edb00df36e8",
+     "run_id": "frun-370ac3a914901431",
      "stages": [
       "delivery",
       "lateral_movement"
@@ -3690,7 +3690,7 @@
       "order": 1,
       "stage": "delivery",
       "timestamp_quality": "normal",
-      "title": "Malware detections to 198.51.100.34: W0/x!tr, W3/x!tr, W1/x!tr, W2/x!tr",
+      "title": "Malware detections to 198.51.100.34: W0/x!tr, W1/x!tr, W2/x!tr, W3/x!tr",
       "utc": "2027-01-15T08:01:40Z"
      }
     ],
@@ -3698,7 +3698,7 @@
    },
    "status": 200
   },
-  "GET /api/v1/ps2/incidents/finc-ec918f810a84/graph?run_id=frun-8d438edb00df36e8": {
+  "GET /api/v1/ps2/incidents/finc-ec918f810a84/graph?run_id=frun-370ac3a914901431": {
    "body": {
     "edges": [
      {
@@ -4173,7 +4173,7 @@
    },
    "status": 200
   },
-  "GET /api/v1/ps2/incidents/finc-ec918f810a84/hypotheses?run_id=frun-8d438edb00df36e8": {
+  "GET /api/v1/ps2/incidents/finc-ec918f810a84/hypotheses?run_id=frun-370ac3a914901431": {
    "body": {
     "alternates": [
      {
@@ -4254,7 +4254,7 @@
    },
    "status": 200
   },
-  "GET /api/v1/ps2/incidents/finc-ec918f810a84/proof?run_id=frun-8d438edb00df36e8": {
+  "GET /api/v1/ps2/incidents/finc-ec918f810a84/proof?run_id=frun-370ac3a914901431": {
    "body": {
     "receipt": {
      "cited_evidence": [
@@ -4263,8 +4263,8 @@
       "ev-cc61c8182013325d90df9359"
      ],
      "dataset_id": "fixture",
-     "detection_config_hash": "9a2dec75574992c8fe51e48a93a53e39778b231e7575534e8d32cb9c858c6236",
-     "deterministic_replay_id": "replay-3ef6e7b2ef5ecced459d18da",
+     "detection_config_hash": "eefb381b8c5245ad29e40c6eecc58aae24cc1b2e8e7a6a4d90f5e0ba8fe63da6",
+     "deterministic_replay_id": "replay-fcd50f7967d7cd618b4be9a9",
      "engine_version": "halt.firex.engine/1.0.0",
      "evidence_coverage": 1.0,
      "git_commit": "fixture",
@@ -4276,7 +4276,7 @@
       51343
      ],
      "receipt_id": "fixture",
-     "run_id": "frun-8d438edb00df36e8",
+     "run_id": "frun-370ac3a914901431",
      "schema_version": "halt.firex.proof/1.0",
      "seal": "fixture",
      "seal_algorithm": "sha256-canonical-json",
@@ -4294,7 +4294,7 @@
    },
    "status": 200
   },
-  "GET /api/v1/ps2/incidents/finc-ec918f810a84/reachability?run_id=frun-8d438edb00df36e8": {
+  "GET /api/v1/ps2/incidents/finc-ec918f810a84/reachability?run_id=frun-370ac3a914901431": {
    "body": {
     "incident_id": "finc-ec918f810a84",
     "label": "Hypothetical: what could be reached next. This is not observed attacker activity.",
@@ -4306,7 +4306,7 @@
    },
    "status": 200
   },
-  "GET /api/v1/ps2/incidents/finc-ec918f810a84/story?run_id=frun-8d438edb00df36e8": {
+  "GET /api/v1/ps2/incidents/finc-ec918f810a84/story?run_id=frun-370ac3a914901431": {
    "body": {
     "checked_statements": 3,
     "incident_id": "finc-ec918f810a84",
@@ -4347,7 +4347,7 @@
    },
    "status": 200
   },
-  "GET /api/v1/ps2/incidents/finc-ec918f810a84?run_id=frun-8d438edb00df36e8": {
+  "GET /api/v1/ps2/incidents/finc-ec918f810a84?run_id=frun-370ac3a914901431": {
    "body": {
     "affected_entities": {
      "devices": [
@@ -4366,7 +4366,7 @@
      {
       "basis": "observed",
       "confidence": 0.85,
-      "config_hash": "9a2dec75574992c8fe51e48a93a53e39778b231e7575534e8d32cb9c858c6236",
+      "config_hash": "eefb381b8c5245ad29e40c6eecc58aae24cc1b2e8e7a6a4d90f5e0ba8fe63da6",
       "detection_id": "fdet-1ab891ca6fa8c8ec",
       "entities": {
        "devices": [
@@ -4606,7 +4606,7 @@
      "last_utc": "2027-01-15T08:10:00Z",
      "merged_events": 3,
      "risk": 0.9,
-     "run_id": "frun-8d438edb00df36e8",
+     "run_id": "frun-370ac3a914901431",
      "stages": [
       "actions_on_objectives",
       "defense_evasion",
@@ -4701,7 +4701,7 @@
       "pid": null,
       "recovered": false,
       "resume_count": 0,
-      "run_id": "frun-8d438edb00df36e8",
+      "run_id": "frun-370ac3a914901431",
       "stage": "done",
       "status": "completed",
       "updated_at": "fixture"
@@ -4710,7 +4710,7 @@
    },
    "status": 200
   },
-  "GET /api/v1/ps2/runs/frun-8d438edb00df36e8": {
+  "GET /api/v1/ps2/runs/frun-370ac3a914901431": {
    "body": {
     "byte_range": [
      0,
@@ -4743,14 +4743,14 @@
     "pid": null,
     "recovered": false,
     "resume_count": 0,
-    "run_id": "frun-8d438edb00df36e8",
+    "run_id": "frun-370ac3a914901431",
     "stage": "done",
     "status": "completed",
     "updated_at": "fixture"
    },
    "status": 200
   },
-  "GET /api/v1/ps2/runs/frun-8d438edb00df36e8/benchmark": {
+  "GET /api/v1/ps2/runs/frun-370ac3a914901431/benchmark": {
    "body": {
     "receipt": {
      "artifact_hashes": "fixture",
@@ -4758,7 +4758,7 @@
      "bytes_processed": 51343,
      "completed_at": "fixture",
      "dataset_id": "fixture",
-     "detection_config_hash": "9a2dec75574992c8fe51e48a93a53e39778b231e7575534e8d32cb9c858c6236",
+     "detection_config_hash": "eefb381b8c5245ad29e40c6eecc58aae24cc1b2e8e7a6a4d90f5e0ba8fe63da6",
      "detections": 4,
      "duration_s": "fixture",
      "engine_version": "halt.firex.engine/1.0.0",
@@ -4784,7 +4784,7 @@
      "records_per_second": "fixture",
      "records_rejected": 1,
      "records_valid": 143,
-     "run_id": "frun-8d438edb00df36e8",
+     "run_id": "frun-370ac3a914901431",
      "schema_version": "halt.firex.benchmark/1.0",
      "schema_version_canonical": "halt.firex.canonical/1.0",
      "seal": "fixture",
@@ -4805,7 +4805,7 @@
    },
    "status": 200
   },
-  "GET /api/v1/ps2/runs/frun-8d438edb00df36e8/incidents": {
+  "GET /api/v1/ps2/runs/frun-370ac3a914901431/incidents": {
    "body": {
     "items": [
      {
@@ -4830,7 +4830,7 @@
       "last_utc": "2027-01-15T08:04:40Z",
       "merged_events": 19,
       "risk": 0.94,
-      "run_id": "frun-8d438edb00df36e8",
+      "run_id": "frun-370ac3a914901431",
       "stages": [
        "delivery",
        "lateral_movement"
@@ -4858,7 +4858,7 @@
       "last_utc": "2027-01-15T08:10:00Z",
       "merged_events": 3,
       "risk": 0.9,
-      "run_id": "frun-8d438edb00df36e8",
+      "run_id": "frun-370ac3a914901431",
       "stages": [
        "actions_on_objectives",
        "defense_evasion",
@@ -4888,7 +4888,7 @@
       "last_utc": "2027-01-15T08:17:39Z",
       "merged_events": 60,
       "risk": 0.8,
-      "run_id": "frun-8d438edb00df36e8",
+      "run_id": "frun-370ac3a914901431",
       "stages": [
        "exploitation"
       ],
@@ -4929,11 +4929,11 @@
       "interpretation": "date and time equal eventtime when read as UTC, although tz declares another offset. eventtime is used as UTC; the original fields are preserved."
      }
     },
-    "run_id": "frun-8d438edb00df36e8"
+    "run_id": "frun-370ac3a914901431"
    },
    "status": 200
   },
-  "GET /api/v1/ps2/runs/frun-8d438edb00df36e8/progress": {
+  "GET /api/v1/ps2/runs/frun-370ac3a914901431/progress": {
    "body": {
     "byte_range": [
      0,
@@ -4966,14 +4966,14 @@
     "pid": null,
     "recovered": false,
     "resume_count": 0,
-    "run_id": "frun-8d438edb00df36e8",
+    "run_id": "frun-370ac3a914901431",
     "stage": "done",
     "status": "completed",
     "updated_at": "fixture"
    },
    "status": 200
   },
-  "GET /api/v1/ps2/runs/frun-8d438edb00df36e8/quarantine": {
+  "GET /api/v1/ps2/runs/frun-370ac3a914901431/quarantine": {
    "body": {
     "items": [
      {
@@ -4997,11 +4997,11 @@
       "start_offset": 51323
      }
     ],
-    "run_id": "frun-8d438edb00df36e8"
+    "run_id": "frun-370ac3a914901431"
    },
    "status": 200
   },
-  "POST /api/v1/ps2/incidents/finc-0526ba4f57ac/narrative?run_id=frun-8d438edb00df36e8": {
+  "POST /api/v1/ps2/incidents/finc-0526ba4f57ac/narrative?run_id=frun-370ac3a914901431": {
    "body": {
     "fallback_reason": "The LLM is disabled.",
     "fallback_used": true,
@@ -5052,7 +5052,7 @@
    },
    "status": 200
   },
-  "POST /api/v1/ps2/incidents/finc-06dbcd7d8183/narrative?run_id=frun-8d438edb00df36e8": {
+  "POST /api/v1/ps2/incidents/finc-06dbcd7d8183/narrative?run_id=frun-370ac3a914901431": {
    "body": {
     "fallback_reason": "The LLM is disabled.",
     "fallback_used": true,
@@ -5081,7 +5081,7 @@
        "ev-b4f14b8600219e7e590bbcd5",
        "ev-b56338cb340e4c85d30abdd3"
       ],
-      "text": "2027-01-15T08:01:40Z: Malware detections to 198.51.100.34: W0/x!tr, W3/x!tr, W1/x!tr, W2/x!tr."
+      "text": "2027-01-15T08:01:40Z: Malware detections to 198.51.100.34: W0/x!tr, W1/x!tr, W2/x!tr, W3/x!tr."
      }
     ],
     "summary": "10.1.0.44 opened 15 SMB or RDP connections to 15 internal hosts. 4 malware detections (4 name(s)) between 10.1.0.44 and 198.51.100.34, host bad.example.",
@@ -5092,7 +5092,7 @@
    },
    "status": 200
   },
-  "POST /api/v1/ps2/incidents/finc-ec918f810a84/narrative?run_id=frun-8d438edb00df36e8": {
+  "POST /api/v1/ps2/incidents/finc-ec918f810a84/narrative?run_id=frun-370ac3a914901431": {
    "body": {
     "fallback_reason": "The LLM is disabled.",
     "fallback_used": true,
@@ -5132,5 +5132,5 @@
    "status": 200
   }
  },
- "run_id": "frun-8d438edb00df36e8"
+ "run_id": "frun-370ac3a914901431"
 }
