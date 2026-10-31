@@ -33,6 +33,7 @@ export default defineConfig({
         HALT_SIGNING_KEY_PATH: join(tmpdir(), "halt-e2e-key.pem"),
         HALT_LOG_LEVEL: "WARNING",
         HALT_DEMO_MODE: "true",
+        HALT_FIREX_DATA_ROOT: process.env.HALT_FIREX_DATA_ROOT ?? join(tmpdir(), "halt-e2e-firex"),
       },
     },
     {

@@ -1,0 +1,5136 @@
+{
+ "_note": "Recorded from the real backend by scripts/record_firex_fixtures.py; do not edit.",
+ "incidents": [
+  "finc-06dbcd7d8183",
+  "finc-ec918f810a84",
+  "finc-0526ba4f57ac"
+ ],
+ "normalised": [
+  "artifact_hashes",
+  "completed_at",
+  "compression_ratio",
+  "created_at",
+  "duration_s",
+  "expected",
+  "generated_at",
+  "git_commit",
+  "host",
+  "incident_open_latency_ms",
+  "mb_per_second",
+  "output_bytes",
+  "peak_memory_mb",
+  "pid",
+  "receipt_id",
+  "recorded",
+  "records_per_second",
+  "seal",
+  "stage_durations_s",
+  "started_at",
+  "updated_at"
+ ],
+ "responses": {
+  "GET /api/v1/ps2/datasets": {
+   "body": {
+    "items": [
+     {
+      "adapters": [
+       "api_activity",
+       "idp_audit",
+       "idp_signin",
+       "mail_trace"
+      ],
+      "dataset_id": "scenario-a",
+      "files": [
+       "mail_trace.csv",
+       "idp_signin.jsonl",
+       "idp_audit.json",
+       "api_activity.jsonl"
+      ],
+      "has_ground_truth": true,
+      "seed": 2417,
+      "synthetic": true,
+      "title": "OAuth consent phishing against Finance Operations"
+     },
+     {
+      "adapters": [
+       "cloud_audit",
+       "db_audit",
+       "idp_signin",
+       "process"
+      ],
+      "dataset_id": "scenario-b",
+      "files": [
+       "idp_signin.jsonl",
+       "cloud_audit.json",
+       "process.jsonl",
+       "db_audit.csv"
+      ],
+      "has_ground_truth": true,
+      "seed": 7310,
+      "synthetic": true,
+      "title": "Service-account abuse in a cloud data platform"
+     }
+    ],
+    "registered": [
+     {
+      "available": false,
+      "dataset_id": "firex-10g",
+      "expected_sha256": "b71fc95eb5fef198912ba12a03f363c23ec6048ba699d5aad08b0d3ef3cba121",
+      "filename": "firex-10G.log",
+      "latest_run_id": null,
+      "size_bytes": null,
+      "title": "FireX 10G"
+     },
+     {
+      "available": false,
+      "dataset_id": "firex-30g",
+      "expected_sha256": "fedd72b052b5622a1f8e7fb6f54b8feab07418e2e145aca8ae66d27d799482b4",
+      "filename": "firex-30G.log",
+      "latest_run_id": null,
+      "size_bytes": null,
+      "title": "FireX 30G"
+     },
+     {
+      "available": false,
+      "dataset_id": "firex-50g",
+      "expected_sha256": null,
+      "filename": "firex-50G.log",
+      "latest_run_id": null,
+      "size_bytes": null,
+      "title": "FireX 50G"
+     },
+     {
+      "available": true,
+      "dataset_id": "fixture",
+      "expected_sha256": null,
+      "filename": "fixture.log",
+      "latest_run_id": "frun-8d438edb00df36e8",
+      "size_bytes": 51343,
+      "title": "Fixture"
+     }
+    ]
+   },
+   "status": 200
+  },
+  "GET /api/v1/ps2/incidents/finc-0526ba4f57ac/graph?run_id=frun-8d438edb00df36e8": {
+   "body": {
+    "edges": [
+     {
+      "classification": "observed",
+      "components": [],
+      "confidence": 1.0,
+      "contradictions": [],
+      "edge_id": "fedge-195aadb66956fcb5",
+      "evidence_refs": [
+       "ev-7090074172dcdc0cdd5309f1",
+       "ev-81083a6b2db6fcccb7568553",
+       "ev-8e745ade9716e31b43fde7af",
+       "ev-ab9bbafce5157b79fbe33a32",
+       "ev-0a31a9bad83f113f064bd0da"
+      ],
+      "first_utc": "2027-01-15T08:16:40Z",
+      "last_utc": "2027-01-15T08:16:40Z",
+      "missing_evidence": false,
+      "on_selected_path": false,
+      "relation": "involves",
+      "rule": "involves",
+      "rule_version": "halt.firex.graph/1.0",
+      "source": "step:fdet-3afaf7d5231488bd:0",
+      "target": "entity:ip:203.0.113.20"
+     },
+     {
+      "classification": "observed",
+      "components": [],
+      "confidence": 1.0,
+      "contradictions": [],
+      "edge_id": "fedge-2e22d864018ed992",
+      "evidence_refs": [
+       "ev-9795355d17f37929a6d67598",
+       "ev-6db15019f88a4baeb47f81f2",
+       "ev-b9f869b5d707b2f4ba8612c3",
+       "ev-69b8b5c38d60ea093bfb9a56",
+       "ev-2ec0c58078d3dea88bc6beda"
+      ],
+      "first_utc": "2027-01-15T08:16:42Z",
+      "last_utc": "2027-01-15T08:16:42Z",
+      "missing_evidence": false,
+      "on_selected_path": false,
+      "relation": "involves",
+      "rule": "involves",
+      "rule_version": "halt.firex.graph/1.0",
+      "source": "step:fdet-3afaf7d5231488bd:2",
+      "target": "entity:ip:203.0.113.22"
+     },
+     {
+      "classification": "observed",
+      "components": [],
+      "confidence": 1.0,
+      "contradictions": [],
+      "edge_id": "fedge-38a0ca1580ea51cd",
+      "evidence_refs": [
+       "ev-3deaf3f2b3636f28b150256b",
+       "ev-b77b9fb32fe3193b950dddd7",
+       "ev-e756c5ad7af222a1f3e2f2a2",
+       "ev-8ab4a455f3f8a8b490c1019b",
+       "ev-7a4801a220b929914726bc2f"
+      ],
+      "first_utc": "2027-01-15T08:16:41Z",
+      "last_utc": "2027-01-15T08:16:41Z",
+      "missing_evidence": false,
+      "on_selected_path": false,
+      "relation": "involves",
+      "rule": "involves",
+      "rule_version": "halt.firex.graph/1.0",
+      "source": "step:fdet-3afaf7d5231488bd:1",
+      "target": "entity:ip:203.0.113.21"
+     },
+     {
+      "classification": "inferred",
+      "components": [
+       {
+        "detail": "10.20.0.200",
+        "name": "entity_continuity",
+        "value": 1.0,
+        "weight": 0.35
+       },
+       {
+        "detail": "web_attack_concentration",
+        "name": "same_detection",
+        "value": 1.0,
+        "weight": 0.25
+       },
+       {
+        "detail": "time between steps; not used to link on its own",
+        "name": "gap_seconds",
+        "value": 1.0,
+        "weight": 0.0
+       }
+      ],
+      "confidence": 0.9,
+      "contradictions": [],
+      "edge_id": "fedge-a811cf76db00520f",
+      "evidence_refs": [
+       "ev-3deaf3f2b3636f28b150256b",
+       "ev-7090074172dcdc0cdd5309f1",
+       "ev-81083a6b2db6fcccb7568553",
+       "ev-8e745ade9716e31b43fde7af",
+       "ev-b77b9fb32fe3193b950dddd7",
+       "ev-e756c5ad7af222a1f3e2f2a2"
+      ],
+      "first_utc": "2027-01-15T08:16:40Z",
+      "last_utc": "2027-01-15T08:16:41Z",
+      "missing_evidence": false,
+      "on_selected_path": true,
+      "relation": "next_step",
+      "rule": "same_detection_sequence",
+      "rule_version": "halt.firex.graph/1.0",
+      "source": "step:fdet-3afaf7d5231488bd:0",
+      "target": "step:fdet-3afaf7d5231488bd:1"
+     },
+     {
+      "classification": "observed",
+      "components": [],
+      "confidence": 1.0,
+      "contradictions": [],
+      "edge_id": "fedge-b135960faf3d8d77",
+      "evidence_refs": [
+       "ev-3deaf3f2b3636f28b150256b",
+       "ev-b77b9fb32fe3193b950dddd7",
+       "ev-e756c5ad7af222a1f3e2f2a2",
+       "ev-8ab4a455f3f8a8b490c1019b",
+       "ev-7a4801a220b929914726bc2f"
+      ],
+      "first_utc": "2027-01-15T08:16:41Z",
+      "last_utc": "2027-01-15T08:16:41Z",
+      "missing_evidence": false,
+      "on_selected_path": false,
+      "relation": "targets",
+      "rule": "targets",
+      "rule_version": "halt.firex.graph/1.0",
+      "source": "step:fdet-3afaf7d5231488bd:1",
+      "target": "entity:ip:10.20.0.200"
+     },
+     {
+      "classification": "observed",
+      "components": [],
+      "confidence": 1.0,
+      "contradictions": [],
+      "edge_id": "fedge-b9b95d58f3becc16",
+      "evidence_refs": [
+       "ev-7090074172dcdc0cdd5309f1",
+       "ev-81083a6b2db6fcccb7568553",
+       "ev-8e745ade9716e31b43fde7af",
+       "ev-ab9bbafce5157b79fbe33a32",
+       "ev-0a31a9bad83f113f064bd0da"
+      ],
+      "first_utc": "2027-01-15T08:16:40Z",
+      "last_utc": "2027-01-15T08:16:40Z",
+      "missing_evidence": false,
+      "on_selected_path": false,
+      "relation": "targets",
+      "rule": "targets",
+      "rule_version": "halt.firex.graph/1.0",
+      "source": "step:fdet-3afaf7d5231488bd:0",
+      "target": "entity:ip:10.20.0.200"
+     },
+     {
+      "classification": "inferred",
+      "components": [
+       {
+        "detail": "10.20.0.200",
+        "name": "entity_continuity",
+        "value": 1.0,
+        "weight": 0.35
+       },
+       {
+        "detail": "web_attack_concentration",
+        "name": "same_detection",
+        "value": 1.0,
+        "weight": 0.25
+       },
+       {
+        "detail": "time between steps; not used to link on its own",
+        "name": "gap_seconds",
+        "value": 1.0,
+        "weight": 0.0
+       }
+      ],
+      "confidence": 0.9,
+      "contradictions": [],
+      "edge_id": "fedge-eaf6eb8c1ef734e0",
+      "evidence_refs": [
+       "ev-3deaf3f2b3636f28b150256b",
+       "ev-6db15019f88a4baeb47f81f2",
+       "ev-9795355d17f37929a6d67598",
+       "ev-b77b9fb32fe3193b950dddd7",
+       "ev-b9f869b5d707b2f4ba8612c3",
+       "ev-e756c5ad7af222a1f3e2f2a2"
+      ],
+      "first_utc": "2027-01-15T08:16:41Z",
+      "last_utc": "2027-01-15T08:16:42Z",
+      "missing_evidence": false,
+      "on_selected_path": true,
+      "relation": "next_step",
+      "rule": "same_detection_sequence",
+      "rule_version": "halt.firex.graph/1.0",
+      "source": "step:fdet-3afaf7d5231488bd:1",
+      "target": "step:fdet-3afaf7d5231488bd:2"
+     },
+     {
+      "classification": "observed",
+      "components": [],
+      "confidence": 1.0,
+      "contradictions": [],
+      "edge_id": "fedge-eb3dd4f26c6116ac",
+      "evidence_refs": [
+       "ev-9795355d17f37929a6d67598",
+       "ev-6db15019f88a4baeb47f81f2",
+       "ev-b9f869b5d707b2f4ba8612c3",
+       "ev-69b8b5c38d60ea093bfb9a56",
+       "ev-2ec0c58078d3dea88bc6beda"
+      ],
+      "first_utc": "2027-01-15T08:16:42Z",
+      "last_utc": "2027-01-15T08:16:42Z",
+      "missing_evidence": false,
+      "on_selected_path": false,
+      "relation": "targets",
+      "rule": "targets",
+      "rule_version": "halt.firex.graph/1.0",
+      "source": "step:fdet-3afaf7d5231488bd:2",
+      "target": "entity:ip:10.20.0.200"
+     }
+    ],
+    "graph_hash": "a96998c8faf70ebebbd5677566c5e785624a4e2945486a9661cb7becc33e1793",
+    "incident_id": "finc-0526ba4f57ac",
+    "node_cap": 120,
+    "nodes": [
+     {
+      "attributes": {},
+      "count": 1,
+      "detection_id": null,
+      "evidence_refs": [
+       "ev-7090074172dcdc0cdd5309f1",
+       "ev-81083a6b2db6fcccb7568553",
+       "ev-8e745ade9716e31b43fde7af",
+       "ev-ab9bbafce5157b79fbe33a32",
+       "ev-0a31a9bad83f113f064bd0da"
+      ],
+      "first_utc": null,
+      "is_context": false,
+      "kind": "host",
+      "label": "10.20.0.200",
+      "last_utc": null,
+      "layer": "endpoint",
+      "node_id": "entity:ip:10.20.0.200",
+      "on_selected_path": false,
+      "order": 0,
+      "stage": null
+     },
+     {
+      "attributes": {},
+      "count": 1,
+      "detection_id": null,
+      "evidence_refs": [
+       "ev-7090074172dcdc0cdd5309f1",
+       "ev-81083a6b2db6fcccb7568553",
+       "ev-8e745ade9716e31b43fde7af",
+       "ev-ab9bbafce5157b79fbe33a32",
+       "ev-0a31a9bad83f113f064bd0da"
+      ],
+      "first_utc": null,
+      "is_context": false,
+      "kind": "ip",
+      "label": "203.0.113.20",
+      "last_utc": null,
+      "layer": "external",
+      "node_id": "entity:ip:203.0.113.20",
+      "on_selected_path": false,
+      "order": 0,
+      "stage": null
+     },
+     {
+      "attributes": {
+       "technique": "T1190",
+       "technique_name": "Exploit Public-Facing Application"
+      },
+      "count": 20,
+      "detection_id": "fdet-3afaf7d5231488bd",
+      "evidence_refs": [
+       "ev-7090074172dcdc0cdd5309f1",
+       "ev-81083a6b2db6fcccb7568553",
+       "ev-8e745ade9716e31b43fde7af",
+       "ev-ab9bbafce5157b79fbe33a32",
+       "ev-0a31a9bad83f113f064bd0da"
+      ],
+      "first_utc": "2027-01-15T08:16:40Z",
+      "is_context": false,
+      "kind": "burst",
+      "label": "HTTP.URI.SQL.Injection from 203.0.113.20 (20 events)",
+      "last_utc": "2027-01-15T08:17:37Z",
+      "layer": "application",
+      "node_id": "step:fdet-3afaf7d5231488bd:0",
+      "on_selected_path": true,
+      "order": 0,
+      "stage": "exploitation"
+     },
+     {
+      "attributes": {},
+      "count": 1,
+      "detection_id": null,
+      "evidence_refs": [
+       "ev-3deaf3f2b3636f28b150256b",
+       "ev-b77b9fb32fe3193b950dddd7",
+       "ev-e756c5ad7af222a1f3e2f2a2",
+       "ev-8ab4a455f3f8a8b490c1019b",
+       "ev-7a4801a220b929914726bc2f"
+      ],
+      "first_utc": null,
+      "is_context": false,
+      "kind": "ip",
+      "label": "203.0.113.21",
+      "last_utc": null,
+      "layer": "external",
+      "node_id": "entity:ip:203.0.113.21",
+      "on_selected_path": false,
+      "order": 1,
+      "stage": null
+     },
+     {
+      "attributes": {
+       "technique": "T1190",
+       "technique_name": "Exploit Public-Facing Application"
+      },
+      "count": 20,
+      "detection_id": "fdet-3afaf7d5231488bd",
+      "evidence_refs": [
+       "ev-3deaf3f2b3636f28b150256b",
+       "ev-b77b9fb32fe3193b950dddd7",
+       "ev-e756c5ad7af222a1f3e2f2a2",
+       "ev-8ab4a455f3f8a8b490c1019b",
+       "ev-7a4801a220b929914726bc2f"
+      ],
+      "first_utc": "2027-01-15T08:16:41Z",
+      "is_context": false,
+      "kind": "burst",
+      "label": "HTTP.Path.Traversal from 203.0.113.21 (20 events)",
+      "last_utc": "2027-01-15T08:17:38Z",
+      "layer": "application",
+      "node_id": "step:fdet-3afaf7d5231488bd:1",
+      "on_selected_path": true,
+      "order": 1,
+      "stage": "exploitation"
+     },
+     {
+      "attributes": {},
+      "count": 1,
+      "detection_id": null,
+      "evidence_refs": [
+       "ev-9795355d17f37929a6d67598",
+       "ev-6db15019f88a4baeb47f81f2",
+       "ev-b9f869b5d707b2f4ba8612c3",
+       "ev-69b8b5c38d60ea093bfb9a56",
+       "ev-2ec0c58078d3dea88bc6beda"
+      ],
+      "first_utc": null,
+      "is_context": false,
+      "kind": "ip",
+      "label": "203.0.113.22",
+      "last_utc": null,
+      "layer": "external",
+      "node_id": "entity:ip:203.0.113.22",
+      "on_selected_path": false,
+      "order": 2,
+      "stage": null
+     },
+     {
+      "attributes": {
+       "technique": "T1190",
+       "technique_name": "Exploit Public-Facing Application"
+      },
+      "count": 20,
+      "detection_id": "fdet-3afaf7d5231488bd",
+      "evidence_refs": [
+       "ev-9795355d17f37929a6d67598",
+       "ev-6db15019f88a4baeb47f81f2",
+       "ev-b9f869b5d707b2f4ba8612c3",
+       "ev-69b8b5c38d60ea093bfb9a56",
+       "ev-2ec0c58078d3dea88bc6beda"
+      ],
+      "first_utc": "2027-01-15T08:16:42Z",
+      "is_context": false,
+      "kind": "burst",
+      "label": "HTTP.URI.XSS.Attack from 203.0.113.22 (20 events)",
+      "last_utc": "2027-01-15T08:17:39Z",
+      "layer": "application",
+      "node_id": "step:fdet-3afaf7d5231488bd:2",
+      "on_selected_path": true,
+      "order": 2,
+      "stage": "exploitation"
+     }
+    ],
+    "truncated": false
+   },
+   "status": 200
+  },
+  "GET /api/v1/ps2/incidents/finc-0526ba4f57ac/hypotheses?run_id=frun-8d438edb00df36e8": {
+   "body": {
+    "alternates": [
+     {
+      "components": [
+       {
+        "detail": "the logs cannot rule this out without change or ticket records",
+        "name": "one_minus_confidence",
+        "value": 0.2,
+        "weight": 0.8
+       }
+      ],
+      "description": "Internet scanning of an exposed service that had no effect on it.",
+      "detection_ids": [],
+      "edge_ids": [],
+      "evidence_gaps": [
+       "No change-management or ticket data is available to confirm or rule this out."
+      ],
+      "hypothesis_id": "fhyp-327589e26881b415",
+      "node_ids": [],
+      "rank": 2,
+      "score": 0.16,
+      "status": "alternate",
+      "title": "Benign explanation"
+     }
+    ],
+    "incident_id": "finc-0526ba4f57ac",
+    "selected": {
+     "components": [
+      {
+       "detail": "mean across detections",
+       "name": "rule_confidence",
+       "value": 0.8,
+       "weight": 0.55
+      },
+      {
+       "detail": "links with a shared entity",
+       "name": "entity_continuity",
+       "value": 1.0,
+       "weight": 0.25
+      },
+      {
+       "detail": "1 stages",
+       "name": "stage_coverage",
+       "value": 0.25,
+       "weight": 0.1
+      },
+      {
+       "detail": "records behind the path, capped at 500",
+       "name": "evidence_volume",
+       "value": 0.12,
+       "weight": 0.1
+      }
+     ],
+     "description": "The steps belong to one actor or chain, linked by shared accounts or addresses.",
+     "detection_ids": [
+      "fdet-3afaf7d5231488bd"
+     ],
+     "edge_ids": [
+      "fedge-a811cf76db00520f",
+      "fedge-eaf6eb8c1ef734e0"
+     ],
+     "evidence_gaps": [
+      "Merged activity is cited by a sample of its evidence, not every record.",
+      "These logs have no payload or endpoint data, so success of an action cannot be proven from them."
+     ],
+     "hypothesis_id": "fhyp-6f5ae3febb0cc9e2",
+     "node_ids": [
+      "step:fdet-3afaf7d5231488bd:0",
+      "step:fdet-3afaf7d5231488bd:1",
+      "step:fdet-3afaf7d5231488bd:2"
+     ],
+     "rank": 1,
+     "score": 0.727,
+     "status": "selected",
+     "title": "One connected attack sequence"
+    },
+    "uncertainty_margin": 0.567
+   },
+   "status": 200
+  },
+  "GET /api/v1/ps2/incidents/finc-0526ba4f57ac/proof?run_id=frun-8d438edb00df36e8": {
+   "body": {
+    "receipt": {
+     "cited_evidence": [
+      "ev-0a31a9bad83f113f064bd0da",
+      "ev-2ec0c58078d3dea88bc6beda",
+      "ev-3deaf3f2b3636f28b150256b",
+      "ev-69b8b5c38d60ea093bfb9a56",
+      "ev-6db15019f88a4baeb47f81f2",
+      "ev-7090074172dcdc0cdd5309f1",
+      "ev-7a4801a220b929914726bc2f",
+      "ev-81083a6b2db6fcccb7568553",
+      "ev-8ab4a455f3f8a8b490c1019b",
+      "ev-8e745ade9716e31b43fde7af",
+      "ev-9795355d17f37929a6d67598",
+      "ev-ab9bbafce5157b79fbe33a32",
+      "ev-b77b9fb32fe3193b950dddd7",
+      "ev-b9f869b5d707b2f4ba8612c3",
+      "ev-e756c5ad7af222a1f3e2f2a2"
+     ],
+     "dataset_id": "fixture",
+     "detection_config_hash": "9a2dec75574992c8fe51e48a93a53e39778b231e7575534e8d32cb9c858c6236",
+     "deterministic_replay_id": "replay-3ef6e7b2ef5ecced459d18da",
+     "engine_version": "halt.firex.engine/1.0.0",
+     "evidence_coverage": 1.0,
+     "git_commit": "fixture",
+     "graph_hash": "a96998c8faf70ebebbd5677566c5e785624a4e2945486a9661cb7becc33e1793",
+     "incident_id": "finc-0526ba4f57ac",
+     "parser_version": "halt.firex.parser/1.0.0",
+     "processed_byte_range": [
+      0,
+      51343
+     ],
+     "receipt_id": "fixture",
+     "run_id": "frun-8d438edb00df36e8",
+     "schema_version": "halt.firex.proof/1.0",
+     "seal": "fixture",
+     "seal_algorithm": "sha256-canonical-json",
+     "selected_path_id": "fhyp-6f5ae3febb0cc9e2",
+     "source_sha256": "5246c5d53f02b0c36b06df4cd7888bbd064213050995cf4304abcc462d3e7c73",
+     "status": "unconfirmed",
+     "uncertainty_margin": 0.567,
+     "unsupported_claims": 0
+    },
+    "verification": {
+     "expected": "fixture",
+     "recorded": "fixture",
+     "valid": true
+    }
+   },
+   "status": 200
+  },
+  "GET /api/v1/ps2/incidents/finc-0526ba4f57ac/reachability?run_id=frun-8d438edb00df36e8": {
+   "body": {
+    "incident_id": "finc-0526ba4f57ac",
+    "label": "Hypothetical: what could be reached next. This is not observed attacker activity.",
+    "limitations": [
+     "Based only on connections recorded in this log. No asset inventory or permissions data is available.",
+     "A recorded connection shows a network path, not that an attacker used it."
+    ],
+    "targets": []
+   },
+   "status": 200
+  },
+  "GET /api/v1/ps2/incidents/finc-0526ba4f57ac/story?run_id=frun-8d438edb00df36e8": {
+   "body": {
+    "checked_statements": 3,
+    "incident_id": "finc-0526ba4f57ac",
+    "reachable_next": "No reachable next system could be established from these logs.",
+    "statements": [
+     {
+      "evidence_ids": [
+       "ev-7090074172dcdc0cdd5309f1",
+       "ev-81083a6b2db6fcccb7568553",
+       "ev-8e745ade9716e31b43fde7af",
+       "ev-ab9bbafce5157b79fbe33a32",
+       "ev-0a31a9bad83f113f064bd0da"
+      ],
+      "kind": "observed",
+      "statement_id": "s1",
+      "text": "2027-01-15T08:16:40Z: HTTP.URI.SQL.Injection from 203.0.113.20 (20 events)."
+     },
+     {
+      "evidence_ids": [
+       "ev-3deaf3f2b3636f28b150256b",
+       "ev-b77b9fb32fe3193b950dddd7",
+       "ev-e756c5ad7af222a1f3e2f2a2",
+       "ev-8ab4a455f3f8a8b490c1019b",
+       "ev-7a4801a220b929914726bc2f"
+      ],
+      "kind": "observed",
+      "statement_id": "s2",
+      "text": "2027-01-15T08:16:41Z: HTTP.Path.Traversal from 203.0.113.21 (20 events)."
+     },
+     {
+      "evidence_ids": [
+       "ev-9795355d17f37929a6d67598",
+       "ev-6db15019f88a4baeb47f81f2",
+       "ev-b9f869b5d707b2f4ba8612c3",
+       "ev-69b8b5c38d60ea093bfb9a56",
+       "ev-2ec0c58078d3dea88bc6beda"
+      ],
+      "kind": "observed",
+      "statement_id": "s3",
+      "text": "2027-01-15T08:16:42Z: HTTP.URI.XSS.Attack from 203.0.113.22 (20 events)."
+     }
+    ],
+    "strongest_evidence": "Concentrated multi-technique web attack on one target: 60 record(s), confidence 0.8.",
+    "systems_affected": "Hosts named: 10.20.0.200.",
+    "uncertain": "Merged activity is cited by a sample of its evidence, not every record. These logs have no payload or endpoint data, so success of an action cannot be proven from them.",
+    "unsupported_claims": 0,
+    "what_happened": "60 IPS events using 3 attack signatures from 3 source(s) targeted 10.20.0.200.",
+    "where_started": "HTTP.URI.SQL.Injection from 203.0.113.20 (20 events) at 2027-01-15T08:16:40Z.",
+    "who_compromised": "No account is named in this evidence. Compromise is a candidate, not confirmed."
+   },
+   "status": 200
+  },
+  "GET /api/v1/ps2/incidents/finc-0526ba4f57ac?run_id=frun-8d438edb00df36e8": {
+   "body": {
+    "affected_entities": {
+     "dst_ips": [
+      "10.20.0.200"
+     ],
+     "src_ips": [
+      "203.0.113.20",
+      "203.0.113.21",
+      "203.0.113.22"
+     ]
+    },
+    "alert_merge_count": 60,
+    "detections": [
+     {
+      "basis": "observed",
+      "confidence": 0.8,
+      "config_hash": "9a2dec75574992c8fe51e48a93a53e39778b231e7575534e8d32cb9c858c6236",
+      "detection_id": "fdet-3afaf7d5231488bd",
+      "entities": {
+       "dst_ips": [
+        "10.20.0.200"
+       ],
+       "src_ips": [
+        "203.0.113.20",
+        "203.0.113.21",
+        "203.0.113.22"
+       ]
+      },
+      "evidence_refs": [
+       "ev-7090074172dcdc0cdd5309f1",
+       "ev-81083a6b2db6fcccb7568553",
+       "ev-8e745ade9716e31b43fde7af",
+       "ev-ab9bbafce5157b79fbe33a32",
+       "ev-0a31a9bad83f113f064bd0da",
+       "ev-3deaf3f2b3636f28b150256b",
+       "ev-b77b9fb32fe3193b950dddd7",
+       "ev-e756c5ad7af222a1f3e2f2a2",
+       "ev-8ab4a455f3f8a8b490c1019b",
+       "ev-7a4801a220b929914726bc2f",
+       "ev-9795355d17f37929a6d67598",
+       "ev-6db15019f88a4baeb47f81f2",
+       "ev-b9f869b5d707b2f4ba8612c3",
+       "ev-69b8b5c38d60ea093bfb9a56",
+       "ev-2ec0c58078d3dea88bc6beda"
+      ],
+      "evidence_refs_truncated": true,
+      "first_ns": 1800001000000000000,
+      "first_offset": 28703,
+      "first_utc": "2027-01-15T08:16:40Z",
+      "kill_chain_stage": "exploitation",
+      "last_ns": 1800001059000000000,
+      "last_utc": "2027-01-15T08:17:39Z",
+      "merged_events": 60,
+      "reason": "60 IPS events using 3 attack signatures from 3 source(s) targeted 10.20.0.200.",
+      "risk_contribution": 0.8,
+      "rule_id": "web_attack_concentration",
+      "rule_version": "1.0",
+      "status": "unconfirmed",
+      "steps": [
+       {
+        "actor": "203.0.113.20",
+        "count": 20,
+        "evidence_refs": [
+         "ev-7090074172dcdc0cdd5309f1",
+         "ev-81083a6b2db6fcccb7568553",
+         "ev-8e745ade9716e31b43fde7af",
+         "ev-ab9bbafce5157b79fbe33a32",
+         "ev-0a31a9bad83f113f064bd0da"
+        ],
+        "label": "HTTP.URI.SQL.Injection from 203.0.113.20 (20 events)",
+        "last_ns": 1800001057000000000,
+        "last_utc": "2027-01-15T08:17:37Z",
+        "layer": "application",
+        "ns": 1800001000000000000,
+        "offset": 28703,
+        "stage": "exploitation",
+        "target": "10.20.0.200",
+        "technique_id": "T1190",
+        "technique_name": "Exploit Public-Facing Application",
+        "utc": "2027-01-15T08:16:40Z"
+       },
+       {
+        "actor": "203.0.113.21",
+        "count": 20,
+        "evidence_refs": [
+         "ev-3deaf3f2b3636f28b150256b",
+         "ev-b77b9fb32fe3193b950dddd7",
+         "ev-e756c5ad7af222a1f3e2f2a2",
+         "ev-8ab4a455f3f8a8b490c1019b",
+         "ev-7a4801a220b929914726bc2f"
+        ],
+        "label": "HTTP.Path.Traversal from 203.0.113.21 (20 events)",
+        "last_ns": 1800001058000000000,
+        "last_utc": "2027-01-15T08:17:38Z",
+        "layer": "application",
+        "ns": 1800001001000000000,
+        "offset": 29082,
+        "stage": "exploitation",
+        "target": "10.20.0.200",
+        "technique_id": "T1190",
+        "technique_name": "Exploit Public-Facing Application",
+        "utc": "2027-01-15T08:16:41Z"
+       },
+       {
+        "actor": "203.0.113.22",
+        "count": 20,
+        "evidence_refs": [
+         "ev-9795355d17f37929a6d67598",
+         "ev-6db15019f88a4baeb47f81f2",
+         "ev-b9f869b5d707b2f4ba8612c3",
+         "ev-69b8b5c38d60ea093bfb9a56",
+         "ev-2ec0c58078d3dea88bc6beda"
+        ],
+        "label": "HTTP.URI.XSS.Attack from 203.0.113.22 (20 events)",
+        "last_ns": 1800001059000000000,
+        "last_utc": "2027-01-15T08:17:39Z",
+        "layer": "application",
+        "ns": 1800001002000000000,
+        "offset": 29458,
+        "stage": "exploitation",
+        "target": "10.20.0.200",
+        "technique_id": "T1190",
+        "technique_name": "Exploit Public-Facing Application",
+        "utc": "2027-01-15T08:16:42Z"
+       }
+      ],
+      "tactic": "initial-access",
+      "target_kind": "service",
+      "technique_id": "T1190",
+      "technique_name": "Exploit Public-Facing Application",
+      "timestamp_quality": "normal",
+      "title": "Concentrated multi-technique web attack on one target"
+     }
+    ],
+    "evidence": [
+     {
+      "action": "dropped",
+      "app": null,
+      "app_risk": null,
+      "attack": "HTTP.URI.SQL.Injection",
+      "attack_id": "15000",
+      "byte_offset": 28703,
+      "canonical_sha256": "1ec1a6bf9c8e5947e2d2c87d8baa958d",
+      "category": null,
+      "date": "2027-01-15",
+      "dst_ip": "10.20.0.200",
+      "dst_port": 443,
+      "dst_role": "dmz",
+      "event_type": "utm",
+      "event_utc": "2027-01-15T08:16:40Z",
+      "evidence_id": "ev-7090074172dcdc0cdd5309f1",
+      "hostname": null,
+      "level": "alert",
+      "line": 84,
+      "logid": "0419016384",
+      "message": null,
+      "raw_sha256": "2fdeaae7f67f139f5ab4ee03cd2dd59c",
+      "service": "HTTPS",
+      "session_id": "2000",
+      "source_sha256": "5246c5d53f02b0c36b06df4cd7888bbd064213050995cf4304abcc462d3e7c73",
+      "src_ip": "203.0.113.20",
+      "src_port": null,
+      "src_role": "wan",
+      "status": null,
+      "subtype": "ips",
+      "time": "08:16:40",
+      "timestamp_quality": "normal",
+      "tz": "+0530",
+      "url": null,
+      "user": null,
+      "virus": null
+     },
+     {
+      "action": "dropped",
+      "app": null,
+      "app_risk": null,
+      "attack": "HTTP.URI.SQL.Injection",
+      "attack_id": "15003",
+      "byte_offset": 29834,
+      "canonical_sha256": "2788bdcc8309a7f1cfd97f9753f3be56",
+      "category": null,
+      "date": "2027-01-15",
+      "dst_ip": "10.20.0.200",
+      "dst_port": 443,
+      "dst_role": "dmz",
+      "event_type": "utm",
+      "event_utc": "2027-01-15T08:16:43Z",
+      "evidence_id": "ev-81083a6b2db6fcccb7568553",
+      "hostname": null,
+      "level": "alert",
+      "line": 87,
+      "logid": "0419016384",
+      "message": null,
+      "raw_sha256": "08d25dbef4deab316a4fe797f413616a",
+      "service": "HTTPS",
+      "session_id": "2003",
+      "source_sha256": "5246c5d53f02b0c36b06df4cd7888bbd064213050995cf4304abcc462d3e7c73",
+      "src_ip": "203.0.113.20",
+      "src_port": null,
+      "src_role": "wan",
+      "status": null,
+      "subtype": "ips",
+      "time": "08:16:43",
+      "timestamp_quality": "normal",
+      "tz": "+0530",
+      "url": null,
+      "user": null,
+      "virus": null
+     },
+     {
+      "action": "dropped",
+      "app": null,
+      "app_risk": null,
+      "attack": "HTTP.URI.SQL.Injection",
+      "attack_id": "15006",
+      "byte_offset": 30965,
+      "canonical_sha256": "a518a8db52fe017ebcdad077c4d36969",
+      "category": null,
+      "date": "2027-01-15",
+      "dst_ip": "10.20.0.200",
+      "dst_port": 443,
+      "dst_role": "dmz",
+      "event_type": "utm",
+      "event_utc": "2027-01-15T08:16:46Z",
+      "evidence_id": "ev-8e745ade9716e31b43fde7af",
+      "hostname": null,
+      "level": "alert",
+      "line": 90,
+      "logid": "0419016384",
+      "message": null,
+      "raw_sha256": "dd718a0c423677e1e8d678b18e96ea55",
+      "service": "HTTPS",
+      "session_id": "2006",
+      "source_sha256": "5246c5d53f02b0c36b06df4cd7888bbd064213050995cf4304abcc462d3e7c73",
+      "src_ip": "203.0.113.20",
+      "src_port": null,
+      "src_role": "wan",
+      "status": null,
+      "subtype": "ips",
+      "time": "08:16:46",
+      "timestamp_quality": "normal",
+      "tz": "+0530",
+      "url": null,
+      "user": null,
+      "virus": null
+     },
+     {
+      "action": "dropped",
+      "app": null,
+      "app_risk": null,
+      "attack": "HTTP.URI.SQL.Injection",
+      "attack_id": "15009",
+      "byte_offset": 32096,
+      "canonical_sha256": "ebe29a430ad24c4ab9c725262409ce2d",
+      "category": null,
+      "date": "2027-01-15",
+      "dst_ip": "10.20.0.200",
+      "dst_port": 443,
+      "dst_role": "dmz",
+      "event_type": "utm",
+      "event_utc": "2027-01-15T08:16:49Z",
+      "evidence_id": "ev-ab9bbafce5157b79fbe33a32",
+      "hostname": null,
+      "level": "alert",
+      "line": 93,
+      "logid": "0419016384",
+      "message": null,
+      "raw_sha256": "f35284d375c6c66fd3f7050596bbd32d",
+      "service": "HTTPS",
+      "session_id": "2009",
+      "source_sha256": "5246c5d53f02b0c36b06df4cd7888bbd064213050995cf4304abcc462d3e7c73",
+      "src_ip": "203.0.113.20",
+      "src_port": null,
+      "src_role": "wan",
+      "status": null,
+      "subtype": "ips",
+      "time": "08:16:49",
+      "timestamp_quality": "normal",
+      "tz": "+0530",
+      "url": null,
+      "user": null,
+      "virus": null
+     },
+     {
+      "action": "dropped",
+      "app": null,
+      "app_risk": null,
+      "attack": "HTTP.URI.SQL.Injection",
+      "attack_id": "15012",
+      "byte_offset": 33227,
+      "canonical_sha256": "627b8cf03631022caf938c46b29f8d3e",
+      "category": null,
+      "date": "2027-01-15",
+      "dst_ip": "10.20.0.200",
+      "dst_port": 443,
+      "dst_role": "dmz",
+      "event_type": "utm",
+      "event_utc": "2027-01-15T08:16:52Z",
+      "evidence_id": "ev-0a31a9bad83f113f064bd0da",
+      "hostname": null,
+      "level": "alert",
+      "line": 96,
+      "logid": "0419016384",
+      "message": null,
+      "raw_sha256": "8c22b726bc6971e0f0d94ba742e96673",
+      "service": "HTTPS",
+      "session_id": "2012",
+      "source_sha256": "5246c5d53f02b0c36b06df4cd7888bbd064213050995cf4304abcc462d3e7c73",
+      "src_ip": "203.0.113.20",
+      "src_port": null,
+      "src_role": "wan",
+      "status": null,
+      "subtype": "ips",
+      "time": "08:16:52",
+      "timestamp_quality": "normal",
+      "tz": "+0530",
+      "url": null,
+      "user": null,
+      "virus": null
+     },
+     {
+      "action": "dropped",
+      "app": null,
+      "app_risk": null,
+      "attack": "HTTP.Path.Traversal",
+      "attack_id": "15001",
+      "byte_offset": 29082,
+      "canonical_sha256": "39f9bef734beb116c3fd356959d2c565",
+      "category": null,
+      "date": "2027-01-15",
+      "dst_ip": "10.20.0.200",
+      "dst_port": 443,
+      "dst_role": "dmz",
+      "event_type": "utm",
+      "event_utc": "2027-01-15T08:16:41Z",
+      "evidence_id": "ev-3deaf3f2b3636f28b150256b",
+      "hostname": null,
+      "level": "alert",
+      "line": 85,
+      "logid": "0419016384",
+      "message": null,
+      "raw_sha256": "3cf417be71024fc59ecec94b91c6740d",
+      "service": "HTTPS",
+      "session_id": "2001",
+      "source_sha256": "5246c5d53f02b0c36b06df4cd7888bbd064213050995cf4304abcc462d3e7c73",
+      "src_ip": "203.0.113.21",
+      "src_port": null,
+      "src_role": "wan",
+      "status": null,
+      "subtype": "ips",
+      "time": "08:16:41",
+      "timestamp_quality": "normal",
+      "tz": "+0530",
+      "url": null,
+      "user": null,
+      "virus": null
+     },
+     {
+      "action": "dropped",
+      "app": null,
+      "app_risk": null,
+      "attack": "HTTP.Path.Traversal",
+      "attack_id": "15004",
+      "byte_offset": 30213,
+      "canonical_sha256": "0b3de4e3db0e991a8480aa9c5ce08955",
+      "category": null,
+      "date": "2027-01-15",
+      "dst_ip": "10.20.0.200",
+      "dst_port": 443,
+      "dst_role": "dmz",
+      "event_type": "utm",
+      "event_utc": "2027-01-15T08:16:44Z",
+      "evidence_id": "ev-b77b9fb32fe3193b950dddd7",
+      "hostname": null,
+      "level": "alert",
+      "line": 88,
+      "logid": "0419016384",
+      "message": null,
+      "raw_sha256": "2d306894ff8f919e87fbe78530db86d1",
+      "service": "HTTPS",
+      "session_id": "2004",
+      "source_sha256": "5246c5d53f02b0c36b06df4cd7888bbd064213050995cf4304abcc462d3e7c73",
+      "src_ip": "203.0.113.21",
+      "src_port": null,
+      "src_role": "wan",
+      "status": null,
+      "subtype": "ips",
+      "time": "08:16:44",
+      "timestamp_quality": "normal",
+      "tz": "+0530",
+      "url": null,
+      "user": null,
+      "virus": null
+     },
+     {
+      "action": "dropped",
+      "app": null,
+      "app_risk": null,
+      "attack": "HTTP.Path.Traversal",
+      "attack_id": "15007",
+      "byte_offset": 31344,
+      "canonical_sha256": "554a59a37a31f6cdde6786379997a121",
+      "category": null,
+      "date": "2027-01-15",
+      "dst_ip": "10.20.0.200",
+      "dst_port": 443,
+      "dst_role": "dmz",
+      "event_type": "utm",
+      "event_utc": "2027-01-15T08:16:47Z",
+      "evidence_id": "ev-e756c5ad7af222a1f3e2f2a2",
+      "hostname": null,
+      "level": "alert",
+      "line": 91,
+      "logid": "0419016384",
+      "message": null,
+      "raw_sha256": "5eef91a67d9d7358ae4cfb6ae326736b",
+      "service": "HTTPS",
+      "session_id": "2007",
+      "source_sha256": "5246c5d53f02b0c36b06df4cd7888bbd064213050995cf4304abcc462d3e7c73",
+      "src_ip": "203.0.113.21",
+      "src_port": null,
+      "src_role": "wan",
+      "status": null,
+      "subtype": "ips",
+      "time": "08:16:47",
+      "timestamp_quality": "normal",
+      "tz": "+0530",
+      "url": null,
+      "user": null,
+      "virus": null
+     },
+     {
+      "action": "dropped",
+      "app": null,
+      "app_risk": null,
+      "attack": "HTTP.Path.Traversal",
+      "attack_id": "15010",
+      "byte_offset": 32475,
+      "canonical_sha256": "671c643680a7cafd776897aa16da7b85",
+      "category": null,
+      "date": "2027-01-15",
+      "dst_ip": "10.20.0.200",
+      "dst_port": 443,
+      "dst_role": "dmz",
+      "event_type": "utm",
+      "event_utc": "2027-01-15T08:16:50Z",
+      "evidence_id": "ev-8ab4a455f3f8a8b490c1019b",
+      "hostname": null,
+      "level": "alert",
+      "line": 94,
+      "logid": "0419016384",
+      "message": null,
+      "raw_sha256": "2dd8e90ee561452467ce5638c99fdd44",
+      "service": "HTTPS",
+      "session_id": "2010",
+      "source_sha256": "5246c5d53f02b0c36b06df4cd7888bbd064213050995cf4304abcc462d3e7c73",
+      "src_ip": "203.0.113.21",
+      "src_port": null,
+      "src_role": "wan",
+      "status": null,
+      "subtype": "ips",
+      "time": "08:16:50",
+      "timestamp_quality": "normal",
+      "tz": "+0530",
+      "url": null,
+      "user": null,
+      "virus": null
+     },
+     {
+      "action": "dropped",
+      "app": null,
+      "app_risk": null,
+      "attack": "HTTP.Path.Traversal",
+      "attack_id": "15013",
+      "byte_offset": 33606,
+      "canonical_sha256": "c7aeae7710ad38a5f862fa83bcf8eb2e",
+      "category": null,
+      "date": "2027-01-15",
+      "dst_ip": "10.20.0.200",
+      "dst_port": 443,
+      "dst_role": "dmz",
+      "event_type": "utm",
+      "event_utc": "2027-01-15T08:16:53Z",
+      "evidence_id": "ev-7a4801a220b929914726bc2f",
+      "hostname": null,
+      "level": "alert",
+      "line": 97,
+      "logid": "0419016384",
+      "message": null,
+      "raw_sha256": "550dae8fb3e6c489fb4e9e8dc9d4cda0",
+      "service": "HTTPS",
+      "session_id": "2013",
+      "source_sha256": "5246c5d53f02b0c36b06df4cd7888bbd064213050995cf4304abcc462d3e7c73",
+      "src_ip": "203.0.113.21",
+      "src_port": null,
+      "src_role": "wan",
+      "status": null,
+      "subtype": "ips",
+      "time": "08:16:53",
+      "timestamp_quality": "normal",
+      "tz": "+0530",
+      "url": null,
+      "user": null,
+      "virus": null
+     },
+     {
+      "action": "dropped",
+      "app": null,
+      "app_risk": null,
+      "attack": "HTTP.URI.XSS.Attack",
+      "attack_id": "15002",
+      "byte_offset": 29458,
+      "canonical_sha256": "ca126ad056129e52d90db778da9761af",
+      "category": null,
+      "date": "2027-01-15",
+      "dst_ip": "10.20.0.200",
+      "dst_port": 443,
+      "dst_role": "dmz",
+      "event_type": "utm",
+      "event_utc": "2027-01-15T08:16:42Z",
+      "evidence_id": "ev-9795355d17f37929a6d67598",
+      "hostname": null,
+      "level": "alert",
+      "line": 86,
+      "logid": "0419016384",
+      "message": null,
+      "raw_sha256": "12f85e6944587dce7c49496aaf40812f",
+      "service": "HTTPS",
+      "session_id": "2002",
+      "source_sha256": "5246c5d53f02b0c36b06df4cd7888bbd064213050995cf4304abcc462d3e7c73",
+      "src_ip": "203.0.113.22",
+      "src_port": null,
+      "src_role": "wan",
+      "status": null,
+      "subtype": "ips",
+      "time": "08:16:42",
+      "timestamp_quality": "normal",
+      "tz": "+0530",
+      "url": null,
+      "user": null,
+      "virus": null
+     },
+     {
+      "action": "dropped",
+      "app": null,
+      "app_risk": null,
+      "attack": "HTTP.URI.XSS.Attack",
+      "attack_id": "15005",
+      "byte_offset": 30589,
+      "canonical_sha256": "8973330203238ee67510f7019aaac392",
+      "category": null,
+      "date": "2027-01-15",
+      "dst_ip": "10.20.0.200",
+      "dst_port": 443,
+      "dst_role": "dmz",
+      "event_type": "utm",
+      "event_utc": "2027-01-15T08:16:45Z",
+      "evidence_id": "ev-6db15019f88a4baeb47f81f2",
+      "hostname": null,
+      "level": "alert",
+      "line": 89,
+      "logid": "0419016384",
+      "message": null,
+      "raw_sha256": "67852e22bd70e9047248099789506515",
+      "service": "HTTPS",
+      "session_id": "2005",
+      "source_sha256": "5246c5d53f02b0c36b06df4cd7888bbd064213050995cf4304abcc462d3e7c73",
+      "src_ip": "203.0.113.22",
+      "src_port": null,
+      "src_role": "wan",
+      "status": null,
+      "subtype": "ips",
+      "time": "08:16:45",
+      "timestamp_quality": "normal",
+      "tz": "+0530",
+      "url": null,
+      "user": null,
+      "virus": null
+     },
+     {
+      "action": "dropped",
+      "app": null,
+      "app_risk": null,
+      "attack": "HTTP.URI.XSS.Attack",
+      "attack_id": "15008",
+      "byte_offset": 31720,
+      "canonical_sha256": "e5cdd8c1fc18d2c792cd0f72f5f8ff6b",
+      "category": null,
+      "date": "2027-01-15",
+      "dst_ip": "10.20.0.200",
+      "dst_port": 443,
+      "dst_role": "dmz",
+      "event_type": "utm",
+      "event_utc": "2027-01-15T08:16:48Z",
+      "evidence_id": "ev-b9f869b5d707b2f4ba8612c3",
+      "hostname": null,
+      "level": "alert",
+      "line": 92,
+      "logid": "0419016384",
+      "message": null,
+      "raw_sha256": "ae66b90e31e8cb2ca6f13dbc467a0931",
+      "service": "HTTPS",
+      "session_id": "2008",
+      "source_sha256": "5246c5d53f02b0c36b06df4cd7888bbd064213050995cf4304abcc462d3e7c73",
+      "src_ip": "203.0.113.22",
+      "src_port": null,
+      "src_role": "wan",
+      "status": null,
+      "subtype": "ips",
+      "time": "08:16:48",
+      "timestamp_quality": "normal",
+      "tz": "+0530",
+      "url": null,
+      "user": null,
+      "virus": null
+     },
+     {
+      "action": "dropped",
+      "app": null,
+      "app_risk": null,
+      "attack": "HTTP.URI.XSS.Attack",
+      "attack_id": "15011",
+      "byte_offset": 32851,
+      "canonical_sha256": "8df630d7697c6254d516c0200fbe0fd2",
+      "category": null,
+      "date": "2027-01-15",
+      "dst_ip": "10.20.0.200",
+      "dst_port": 443,
+      "dst_role": "dmz",
+      "event_type": "utm",
+      "event_utc": "2027-01-15T08:16:51Z",
+      "evidence_id": "ev-69b8b5c38d60ea093bfb9a56",
+      "hostname": null,
+      "level": "alert",
+      "line": 95,
+      "logid": "0419016384",
+      "message": null,
+      "raw_sha256": "c4fd6931feb97299540a69f1c389414d",
+      "service": "HTTPS",
+      "session_id": "2011",
+      "source_sha256": "5246c5d53f02b0c36b06df4cd7888bbd064213050995cf4304abcc462d3e7c73",
+      "src_ip": "203.0.113.22",
+      "src_port": null,
+      "src_role": "wan",
+      "status": null,
+      "subtype": "ips",
+      "time": "08:16:51",
+      "timestamp_quality": "normal",
+      "tz": "+0530",
+      "url": null,
+      "user": null,
+      "virus": null
+     },
+     {
+      "action": "dropped",
+      "app": null,
+      "app_risk": null,
+      "attack": "HTTP.URI.XSS.Attack",
+      "attack_id": "15014",
+      "byte_offset": 33982,
+      "canonical_sha256": "0bb26dc5af5ecd80a9d036210990b6b8",
+      "category": null,
+      "date": "2027-01-15",
+      "dst_ip": "10.20.0.200",
+      "dst_port": 443,
+      "dst_role": "dmz",
+      "event_type": "utm",
+      "event_utc": "2027-01-15T08:16:54Z",
+      "evidence_id": "ev-2ec0c58078d3dea88bc6beda",
+      "hostname": null,
+      "level": "alert",
+      "line": 98,
+      "logid": "0419016384",
+      "message": null,
+      "raw_sha256": "b94b03f2241415266ebd530a0bcdaeed",
+      "service": "HTTPS",
+      "session_id": "2014",
+      "source_sha256": "5246c5d53f02b0c36b06df4cd7888bbd064213050995cf4304abcc462d3e7c73",
+      "src_ip": "203.0.113.22",
+      "src_port": null,
+      "src_role": "wan",
+      "status": null,
+      "subtype": "ips",
+      "time": "08:16:54",
+      "timestamp_quality": "normal",
+      "tz": "+0530",
+      "url": null,
+      "user": null,
+      "virus": null
+     }
+    ],
+    "evidence_gaps": [
+     "Merged activity is cited by a sample of its evidence, not every record.",
+     "These logs have no payload or endpoint data, so success of an action cannot be proven from them."
+    ],
+    "related_incidents": [],
+    "response_simulation": {
+     "available": false,
+     "label": "SIMULATED — NO REAL SECURITY ACTION IS EXECUTED",
+     "missing": [
+      "Business service map for the affected systems",
+      "Available response controls for these systems",
+      "Asset ownership and criticality context"
+     ]
+    },
+    "root_cause": "HTTP.URI.SQL.Injection from 203.0.113.20 (20 events) (Concentrated multi-technique web attack on one target). Candidate root cause; not confirmed.",
+    "selected_path_id": "fhyp-6f5ae3febb0cc9e2",
+    "summary": {
+     "affected_devices": [
+      "10.20.0.200"
+     ],
+     "affected_identity": null,
+     "confidence": 0.8,
+     "critical_target": "10.20.0.200",
+     "detection_count": 1,
+     "entry_point": "203.0.113.20",
+     "evidence_count": 15,
+     "first_utc": "2027-01-15T08:16:40Z",
+     "incident_id": "finc-0526ba4f57ac",
+     "last_utc": "2027-01-15T08:17:39Z",
+     "merged_events": 60,
+     "risk": 0.8,
+     "run_id": "frun-8d438edb00df36e8",
+     "stages": [
+      "exploitation"
+     ],
+     "status": "unconfirmed",
+     "techniques": [
+      "T1190"
+     ],
+     "timestamp_quality": "normal",
+     "title": "Concentrated multi-technique web attack on one target"
+    },
+    "timeline": [
+     {
+      "basis": "observed",
+      "detail": "Concentrated multi-technique web attack on one target",
+      "detection_id": "fdet-3afaf7d5231488bd",
+      "evidence_refs": [
+       "ev-7090074172dcdc0cdd5309f1",
+       "ev-81083a6b2db6fcccb7568553",
+       "ev-8e745ade9716e31b43fde7af",
+       "ev-ab9bbafce5157b79fbe33a32",
+       "ev-0a31a9bad83f113f064bd0da"
+      ],
+      "order": 0,
+      "stage": "exploitation",
+      "timestamp_quality": "normal",
+      "title": "HTTP.URI.SQL.Injection from 203.0.113.20 (20 events)",
+      "utc": "2027-01-15T08:16:40Z"
+     },
+     {
+      "basis": "observed",
+      "detail": "Concentrated multi-technique web attack on one target",
+      "detection_id": "fdet-3afaf7d5231488bd",
+      "evidence_refs": [
+       "ev-3deaf3f2b3636f28b150256b",
+       "ev-b77b9fb32fe3193b950dddd7",
+       "ev-e756c5ad7af222a1f3e2f2a2",
+       "ev-8ab4a455f3f8a8b490c1019b",
+       "ev-7a4801a220b929914726bc2f"
+      ],
+      "order": 1,
+      "stage": "exploitation",
+      "timestamp_quality": "normal",
+      "title": "HTTP.Path.Traversal from 203.0.113.21 (20 events)",
+      "utc": "2027-01-15T08:16:41Z"
+     },
+     {
+      "basis": "observed",
+      "detail": "Concentrated multi-technique web attack on one target",
+      "detection_id": "fdet-3afaf7d5231488bd",
+      "evidence_refs": [
+       "ev-9795355d17f37929a6d67598",
+       "ev-6db15019f88a4baeb47f81f2",
+       "ev-b9f869b5d707b2f4ba8612c3",
+       "ev-69b8b5c38d60ea093bfb9a56",
+       "ev-2ec0c58078d3dea88bc6beda"
+      ],
+      "order": 2,
+      "stage": "exploitation",
+      "timestamp_quality": "normal",
+      "title": "HTTP.URI.XSS.Attack from 203.0.113.22 (20 events)",
+      "utc": "2027-01-15T08:16:42Z"
+     }
+    ],
+    "uncertainty_margin": 0.567
+   },
+   "status": 200
+  },
+  "GET /api/v1/ps2/incidents/finc-06dbcd7d8183/graph?run_id=frun-8d438edb00df36e8": {
+   "body": {
+    "edges": [
+     {
+      "classification": "inferred",
+      "components": [
+       {
+        "detail": "10.1.0.44",
+        "name": "entity_continuity",
+        "value": 1.0,
+        "weight": 0.35
+       },
+       {
+        "detail": "repeated_malware",
+        "name": "same_detection",
+        "value": 0.0,
+        "weight": 0.25
+       },
+       {
+        "detail": "time between steps; not used to link on its own",
+        "name": "gap_seconds",
+        "value": 100.0,
+        "weight": 0.0
+       }
+      ],
+      "confidence": 0.75,
+      "contradictions": [],
+      "edge_id": "fedge-12ebeea1621bb7c3",
+      "evidence_refs": [
+       "ev-08eaca15da4c7f49df43ddcc",
+       "ev-1801e9a6f8d9db3a55dc968f",
+       "ev-aaa3231fe09530c448e237e4",
+       "ev-b4f14b8600219e7e590bbcd5",
+       "ev-bb823635a9601ec680373185",
+       "ev-cc6555c6c13d9a75ee5655e0"
+      ],
+      "first_utc": "2027-01-15T08:00:00Z",
+      "last_utc": "2027-01-15T08:01:40Z",
+      "missing_evidence": false,
+      "on_selected_path": true,
+      "relation": "next_step",
+      "rule": "shared_entity_sequence",
+      "rule_version": "halt.firex.graph/1.0",
+      "source": "step:fdet-69f27285ef14777e:0",
+      "target": "step:fdet-2e9aa05295d60bd1:1"
+     },
+     {
+      "classification": "observed",
+      "components": [],
+      "confidence": 1.0,
+      "contradictions": [],
+      "edge_id": "fedge-14408ba2e7882830",
+      "evidence_refs": [
+       "ev-bb823635a9601ec680373185",
+       "ev-aaa3231fe09530c448e237e4",
+       "ev-1801e9a6f8d9db3a55dc968f",
+       "ev-54c6fb3a83c36603f5a105ec",
+       "ev-3ff104bbd6022e023495abb5"
+      ],
+      "first_utc": "2027-01-15T08:00:00Z",
+      "last_utc": "2027-01-15T08:00:00Z",
+      "missing_evidence": false,
+      "on_selected_path": false,
+      "relation": "involves",
+      "rule": "involves",
+      "rule_version": "halt.firex.graph/1.0",
+      "source": "step:fdet-69f27285ef14777e:0",
+      "target": "entity:ip:10.1.0.44"
+     },
+     {
+      "classification": "observed",
+      "components": [],
+      "confidence": 1.0,
+      "contradictions": [],
+      "edge_id": "fedge-14f5012bb87f35ad",
+      "evidence_refs": [
+       "ev-f160c7d3d1e9363b83043ca0"
+      ],
+      "first_utc": "2027-01-15T07:52:23Z",
+      "last_utc": "2027-01-15T07:52:23Z",
+      "missing_evidence": false,
+      "on_selected_path": false,
+      "relation": "also_recorded",
+      "rule": "also_recorded",
+      "rule_version": "halt.firex.graph/1.0",
+      "source": "entity:ip:10.1.0.44",
+      "target": "context:b11aa0fc22b0b18a"
+     },
+     {
+      "classification": "observed",
+      "components": [],
+      "confidence": 1.0,
+      "contradictions": [],
+      "edge_id": "fedge-3c1277f83d6a5db5",
+      "evidence_refs": [
+       "ev-adb1177d506653c468ed0b03"
+      ],
+      "first_utc": "2027-01-15T08:00:06Z",
+      "last_utc": "2027-01-15T08:00:06Z",
+      "missing_evidence": false,
+      "on_selected_path": false,
+      "relation": "also_recorded",
+      "rule": "also_recorded",
+      "rule_version": "halt.firex.graph/1.0",
+      "source": "entity:ip:10.1.0.44",
+      "target": "context:6fb578469b7fda40"
+     },
+     {
+      "classification": "observed",
+      "components": [],
+      "confidence": 1.0,
+      "contradictions": [],
+      "edge_id": "fedge-4bccce376be0d3f0",
+      "evidence_refs": [
+       "ev-bb823635a9601ec680373185"
+      ],
+      "first_utc": "2027-01-15T08:00:00Z",
+      "last_utc": "2027-01-15T08:00:00Z",
+      "missing_evidence": false,
+      "on_selected_path": false,
+      "relation": "also_recorded",
+      "rule": "also_recorded",
+      "rule_version": "halt.firex.graph/1.0",
+      "source": "entity:ip:10.1.0.44",
+      "target": "context:7647233f5f445376"
+     },
+     {
+      "classification": "observed",
+      "components": [],
+      "confidence": 1.0,
+      "contradictions": [],
+      "edge_id": "fedge-4f130c322e5bd834",
+      "evidence_refs": [
+       "ev-aaa3231fe09530c448e237e4"
+      ],
+      "first_utc": "2027-01-15T08:00:01Z",
+      "last_utc": "2027-01-15T08:00:01Z",
+      "missing_evidence": false,
+      "on_selected_path": false,
+      "relation": "also_recorded",
+      "rule": "also_recorded",
+      "rule_version": "halt.firex.graph/1.0",
+      "source": "entity:ip:10.1.0.44",
+      "target": "context:a8d292b389fe0680"
+     },
+     {
+      "classification": "observed",
+      "components": [],
+      "confidence": 1.0,
+      "contradictions": [],
+      "edge_id": "fedge-61ed2bae72e011d7",
+      "evidence_refs": [
+       "ev-1801e9a6f8d9db3a55dc968f"
+      ],
+      "first_utc": "2027-01-15T08:00:02Z",
+      "last_utc": "2027-01-15T08:00:02Z",
+      "missing_evidence": false,
+      "on_selected_path": false,
+      "relation": "also_recorded",
+      "rule": "also_recorded",
+      "rule_version": "halt.firex.graph/1.0",
+      "source": "entity:ip:10.1.0.44",
+      "target": "context:6bd0044fecfcf306"
+     },
+     {
+      "classification": "observed",
+      "components": [],
+      "confidence": 1.0,
+      "contradictions": [],
+      "edge_id": "fedge-627cab864347a885",
+      "evidence_refs": [
+       "ev-8690ee5e5c85c9dd2ec31c58"
+      ],
+      "first_utc": "2027-01-15T08:00:12Z",
+      "last_utc": "2027-01-15T08:00:12Z",
+      "missing_evidence": false,
+      "on_selected_path": false,
+      "relation": "also_recorded",
+      "rule": "also_recorded",
+      "rule_version": "halt.firex.graph/1.0",
+      "source": "entity:ip:10.1.0.44",
+      "target": "context:2166f9cdcdbcd28b"
+     },
+     {
+      "classification": "observed",
+      "components": [],
+      "confidence": 1.0,
+      "contradictions": [],
+      "edge_id": "fedge-6bf874cbab4a9556",
+      "evidence_refs": [
+       "ev-5dbf2ec74a841bfd9ec27735"
+      ],
+      "first_utc": "2027-01-15T08:00:05Z",
+      "last_utc": "2027-01-15T08:00:05Z",
+      "missing_evidence": false,
+      "on_selected_path": false,
+      "relation": "also_recorded",
+      "rule": "also_recorded",
+      "rule_version": "halt.firex.graph/1.0",
+      "source": "entity:ip:10.1.0.44",
+      "target": "context:76593449199b1248"
+     },
+     {
+      "classification": "reachable",
+      "components": [],
+      "confidence": 0.302,
+      "contradictions": [],
+      "edge_id": "fedge-744f44296f19ee19",
+      "evidence_refs": [
+       "ev-77cffd3cdda4fad97b6afc6a"
+      ],
+      "first_utc": null,
+      "last_utc": null,
+      "missing_evidence": false,
+      "on_selected_path": false,
+      "relation": "could_reach",
+      "rule": "could_reach",
+      "rule_version": "halt.firex.graph/1.0",
+      "source": "entity:ip:10.1.0.44",
+      "target": "reach:10.30.0.9"
+     },
+     {
+      "classification": "observed",
+      "components": [],
+      "confidence": 1.0,
+      "contradictions": [],
+      "edge_id": "fedge-81c8452877f061cb",
+      "evidence_refs": [
+       "ev-28bb0e3eeb4290fcb6d1662a"
+      ],
+      "first_utc": "2027-01-15T08:00:07Z",
+      "last_utc": "2027-01-15T08:00:07Z",
+      "missing_evidence": false,
+      "on_selected_path": false,
+      "relation": "also_recorded",
+      "rule": "also_recorded",
+      "rule_version": "halt.firex.graph/1.0",
+      "source": "entity:ip:10.1.0.44",
+      "target": "context:286643f5bc5ca93e"
+     },
+     {
+      "classification": "observed",
+      "components": [],
+      "confidence": 1.0,
+      "contradictions": [],
+      "edge_id": "fedge-9a82afd9d38d6a3d",
+      "evidence_refs": [
+       "ev-b0216958ae7b85371262c34a"
+      ],
+      "first_utc": "2027-01-15T08:00:10Z",
+      "last_utc": "2027-01-15T08:00:10Z",
+      "missing_evidence": false,
+      "on_selected_path": false,
+      "relation": "also_recorded",
+      "rule": "also_recorded",
+      "rule_version": "halt.firex.graph/1.0",
+      "source": "entity:ip:10.1.0.44",
+      "target": "context:7180cf35db60c377"
+     },
+     {
+      "classification": "observed",
+      "components": [],
+      "confidence": 1.0,
+      "contradictions": [],
+      "edge_id": "fedge-bf81ab5d73d67b68",
+      "evidence_refs": [
+       "ev-cc6555c6c13d9a75ee5655e0",
+       "ev-08eaca15da4c7f49df43ddcc",
+       "ev-b4f14b8600219e7e590bbcd5",
+       "ev-b56338cb340e4c85d30abdd3"
+      ],
+      "first_utc": "2027-01-15T08:01:40Z",
+      "last_utc": "2027-01-15T08:01:40Z",
+      "missing_evidence": false,
+      "on_selected_path": false,
+      "relation": "targets",
+      "rule": "targets",
+      "rule_version": "halt.firex.graph/1.0",
+      "source": "step:fdet-2e9aa05295d60bd1:1",
+      "target": "entity:ip:198.51.100.34"
+     },
+     {
+      "classification": "observed",
+      "components": [],
+      "confidence": 1.0,
+      "contradictions": [],
+      "edge_id": "fedge-cdfd72a1fce5da23",
+      "evidence_refs": [
+       "ev-3b1dc45d4b8a5dca7f0d8bbd"
+      ],
+      "first_utc": "2027-01-15T08:00:11Z",
+      "last_utc": "2027-01-15T08:00:11Z",
+      "missing_evidence": false,
+      "on_selected_path": false,
+      "relation": "also_recorded",
+      "rule": "also_recorded",
+      "rule_version": "halt.firex.graph/1.0",
+      "source": "entity:ip:10.1.0.44",
+      "target": "context:a37fabdb3d9d0d3c"
+     },
+     {
+      "classification": "observed",
+      "components": [],
+      "confidence": 1.0,
+      "contradictions": [],
+      "edge_id": "fedge-db1f40d271f002d0",
+      "evidence_refs": [
+       "ev-98573ba487072aaa3ea1987a"
+      ],
+      "first_utc": "2027-01-15T08:00:09Z",
+      "last_utc": "2027-01-15T08:00:09Z",
+      "missing_evidence": false,
+      "on_selected_path": false,
+      "relation": "also_recorded",
+      "rule": "also_recorded",
+      "rule_version": "halt.firex.graph/1.0",
+      "source": "entity:ip:10.1.0.44",
+      "target": "context:ff801c973d4a9870"
+     },
+     {
+      "classification": "observed",
+      "components": [],
+      "confidence": 1.0,
+      "contradictions": [],
+      "edge_id": "fedge-e55ea856a53c9694",
+      "evidence_refs": [
+       "ev-77cffd3cdda4fad97b6afc6a"
+      ],
+      "first_utc": "2027-01-15T08:00:50Z",
+      "last_utc": "2027-01-15T08:00:50Z",
+      "missing_evidence": false,
+      "on_selected_path": false,
+      "relation": "also_recorded",
+      "rule": "also_recorded",
+      "rule_version": "halt.firex.graph/1.0",
+      "source": "entity:ip:10.1.0.44",
+      "target": "context:0d7f73672b5d83c1"
+     },
+     {
+      "classification": "observed",
+      "components": [],
+      "confidence": 1.0,
+      "contradictions": [],
+      "edge_id": "fedge-e5b3d00c6a274284",
+      "evidence_refs": [
+       "ev-54c6fb3a83c36603f5a105ec"
+      ],
+      "first_utc": "2027-01-15T08:00:03Z",
+      "last_utc": "2027-01-15T08:00:03Z",
+      "missing_evidence": false,
+      "on_selected_path": false,
+      "relation": "also_recorded",
+      "rule": "also_recorded",
+      "rule_version": "halt.firex.graph/1.0",
+      "source": "entity:ip:10.1.0.44",
+      "target": "context:a5b13f45c71189c9"
+     },
+     {
+      "classification": "observed",
+      "components": [],
+      "confidence": 1.0,
+      "contradictions": [],
+      "edge_id": "fedge-f1ec9b9df8d0f432",
+      "evidence_refs": [
+       "ev-87b25c3d7fa8eeffe902aa56"
+      ],
+      "first_utc": "2027-01-15T08:00:08Z",
+      "last_utc": "2027-01-15T08:00:08Z",
+      "missing_evidence": false,
+      "on_selected_path": false,
+      "relation": "also_recorded",
+      "rule": "also_recorded",
+      "rule_version": "halt.firex.graph/1.0",
+      "source": "entity:ip:10.1.0.44",
+      "target": "context:ebcbc8d8e5894f5d"
+     },
+     {
+      "classification": "observed",
+      "components": [],
+      "confidence": 1.0,
+      "contradictions": [],
+      "edge_id": "fedge-f61b003684cb1444",
+      "evidence_refs": [
+       "ev-8c053e343cafb0ce2be4eba8"
+      ],
+      "first_utc": "2027-01-15T08:00:13Z",
+      "last_utc": "2027-01-15T08:00:13Z",
+      "missing_evidence": false,
+      "on_selected_path": false,
+      "relation": "also_recorded",
+      "rule": "also_recorded",
+      "rule_version": "halt.firex.graph/1.0",
+      "source": "entity:ip:10.1.0.44",
+      "target": "context:f1c34c5e3a458ad5"
+     },
+     {
+      "classification": "observed",
+      "components": [],
+      "confidence": 1.0,
+      "contradictions": [],
+      "edge_id": "fedge-faf3ee6d0063cf42",
+      "evidence_refs": [
+       "ev-cc6555c6c13d9a75ee5655e0",
+       "ev-08eaca15da4c7f49df43ddcc",
+       "ev-b4f14b8600219e7e590bbcd5",
+       "ev-b56338cb340e4c85d30abdd3"
+      ],
+      "first_utc": "2027-01-15T08:01:40Z",
+      "last_utc": "2027-01-15T08:01:40Z",
+      "missing_evidence": false,
+      "on_selected_path": false,
+      "relation": "involves",
+      "rule": "involves",
+      "rule_version": "halt.firex.graph/1.0",
+      "source": "step:fdet-2e9aa05295d60bd1:1",
+      "target": "entity:ip:10.1.0.44"
+     },
+     {
+      "classification": "observed",
+      "components": [],
+      "confidence": 1.0,
+      "contradictions": [],
+      "edge_id": "fedge-fc8bacebb01f98ac",
+      "evidence_refs": [
+       "ev-9df74680b3ff449ecb598840"
+      ],
+      "first_utc": "2027-01-15T08:00:14Z",
+      "last_utc": "2027-01-15T08:00:14Z",
+      "missing_evidence": false,
+      "on_selected_path": false,
+      "relation": "also_recorded",
+      "rule": "also_recorded",
+      "rule_version": "halt.firex.graph/1.0",
+      "source": "entity:ip:10.1.0.44",
+      "target": "context:7347eacba5043abc"
+     },
+     {
+      "classification": "observed",
+      "components": [],
+      "confidence": 1.0,
+      "contradictions": [],
+      "edge_id": "fedge-fcb9b0cef58e6476",
+      "evidence_refs": [
+       "ev-3ff104bbd6022e023495abb5"
+      ],
+      "first_utc": "2027-01-15T08:00:04Z",
+      "last_utc": "2027-01-15T08:00:04Z",
+      "missing_evidence": false,
+      "on_selected_path": false,
+      "relation": "also_recorded",
+      "rule": "also_recorded",
+      "rule_version": "halt.firex.graph/1.0",
+      "source": "entity:ip:10.1.0.44",
+      "target": "context:9756d8122c00377b"
+     }
+    ],
+    "graph_hash": "1f54bda10c09b2cfaf34edf6c8d8518d01142779b57057657d33cfe508981149",
+    "incident_id": "finc-06dbcd7d8183",
+    "node_cap": 120,
+    "nodes": [
+     {
+      "attributes": {},
+      "count": 1,
+      "detection_id": null,
+      "evidence_refs": [
+       "ev-bb823635a9601ec680373185",
+       "ev-aaa3231fe09530c448e237e4",
+       "ev-1801e9a6f8d9db3a55dc968f",
+       "ev-54c6fb3a83c36603f5a105ec",
+       "ev-3ff104bbd6022e023495abb5"
+      ],
+      "first_utc": null,
+      "is_context": false,
+      "kind": "host",
+      "label": "10.1.0.44",
+      "last_utc": null,
+      "layer": "endpoint",
+      "node_id": "entity:ip:10.1.0.44",
+      "on_selected_path": false,
+      "order": 0,
+      "stage": null
+     },
+     {
+      "attributes": {
+       "technique": "T1021",
+       "technique_name": "Remote Services"
+      },
+      "count": 15,
+      "detection_id": "fdet-69f27285ef14777e",
+      "evidence_refs": [
+       "ev-bb823635a9601ec680373185",
+       "ev-aaa3231fe09530c448e237e4",
+       "ev-1801e9a6f8d9db3a55dc968f",
+       "ev-54c6fb3a83c36603f5a105ec",
+       "ev-3ff104bbd6022e023495abb5",
+       "ev-5dbf2ec74a841bfd9ec27735",
+       "ev-adb1177d506653c468ed0b03",
+       "ev-28bb0e3eeb4290fcb6d1662a",
+       "ev-87b25c3d7fa8eeffe902aa56",
+       "ev-98573ba487072aaa3ea1987a"
+      ],
+      "first_utc": "2027-01-15T08:00:00Z",
+      "is_context": false,
+      "kind": "burst",
+      "label": "SMB to 15 internal hosts",
+      "last_utc": "2027-01-15T08:00:14Z",
+      "layer": "endpoint",
+      "node_id": "step:fdet-69f27285ef14777e:0",
+      "on_selected_path": true,
+      "order": 0,
+      "stage": "lateral_movement"
+     },
+     {
+      "attributes": {},
+      "count": 1,
+      "detection_id": null,
+      "evidence_refs": [
+       "ev-cc6555c6c13d9a75ee5655e0",
+       "ev-08eaca15da4c7f49df43ddcc",
+       "ev-b4f14b8600219e7e590bbcd5",
+       "ev-b56338cb340e4c85d30abdd3"
+      ],
+      "first_utc": null,
+      "is_context": false,
+      "kind": "ip",
+      "label": "198.51.100.34",
+      "last_utc": null,
+      "layer": "external",
+      "node_id": "entity:ip:198.51.100.34",
+      "on_selected_path": false,
+      "order": 1,
+      "stage": null
+     },
+     {
+      "attributes": {
+       "technique": "T1105",
+       "technique_name": "Ingress Tool Transfer"
+      },
+      "count": 4,
+      "detection_id": "fdet-2e9aa05295d60bd1",
+      "evidence_refs": [
+       "ev-cc6555c6c13d9a75ee5655e0",
+       "ev-08eaca15da4c7f49df43ddcc",
+       "ev-b4f14b8600219e7e590bbcd5",
+       "ev-b56338cb340e4c85d30abdd3"
+      ],
+      "first_utc": "2027-01-15T08:01:40Z",
+      "is_context": false,
+      "kind": "burst",
+      "label": "Malware detections to 198.51.100.34: W0/x!tr, W3/x!tr, W1/x!tr, W2/x!tr",
+      "last_utc": "2027-01-15T08:04:40Z",
+      "layer": "endpoint",
+      "node_id": "step:fdet-2e9aa05295d60bd1:1",
+      "on_selected_path": true,
+      "order": 1,
+      "stage": "delivery"
+     },
+     {
+      "attributes": {
+       "service": "HTTPS"
+      },
+      "count": 1,
+      "detection_id": null,
+      "evidence_refs": [
+       "ev-f160c7d3d1e9363b83043ca0"
+      ],
+      "first_utc": "2027-01-15T07:52:23Z",
+      "is_context": true,
+      "kind": "event",
+      "label": "1 traffic/forward accept to 198.51.43.44",
+      "last_utc": "2027-01-15T07:52:23Z",
+      "layer": "external",
+      "node_id": "context:b11aa0fc22b0b18a",
+      "on_selected_path": false,
+      "order": 2,
+      "stage": null
+     },
+     {
+      "attributes": {
+       "service": "SMB"
+      },
+      "count": 1,
+      "detection_id": null,
+      "evidence_refs": [
+       "ev-bb823635a9601ec680373185"
+      ],
+      "first_utc": "2027-01-15T08:00:00Z",
+      "is_context": true,
+      "kind": "event",
+      "label": "1 traffic/forward accept to 10.20.0.1",
+      "last_utc": "2027-01-15T08:00:00Z",
+      "layer": "endpoint",
+      "node_id": "context:7647233f5f445376",
+      "on_selected_path": false,
+      "order": 3,
+      "stage": null
+     },
+     {
+      "attributes": {
+       "hypothetical": true
+      },
+      "count": 1,
+      "detection_id": null,
+      "evidence_refs": [
+       "ev-77cffd3cdda4fad97b6afc6a"
+      ],
+      "first_utc": null,
+      "is_context": false,
+      "kind": "host",
+      "label": "10.30.0.9",
+      "last_utc": null,
+      "layer": "application",
+      "node_id": "reach:10.30.0.9",
+      "on_selected_path": false,
+      "order": 3,
+      "stage": null
+     },
+     {
+      "attributes": {
+       "service": "SMB"
+      },
+      "count": 1,
+      "detection_id": null,
+      "evidence_refs": [
+       "ev-aaa3231fe09530c448e237e4"
+      ],
+      "first_utc": "2027-01-15T08:00:01Z",
+      "is_context": true,
+      "kind": "event",
+      "label": "1 traffic/forward accept to 10.20.0.2",
+      "last_utc": "2027-01-15T08:00:01Z",
+      "layer": "endpoint",
+      "node_id": "context:a8d292b389fe0680",
+      "on_selected_path": false,
+      "order": 4,
+      "stage": null
+     },
+     {
+      "attributes": {
+       "service": "SMB"
+      },
+      "count": 1,
+      "detection_id": null,
+      "evidence_refs": [
+       "ev-1801e9a6f8d9db3a55dc968f"
+      ],
+      "first_utc": "2027-01-15T08:00:02Z",
+      "is_context": true,
+      "kind": "event",
+      "label": "1 traffic/forward accept to 10.20.0.3",
+      "last_utc": "2027-01-15T08:00:02Z",
+      "layer": "endpoint",
+      "node_id": "context:6bd0044fecfcf306",
+      "on_selected_path": false,
+      "order": 5,
+      "stage": null
+     },
+     {
+      "attributes": {
+       "service": "SMB"
+      },
+      "count": 1,
+      "detection_id": null,
+      "evidence_refs": [
+       "ev-54c6fb3a83c36603f5a105ec"
+      ],
+      "first_utc": "2027-01-15T08:00:03Z",
+      "is_context": true,
+      "kind": "event",
+      "label": "1 traffic/forward accept to 10.20.0.4",
+      "last_utc": "2027-01-15T08:00:03Z",
+      "layer": "endpoint",
+      "node_id": "context:a5b13f45c71189c9",
+      "on_selected_path": false,
+      "order": 6,
+      "stage": null
+     },
+     {
+      "attributes": {
+       "service": "SMB"
+      },
+      "count": 1,
+      "detection_id": null,
+      "evidence_refs": [
+       "ev-3ff104bbd6022e023495abb5"
+      ],
+      "first_utc": "2027-01-15T08:00:04Z",
+      "is_context": true,
+      "kind": "event",
+      "label": "1 traffic/forward accept to 10.20.0.5",
+      "last_utc": "2027-01-15T08:00:04Z",
+      "layer": "endpoint",
+      "node_id": "context:9756d8122c00377b",
+      "on_selected_path": false,
+      "order": 7,
+      "stage": null
+     },
+     {
+      "attributes": {
+       "service": "SMB"
+      },
+      "count": 1,
+      "detection_id": null,
+      "evidence_refs": [
+       "ev-5dbf2ec74a841bfd9ec27735"
+      ],
+      "first_utc": "2027-01-15T08:00:05Z",
+      "is_context": true,
+      "kind": "event",
+      "label": "1 traffic/forward accept to 10.20.0.6",
+      "last_utc": "2027-01-15T08:00:05Z",
+      "layer": "endpoint",
+      "node_id": "context:76593449199b1248",
+      "on_selected_path": false,
+      "order": 8,
+      "stage": null
+     },
+     {
+      "attributes": {
+       "service": "SMB"
+      },
+      "count": 1,
+      "detection_id": null,
+      "evidence_refs": [
+       "ev-adb1177d506653c468ed0b03"
+      ],
+      "first_utc": "2027-01-15T08:00:06Z",
+      "is_context": true,
+      "kind": "event",
+      "label": "1 traffic/forward accept to 10.20.0.7",
+      "last_utc": "2027-01-15T08:00:06Z",
+      "layer": "endpoint",
+      "node_id": "context:6fb578469b7fda40",
+      "on_selected_path": false,
+      "order": 9,
+      "stage": null
+     },
+     {
+      "attributes": {
+       "service": "SMB"
+      },
+      "count": 1,
+      "detection_id": null,
+      "evidence_refs": [
+       "ev-28bb0e3eeb4290fcb6d1662a"
+      ],
+      "first_utc": "2027-01-15T08:00:07Z",
+      "is_context": true,
+      "kind": "event",
+      "label": "1 traffic/forward accept to 10.20.0.8",
+      "last_utc": "2027-01-15T08:00:07Z",
+      "layer": "endpoint",
+      "node_id": "context:286643f5bc5ca93e",
+      "on_selected_path": false,
+      "order": 10,
+      "stage": null
+     },
+     {
+      "attributes": {
+       "service": "SMB"
+      },
+      "count": 1,
+      "detection_id": null,
+      "evidence_refs": [
+       "ev-87b25c3d7fa8eeffe902aa56"
+      ],
+      "first_utc": "2027-01-15T08:00:08Z",
+      "is_context": true,
+      "kind": "event",
+      "label": "1 traffic/forward accept to 10.20.0.9",
+      "last_utc": "2027-01-15T08:00:08Z",
+      "layer": "endpoint",
+      "node_id": "context:ebcbc8d8e5894f5d",
+      "on_selected_path": false,
+      "order": 11,
+      "stage": null
+     },
+     {
+      "attributes": {
+       "service": "SMB"
+      },
+      "count": 1,
+      "detection_id": null,
+      "evidence_refs": [
+       "ev-98573ba487072aaa3ea1987a"
+      ],
+      "first_utc": "2027-01-15T08:00:09Z",
+      "is_context": true,
+      "kind": "event",
+      "label": "1 traffic/forward accept to 10.20.0.10",
+      "last_utc": "2027-01-15T08:00:09Z",
+      "layer": "endpoint",
+      "node_id": "context:ff801c973d4a9870",
+      "on_selected_path": false,
+      "order": 12,
+      "stage": null
+     },
+     {
+      "attributes": {
+       "service": "SMB"
+      },
+      "count": 1,
+      "detection_id": null,
+      "evidence_refs": [
+       "ev-b0216958ae7b85371262c34a"
+      ],
+      "first_utc": "2027-01-15T08:00:10Z",
+      "is_context": true,
+      "kind": "event",
+      "label": "1 traffic/forward accept to 10.20.0.11",
+      "last_utc": "2027-01-15T08:00:10Z",
+      "layer": "endpoint",
+      "node_id": "context:7180cf35db60c377",
+      "on_selected_path": false,
+      "order": 13,
+      "stage": null
+     },
+     {
+      "attributes": {
+       "service": "SMB"
+      },
+      "count": 1,
+      "detection_id": null,
+      "evidence_refs": [
+       "ev-3b1dc45d4b8a5dca7f0d8bbd"
+      ],
+      "first_utc": "2027-01-15T08:00:11Z",
+      "is_context": true,
+      "kind": "event",
+      "label": "1 traffic/forward accept to 10.20.0.12",
+      "last_utc": "2027-01-15T08:00:11Z",
+      "layer": "endpoint",
+      "node_id": "context:a37fabdb3d9d0d3c",
+      "on_selected_path": false,
+      "order": 14,
+      "stage": null
+     },
+     {
+      "attributes": {
+       "service": "SMB"
+      },
+      "count": 1,
+      "detection_id": null,
+      "evidence_refs": [
+       "ev-8690ee5e5c85c9dd2ec31c58"
+      ],
+      "first_utc": "2027-01-15T08:00:12Z",
+      "is_context": true,
+      "kind": "event",
+      "label": "1 traffic/forward accept to 10.20.0.13",
+      "last_utc": "2027-01-15T08:00:12Z",
+      "layer": "endpoint",
+      "node_id": "context:2166f9cdcdbcd28b",
+      "on_selected_path": false,
+      "order": 15,
+      "stage": null
+     },
+     {
+      "attributes": {
+       "service": "SMB"
+      },
+      "count": 1,
+      "detection_id": null,
+      "evidence_refs": [
+       "ev-8c053e343cafb0ce2be4eba8"
+      ],
+      "first_utc": "2027-01-15T08:00:13Z",
+      "is_context": true,
+      "kind": "event",
+      "label": "1 traffic/forward accept to 10.20.0.14",
+      "last_utc": "2027-01-15T08:00:13Z",
+      "layer": "endpoint",
+      "node_id": "context:f1c34c5e3a458ad5",
+      "on_selected_path": false,
+      "order": 16,
+      "stage": null
+     },
+     {
+      "attributes": {
+       "service": "SMB"
+      },
+      "count": 1,
+      "detection_id": null,
+      "evidence_refs": [
+       "ev-9df74680b3ff449ecb598840"
+      ],
+      "first_utc": "2027-01-15T08:00:14Z",
+      "is_context": true,
+      "kind": "event",
+      "label": "1 traffic/forward accept to 10.20.0.15",
+      "last_utc": "2027-01-15T08:00:14Z",
+      "layer": "endpoint",
+      "node_id": "context:7347eacba5043abc",
+      "on_selected_path": false,
+      "order": 17,
+      "stage": null
+     },
+     {
+      "attributes": {
+       "service": "HTTP"
+      },
+      "count": 1,
+      "detection_id": null,
+      "evidence_refs": [
+       "ev-77cffd3cdda4fad97b6afc6a"
+      ],
+      "first_utc": "2027-01-15T08:00:50Z",
+      "is_context": true,
+      "kind": "event",
+      "label": "1 traffic/forward accept to 10.30.0.9",
+      "last_utc": "2027-01-15T08:00:50Z",
+      "layer": "endpoint",
+      "node_id": "context:0d7f73672b5d83c1",
+      "on_selected_path": false,
+      "order": 18,
+      "stage": null
+     }
+    ],
+    "truncated": false
+   },
+   "status": 200
+  },
+  "GET /api/v1/ps2/incidents/finc-06dbcd7d8183/hypotheses?run_id=frun-8d438edb00df36e8": {
+   "body": {
+    "alternates": [
+     {
+      "components": [
+       {
+        "detail": "discounted because shared entities would be unexplained",
+        "name": "single_detection_share",
+        "value": 0.6,
+        "weight": 1.0
+       }
+      ],
+      "description": "Only “Internal SMB or RDP fan-out from one host” is one sequence. The others share an address or account by coincidence.",
+      "detection_ids": [
+       "fdet-69f27285ef14777e"
+      ],
+      "edge_ids": [],
+      "evidence_gaps": [
+       "Would need another reason for the shared entities."
+      ],
+      "hypothesis_id": "fhyp-e25fffab23edca2e",
+      "node_ids": [
+       "step:fdet-69f27285ef14777e:0"
+      ],
+      "rank": 2,
+      "score": 0.43,
+      "status": "alternate",
+      "title": "Unrelated activity sharing an entity"
+     },
+     {
+      "components": [
+       {
+        "detail": "the logs cannot rule this out without change or ticket records",
+        "name": "one_minus_confidence",
+        "value": 0.25,
+        "weight": 0.8
+       }
+      ],
+      "description": "An administrator tool or vulnerability scanner reaching many hosts.",
+      "detection_ids": [],
+      "edge_ids": [],
+      "evidence_gaps": [
+       "No change-management or ticket data is available to confirm or rule this out."
+      ],
+      "hypothesis_id": "fhyp-dc59ced656242da3",
+      "node_ids": [],
+      "rank": 3,
+      "score": 0.2,
+      "status": "alternate",
+      "title": "Benign explanation"
+     }
+    ],
+    "incident_id": "finc-06dbcd7d8183",
+    "selected": {
+     "components": [
+      {
+       "detail": "mean across detections",
+       "name": "rule_confidence",
+       "value": 0.75,
+       "weight": 0.55
+      },
+      {
+       "detail": "links with a shared entity",
+       "name": "entity_continuity",
+       "value": 1.0,
+       "weight": 0.25
+      },
+      {
+       "detail": "2 stages",
+       "name": "stage_coverage",
+       "value": 0.5,
+       "weight": 0.1
+      },
+      {
+       "detail": "records behind the path, capped at 500",
+       "name": "evidence_volume",
+       "value": 0.038,
+       "weight": 0.1
+      }
+     ],
+     "description": "The steps belong to one actor or chain, linked by shared accounts or addresses.",
+     "detection_ids": [
+      "fdet-69f27285ef14777e",
+      "fdet-2e9aa05295d60bd1"
+     ],
+     "edge_ids": [
+      "fedge-12ebeea1621bb7c3"
+     ],
+     "evidence_gaps": [
+      "Merged activity is cited by a sample of its evidence, not every record.",
+      "These logs have no payload or endpoint data, so success of an action cannot be proven from them."
+     ],
+     "hypothesis_id": "fhyp-a30b4b4c09273a36",
+     "node_ids": [
+      "step:fdet-69f27285ef14777e:0",
+      "step:fdet-2e9aa05295d60bd1:1"
+     ],
+     "rank": 1,
+     "score": 0.716,
+     "status": "selected",
+     "title": "One connected attack sequence"
+    },
+    "uncertainty_margin": 0.286
+   },
+   "status": 200
+  },
+  "GET /api/v1/ps2/incidents/finc-06dbcd7d8183/proof?run_id=frun-8d438edb00df36e8": {
+   "body": {
+    "receipt": {
+     "cited_evidence": [
+      "ev-08eaca15da4c7f49df43ddcc",
+      "ev-1801e9a6f8d9db3a55dc968f",
+      "ev-3ff104bbd6022e023495abb5",
+      "ev-54c6fb3a83c36603f5a105ec",
+      "ev-aaa3231fe09530c448e237e4",
+      "ev-b4f14b8600219e7e590bbcd5",
+      "ev-b56338cb340e4c85d30abdd3",
+      "ev-bb823635a9601ec680373185",
+      "ev-cc6555c6c13d9a75ee5655e0"
+     ],
+     "dataset_id": "fixture",
+     "detection_config_hash": "9a2dec75574992c8fe51e48a93a53e39778b231e7575534e8d32cb9c858c6236",
+     "deterministic_replay_id": "replay-3ef6e7b2ef5ecced459d18da",
+     "engine_version": "halt.firex.engine/1.0.0",
+     "evidence_coverage": 1.0,
+     "git_commit": "fixture",
+     "graph_hash": "1f54bda10c09b2cfaf34edf6c8d8518d01142779b57057657d33cfe508981149",
+     "incident_id": "finc-06dbcd7d8183",
+     "parser_version": "halt.firex.parser/1.0.0",
+     "processed_byte_range": [
+      0,
+      51343
+     ],
+     "receipt_id": "fixture",
+     "run_id": "frun-8d438edb00df36e8",
+     "schema_version": "halt.firex.proof/1.0",
+     "seal": "fixture",
+     "seal_algorithm": "sha256-canonical-json",
+     "selected_path_id": "fhyp-a30b4b4c09273a36",
+     "source_sha256": "5246c5d53f02b0c36b06df4cd7888bbd064213050995cf4304abcc462d3e7c73",
+     "status": "unconfirmed",
+     "uncertainty_margin": 0.286,
+     "unsupported_claims": 0
+    },
+    "verification": {
+     "expected": "fixture",
+     "recorded": "fixture",
+     "valid": true
+    }
+   },
+   "status": 200
+  },
+  "GET /api/v1/ps2/incidents/finc-06dbcd7d8183/reachability?run_id=frun-8d438edb00df36e8": {
+   "body": {
+    "incident_id": "finc-06dbcd7d8183",
+    "label": "Hypothetical: what could be reached next. This is not observed attacker activity.",
+    "limitations": [
+     "Based only on connections recorded in this log. No asset inventory or permissions data is available.",
+     "A recorded connection shows a network path, not that an attacker used it."
+    ],
+    "targets": [
+     {
+      "basis": "10.1.0.44 had 1 accepted HTTP connection(s) to this system.",
+      "confidence": 0.302,
+      "evidence_refs": [
+       "ev-77cffd3cdda4fad97b6afc6a"
+      ],
+      "hypothetical": true,
+      "layer": "endpoint",
+      "observed_connections": 1,
+      "target": "10.30.0.9",
+      "via": "10.1.0.44"
+     }
+    ]
+   },
+   "status": 200
+  },
+  "GET /api/v1/ps2/incidents/finc-06dbcd7d8183/story?run_id=frun-8d438edb00df36e8": {
+   "body": {
+    "checked_statements": 2,
+    "incident_id": "finc-06dbcd7d8183",
+    "reachable_next": "10.30.0.9 could be reached next. This is hypothetical.",
+    "statements": [
+     {
+      "evidence_ids": [
+       "ev-bb823635a9601ec680373185",
+       "ev-aaa3231fe09530c448e237e4",
+       "ev-1801e9a6f8d9db3a55dc968f",
+       "ev-54c6fb3a83c36603f5a105ec",
+       "ev-3ff104bbd6022e023495abb5"
+      ],
+      "kind": "observed",
+      "statement_id": "s1",
+      "text": "2027-01-15T08:00:00Z: SMB to 15 internal hosts."
+     },
+     {
+      "evidence_ids": [
+       "ev-cc6555c6c13d9a75ee5655e0",
+       "ev-08eaca15da4c7f49df43ddcc",
+       "ev-b4f14b8600219e7e590bbcd5",
+       "ev-b56338cb340e4c85d30abdd3"
+      ],
+      "kind": "observed",
+      "statement_id": "s2",
+      "text": "2027-01-15T08:01:40Z: Malware detections to 198.51.100.34: W0/x!tr, W3/x!tr, W1/x!tr, W2/x!tr."
+     }
+    ],
+    "strongest_evidence": "Internal SMB or RDP fan-out from one host: 15 record(s), confidence 0.8.",
+    "systems_affected": "Hosts named: 10.1.0.44, 10.20.0.1, 10.20.0.10, 10.20.0.11, 10.20.0.12, 10.20.0.13.",
+    "uncertain": "Merged activity is cited by a sample of its evidence, not every record. These logs have no payload or endpoint data, so success of an action cannot be proven from them.",
+    "unsupported_claims": 0,
+    "what_happened": "10.1.0.44 opened 15 SMB or RDP connections to 15 internal hosts. 4 malware detections (4 name(s)) between 10.1.0.44 and 198.51.100.34, host bad.example.",
+    "where_started": "SMB to 15 internal hosts at 2027-01-15T08:00:00Z.",
+    "who_compromised": "No account is named in this evidence. Compromise is a candidate, not confirmed."
+   },
+   "status": 200
+  },
+  "GET /api/v1/ps2/incidents/finc-06dbcd7d8183?run_id=frun-8d438edb00df36e8": {
+   "body": {
+    "affected_entities": {
+     "dst_ips": [
+      "10.20.0.1",
+      "10.20.0.10",
+      "10.20.0.11",
+      "10.20.0.12",
+      "10.20.0.13",
+      "10.20.0.14",
+      "10.20.0.15",
+      "10.20.0.2",
+      "10.20.0.3",
+      "10.20.0.4",
+      "10.20.0.5",
+      "10.20.0.6",
+      "10.20.0.7",
+      "10.20.0.8",
+      "10.20.0.9",
+      "198.51.100.34"
+     ],
+     "hostnames": [
+      "bad.example"
+     ],
+     "src_ips": [
+      "10.1.0.44"
+     ]
+    },
+    "alert_merge_count": 19,
+    "detections": [
+     {
+      "basis": "observed",
+      "confidence": 0.8,
+      "config_hash": "9a2dec75574992c8fe51e48a93a53e39778b231e7575534e8d32cb9c858c6236",
+      "detection_id": "fdet-69f27285ef14777e",
+      "entities": {
+       "dst_ips": [
+        "10.20.0.1",
+        "10.20.0.10",
+        "10.20.0.11",
+        "10.20.0.12",
+        "10.20.0.13",
+        "10.20.0.14",
+        "10.20.0.15",
+        "10.20.0.2",
+        "10.20.0.3",
+        "10.20.0.4",
+        "10.20.0.5",
+        "10.20.0.6",
+        "10.20.0.7",
+        "10.20.0.8",
+        "10.20.0.9"
+       ],
+       "src_ips": [
+        "10.1.0.44"
+       ]
+      },
+      "evidence_refs": [
+       "ev-bb823635a9601ec680373185",
+       "ev-aaa3231fe09530c448e237e4",
+       "ev-1801e9a6f8d9db3a55dc968f",
+       "ev-54c6fb3a83c36603f5a105ec",
+       "ev-3ff104bbd6022e023495abb5",
+       "ev-5dbf2ec74a841bfd9ec27735",
+       "ev-adb1177d506653c468ed0b03",
+       "ev-28bb0e3eeb4290fcb6d1662a",
+       "ev-87b25c3d7fa8eeffe902aa56",
+       "ev-98573ba487072aaa3ea1987a"
+      ],
+      "evidence_refs_truncated": true,
+      "first_ns": 1800000000000000000,
+      "first_offset": 21819,
+      "first_utc": "2027-01-15T08:00:00Z",
+      "kill_chain_stage": "lateral_movement",
+      "last_ns": 1800000014000000000,
+      "last_utc": "2027-01-15T08:00:14Z",
+      "merged_events": 15,
+      "reason": "10.1.0.44 opened 15 SMB or RDP connections to 15 internal hosts.",
+      "risk_contribution": 0.8,
+      "rule_id": "internal_fanout",
+      "rule_version": "1.0",
+      "status": "unconfirmed",
+      "steps": [
+       {
+        "actor": "10.1.0.44",
+        "count": 15,
+        "evidence_refs": [
+         "ev-bb823635a9601ec680373185",
+         "ev-aaa3231fe09530c448e237e4",
+         "ev-1801e9a6f8d9db3a55dc968f",
+         "ev-54c6fb3a83c36603f5a105ec",
+         "ev-3ff104bbd6022e023495abb5",
+         "ev-5dbf2ec74a841bfd9ec27735",
+         "ev-adb1177d506653c468ed0b03",
+         "ev-28bb0e3eeb4290fcb6d1662a",
+         "ev-87b25c3d7fa8eeffe902aa56",
+         "ev-98573ba487072aaa3ea1987a"
+        ],
+        "label": "SMB to 15 internal hosts",
+        "last_ns": 1800000014000000000,
+        "last_utc": "2027-01-15T08:00:14Z",
+        "layer": "endpoint",
+        "ns": 1800000000000000000,
+        "offset": 21819,
+        "stage": "lateral_movement",
+        "target": null,
+        "technique_id": "T1021",
+        "technique_name": "Remote Services",
+        "utc": "2027-01-15T08:00:00Z"
+       }
+      ],
+      "tactic": "lateral-movement",
+      "target_kind": "host",
+      "technique_id": "T1021",
+      "technique_name": "Remote Services",
+      "timestamp_quality": "normal",
+      "title": "Internal SMB or RDP fan-out from one host"
+     },
+     {
+      "basis": "observed",
+      "confidence": 0.7,
+      "config_hash": "9a2dec75574992c8fe51e48a93a53e39778b231e7575534e8d32cb9c858c6236",
+      "detection_id": "fdet-2e9aa05295d60bd1",
+      "entities": {
+       "dst_ips": [
+        "198.51.100.34"
+       ],
+       "hostnames": [
+        "bad.example"
+       ],
+       "src_ips": [
+        "10.1.0.44"
+       ]
+      },
+      "evidence_refs": [
+       "ev-cc6555c6c13d9a75ee5655e0",
+       "ev-08eaca15da4c7f49df43ddcc",
+       "ev-b4f14b8600219e7e590bbcd5",
+       "ev-b56338cb340e4c85d30abdd3"
+      ],
+      "evidence_refs_truncated": false,
+      "first_ns": 1800000100000000000,
+      "first_offset": 26940,
+      "first_utc": "2027-01-15T08:01:40Z",
+      "kill_chain_stage": "delivery",
+      "last_ns": 1800000280000000000,
+      "last_utc": "2027-01-15T08:04:40Z",
+      "merged_events": 4,
+      "reason": "4 malware detections (4 name(s)) between 10.1.0.44 and 198.51.100.34, host bad.example.",
+      "risk_contribution": 0.7,
+      "rule_id": "repeated_malware",
+      "rule_version": "1.0",
+      "status": "unconfirmed",
+      "steps": [
+       {
+        "actor": "10.1.0.44",
+        "count": 4,
+        "evidence_refs": [
+         "ev-cc6555c6c13d9a75ee5655e0",
+         "ev-08eaca15da4c7f49df43ddcc",
+         "ev-b4f14b8600219e7e590bbcd5",
+         "ev-b56338cb340e4c85d30abdd3"
+        ],
+        "label": "Malware detections to 198.51.100.34: W0/x!tr, W3/x!tr, W1/x!tr, W2/x!tr",
+        "last_ns": 1800000280000000000,
+        "last_utc": "2027-01-15T08:04:40Z",
+        "layer": "endpoint",
+        "ns": 1800000100000000000,
+        "offset": 26940,
+        "stage": "delivery",
+        "target": "198.51.100.34",
+        "technique_id": "T1105",
+        "technique_name": "Ingress Tool Transfer",
+        "utc": "2027-01-15T08:01:40Z"
+       }
+      ],
+      "tactic": "command-and-control",
+      "target_kind": "host",
+      "technique_id": "T1105",
+      "technique_name": "Ingress Tool Transfer",
+      "timestamp_quality": "normal",
+      "title": "Repeated malware detections between one host and one destination"
+     }
+    ],
+    "evidence": [
+     {
+      "action": "accept",
+      "app": null,
+      "app_risk": null,
+      "attack": null,
+      "attack_id": null,
+      "byte_offset": 21819,
+      "canonical_sha256": "5401b41d1006ffd7fdda2df0cf330695",
+      "category": null,
+      "date": "2027-01-15",
+      "dst_ip": "10.20.0.1",
+      "dst_port": 445,
+      "dst_role": "dmz",
+      "event_type": "traffic",
+      "event_utc": "2027-01-15T08:00:00Z",
+      "evidence_id": "ev-bb823635a9601ec680373185",
+      "hostname": null,
+      "level": "notice",
+      "line": 64,
+      "logid": "0000000013",
+      "message": null,
+      "raw_sha256": "b84c249d963d854fc787f2bc71d59ce0",
+      "service": "SMB",
+      "session_id": "500",
+      "source_sha256": "5246c5d53f02b0c36b06df4cd7888bbd064213050995cf4304abcc462d3e7c73",
+      "src_ip": "10.1.0.44",
+      "src_port": null,
+      "src_role": "lan",
+      "status": null,
+      "subtype": "forward",
+      "time": "08:00:00",
+      "timestamp_quality": "normal",
+      "tz": "+0530",
+      "url": null,
+      "user": null,
+      "virus": null
+     },
+     {
+      "action": "accept",
+      "app": null,
+      "app_risk": null,
+      "attack": null,
+      "attack_id": null,
+      "byte_offset": 22160,
+      "canonical_sha256": "9b9e446c1384374a4a910e5a67cdc307",
+      "category": null,
+      "date": "2027-01-15",
+      "dst_ip": "10.20.0.2",
+      "dst_port": 445,
+      "dst_role": "dmz",
+      "event_type": "traffic",
+      "event_utc": "2027-01-15T08:00:01Z",
+      "evidence_id": "ev-aaa3231fe09530c448e237e4",
+      "hostname": null,
+      "level": "notice",
+      "line": 65,
+      "logid": "0000000013",
+      "message": null,
+      "raw_sha256": "a331b2973f0f89723f6209a01b0205fb",
+      "service": "SMB",
+      "session_id": "501",
+      "source_sha256": "5246c5d53f02b0c36b06df4cd7888bbd064213050995cf4304abcc462d3e7c73",
+      "src_ip": "10.1.0.44",
+      "src_port": null,
+      "src_role": "lan",
+      "status": null,
+      "subtype": "forward",
+      "time": "08:00:01",
+      "timestamp_quality": "normal",
+      "tz": "+0530",
+      "url": null,
+      "user": null,
+      "virus": null
+     },
+     {
+      "action": "accept",
+      "app": null,
+      "app_risk": null,
+      "attack": null,
+      "attack_id": null,
+      "byte_offset": 22501,
+      "canonical_sha256": "d83826a4aae7837b43cfb273c8c61a2b",
+      "category": null,
+      "date": "2027-01-15",
+      "dst_ip": "10.20.0.3",
+      "dst_port": 445,
+      "dst_role": "dmz",
+      "event_type": "traffic",
+      "event_utc": "2027-01-15T08:00:02Z",
+      "evidence_id": "ev-1801e9a6f8d9db3a55dc968f",
+      "hostname": null,
+      "level": "notice",
+      "line": 66,
+      "logid": "0000000013",
+      "message": null,
+      "raw_sha256": "449f4e5d1bb3de6a14440de0fa717ed4",
+      "service": "SMB",
+      "session_id": "502",
+      "source_sha256": "5246c5d53f02b0c36b06df4cd7888bbd064213050995cf4304abcc462d3e7c73",
+      "src_ip": "10.1.0.44",
+      "src_port": null,
+      "src_role": "lan",
+      "status": null,
+      "subtype": "forward",
+      "time": "08:00:02",
+      "timestamp_quality": "normal",
+      "tz": "+0530",
+      "url": null,
+      "user": null,
+      "virus": null
+     },
+     {
+      "action": "accept",
+      "app": null,
+      "app_risk": null,
+      "attack": null,
+      "attack_id": null,
+      "byte_offset": 22842,
+      "canonical_sha256": "6864fff90956c4043eb98ea75046c478",
+      "category": null,
+      "date": "2027-01-15",
+      "dst_ip": "10.20.0.4",
+      "dst_port": 445,
+      "dst_role": "dmz",
+      "event_type": "traffic",
+      "event_utc": "2027-01-15T08:00:03Z",
+      "evidence_id": "ev-54c6fb3a83c36603f5a105ec",
+      "hostname": null,
+      "level": "notice",
+      "line": 67,
+      "logid": "0000000013",
+      "message": null,
+      "raw_sha256": "93a622287cbabebf1788e098d4507d86",
+      "service": "SMB",
+      "session_id": "503",
+      "source_sha256": "5246c5d53f02b0c36b06df4cd7888bbd064213050995cf4304abcc462d3e7c73",
+      "src_ip": "10.1.0.44",
+      "src_port": null,
+      "src_role": "lan",
+      "status": null,
+      "subtype": "forward",
+      "time": "08:00:03",
+      "timestamp_quality": "normal",
+      "tz": "+0530",
+      "url": null,
+      "user": null,
+      "virus": null
+     },
+     {
+      "action": "accept",
+      "app": null,
+      "app_risk": null,
+      "attack": null,
+      "attack_id": null,
+      "byte_offset": 23183,
+      "canonical_sha256": "658d66c5995301769952ed813b8b7739",
+      "category": null,
+      "date": "2027-01-15",
+      "dst_ip": "10.20.0.5",
+      "dst_port": 445,
+      "dst_role": "dmz",
+      "event_type": "traffic",
+      "event_utc": "2027-01-15T08:00:04Z",
+      "evidence_id": "ev-3ff104bbd6022e023495abb5",
+      "hostname": null,
+      "level": "notice",
+      "line": 68,
+      "logid": "0000000013",
+      "message": null,
+      "raw_sha256": "b79b91fffa4f938966b2a4496d5a44b3",
+      "service": "SMB",
+      "session_id": "504",
+      "source_sha256": "5246c5d53f02b0c36b06df4cd7888bbd064213050995cf4304abcc462d3e7c73",
+      "src_ip": "10.1.0.44",
+      "src_port": null,
+      "src_role": "lan",
+      "status": null,
+      "subtype": "forward",
+      "time": "08:00:04",
+      "timestamp_quality": "normal",
+      "tz": "+0530",
+      "url": null,
+      "user": null,
+      "virus": null
+     },
+     {
+      "action": "accept",
+      "app": null,
+      "app_risk": null,
+      "attack": null,
+      "attack_id": null,
+      "byte_offset": 23524,
+      "canonical_sha256": "40287cd2ac102818a89101df137f3e5b",
+      "category": null,
+      "date": "2027-01-15",
+      "dst_ip": "10.20.0.6",
+      "dst_port": 445,
+      "dst_role": "dmz",
+      "event_type": "traffic",
+      "event_utc": "2027-01-15T08:00:05Z",
+      "evidence_id": "ev-5dbf2ec74a841bfd9ec27735",
+      "hostname": null,
+      "level": "notice",
+      "line": 69,
+      "logid": "0000000013",
+      "message": null,
+      "raw_sha256": "ba5fa6c1936ad5dfcf473d31a59575a6",
+      "service": "SMB",
+      "session_id": "505",
+      "source_sha256": "5246c5d53f02b0c36b06df4cd7888bbd064213050995cf4304abcc462d3e7c73",
+      "src_ip": "10.1.0.44",
+      "src_port": null,
+      "src_role": "lan",
+      "status": null,
+      "subtype": "forward",
+      "time": "08:00:05",
+      "timestamp_quality": "normal",
+      "tz": "+0530",
+      "url": null,
+      "user": null,
+      "virus": null
+     },
+     {
+      "action": "accept",
+      "app": null,
+      "app_risk": null,
+      "attack": null,
+      "attack_id": null,
+      "byte_offset": 23865,
+      "canonical_sha256": "75587ffad6d7f2756e4cfb4aad703cde",
+      "category": null,
+      "date": "2027-01-15",
+      "dst_ip": "10.20.0.7",
+      "dst_port": 445,
+      "dst_role": "dmz",
+      "event_type": "traffic",
+      "event_utc": "2027-01-15T08:00:06Z",
+      "evidence_id": "ev-adb1177d506653c468ed0b03",
+      "hostname": null,
+      "level": "notice",
+      "line": 70,
+      "logid": "0000000013",
+      "message": null,
+      "raw_sha256": "d37c570eac8e57cd7d9c8f97b9ca98ec",
+      "service": "SMB",
+      "session_id": "506",
+      "source_sha256": "5246c5d53f02b0c36b06df4cd7888bbd064213050995cf4304abcc462d3e7c73",
+      "src_ip": "10.1.0.44",
+      "src_port": null,
+      "src_role": "lan",
+      "status": null,
+      "subtype": "forward",
+      "time": "08:00:06",
+      "timestamp_quality": "normal",
+      "tz": "+0530",
+      "url": null,
+      "user": null,
+      "virus": null
+     },
+     {
+      "action": "accept",
+      "app": null,
+      "app_risk": null,
+      "attack": null,
+      "attack_id": null,
+      "byte_offset": 24206,
+      "canonical_sha256": "7c319274c57cd4ba1d5238bc2fd6d036",
+      "category": null,
+      "date": "2027-01-15",
+      "dst_ip": "10.20.0.8",
+      "dst_port": 445,
+      "dst_role": "dmz",
+      "event_type": "traffic",
+      "event_utc": "2027-01-15T08:00:07Z",
+      "evidence_id": "ev-28bb0e3eeb4290fcb6d1662a",
+      "hostname": null,
+      "level": "notice",
+      "line": 71,
+      "logid": "0000000013",
+      "message": null,
+      "raw_sha256": "48124efe45fa10f8444c2754966497f1",
+      "service": "SMB",
+      "session_id": "507",
+      "source_sha256": "5246c5d53f02b0c36b06df4cd7888bbd064213050995cf4304abcc462d3e7c73",
+      "src_ip": "10.1.0.44",
+      "src_port": null,
+      "src_role": "lan",
+      "status": null,
+      "subtype": "forward",
+      "time": "08:00:07",
+      "timestamp_quality": "normal",
+      "tz": "+0530",
+      "url": null,
+      "user": null,
+      "virus": null
+     },
+     {
+      "action": "accept",
+      "app": null,
+      "app_risk": null,
+      "attack": null,
+      "attack_id": null,
+      "byte_offset": 24547,
+      "canonical_sha256": "1c3b40688a85a0790949b524343f4fe6",
+      "category": null,
+      "date": "2027-01-15",
+      "dst_ip": "10.20.0.9",
+      "dst_port": 445,
+      "dst_role": "dmz",
+      "event_type": "traffic",
+      "event_utc": "2027-01-15T08:00:08Z",
+      "evidence_id": "ev-87b25c3d7fa8eeffe902aa56",
+      "hostname": null,
+      "level": "notice",
+      "line": 72,
+      "logid": "0000000013",
+      "message": null,
+      "raw_sha256": "6d14c8df2a35c4f0d28a71f3243f8c71",
+      "service": "SMB",
+      "session_id": "508",
+      "source_sha256": "5246c5d53f02b0c36b06df4cd7888bbd064213050995cf4304abcc462d3e7c73",
+      "src_ip": "10.1.0.44",
+      "src_port": null,
+      "src_role": "lan",
+      "status": null,
+      "subtype": "forward",
+      "time": "08:00:08",
+      "timestamp_quality": "normal",
+      "tz": "+0530",
+      "url": null,
+      "user": null,
+      "virus": null
+     },
+     {
+      "action": "accept",
+      "app": null,
+      "app_risk": null,
+      "attack": null,
+      "attack_id": null,
+      "byte_offset": 24888,
+      "canonical_sha256": "ab50c75927c51db57c3826ee3230c014",
+      "category": null,
+      "date": "2027-01-15",
+      "dst_ip": "10.20.0.10",
+      "dst_port": 445,
+      "dst_role": "dmz",
+      "event_type": "traffic",
+      "event_utc": "2027-01-15T08:00:09Z",
+      "evidence_id": "ev-98573ba487072aaa3ea1987a",
+      "hostname": null,
+      "level": "notice",
+      "line": 73,
+      "logid": "0000000013",
+      "message": null,
+      "raw_sha256": "c25e30d56fd95c9e02947987355ab753",
+      "service": "SMB",
+      "session_id": "509",
+      "source_sha256": "5246c5d53f02b0c36b06df4cd7888bbd064213050995cf4304abcc462d3e7c73",
+      "src_ip": "10.1.0.44",
+      "src_port": null,
+      "src_role": "lan",
+      "status": null,
+      "subtype": "forward",
+      "time": "08:00:09",
+      "timestamp_quality": "normal",
+      "tz": "+0530",
+      "url": null,
+      "user": null,
+      "virus": null
+     },
+     {
+      "action": "blocked",
+      "app": null,
+      "app_risk": null,
+      "attack": null,
+      "attack_id": null,
+      "byte_offset": 26940,
+      "canonical_sha256": "5e9e018f51d17f2737e32094cf2219f0",
+      "category": null,
+      "date": "2027-01-15",
+      "dst_ip": "198.51.100.34",
+      "dst_port": 80,
+      "dst_role": "wan",
+      "event_type": "utm",
+      "event_utc": "2027-01-15T08:01:40Z",
+      "evidence_id": "ev-cc6555c6c13d9a75ee5655e0",
+      "hostname": "bad.example",
+      "level": "warning",
+      "line": 79,
+      "logid": "0211008192",
+      "message": null,
+      "raw_sha256": "faac3317ba38be1d6ccea21b9fd7370c",
+      "service": "HTTP",
+      "session_id": "900",
+      "source_sha256": "5246c5d53f02b0c36b06df4cd7888bbd064213050995cf4304abcc462d3e7c73",
+      "src_ip": "10.1.0.44",
+      "src_port": null,
+      "src_role": "lan",
+      "status": null,
+      "subtype": "virus",
+      "time": "08:01:40",
+      "timestamp_quality": "normal",
+      "tz": "+0530",
+      "url": null,
+      "user": null,
+      "virus": "W0/x!tr"
+     },
+     {
+      "action": "blocked",
+      "app": null,
+      "app_risk": null,
+      "attack": null,
+      "attack_id": null,
+      "byte_offset": 27295,
+      "canonical_sha256": "900b9d22f52ded40f8c1eb7f901de24d",
+      "category": null,
+      "date": "2027-01-15",
+      "dst_ip": "198.51.100.34",
+      "dst_port": 80,
+      "dst_role": "wan",
+      "event_type": "utm",
+      "event_utc": "2027-01-15T08:02:40Z",
+      "evidence_id": "ev-08eaca15da4c7f49df43ddcc",
+      "hostname": "bad.example",
+      "level": "warning",
+      "line": 80,
+      "logid": "0211008192",
+      "message": null,
+      "raw_sha256": "3532249df292152d70e37ad21f81a672",
+      "service": "HTTP",
+      "session_id": "901",
+      "source_sha256": "5246c5d53f02b0c36b06df4cd7888bbd064213050995cf4304abcc462d3e7c73",
+      "src_ip": "10.1.0.44",
+      "src_port": null,
+      "src_role": "lan",
+      "status": null,
+      "subtype": "virus",
+      "time": "08:02:40",
+      "timestamp_quality": "normal",
+      "tz": "+0530",
+      "url": null,
+      "user": null,
+      "virus": "W1/x!tr"
+     },
+     {
+      "action": "blocked",
+      "app": null,
+      "app_risk": null,
+      "attack": null,
+      "attack_id": null,
+      "byte_offset": 27650,
+      "canonical_sha256": "d6130e7143595704649524c80b8a83e8",
+      "category": null,
+      "date": "2027-01-15",
+      "dst_ip": "198.51.100.34",
+      "dst_port": 80,
+      "dst_role": "wan",
+      "event_type": "utm",
+      "event_utc": "2027-01-15T08:03:40Z",
+      "evidence_id": "ev-b4f14b8600219e7e590bbcd5",
+      "hostname": "bad.example",
+      "level": "warning",
+      "line": 81,
+      "logid": "0211008192",
+      "message": null,
+      "raw_sha256": "5699e683425e5638fe9fc124349d878a",
+      "service": "HTTP",
+      "session_id": "902",
+      "source_sha256": "5246c5d53f02b0c36b06df4cd7888bbd064213050995cf4304abcc462d3e7c73",
+      "src_ip": "10.1.0.44",
+      "src_port": null,
+      "src_role": "lan",
+      "status": null,
+      "subtype": "virus",
+      "time": "08:03:40",
+      "timestamp_quality": "normal",
+      "tz": "+0530",
+      "url": null,
+      "user": null,
+      "virus": "W2/x!tr"
+     },
+     {
+      "action": "blocked",
+      "app": null,
+      "app_risk": null,
+      "attack": null,
+      "attack_id": null,
+      "byte_offset": 28005,
+      "canonical_sha256": "c2e305038f93f943cea08ffb601c2a74",
+      "category": null,
+      "date": "2027-01-15",
+      "dst_ip": "198.51.100.34",
+      "dst_port": 80,
+      "dst_role": "wan",
+      "event_type": "utm",
+      "event_utc": "2027-01-15T08:04:40Z",
+      "evidence_id": "ev-b56338cb340e4c85d30abdd3",
+      "hostname": "bad.example",
+      "level": "warning",
+      "line": 82,
+      "logid": "0211008192",
+      "message": null,
+      "raw_sha256": "5813ea4d6cecdbc0491c5742ba289031",
+      "service": "HTTP",
+      "session_id": "903",
+      "source_sha256": "5246c5d53f02b0c36b06df4cd7888bbd064213050995cf4304abcc462d3e7c73",
+      "src_ip": "10.1.0.44",
+      "src_port": null,
+      "src_role": "lan",
+      "status": null,
+      "subtype": "virus",
+      "time": "08:04:40",
+      "timestamp_quality": "normal",
+      "tz": "+0530",
+      "url": null,
+      "user": null,
+      "virus": "W3/x!tr"
+     },
+     {
+      "action": "accept",
+      "app": null,
+      "app_risk": null,
+      "attack": null,
+      "attack_id": null,
+      "byte_offset": 14936,
+      "canonical_sha256": "08db337f05f27a25169d9a359847d27d",
+      "category": null,
+      "date": "2027-01-15",
+      "dst_ip": "198.51.43.44",
+      "dst_port": 443,
+      "dst_role": "wan",
+      "event_type": "traffic",
+      "event_utc": "2027-01-15T07:52:23Z",
+      "evidence_id": "ev-f160c7d3d1e9363b83043ca0",
+      "hostname": null,
+      "level": "notice",
+      "line": 44,
+      "logid": "0000000013",
+      "message": null,
+      "raw_sha256": "167d90884a4ea86f74674dc12c425860",
+      "service": "HTTPS",
+      "session_id": "10043",
+      "source_sha256": "5246c5d53f02b0c36b06df4cd7888bbd064213050995cf4304abcc462d3e7c73",
+      "src_ip": "10.1.0.44",
+      "src_port": null,
+      "src_role": "lan",
+      "status": null,
+      "subtype": "forward",
+      "time": "07:52:23",
+      "timestamp_quality": "normal",
+      "tz": "+0530",
+      "url": null,
+      "user": null,
+      "virus": null
+     },
+     {
+      "action": "accept",
+      "app": null,
+      "app_risk": null,
+      "attack": null,
+      "attack_id": null,
+      "byte_offset": 25230,
+      "canonical_sha256": "f6c34d7041446a798a23fea66ee44be4",
+      "category": null,
+      "date": "2027-01-15",
+      "dst_ip": "10.20.0.11",
+      "dst_port": 445,
+      "dst_role": "dmz",
+      "event_type": "traffic",
+      "event_utc": "2027-01-15T08:00:10Z",
+      "evidence_id": "ev-b0216958ae7b85371262c34a",
+      "hostname": null,
+      "level": "notice",
+      "line": 74,
+      "logid": "0000000013",
+      "message": null,
+      "raw_sha256": "6f0fb706aeaab4603583a274a87c0f09",
+      "service": "SMB",
+      "session_id": "510",
+      "source_sha256": "5246c5d53f02b0c36b06df4cd7888bbd064213050995cf4304abcc462d3e7c73",
+      "src_ip": "10.1.0.44",
+      "src_port": null,
+      "src_role": "lan",
+      "status": null,
+      "subtype": "forward",
+      "time": "08:00:10",
+      "timestamp_quality": "normal",
+      "tz": "+0530",
+      "url": null,
+      "user": null,
+      "virus": null
+     },
+     {
+      "action": "accept",
+      "app": null,
+      "app_risk": null,
+      "attack": null,
+      "attack_id": null,
+      "byte_offset": 25572,
+      "canonical_sha256": "072ad1a2e860a28e31e88ac4f4c40b0f",
+      "category": null,
+      "date": "2027-01-15",
+      "dst_ip": "10.20.0.12",
+      "dst_port": 445,
+      "dst_role": "dmz",
+      "event_type": "traffic",
+      "event_utc": "2027-01-15T08:00:11Z",
+      "evidence_id": "ev-3b1dc45d4b8a5dca7f0d8bbd",
+      "hostname": null,
+      "level": "notice",
+      "line": 75,
+      "logid": "0000000013",
+      "message": null,
+      "raw_sha256": "5ffb2455c0c9ab6446a0196e21cbad3e",
+      "service": "SMB",
+      "session_id": "511",
+      "source_sha256": "5246c5d53f02b0c36b06df4cd7888bbd064213050995cf4304abcc462d3e7c73",
+      "src_ip": "10.1.0.44",
+      "src_port": null,
+      "src_role": "lan",
+      "status": null,
+      "subtype": "forward",
+      "time": "08:00:11",
+      "timestamp_quality": "normal",
+      "tz": "+0530",
+      "url": null,
+      "user": null,
+      "virus": null
+     },
+     {
+      "action": "accept",
+      "app": null,
+      "app_risk": null,
+      "attack": null,
+      "attack_id": null,
+      "byte_offset": 25914,
+      "canonical_sha256": "53b6f4e900c570a8cbc23783b5f9b39a",
+      "category": null,
+      "date": "2027-01-15",
+      "dst_ip": "10.20.0.13",
+      "dst_port": 445,
+      "dst_role": "dmz",
+      "event_type": "traffic",
+      "event_utc": "2027-01-15T08:00:12Z",
+      "evidence_id": "ev-8690ee5e5c85c9dd2ec31c58",
+      "hostname": null,
+      "level": "notice",
+      "line": 76,
+      "logid": "0000000013",
+      "message": null,
+      "raw_sha256": "a4a83bec111d4c7214940188147cf000",
+      "service": "SMB",
+      "session_id": "512",
+      "source_sha256": "5246c5d53f02b0c36b06df4cd7888bbd064213050995cf4304abcc462d3e7c73",
+      "src_ip": "10.1.0.44",
+      "src_port": null,
+      "src_role": "lan",
+      "status": null,
+      "subtype": "forward",
+      "time": "08:00:12",
+      "timestamp_quality": "normal",
+      "tz": "+0530",
+      "url": null,
+      "user": null,
+      "virus": null
+     },
+     {
+      "action": "accept",
+      "app": null,
+      "app_risk": null,
+      "attack": null,
+      "attack_id": null,
+      "byte_offset": 26256,
+      "canonical_sha256": "224249da44f5deb3597022a53e9cd52d",
+      "category": null,
+      "date": "2027-01-15",
+      "dst_ip": "10.20.0.14",
+      "dst_port": 445,
+      "dst_role": "dmz",
+      "event_type": "traffic",
+      "event_utc": "2027-01-15T08:00:13Z",
+      "evidence_id": "ev-8c053e343cafb0ce2be4eba8",
+      "hostname": null,
+      "level": "notice",
+      "line": 77,
+      "logid": "0000000013",
+      "message": null,
+      "raw_sha256": "ae18b381ebc8eced4a8d4e7c50df1bf6",
+      "service": "SMB",
+      "session_id": "513",
+      "source_sha256": "5246c5d53f02b0c36b06df4cd7888bbd064213050995cf4304abcc462d3e7c73",
+      "src_ip": "10.1.0.44",
+      "src_port": null,
+      "src_role": "lan",
+      "status": null,
+      "subtype": "forward",
+      "time": "08:00:13",
+      "timestamp_quality": "normal",
+      "tz": "+0530",
+      "url": null,
+      "user": null,
+      "virus": null
+     },
+     {
+      "action": "accept",
+      "app": null,
+      "app_risk": null,
+      "attack": null,
+      "attack_id": null,
+      "byte_offset": 26598,
+      "canonical_sha256": "71bb1c9c1a8c9160166e6761e0df8c1a",
+      "category": null,
+      "date": "2027-01-15",
+      "dst_ip": "10.20.0.15",
+      "dst_port": 445,
+      "dst_role": "dmz",
+      "event_type": "traffic",
+      "event_utc": "2027-01-15T08:00:14Z",
+      "evidence_id": "ev-9df74680b3ff449ecb598840",
+      "hostname": null,
+      "level": "notice",
+      "line": 78,
+      "logid": "0000000013",
+      "message": null,
+      "raw_sha256": "919dbda0f4c4588b8bce481f6d083859",
+      "service": "SMB",
+      "session_id": "514",
+      "source_sha256": "5246c5d53f02b0c36b06df4cd7888bbd064213050995cf4304abcc462d3e7c73",
+      "src_ip": "10.1.0.44",
+      "src_port": null,
+      "src_role": "lan",
+      "status": null,
+      "subtype": "forward",
+      "time": "08:00:14",
+      "timestamp_quality": "normal",
+      "tz": "+0530",
+      "url": null,
+      "user": null,
+      "virus": null
+     },
+     {
+      "action": "accept",
+      "app": null,
+      "app_risk": null,
+      "attack": null,
+      "attack_id": null,
+      "byte_offset": 28360,
+      "canonical_sha256": "0d877d0b731f996e4253506815e6af36",
+      "category": null,
+      "date": "2027-01-15",
+      "dst_ip": "10.30.0.9",
+      "dst_port": 8080,
+      "dst_role": "lan",
+      "event_type": "traffic",
+      "event_utc": "2027-01-15T08:00:50Z",
+      "evidence_id": "ev-77cffd3cdda4fad97b6afc6a",
+      "hostname": null,
+      "level": "notice",
+      "line": 83,
+      "logid": "0000000013",
+      "message": null,
+      "raw_sha256": "79c7701abe0da153bc4c9dc978c0a7a7",
+      "service": "HTTP",
+      "session_id": "950",
+      "source_sha256": "5246c5d53f02b0c36b06df4cd7888bbd064213050995cf4304abcc462d3e7c73",
+      "src_ip": "10.1.0.44",
+      "src_port": null,
+      "src_role": "lan",
+      "status": null,
+      "subtype": "forward",
+      "time": "08:00:50",
+      "timestamp_quality": "normal",
+      "tz": "+0530",
+      "url": null,
+      "user": null,
+      "virus": null
+     }
+    ],
+    "evidence_gaps": [
+     "Merged activity is cited by a sample of its evidence, not every record.",
+     "These logs have no payload or endpoint data, so success of an action cannot be proven from them."
+    ],
+    "related_incidents": [],
+    "response_simulation": {
+     "available": false,
+     "label": "SIMULATED — NO REAL SECURITY ACTION IS EXECUTED",
+     "missing": [
+      "Business service map for the affected systems",
+      "Available response controls for these systems",
+      "Asset ownership and criticality context"
+     ]
+    },
+    "root_cause": "SMB to 15 internal hosts (Internal SMB or RDP fan-out from one host). Candidate root cause; not confirmed.",
+    "selected_path_id": "fhyp-a30b4b4c09273a36",
+    "summary": {
+     "affected_devices": [
+      "10.1.0.44",
+      "10.20.0.1",
+      "10.20.0.10",
+      "10.20.0.11",
+      "10.20.0.12",
+      "10.20.0.13",
+      "10.20.0.14",
+      "10.20.0.15"
+     ],
+     "affected_identity": null,
+     "confidence": 0.75,
+     "critical_target": null,
+     "detection_count": 2,
+     "entry_point": "10.1.0.44",
+     "evidence_count": 14,
+     "first_utc": "2027-01-15T08:00:00Z",
+     "incident_id": "finc-06dbcd7d8183",
+     "last_utc": "2027-01-15T08:04:40Z",
+     "merged_events": 19,
+     "risk": 0.94,
+     "run_id": "frun-8d438edb00df36e8",
+     "stages": [
+      "delivery",
+      "lateral_movement"
+     ],
+     "status": "unconfirmed",
+     "techniques": [
+      "T1021",
+      "T1105"
+     ],
+     "timestamp_quality": "normal",
+     "title": "Internal SMB or RDP fan-out from one host and 1 related"
+    },
+    "timeline": [
+     {
+      "basis": "observed",
+      "detail": "Internal SMB or RDP fan-out from one host",
+      "detection_id": "fdet-69f27285ef14777e",
+      "evidence_refs": [
+       "ev-bb823635a9601ec680373185",
+       "ev-aaa3231fe09530c448e237e4",
+       "ev-1801e9a6f8d9db3a55dc968f",
+       "ev-54c6fb3a83c36603f5a105ec",
+       "ev-3ff104bbd6022e023495abb5",
+       "ev-5dbf2ec74a841bfd9ec27735",
+       "ev-adb1177d506653c468ed0b03",
+       "ev-28bb0e3eeb4290fcb6d1662a",
+       "ev-87b25c3d7fa8eeffe902aa56",
+       "ev-98573ba487072aaa3ea1987a"
+      ],
+      "order": 0,
+      "stage": "lateral_movement",
+      "timestamp_quality": "normal",
+      "title": "SMB to 15 internal hosts",
+      "utc": "2027-01-15T08:00:00Z"
+     },
+     {
+      "basis": "observed",
+      "detail": "Repeated malware detections between one host and one destination",
+      "detection_id": "fdet-2e9aa05295d60bd1",
+      "evidence_refs": [
+       "ev-cc6555c6c13d9a75ee5655e0",
+       "ev-08eaca15da4c7f49df43ddcc",
+       "ev-b4f14b8600219e7e590bbcd5",
+       "ev-b56338cb340e4c85d30abdd3"
+      ],
+      "order": 1,
+      "stage": "delivery",
+      "timestamp_quality": "normal",
+      "title": "Malware detections to 198.51.100.34: W0/x!tr, W3/x!tr, W1/x!tr, W2/x!tr",
+      "utc": "2027-01-15T08:01:40Z"
+     }
+    ],
+    "uncertainty_margin": 0.286
+   },
+   "status": 200
+  },
+  "GET /api/v1/ps2/incidents/finc-ec918f810a84/graph?run_id=frun-8d438edb00df36e8": {
+   "body": {
+    "edges": [
+     {
+      "classification": "observed",
+      "components": [],
+      "confidence": 1.0,
+      "contradictions": [],
+      "edge_id": "fedge-1c9adb913675b015",
+      "evidence_refs": [
+       "ev-1c83125ba842c9a374d99ee4"
+      ],
+      "first_utc": "2027-01-15T08:05:00Z",
+      "last_utc": "2027-01-15T08:05:00Z",
+      "missing_evidence": false,
+      "on_selected_path": false,
+      "relation": "targets",
+      "rule": "targets",
+      "rule_version": "halt.firex.graph/1.0",
+      "source": "step:fdet-1ab891ca6fa8c8ec:1",
+      "target": "entity:device:FGT-TEST"
+     },
+     {
+      "classification": "observed",
+      "components": [],
+      "confidence": 1.0,
+      "contradictions": [],
+      "edge_id": "fedge-30d5fbd2cdff72fa",
+      "evidence_refs": [
+       "ev-cc61c8182013325d90df9359"
+      ],
+      "first_utc": "2027-01-15T08:10:00Z",
+      "last_utc": "2027-01-15T08:10:00Z",
+      "missing_evidence": false,
+      "on_selected_path": false,
+      "relation": "also_recorded",
+      "rule": "also_recorded",
+      "rule_version": "halt.firex.graph/1.0",
+      "source": "entity:ip:203.0.113.9",
+      "target": "context:5a19c7b2a763ece8"
+     },
+     {
+      "classification": "observed",
+      "components": [],
+      "confidence": 1.0,
+      "contradictions": [],
+      "edge_id": "fedge-4759520abcba1505",
+      "evidence_refs": [
+       "ev-cc61c8182013325d90df9359"
+      ],
+      "first_utc": "2027-01-15T08:10:00Z",
+      "last_utc": "2027-01-15T08:10:00Z",
+      "missing_evidence": false,
+      "on_selected_path": false,
+      "relation": "targets",
+      "rule": "targets",
+      "rule_version": "halt.firex.graph/1.0",
+      "source": "step:fdet-1ab891ca6fa8c8ec:2",
+      "target": "entity:device:temp1"
+     },
+     {
+      "classification": "observed",
+      "components": [],
+      "confidence": 1.0,
+      "contradictions": [],
+      "edge_id": "fedge-665bf7ca83c73020",
+      "evidence_refs": [
+       "ev-1c83125ba842c9a374d99ee4"
+      ],
+      "first_utc": "2027-01-15T08:05:00Z",
+      "last_utc": "2027-01-15T08:05:00Z",
+      "missing_evidence": false,
+      "on_selected_path": false,
+      "relation": "also_recorded",
+      "rule": "also_recorded",
+      "rule_version": "halt.firex.graph/1.0",
+      "source": "entity:ip:203.0.113.9",
+      "target": "context:c996296ea2cbc0bc"
+     },
+     {
+      "classification": "observed",
+      "components": [],
+      "confidence": 1.0,
+      "contradictions": [],
+      "edge_id": "fedge-6c7b6ca847cf8e15",
+      "evidence_refs": [
+       "ev-3d0a75fe2e1a395939fed6fa"
+      ],
+      "first_utc": "2027-01-15T08:00:00Z",
+      "last_utc": "2027-01-15T08:00:00Z",
+      "missing_evidence": false,
+      "on_selected_path": false,
+      "relation": "also_recorded",
+      "rule": "also_recorded",
+      "rule_version": "halt.firex.graph/1.0",
+      "source": "entity:ip:203.0.113.9",
+      "target": "context:9a54abc4b93702c5"
+     },
+     {
+      "classification": "observed",
+      "components": [],
+      "confidence": 1.0,
+      "contradictions": [],
+      "edge_id": "fedge-6ce4490cd33dbfd0",
+      "evidence_refs": [
+       "ev-3d0a75fe2e1a395939fed6fa"
+      ],
+      "first_utc": "2027-01-15T08:00:00Z",
+      "last_utc": "2027-01-15T08:00:00Z",
+      "missing_evidence": false,
+      "on_selected_path": false,
+      "relation": "targets",
+      "rule": "targets",
+      "rule_version": "halt.firex.graph/1.0",
+      "source": "step:fdet-1ab891ca6fa8c8ec:0",
+      "target": "entity:device:temp1"
+     },
+     {
+      "classification": "observed",
+      "components": [],
+      "confidence": 1.0,
+      "contradictions": [],
+      "edge_id": "fedge-a3d6145da0ca2200",
+      "evidence_refs": [
+       "ev-cc61c8182013325d90df9359"
+      ],
+      "first_utc": "2027-01-15T08:10:00Z",
+      "last_utc": "2027-01-15T08:10:00Z",
+      "missing_evidence": false,
+      "on_selected_path": false,
+      "relation": "involves",
+      "rule": "involves",
+      "rule_version": "halt.firex.graph/1.0",
+      "source": "step:fdet-1ab891ca6fa8c8ec:2",
+      "target": "entity:account:ops.user"
+     },
+     {
+      "classification": "inferred",
+      "components": [
+       {
+        "detail": "temp1",
+        "name": "entity_continuity",
+        "value": 1.0,
+        "weight": 0.35
+       },
+       {
+        "detail": "account_lifecycle",
+        "name": "same_detection",
+        "value": 1.0,
+        "weight": 0.25
+       },
+       {
+        "detail": "time between steps; not used to link on its own",
+        "name": "gap_seconds",
+        "value": 300.0,
+        "weight": 0.0
+       }
+      ],
+      "confidence": 0.9,
+      "contradictions": [],
+      "edge_id": "fedge-dd50ab6639e0e116",
+      "evidence_refs": [
+       "ev-1c83125ba842c9a374d99ee4",
+       "ev-cc61c8182013325d90df9359"
+      ],
+      "first_utc": "2027-01-15T08:05:00Z",
+      "last_utc": "2027-01-15T08:10:00Z",
+      "missing_evidence": false,
+      "on_selected_path": true,
+      "relation": "next_step",
+      "rule": "same_detection_sequence",
+      "rule_version": "halt.firex.graph/1.0",
+      "source": "step:fdet-1ab891ca6fa8c8ec:1",
+      "target": "step:fdet-1ab891ca6fa8c8ec:2"
+     },
+     {
+      "classification": "observed",
+      "components": [],
+      "confidence": 1.0,
+      "contradictions": [],
+      "edge_id": "fedge-e0a9b4188a2fd1c6",
+      "evidence_refs": [
+       "ev-3d0a75fe2e1a395939fed6fa"
+      ],
+      "first_utc": "2027-01-15T08:00:00Z",
+      "last_utc": "2027-01-15T08:00:00Z",
+      "missing_evidence": false,
+      "on_selected_path": false,
+      "relation": "involves",
+      "rule": "involves",
+      "rule_version": "halt.firex.graph/1.0",
+      "source": "step:fdet-1ab891ca6fa8c8ec:0",
+      "target": "entity:account:ops.user"
+     },
+     {
+      "classification": "observed",
+      "components": [],
+      "confidence": 1.0,
+      "contradictions": [],
+      "edge_id": "fedge-ea412e667dbf0153",
+      "evidence_refs": [
+       "ev-1c83125ba842c9a374d99ee4"
+      ],
+      "first_utc": "2027-01-15T08:05:00Z",
+      "last_utc": "2027-01-15T08:05:00Z",
+      "missing_evidence": false,
+      "on_selected_path": false,
+      "relation": "involves",
+      "rule": "involves",
+      "rule_version": "halt.firex.graph/1.0",
+      "source": "step:fdet-1ab891ca6fa8c8ec:1",
+      "target": "entity:account:temp1"
+     },
+     {
+      "classification": "inferred",
+      "components": [
+       {
+        "detail": "temp1",
+        "name": "entity_continuity",
+        "value": 1.0,
+        "weight": 0.35
+       },
+       {
+        "detail": "account_lifecycle",
+        "name": "same_detection",
+        "value": 1.0,
+        "weight": 0.25
+       },
+       {
+        "detail": "time between steps; not used to link on its own",
+        "name": "gap_seconds",
+        "value": 300.0,
+        "weight": 0.0
+       }
+      ],
+      "confidence": 0.9,
+      "contradictions": [],
+      "edge_id": "fedge-eca462f65ecb30a5",
+      "evidence_refs": [
+       "ev-1c83125ba842c9a374d99ee4",
+       "ev-3d0a75fe2e1a395939fed6fa"
+      ],
+      "first_utc": "2027-01-15T08:00:00Z",
+      "last_utc": "2027-01-15T08:05:00Z",
+      "missing_evidence": false,
+      "on_selected_path": true,
+      "relation": "next_step",
+      "rule": "same_detection_sequence",
+      "rule_version": "halt.firex.graph/1.0",
+      "source": "step:fdet-1ab891ca6fa8c8ec:0",
+      "target": "step:fdet-1ab891ca6fa8c8ec:1"
+     }
+    ],
+    "graph_hash": "7246cf94f64e19f607e6171a0a59faccc8f316f6becf98e58d2e3be81215ac72",
+    "incident_id": "finc-ec918f810a84",
+    "node_cap": 120,
+    "nodes": [
+     {
+      "attributes": {},
+      "count": 1,
+      "detection_id": null,
+      "evidence_refs": [
+       "ev-3d0a75fe2e1a395939fed6fa"
+      ],
+      "first_utc": null,
+      "is_context": false,
+      "kind": "account",
+      "label": "ops.user",
+      "last_utc": null,
+      "layer": "identity",
+      "node_id": "entity:account:ops.user",
+      "on_selected_path": false,
+      "order": 0,
+      "stage": null
+     },
+     {
+      "attributes": {},
+      "count": 1,
+      "detection_id": null,
+      "evidence_refs": [
+       "ev-3d0a75fe2e1a395939fed6fa"
+      ],
+      "first_utc": null,
+      "is_context": false,
+      "kind": "critical_asset",
+      "label": "temp1",
+      "last_utc": null,
+      "layer": "critical_asset",
+      "node_id": "entity:device:temp1",
+      "on_selected_path": false,
+      "order": 0,
+      "stage": null
+     },
+     {
+      "attributes": {
+       "technique": "T1136.001",
+       "technique_name": "Create Account: Local Account"
+      },
+      "count": 1,
+      "detection_id": "fdet-1ab891ca6fa8c8ec",
+      "evidence_refs": [
+       "ev-3d0a75fe2e1a395939fed6fa"
+      ],
+      "first_utc": "2027-01-15T08:00:00Z",
+      "is_context": false,
+      "kind": "event",
+      "label": "Account temp1 created by ops.user",
+      "last_utc": "2027-01-15T08:00:00Z",
+      "layer": "identity",
+      "node_id": "step:fdet-1ab891ca6fa8c8ec:0",
+      "on_selected_path": true,
+      "order": 0,
+      "stage": "installation"
+     },
+     {
+      "attributes": {},
+      "count": 1,
+      "detection_id": null,
+      "evidence_refs": [
+       "ev-1c83125ba842c9a374d99ee4"
+      ],
+      "first_utc": null,
+      "is_context": false,
+      "kind": "account",
+      "label": "temp1",
+      "last_utc": null,
+      "layer": "identity",
+      "node_id": "entity:account:temp1",
+      "on_selected_path": false,
+      "order": 1,
+      "stage": null
+     },
+     {
+      "attributes": {},
+      "count": 1,
+      "detection_id": null,
+      "evidence_refs": [
+       "ev-1c83125ba842c9a374d99ee4"
+      ],
+      "first_utc": null,
+      "is_context": false,
+      "kind": "critical_asset",
+      "label": "FGT-TEST",
+      "last_utc": null,
+      "layer": "critical_asset",
+      "node_id": "entity:device:FGT-TEST",
+      "on_selected_path": false,
+      "order": 1,
+      "stage": null
+     },
+     {
+      "attributes": {
+       "technique": "T1078",
+       "technique_name": "Valid Accounts"
+      },
+      "count": 1,
+      "detection_id": "fdet-1ab891ca6fa8c8ec",
+      "evidence_refs": [
+       "ev-1c83125ba842c9a374d99ee4"
+      ],
+      "first_utc": "2027-01-15T08:05:00Z",
+      "is_context": false,
+      "kind": "event",
+      "label": "New account temp1 signed in from 203.0.113.9",
+      "last_utc": "2027-01-15T08:05:00Z",
+      "layer": "identity",
+      "node_id": "step:fdet-1ab891ca6fa8c8ec:1",
+      "on_selected_path": true,
+      "order": 1,
+      "stage": "actions_on_objectives"
+     },
+     {
+      "attributes": {
+       "technique": "T1070",
+       "technique_name": "Indicator Removal"
+      },
+      "count": 1,
+      "detection_id": "fdet-1ab891ca6fa8c8ec",
+      "evidence_refs": [
+       "ev-cc61c8182013325d90df9359"
+      ],
+      "first_utc": "2027-01-15T08:10:00Z",
+      "is_context": false,
+      "kind": "event",
+      "label": "Account temp1 deleted by ops.user",
+      "last_utc": "2027-01-15T08:10:00Z",
+      "layer": "identity",
+      "node_id": "step:fdet-1ab891ca6fa8c8ec:2",
+      "on_selected_path": true,
+      "order": 2,
+      "stage": "defense_evasion"
+     },
+     {
+      "attributes": {
+       "service": null
+      },
+      "count": 1,
+      "detection_id": null,
+      "evidence_refs": [
+       "ev-3d0a75fe2e1a395939fed6fa"
+      ],
+      "first_utc": "2027-01-15T08:00:00Z",
+      "is_context": true,
+      "kind": "event",
+      "label": "1 event/system Add to 10.99.0.1",
+      "last_utc": "2027-01-15T08:00:00Z",
+      "layer": "endpoint",
+      "node_id": "context:9a54abc4b93702c5",
+      "on_selected_path": false,
+      "order": 3,
+      "stage": null
+     },
+     {
+      "attributes": {
+       "service": null
+      },
+      "count": 1,
+      "detection_id": null,
+      "evidence_refs": [
+       "ev-1c83125ba842c9a374d99ee4"
+      ],
+      "first_utc": "2027-01-15T08:05:00Z",
+      "is_context": true,
+      "kind": "event",
+      "label": "1 event/system login to 10.99.0.1",
+      "last_utc": "2027-01-15T08:05:00Z",
+      "layer": "endpoint",
+      "node_id": "context:c996296ea2cbc0bc",
+      "on_selected_path": false,
+      "order": 4,
+      "stage": null
+     },
+     {
+      "attributes": {},
+      "count": 1,
+      "detection_id": null,
+      "evidence_refs": [
+       "ev-3d0a75fe2e1a395939fed6fa"
+      ],
+      "first_utc": null,
+      "is_context": false,
+      "kind": "ip",
+      "label": "203.0.113.9",
+      "last_utc": null,
+      "layer": "external",
+      "node_id": "entity:ip:203.0.113.9",
+      "on_selected_path": false,
+      "order": 4,
+      "stage": null
+     },
+     {
+      "attributes": {
+       "service": null
+      },
+      "count": 1,
+      "detection_id": null,
+      "evidence_refs": [
+       "ev-cc61c8182013325d90df9359"
+      ],
+      "first_utc": "2027-01-15T08:10:00Z",
+      "is_context": true,
+      "kind": "event",
+      "label": "1 event/system Delete to 10.99.0.1",
+      "last_utc": "2027-01-15T08:10:00Z",
+      "layer": "endpoint",
+      "node_id": "context:5a19c7b2a763ece8",
+      "on_selected_path": false,
+      "order": 5,
+      "stage": null
+     }
+    ],
+    "truncated": false
+   },
+   "status": 200
+  },
+  "GET /api/v1/ps2/incidents/finc-ec918f810a84/hypotheses?run_id=frun-8d438edb00df36e8": {
+   "body": {
+    "alternates": [
+     {
+      "components": [
+       {
+        "detail": "the logs cannot rule this out without change or ticket records",
+        "name": "one_minus_confidence",
+        "value": 0.15,
+        "weight": 0.8
+       }
+      ],
+      "description": "A legitimate temporary account used for maintenance and then removed.",
+      "detection_ids": [],
+      "edge_ids": [],
+      "evidence_gaps": [
+       "No change-management or ticket data is available to confirm or rule this out."
+      ],
+      "hypothesis_id": "fhyp-2588411dd2e0f561",
+      "node_ids": [],
+      "rank": 2,
+      "score": 0.12,
+      "status": "alternate",
+      "title": "Benign explanation"
+     }
+    ],
+    "incident_id": "finc-ec918f810a84",
+    "selected": {
+     "components": [
+      {
+       "detail": "mean across detections",
+       "name": "rule_confidence",
+       "value": 0.85,
+       "weight": 0.55
+      },
+      {
+       "detail": "links with a shared entity",
+       "name": "entity_continuity",
+       "value": 1.0,
+       "weight": 0.25
+      },
+      {
+       "detail": "3 stages",
+       "name": "stage_coverage",
+       "value": 0.75,
+       "weight": 0.1
+      },
+      {
+       "detail": "records behind the path, capped at 500",
+       "name": "evidence_volume",
+       "value": 0.006,
+       "weight": 0.1
+      }
+     ],
+     "description": "The steps belong to one actor or chain, linked by shared accounts or addresses.",
+     "detection_ids": [
+      "fdet-1ab891ca6fa8c8ec"
+     ],
+     "edge_ids": [
+      "fedge-eca462f65ecb30a5",
+      "fedge-dd50ab6639e0e116"
+     ],
+     "evidence_gaps": [
+      "No internal host is named, so effect inside the network is not shown.",
+      "These logs have no payload or endpoint data, so success of an action cannot be proven from them."
+     ],
+     "hypothesis_id": "fhyp-ee9072b969bfa2ae",
+     "node_ids": [
+      "step:fdet-1ab891ca6fa8c8ec:0",
+      "step:fdet-1ab891ca6fa8c8ec:1",
+      "step:fdet-1ab891ca6fa8c8ec:2"
+     ],
+     "rank": 1,
+     "score": 0.793,
+     "status": "selected",
+     "title": "One connected attack sequence"
+    },
+    "uncertainty_margin": 0.673
+   },
+   "status": 200
+  },
+  "GET /api/v1/ps2/incidents/finc-ec918f810a84/proof?run_id=frun-8d438edb00df36e8": {
+   "body": {
+    "receipt": {
+     "cited_evidence": [
+      "ev-1c83125ba842c9a374d99ee4",
+      "ev-3d0a75fe2e1a395939fed6fa",
+      "ev-cc61c8182013325d90df9359"
+     ],
+     "dataset_id": "fixture",
+     "detection_config_hash": "9a2dec75574992c8fe51e48a93a53e39778b231e7575534e8d32cb9c858c6236",
+     "deterministic_replay_id": "replay-3ef6e7b2ef5ecced459d18da",
+     "engine_version": "halt.firex.engine/1.0.0",
+     "evidence_coverage": 1.0,
+     "git_commit": "fixture",
+     "graph_hash": "7246cf94f64e19f607e6171a0a59faccc8f316f6becf98e58d2e3be81215ac72",
+     "incident_id": "finc-ec918f810a84",
+     "parser_version": "halt.firex.parser/1.0.0",
+     "processed_byte_range": [
+      0,
+      51343
+     ],
+     "receipt_id": "fixture",
+     "run_id": "frun-8d438edb00df36e8",
+     "schema_version": "halt.firex.proof/1.0",
+     "seal": "fixture",
+     "seal_algorithm": "sha256-canonical-json",
+     "selected_path_id": "fhyp-ee9072b969bfa2ae",
+     "source_sha256": "5246c5d53f02b0c36b06df4cd7888bbd064213050995cf4304abcc462d3e7c73",
+     "status": "unconfirmed",
+     "uncertainty_margin": 0.673,
+     "unsupported_claims": 0
+    },
+    "verification": {
+     "expected": "fixture",
+     "recorded": "fixture",
+     "valid": true
+    }
+   },
+   "status": 200
+  },
+  "GET /api/v1/ps2/incidents/finc-ec918f810a84/reachability?run_id=frun-8d438edb00df36e8": {
+   "body": {
+    "incident_id": "finc-ec918f810a84",
+    "label": "Hypothetical: what could be reached next. This is not observed attacker activity.",
+    "limitations": [
+     "Based only on connections recorded in this log. No asset inventory or permissions data is available.",
+     "A recorded connection shows a network path, not that an attacker used it."
+    ],
+    "targets": []
+   },
+   "status": 200
+  },
+  "GET /api/v1/ps2/incidents/finc-ec918f810a84/story?run_id=frun-8d438edb00df36e8": {
+   "body": {
+    "checked_statements": 3,
+    "incident_id": "finc-ec918f810a84",
+    "reachable_next": "No reachable next system could be established from these logs.",
+    "statements": [
+     {
+      "evidence_ids": [
+       "ev-3d0a75fe2e1a395939fed6fa"
+      ],
+      "kind": "observed",
+      "statement_id": "s1",
+      "text": "2027-01-15T08:00:00Z: Account temp1 created by ops.user."
+     },
+     {
+      "evidence_ids": [
+       "ev-1c83125ba842c9a374d99ee4"
+      ],
+      "kind": "observed",
+      "statement_id": "s2",
+      "text": "2027-01-15T08:05:00Z: New account temp1 signed in from 203.0.113.9."
+     },
+     {
+      "evidence_ids": [
+       "ev-cc61c8182013325d90df9359"
+      ],
+      "kind": "observed",
+      "statement_id": "s3",
+      "text": "2027-01-15T08:10:00Z: Account temp1 deleted by ops.user."
+     }
+    ],
+    "strongest_evidence": "Account created, used, then removed: 3 record(s), confidence 0.85.",
+    "systems_affected": "No internal host is named in the evidence.",
+    "uncertain": "No internal host is named, so effect inside the network is not shown. These logs have no payload or endpoint data, so success of an action cannot be proven from them.",
+    "unsupported_claims": 0,
+    "what_happened": "Account temp1 was created, used to sign in and deleted within the configured window.",
+    "where_started": "Account temp1 created by ops.user at 2027-01-15T08:00:00Z.",
+    "who_compromised": "Accounts involved: ops.user, temp1. Compromise is a candidate, not confirmed."
+   },
+   "status": 200
+  },
+  "GET /api/v1/ps2/incidents/finc-ec918f810a84?run_id=frun-8d438edb00df36e8": {
+   "body": {
+    "affected_entities": {
+     "devices": [
+      "FGT-TEST"
+     ],
+     "src_ips": [
+      "203.0.113.9"
+     ],
+     "users": [
+      "ops.user",
+      "temp1"
+     ]
+    },
+    "alert_merge_count": 3,
+    "detections": [
+     {
+      "basis": "observed",
+      "confidence": 0.85,
+      "config_hash": "9a2dec75574992c8fe51e48a93a53e39778b231e7575534e8d32cb9c858c6236",
+      "detection_id": "fdet-1ab891ca6fa8c8ec",
+      "entities": {
+       "devices": [
+        "FGT-TEST"
+       ],
+       "src_ips": [
+        "203.0.113.9"
+       ],
+       "users": [
+        "ops.user",
+        "temp1"
+       ]
+      },
+      "evidence_refs": [
+       "ev-3d0a75fe2e1a395939fed6fa",
+       "ev-1c83125ba842c9a374d99ee4",
+       "ev-cc61c8182013325d90df9359"
+      ],
+      "evidence_refs_truncated": false,
+      "first_ns": 1800000000000000000,
+      "first_offset": 20852,
+      "first_utc": "2027-01-15T08:00:00Z",
+      "kill_chain_stage": "installation",
+      "last_ns": 1800000600000000000,
+      "last_utc": "2027-01-15T08:10:00Z",
+      "merged_events": 3,
+      "reason": "Account temp1 was created, used to sign in and deleted within the configured window.",
+      "risk_contribution": 0.9,
+      "rule_id": "account_lifecycle",
+      "rule_version": "1.0",
+      "status": "unconfirmed",
+      "steps": [
+       {
+        "actor": "ops.user",
+        "count": 1,
+        "evidence_refs": [
+         "ev-3d0a75fe2e1a395939fed6fa"
+        ],
+        "label": "Account temp1 created by ops.user",
+        "last_ns": 1800000000000000000,
+        "last_utc": "2027-01-15T08:00:00Z",
+        "layer": "identity",
+        "ns": 1800000000000000000,
+        "offset": 20852,
+        "stage": "installation",
+        "target": "temp1",
+        "technique_id": "T1136.001",
+        "technique_name": "Create Account: Local Account",
+        "utc": "2027-01-15T08:00:00Z"
+       },
+       {
+        "actor": "temp1",
+        "count": 1,
+        "evidence_refs": [
+         "ev-1c83125ba842c9a374d99ee4"
+        ],
+        "label": "New account temp1 signed in from 203.0.113.9",
+        "last_ns": 1800000300000000000,
+        "last_utc": "2027-01-15T08:05:00Z",
+        "layer": "identity",
+        "ns": 1800000300000000000,
+        "offset": 21174,
+        "stage": "actions_on_objectives",
+        "target": "FGT-TEST",
+        "technique_id": "T1078",
+        "technique_name": "Valid Accounts",
+        "utc": "2027-01-15T08:05:00Z"
+       },
+       {
+        "actor": "ops.user",
+        "count": 1,
+        "evidence_refs": [
+         "ev-cc61c8182013325d90df9359"
+        ],
+        "label": "Account temp1 deleted by ops.user",
+        "last_ns": 1800000600000000000,
+        "last_utc": "2027-01-15T08:10:00Z",
+        "layer": "identity",
+        "ns": 1800000600000000000,
+        "offset": 21491,
+        "stage": "defense_evasion",
+        "target": "temp1",
+        "technique_id": "T1070",
+        "technique_name": "Indicator Removal",
+        "utc": "2027-01-15T08:10:00Z"
+       }
+      ],
+      "tactic": "persistence",
+      "target_kind": "device",
+      "technique_id": "T1136.001",
+      "technique_name": "Create Account: Local Account",
+      "timestamp_quality": "normal",
+      "title": "Account created, used, then removed"
+     }
+    ],
+    "evidence": [
+     {
+      "action": "Add",
+      "app": null,
+      "app_risk": null,
+      "attack": null,
+      "attack_id": null,
+      "byte_offset": 20852,
+      "canonical_sha256": "c2aa21c3de832cae09349fa698e08c0a",
+      "category": null,
+      "date": "2027-01-15",
+      "dst_ip": "10.99.0.1",
+      "dst_port": null,
+      "dst_role": "lan",
+      "event_type": "event",
+      "event_utc": "2027-01-15T08:00:00Z",
+      "evidence_id": "ev-3d0a75fe2e1a395939fed6fa",
+      "hostname": null,
+      "level": "information",
+      "line": 61,
+      "logid": "0100044547",
+      "message": "Add system.admin temp1",
+      "raw_sha256": "30344513f6aadb222e7ceb0b66228f7e",
+      "service": null,
+      "session_id": null,
+      "source_sha256": "5246c5d53f02b0c36b06df4cd7888bbd064213050995cf4304abcc462d3e7c73",
+      "src_ip": "203.0.113.9",
+      "src_port": null,
+      "src_role": "wan",
+      "status": null,
+      "subtype": "system",
+      "time": "08:00:00",
+      "timestamp_quality": "normal",
+      "tz": "+0530",
+      "url": null,
+      "user": "ops.user",
+      "virus": null
+     },
+     {
+      "action": "login",
+      "app": null,
+      "app_risk": null,
+      "attack": null,
+      "attack_id": null,
+      "byte_offset": 21174,
+      "canonical_sha256": "762eff77f4e35580cf4abe4f52f90a43",
+      "category": null,
+      "date": "2027-01-15",
+      "dst_ip": "10.99.0.1",
+      "dst_port": null,
+      "dst_role": "lan",
+      "event_type": "event",
+      "event_utc": "2027-01-15T08:05:00Z",
+      "evidence_id": "ev-1c83125ba842c9a374d99ee4",
+      "hostname": null,
+      "level": "information",
+      "line": 62,
+      "logid": "0100032001",
+      "message": "m",
+      "raw_sha256": "1c626eae014ed3e05e752b637b128369",
+      "service": null,
+      "session_id": null,
+      "source_sha256": "5246c5d53f02b0c36b06df4cd7888bbd064213050995cf4304abcc462d3e7c73",
+      "src_ip": "203.0.113.9",
+      "src_port": null,
+      "src_role": "wan",
+      "status": "success",
+      "subtype": "system",
+      "time": "08:05:00",
+      "timestamp_quality": "normal",
+      "tz": "+0530",
+      "url": null,
+      "user": "temp1",
+      "virus": null
+     },
+     {
+      "action": "Delete",
+      "app": null,
+      "app_risk": null,
+      "attack": null,
+      "attack_id": null,
+      "byte_offset": 21491,
+      "canonical_sha256": "e26c738943d9eaece50f300ded052890",
+      "category": null,
+      "date": "2027-01-15",
+      "dst_ip": "10.99.0.1",
+      "dst_port": null,
+      "dst_role": "lan",
+      "event_type": "event",
+      "event_utc": "2027-01-15T08:10:00Z",
+      "evidence_id": "ev-cc61c8182013325d90df9359",
+      "hostname": null,
+      "level": "information",
+      "line": 63,
+      "logid": "0100044547",
+      "message": "Delete system.admin temp1",
+      "raw_sha256": "6506599b5c2a49754def17740143bd0a",
+      "service": null,
+      "session_id": null,
+      "source_sha256": "5246c5d53f02b0c36b06df4cd7888bbd064213050995cf4304abcc462d3e7c73",
+      "src_ip": "203.0.113.9",
+      "src_port": null,
+      "src_role": "wan",
+      "status": null,
+      "subtype": "system",
+      "time": "08:10:00",
+      "timestamp_quality": "normal",
+      "tz": "+0530",
+      "url": null,
+      "user": "ops.user",
+      "virus": null
+     }
+    ],
+    "evidence_gaps": [
+     "No internal host is named, so effect inside the network is not shown.",
+     "These logs have no payload or endpoint data, so success of an action cannot be proven from them."
+    ],
+    "related_incidents": [],
+    "response_simulation": {
+     "available": false,
+     "label": "SIMULATED — NO REAL SECURITY ACTION IS EXECUTED",
+     "missing": [
+      "Business service map for the affected systems",
+      "Available response controls for these systems",
+      "Asset ownership and criticality context"
+     ]
+    },
+    "root_cause": "Account temp1 created by ops.user (Account created, used, then removed). Candidate root cause; not confirmed.",
+    "selected_path_id": "fhyp-ee9072b969bfa2ae",
+    "summary": {
+     "affected_devices": [
+      "FGT-TEST"
+     ],
+     "affected_identity": "ops.user",
+     "confidence": 0.85,
+     "critical_target": "FGT-TEST",
+     "detection_count": 1,
+     "entry_point": "ops.user",
+     "evidence_count": 3,
+     "first_utc": "2027-01-15T08:00:00Z",
+     "incident_id": "finc-ec918f810a84",
+     "last_utc": "2027-01-15T08:10:00Z",
+     "merged_events": 3,
+     "risk": 0.9,
+     "run_id": "frun-8d438edb00df36e8",
+     "stages": [
+      "actions_on_objectives",
+      "defense_evasion",
+      "installation"
+     ],
+     "status": "unconfirmed",
+     "techniques": [
+      "T1070",
+      "T1078",
+      "T1136.001"
+     ],
+     "timestamp_quality": "normal",
+     "title": "Account created, used, then removed"
+    },
+    "timeline": [
+     {
+      "basis": "observed",
+      "detail": "Account created, used, then removed",
+      "detection_id": "fdet-1ab891ca6fa8c8ec",
+      "evidence_refs": [
+       "ev-3d0a75fe2e1a395939fed6fa"
+      ],
+      "order": 0,
+      "stage": "installation",
+      "timestamp_quality": "normal",
+      "title": "Account temp1 created by ops.user",
+      "utc": "2027-01-15T08:00:00Z"
+     },
+     {
+      "basis": "observed",
+      "detail": "Account created, used, then removed",
+      "detection_id": "fdet-1ab891ca6fa8c8ec",
+      "evidence_refs": [
+       "ev-1c83125ba842c9a374d99ee4"
+      ],
+      "order": 1,
+      "stage": "actions_on_objectives",
+      "timestamp_quality": "normal",
+      "title": "New account temp1 signed in from 203.0.113.9",
+      "utc": "2027-01-15T08:05:00Z"
+     },
+     {
+      "basis": "observed",
+      "detail": "Account created, used, then removed",
+      "detection_id": "fdet-1ab891ca6fa8c8ec",
+      "evidence_refs": [
+       "ev-cc61c8182013325d90df9359"
+      ],
+      "order": 2,
+      "stage": "defense_evasion",
+      "timestamp_quality": "normal",
+      "title": "Account temp1 deleted by ops.user",
+      "utc": "2027-01-15T08:10:00Z"
+     }
+    ],
+    "uncertainty_margin": 0.673
+   },
+   "status": 200
+  },
+  "GET /api/v1/ps2/runs": {
+   "body": {
+    "items": [
+     {
+      "byte_range": [
+       0,
+       51343
+      ],
+      "chunks_done": 1,
+      "chunks_total": 1,
+      "created_at": "fixture",
+      "dataset_id": "fixture",
+      "detail": "Completed",
+      "error": null,
+      "metrics": {
+       "behavioural_bursts": 3,
+       "bytes_processed": 51343,
+       "bytes_total": 51343,
+       "canonical_records": 143,
+       "compression_ratio": "fixture",
+       "detections": 4,
+       "duration_s": "fixture",
+       "exact_duplicates": 0,
+       "incidents": 3,
+       "mb_per_second": "fixture",
+       "output_bytes": "fixture",
+       "peak_memory_mb": "fixture",
+       "quarantine_segments": 1,
+       "records_per_second": "fixture",
+       "records_processed": 144,
+       "rejected_records": 1
+      },
+      "pid": null,
+      "recovered": false,
+      "resume_count": 0,
+      "run_id": "frun-8d438edb00df36e8",
+      "stage": "done",
+      "status": "completed",
+      "updated_at": "fixture"
+     }
+    ]
+   },
+   "status": 200
+  },
+  "GET /api/v1/ps2/runs/frun-8d438edb00df36e8": {
+   "body": {
+    "byte_range": [
+     0,
+     51343
+    ],
+    "chunks_done": 1,
+    "chunks_total": 1,
+    "created_at": "fixture",
+    "dataset_id": "fixture",
+    "detail": "Completed",
+    "error": null,
+    "metrics": {
+     "behavioural_bursts": 3,
+     "bytes_processed": 51343,
+     "bytes_total": 51343,
+     "canonical_records": 143,
+     "compression_ratio": "fixture",
+     "detections": 4,
+     "duration_s": "fixture",
+     "exact_duplicates": 0,
+     "incidents": 3,
+     "mb_per_second": "fixture",
+     "output_bytes": "fixture",
+     "peak_memory_mb": "fixture",
+     "quarantine_segments": 1,
+     "records_per_second": "fixture",
+     "records_processed": 144,
+     "rejected_records": 1
+    },
+    "pid": null,
+    "recovered": false,
+    "resume_count": 0,
+    "run_id": "frun-8d438edb00df36e8",
+    "stage": "done",
+    "status": "completed",
+    "updated_at": "fixture"
+   },
+   "status": 200
+  },
+  "GET /api/v1/ps2/runs/frun-8d438edb00df36e8/benchmark": {
+   "body": {
+    "receipt": {
+     "artifact_hashes": "fixture",
+     "behavioural_bursts": 3,
+     "bytes_processed": 51343,
+     "completed_at": "fixture",
+     "dataset_id": "fixture",
+     "detection_config_hash": "9a2dec75574992c8fe51e48a93a53e39778b231e7575534e8d32cb9c858c6236",
+     "detections": 4,
+     "duration_s": "fixture",
+     "engine_version": "halt.firex.engine/1.0.0",
+     "error_summary": null,
+     "exact_duplicates": 0,
+     "git_commit": "fixture",
+     "host": "fixture",
+     "incident_open_latency_ms": "fixture",
+     "incidents": 3,
+     "mb_per_second": "fixture",
+     "output_bytes": "fixture",
+     "parser_version": "halt.firex.parser/1.0.0",
+     "peak_memory_mb": "fixture",
+     "peak_memory_scope": "upper bound: highest worker peak × workers + driver peak",
+     "processed_byte_range": [
+      0,
+      51343
+     ],
+     "quarantine_bytes": 20,
+     "quarantine_segments": 1,
+     "range_sha256": "5246c5d53f02b0c36b06df4cd7888bbd064213050995cf4304abcc462d3e7c73",
+     "receipt_id": "fixture",
+     "records_per_second": "fixture",
+     "records_rejected": 1,
+     "records_valid": 143,
+     "run_id": "frun-8d438edb00df36e8",
+     "schema_version": "halt.firex.benchmark/1.0",
+     "schema_version_canonical": "halt.firex.canonical/1.0",
+     "seal": "fixture",
+     "seal_algorithm": "sha256-canonical-json",
+     "source_filename": "fixture.log",
+     "source_sha256": "5246c5d53f02b0c36b06df4cd7888bbd064213050995cf4304abcc462d3e7c73",
+     "source_sha256_verified": true,
+     "source_size_bytes": 51343,
+     "stage_durations_s": "fixture",
+     "started_at": "fixture",
+     "status": "completed"
+    },
+    "verification": {
+     "expected": "fixture",
+     "recorded": "fixture",
+     "valid": true
+    }
+   },
+   "status": 200
+  },
+  "GET /api/v1/ps2/runs/frun-8d438edb00df36e8/incidents": {
+   "body": {
+    "items": [
+     {
+      "affected_devices": [
+       "10.1.0.44",
+       "10.20.0.1",
+       "10.20.0.10",
+       "10.20.0.11",
+       "10.20.0.12",
+       "10.20.0.13",
+       "10.20.0.14",
+       "10.20.0.15"
+      ],
+      "affected_identity": null,
+      "confidence": 0.75,
+      "critical_target": null,
+      "detection_count": 2,
+      "entry_point": "10.1.0.44",
+      "evidence_count": 14,
+      "first_utc": "2027-01-15T08:00:00Z",
+      "incident_id": "finc-06dbcd7d8183",
+      "last_utc": "2027-01-15T08:04:40Z",
+      "merged_events": 19,
+      "risk": 0.94,
+      "run_id": "frun-8d438edb00df36e8",
+      "stages": [
+       "delivery",
+       "lateral_movement"
+      ],
+      "status": "unconfirmed",
+      "techniques": [
+       "T1021",
+       "T1105"
+      ],
+      "timestamp_quality": "normal",
+      "title": "Internal SMB or RDP fan-out from one host and 1 related"
+     },
+     {
+      "affected_devices": [
+       "FGT-TEST"
+      ],
+      "affected_identity": "ops.user",
+      "confidence": 0.85,
+      "critical_target": "FGT-TEST",
+      "detection_count": 1,
+      "entry_point": "ops.user",
+      "evidence_count": 3,
+      "first_utc": "2027-01-15T08:00:00Z",
+      "incident_id": "finc-ec918f810a84",
+      "last_utc": "2027-01-15T08:10:00Z",
+      "merged_events": 3,
+      "risk": 0.9,
+      "run_id": "frun-8d438edb00df36e8",
+      "stages": [
+       "actions_on_objectives",
+       "defense_evasion",
+       "installation"
+      ],
+      "status": "unconfirmed",
+      "techniques": [
+       "T1070",
+       "T1078",
+       "T1136.001"
+      ],
+      "timestamp_quality": "normal",
+      "title": "Account created, used, then removed"
+     },
+     {
+      "affected_devices": [
+       "10.20.0.200"
+      ],
+      "affected_identity": null,
+      "confidence": 0.8,
+      "critical_target": "10.20.0.200",
+      "detection_count": 1,
+      "entry_point": "203.0.113.20",
+      "evidence_count": 15,
+      "first_utc": "2027-01-15T08:16:40Z",
+      "incident_id": "finc-0526ba4f57ac",
+      "last_utc": "2027-01-15T08:17:39Z",
+      "merged_events": 60,
+      "risk": 0.8,
+      "run_id": "frun-8d438edb00df36e8",
+      "stages": [
+       "exploitation"
+      ],
+      "status": "unconfirmed",
+      "techniques": [
+       "T1190"
+      ],
+      "timestamp_quality": "normal",
+      "title": "Concentrated multi-technique web attack on one target"
+     }
+    ],
+    "quality": {
+     "bytes_accounted": true,
+     "bytes_blank": 0,
+     "bytes_quarantined": 20,
+     "bytes_total": 51343,
+     "bytes_valid": 51323,
+     "collapsed_timestamps": [],
+     "earliest_utc": "2027-01-15T07:51:40Z",
+     "exact_duplicates": 0,
+     "latest_utc": "2027-01-15T08:17:39Z",
+     "lines_blank": 0,
+     "lines_total": 144,
+     "quarantine_segments": 1,
+     "quarantine_segments_truncated": 0,
+     "records_in_collapsed_timestamps": 0,
+     "records_rejected": 1,
+     "records_valid": 143,
+     "records_with_conflicting_time": 0,
+     "reject_reasons": {
+      "not_log_prefix": 1
+     },
+     "timezone_conflict": {
+      "affected_records": 143,
+      "declared_tz": [
+       "+0530"
+      ],
+      "interpretation": "date and time equal eventtime when read as UTC, although tz declares another offset. eventtime is used as UTC; the original fields are preserved."
+     }
+    },
+    "run_id": "frun-8d438edb00df36e8"
+   },
+   "status": 200
+  },
+  "GET /api/v1/ps2/runs/frun-8d438edb00df36e8/progress": {
+   "body": {
+    "byte_range": [
+     0,
+     51343
+    ],
+    "chunks_done": 1,
+    "chunks_total": 1,
+    "created_at": "fixture",
+    "dataset_id": "fixture",
+    "detail": "Completed",
+    "error": null,
+    "metrics": {
+     "behavioural_bursts": 3,
+     "bytes_processed": 51343,
+     "bytes_total": 51343,
+     "canonical_records": 143,
+     "compression_ratio": "fixture",
+     "detections": 4,
+     "duration_s": "fixture",
+     "exact_duplicates": 0,
+     "incidents": 3,
+     "mb_per_second": "fixture",
+     "output_bytes": "fixture",
+     "peak_memory_mb": "fixture",
+     "quarantine_segments": 1,
+     "records_per_second": "fixture",
+     "records_processed": 144,
+     "rejected_records": 1
+    },
+    "pid": null,
+    "recovered": false,
+    "resume_count": 0,
+    "run_id": "frun-8d438edb00df36e8",
+    "stage": "done",
+    "status": "completed",
+    "updated_at": "fixture"
+   },
+   "status": 200
+  },
+  "GET /api/v1/ps2/runs/frun-8d438edb00df36e8/quarantine": {
+   "body": {
+    "items": [
+     {
+      "blank_lines": 0,
+      "end_line": 144,
+      "end_offset": 51343,
+      "parser_version": "halt.firex.parser/1.0.0",
+      "reason": "not_log_prefix",
+      "rejected_records": 1,
+      "samples": [
+       {
+        "length": 20,
+        "line": 144,
+        "offset": 51323,
+        "text": "\\udc90\\udcff binary junk line"
+       }
+      ],
+      "segment_id": "qseg-cc4c4acf24c531f4",
+      "source_sha256": "5246c5d53f02b0c36b06df4cd7888bbd064213050995cf4304abcc462d3e7c73",
+      "start_line": 144,
+      "start_offset": 51323
+     }
+    ],
+    "run_id": "frun-8d438edb00df36e8"
+   },
+   "status": 200
+  },
+  "POST /api/v1/ps2/incidents/finc-0526ba4f57ac/narrative?run_id=frun-8d438edb00df36e8": {
+   "body": {
+    "fallback_reason": "The LLM is disabled.",
+    "fallback_used": true,
+    "generated_at": "fixture",
+    "incident_id": "finc-0526ba4f57ac",
+    "label": "Deterministic Attack Story",
+    "model": null,
+    "prompt_version": "halt.firex.narrative/1.0",
+    "provider": "disabled",
+    "rejected_statements": 0,
+    "statements": [
+     {
+      "evidence_ids": [
+       "ev-7090074172dcdc0cdd5309f1",
+       "ev-81083a6b2db6fcccb7568553",
+       "ev-8e745ade9716e31b43fde7af",
+       "ev-ab9bbafce5157b79fbe33a32",
+       "ev-0a31a9bad83f113f064bd0da"
+      ],
+      "text": "2027-01-15T08:16:40Z: HTTP.URI.SQL.Injection from 203.0.113.20 (20 events)."
+     },
+     {
+      "evidence_ids": [
+       "ev-3deaf3f2b3636f28b150256b",
+       "ev-b77b9fb32fe3193b950dddd7",
+       "ev-e756c5ad7af222a1f3e2f2a2",
+       "ev-8ab4a455f3f8a8b490c1019b",
+       "ev-7a4801a220b929914726bc2f"
+      ],
+      "text": "2027-01-15T08:16:41Z: HTTP.Path.Traversal from 203.0.113.21 (20 events)."
+     },
+     {
+      "evidence_ids": [
+       "ev-9795355d17f37929a6d67598",
+       "ev-6db15019f88a4baeb47f81f2",
+       "ev-b9f869b5d707b2f4ba8612c3",
+       "ev-69b8b5c38d60ea093bfb9a56",
+       "ev-2ec0c58078d3dea88bc6beda"
+      ],
+      "text": "2027-01-15T08:16:42Z: HTTP.URI.XSS.Attack from 203.0.113.22 (20 events)."
+     }
+    ],
+    "summary": "60 IPS events using 3 attack signatures from 3 source(s) targeted 10.20.0.200.",
+    "uncertainty_notes": [
+     "Merged activity is cited by a sample of its evidence, not every record. These logs have no payload or endpoint data, so success of an action cannot be proven from them."
+    ],
+    "unsupported_claims": 0
+   },
+   "status": 200
+  },
+  "POST /api/v1/ps2/incidents/finc-06dbcd7d8183/narrative?run_id=frun-8d438edb00df36e8": {
+   "body": {
+    "fallback_reason": "The LLM is disabled.",
+    "fallback_used": true,
+    "generated_at": "fixture",
+    "incident_id": "finc-06dbcd7d8183",
+    "label": "Deterministic Attack Story",
+    "model": null,
+    "prompt_version": "halt.firex.narrative/1.0",
+    "provider": "disabled",
+    "rejected_statements": 0,
+    "statements": [
+     {
+      "evidence_ids": [
+       "ev-bb823635a9601ec680373185",
+       "ev-aaa3231fe09530c448e237e4",
+       "ev-1801e9a6f8d9db3a55dc968f",
+       "ev-54c6fb3a83c36603f5a105ec",
+       "ev-3ff104bbd6022e023495abb5"
+      ],
+      "text": "2027-01-15T08:00:00Z: SMB to 15 internal hosts."
+     },
+     {
+      "evidence_ids": [
+       "ev-cc6555c6c13d9a75ee5655e0",
+       "ev-08eaca15da4c7f49df43ddcc",
+       "ev-b4f14b8600219e7e590bbcd5",
+       "ev-b56338cb340e4c85d30abdd3"
+      ],
+      "text": "2027-01-15T08:01:40Z: Malware detections to 198.51.100.34: W0/x!tr, W3/x!tr, W1/x!tr, W2/x!tr."
+     }
+    ],
+    "summary": "10.1.0.44 opened 15 SMB or RDP connections to 15 internal hosts. 4 malware detections (4 name(s)) between 10.1.0.44 and 198.51.100.34, host bad.example.",
+    "uncertainty_notes": [
+     "Merged activity is cited by a sample of its evidence, not every record. These logs have no payload or endpoint data, so success of an action cannot be proven from them."
+    ],
+    "unsupported_claims": 0
+   },
+   "status": 200
+  },
+  "POST /api/v1/ps2/incidents/finc-ec918f810a84/narrative?run_id=frun-8d438edb00df36e8": {
+   "body": {
+    "fallback_reason": "The LLM is disabled.",
+    "fallback_used": true,
+    "generated_at": "fixture",
+    "incident_id": "finc-ec918f810a84",
+    "label": "Deterministic Attack Story",
+    "model": null,
+    "prompt_version": "halt.firex.narrative/1.0",
+    "provider": "disabled",
+    "rejected_statements": 0,
+    "statements": [
+     {
+      "evidence_ids": [
+       "ev-3d0a75fe2e1a395939fed6fa"
+      ],
+      "text": "2027-01-15T08:00:00Z: Account temp1 created by ops.user."
+     },
+     {
+      "evidence_ids": [
+       "ev-1c83125ba842c9a374d99ee4"
+      ],
+      "text": "2027-01-15T08:05:00Z: New account temp1 signed in from 203.0.113.9."
+     },
+     {
+      "evidence_ids": [
+       "ev-cc61c8182013325d90df9359"
+      ],
+      "text": "2027-01-15T08:10:00Z: Account temp1 deleted by ops.user."
+     }
+    ],
+    "summary": "Account temp1 was created, used to sign in and deleted within the configured window.",
+    "uncertainty_notes": [
+     "No internal host is named, so effect inside the network is not shown. These logs have no payload or endpoint data, so success of an action cannot be proven from them."
+    ],
+    "unsupported_claims": 0
+   },
+   "status": 200
+  }
+ },
+ "run_id": "frun-8d438edb00df36e8"
+}
