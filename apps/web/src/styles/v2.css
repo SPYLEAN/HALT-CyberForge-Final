@@ -335,6 +335,8 @@
   .v2-platform-bar .halt-btn > span:first-child { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
   .v2-platform-bar img { width: 84px; height: auto; }
   .v2-platform-bar nav a { padding: 8px; }
+  /* Five destinations no longer fit beside the logo and button on a phone: the row scrolls, the page does not. */
+  .v2-platform-bar nav { flex: 1 1 auto; min-width: 0; overflow-x: auto; scrollbar-width: none; }
 }
 @media (max-width: 639px) {
   /* Phone: steps get their own row; SIMULATED and the step count stay visible, only the keyboard hint goes. */
