@@ -1360,10 +1360,7 @@ export interface components {
             /** Peak Memory Scope */
             peak_memory_scope: string;
             /** Processed Byte Range */
-            processed_byte_range: [
-                number,
-                number
-            ];
+            processed_byte_range: number[];
             /** Quarantine Bytes */
             quarantine_bytes: number;
             /** Quarantine Segments */
@@ -1837,10 +1834,7 @@ export interface components {
         /** DatasetRun */
         DatasetRun: {
             /** Byte Range */
-            byte_range: [
-                number,
-                number
-            ] | null;
+            byte_range: number[] | null;
             /** Chunks Done */
             chunks_done: number;
             /** Chunks Total */
@@ -3551,10 +3545,7 @@ export interface components {
             /** Parser Version */
             parser_version: string;
             /** Processed Byte Range */
-            processed_byte_range: [
-                number,
-                number
-            ];
+            processed_byte_range: number[];
             /** Receipt Id */
             receipt_id: string;
             /** Run Id */

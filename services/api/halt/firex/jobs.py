@@ -87,7 +87,7 @@ def to_contract(state: dict[str, Any]) -> DatasetRun:
         status=state["status"],
         stage=state["stage"],
         detail=state["detail"],
-        byte_range=(byte_range[0], byte_range[1]) if byte_range else None,
+        byte_range=list(byte_range) if byte_range else None,
         chunks_total=state["chunks_total"],
         chunks_done=state["chunks_done"],
         created_at=state["created_at"],

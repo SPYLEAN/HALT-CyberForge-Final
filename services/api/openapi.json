@@ -874,16 +874,9 @@
             "type": "string"
           },
           "processed_byte_range": {
-            "maxItems": 2,
-            "minItems": 2,
-            "prefixItems": [
-              {
-                "type": "integer"
-              },
-              {
-                "type": "integer"
-              }
-            ],
+            "items": {
+              "type": "integer"
+            },
             "title": "Processed Byte Range",
             "type": "array"
           },
@@ -2472,16 +2465,9 @@
           "byte_range": {
             "anyOf": [
               {
-                "maxItems": 2,
-                "minItems": 2,
-                "prefixItems": [
-                  {
-                    "type": "integer"
-                  },
-                  {
-                    "type": "integer"
-                  }
-                ],
+                "items": {
+                  "type": "integer"
+                },
                 "type": "array"
               },
               {
@@ -7672,16 +7658,9 @@
             "type": "string"
           },
           "processed_byte_range": {
-            "maxItems": 2,
-            "minItems": 2,
-            "prefixItems": [
-              {
-                "type": "integer"
-              },
-              {
-                "type": "integer"
-              }
-            ],
+            "items": {
+              "type": "integer"
+            },
             "title": "Processed Byte Range",
             "type": "array"
           },

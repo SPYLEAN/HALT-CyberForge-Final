@@ -134,7 +134,7 @@ class DatasetRun(Contract):
     status: RunStatus
     stage: Literal["read", "prepare", "reconstruct", "explain", "done"]
     detail: str
-    byte_range: tuple[int, int] | None
+    byte_range: list[int] | None
     chunks_total: int
     chunks_done: int
     created_at: str
@@ -442,7 +442,7 @@ class BenchmarkReceipt(Contract):
     source_sha256_verified: bool
     range_sha256: str
     source_size_bytes: int
-    processed_byte_range: tuple[int, int]
+    processed_byte_range: list[int]
     parser_version: str
     schema_version_canonical: str
     engine_version: str
@@ -482,7 +482,7 @@ class ProofReceipt(Contract):
     run_id: str
     dataset_id: str
     source_sha256: str
-    processed_byte_range: tuple[int, int]
+    processed_byte_range: list[int]
     parser_version: str
     engine_version: str
     detection_config_hash: str
