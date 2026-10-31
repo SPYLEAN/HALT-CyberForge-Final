@@ -357,8 +357,8 @@
   .v2-theatre-foot { flex-wrap: wrap; gap: var(--space-2); padding: var(--space-3) var(--space-4); }
 }
 
-/* The Synthetic Response Lab's label. It stays above any full-screen presentation. */
-.v2-lab-notice { position: relative; z-index: 60; margin: 0; padding: var(--space-2) var(--space-4); font-family: var(--font-display); font-size: 13px; line-height: 1.4; color: var(--v2-text); background: var(--v2-command); border-bottom: var(--border-hairline) solid var(--v2-border-strong); }
+/* The Synthetic Response Lab's label. It takes up its own space and never sits over a drawer or dialog. */
+.v2-lab-notice { margin: 0; padding: var(--space-2) var(--space-4); font-family: var(--font-display); font-size: 13px; line-height: 1.4; color: var(--v2-text); background: var(--v2-command); border-bottom: var(--border-hairline) solid var(--v2-border-strong); }
 
 /* The label takes its height from a full-height Command Center rather than pushing its controls out of view. */
 .v2-lab-frame { display: flex; flex-direction: column; min-height: 100dvh; }
