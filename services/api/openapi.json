@@ -395,6 +395,89 @@
         "title": "AttackFlowExport",
         "type": "object"
       },
+      "AttackHypothesis": {
+        "additionalProperties": false,
+        "properties": {
+          "components": {
+            "items": {
+              "$ref": "#/components/schemas/ScoreComponent"
+            },
+            "title": "Components",
+            "type": "array"
+          },
+          "description": {
+            "title": "Description",
+            "type": "string"
+          },
+          "detection_ids": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Detection Ids",
+            "type": "array"
+          },
+          "edge_ids": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Edge Ids",
+            "type": "array"
+          },
+          "evidence_gaps": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Evidence Gaps",
+            "type": "array"
+          },
+          "hypothesis_id": {
+            "title": "Hypothesis Id",
+            "type": "string"
+          },
+          "node_ids": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Node Ids",
+            "type": "array"
+          },
+          "rank": {
+            "title": "Rank",
+            "type": "integer"
+          },
+          "score": {
+            "title": "Score",
+            "type": "number"
+          },
+          "status": {
+            "enum": [
+              "selected",
+              "alternate"
+            ],
+            "title": "Status",
+            "type": "string"
+          },
+          "title": {
+            "title": "Title",
+            "type": "string"
+          }
+        },
+        "required": [
+          "hypothesis_id",
+          "rank",
+          "status",
+          "title",
+          "description",
+          "detection_ids",
+          "node_ids",
+          "edge_ids",
+          "score",
+          "components",
+          "evidence_gaps"
+        ],
+        "title": "AttackHypothesis",
+        "type": "object"
+      },
       "AttackPath": {
         "additionalProperties": false,
         "properties": {
@@ -469,38 +552,6 @@
           "uncertain"
         ],
         "title": "AttackPath",
-        "type": "object"
-      },
-      "AttackStory": {
-        "additionalProperties": false,
-        "properties": {
-          "checked_statements": {
-            "title": "Checked Statements",
-            "type": "integer"
-          },
-          "run_id": {
-            "title": "Run Id",
-            "type": "string"
-          },
-          "statements": {
-            "items": {
-              "$ref": "#/components/schemas/StoryStatement"
-            },
-            "title": "Statements",
-            "type": "array"
-          },
-          "unsupported_claims": {
-            "title": "Unsupported Claims",
-            "type": "integer"
-          }
-        },
-        "required": [
-          "run_id",
-          "statements",
-          "checked_statements",
-          "unsupported_claims"
-        ],
-        "title": "AttackStory",
         "type": "object"
       },
       "AttackTechnique": {
@@ -675,6 +726,280 @@
           "permission_scope"
         ],
         "title": "Authorisation",
+        "type": "object"
+      },
+      "BenchmarkReceipt": {
+        "additionalProperties": false,
+        "properties": {
+          "artifact_hashes": {
+            "additionalProperties": {
+              "type": "string"
+            },
+            "title": "Artifact Hashes",
+            "type": "object"
+          },
+          "behavioural_bursts": {
+            "title": "Behavioural Bursts",
+            "type": "integer"
+          },
+          "bytes_processed": {
+            "title": "Bytes Processed",
+            "type": "integer"
+          },
+          "completed_at": {
+            "title": "Completed At",
+            "type": "string"
+          },
+          "dataset_id": {
+            "title": "Dataset Id",
+            "type": "string"
+          },
+          "detection_config_hash": {
+            "title": "Detection Config Hash",
+            "type": "string"
+          },
+          "detections": {
+            "title": "Detections",
+            "type": "integer"
+          },
+          "duration_s": {
+            "title": "Duration S",
+            "type": "number"
+          },
+          "engine_version": {
+            "title": "Engine Version",
+            "type": "string"
+          },
+          "error_summary": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Error Summary"
+          },
+          "exact_duplicates": {
+            "title": "Exact Duplicates",
+            "type": "integer"
+          },
+          "git_commit": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Git Commit"
+          },
+          "host": {
+            "$ref": "#/components/schemas/HostInfo"
+          },
+          "incident_open_latency_ms": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Incident Open Latency Ms"
+          },
+          "incidents": {
+            "title": "Incidents",
+            "type": "integer"
+          },
+          "mb_per_second": {
+            "title": "Mb Per Second",
+            "type": "number"
+          },
+          "output_bytes": {
+            "title": "Output Bytes",
+            "type": "integer"
+          },
+          "parser_version": {
+            "title": "Parser Version",
+            "type": "string"
+          },
+          "peak_memory_mb": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Peak Memory Mb"
+          },
+          "peak_memory_scope": {
+            "title": "Peak Memory Scope",
+            "type": "string"
+          },
+          "processed_byte_range": {
+            "maxItems": 2,
+            "minItems": 2,
+            "prefixItems": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "integer"
+              }
+            ],
+            "title": "Processed Byte Range",
+            "type": "array"
+          },
+          "quarantine_bytes": {
+            "title": "Quarantine Bytes",
+            "type": "integer"
+          },
+          "quarantine_segments": {
+            "title": "Quarantine Segments",
+            "type": "integer"
+          },
+          "range_sha256": {
+            "title": "Range Sha256",
+            "type": "string"
+          },
+          "receipt_id": {
+            "title": "Receipt Id",
+            "type": "string"
+          },
+          "records_per_second": {
+            "title": "Records Per Second",
+            "type": "number"
+          },
+          "records_rejected": {
+            "title": "Records Rejected",
+            "type": "integer"
+          },
+          "records_valid": {
+            "title": "Records Valid",
+            "type": "integer"
+          },
+          "run_id": {
+            "title": "Run Id",
+            "type": "string"
+          },
+          "schema_version": {
+            "const": "halt.firex.benchmark/1.0",
+            "default": "halt.firex.benchmark/1.0",
+            "title": "Schema Version",
+            "type": "string"
+          },
+          "schema_version_canonical": {
+            "title": "Schema Version Canonical",
+            "type": "string"
+          },
+          "seal": {
+            "default": "",
+            "title": "Seal",
+            "type": "string"
+          },
+          "seal_algorithm": {
+            "const": "sha256-canonical-json",
+            "default": "sha256-canonical-json",
+            "title": "Seal Algorithm",
+            "type": "string"
+          },
+          "source_filename": {
+            "title": "Source Filename",
+            "type": "string"
+          },
+          "source_sha256": {
+            "title": "Source Sha256",
+            "type": "string"
+          },
+          "source_sha256_verified": {
+            "title": "Source Sha256 Verified",
+            "type": "boolean"
+          },
+          "source_size_bytes": {
+            "title": "Source Size Bytes",
+            "type": "integer"
+          },
+          "stage_durations_s": {
+            "additionalProperties": {
+              "type": "number"
+            },
+            "title": "Stage Durations S",
+            "type": "object"
+          },
+          "started_at": {
+            "title": "Started At",
+            "type": "string"
+          },
+          "status": {
+            "title": "Status",
+            "type": "string"
+          }
+        },
+        "required": [
+          "schema_version",
+          "receipt_id",
+          "run_id",
+          "dataset_id",
+          "source_filename",
+          "source_sha256",
+          "source_sha256_verified",
+          "range_sha256",
+          "source_size_bytes",
+          "processed_byte_range",
+          "parser_version",
+          "schema_version_canonical",
+          "engine_version",
+          "detection_config_hash",
+          "git_commit",
+          "started_at",
+          "completed_at",
+          "host",
+          "bytes_processed",
+          "records_valid",
+          "records_rejected",
+          "quarantine_segments",
+          "quarantine_bytes",
+          "exact_duplicates",
+          "behavioural_bursts",
+          "detections",
+          "incidents",
+          "duration_s",
+          "stage_durations_s",
+          "records_per_second",
+          "mb_per_second",
+          "peak_memory_mb",
+          "peak_memory_scope",
+          "output_bytes",
+          "incident_open_latency_ms",
+          "status",
+          "error_summary",
+          "artifact_hashes",
+          "seal_algorithm",
+          "seal"
+        ],
+        "title": "BenchmarkReceipt",
+        "type": "object"
+      },
+      "BenchmarkView": {
+        "additionalProperties": false,
+        "properties": {
+          "receipt": {
+            "$ref": "#/components/schemas/BenchmarkReceipt"
+          },
+          "verification": {
+            "$ref": "#/components/schemas/SealVerification"
+          }
+        },
+        "required": [
+          "receipt",
+          "verification"
+        ],
+        "title": "BenchmarkView",
         "type": "object"
       },
       "BusinessInfo": {
@@ -1509,6 +1834,60 @@
         "title": "ClosestOption",
         "type": "object"
       },
+      "CollapsedTimestamp": {
+        "additionalProperties": false,
+        "properties": {
+          "affected_records": {
+            "title": "Affected Records",
+            "type": "integer"
+          },
+          "config_version": {
+            "title": "Config Version",
+            "type": "string"
+          },
+          "event_ns": {
+            "title": "Event Ns",
+            "type": "integer"
+          },
+          "event_utc": {
+            "title": "Event Utc",
+            "type": "string"
+          },
+          "first_line": {
+            "title": "First Line",
+            "type": "integer"
+          },
+          "first_offset": {
+            "title": "First Offset",
+            "type": "integer"
+          },
+          "last_line": {
+            "title": "Last Line",
+            "type": "integer"
+          },
+          "last_offset": {
+            "title": "Last Offset",
+            "type": "integer"
+          },
+          "threshold_records": {
+            "title": "Threshold Records",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "event_ns",
+          "event_utc",
+          "affected_records",
+          "first_offset",
+          "last_offset",
+          "first_line",
+          "last_line",
+          "threshold_records",
+          "config_version"
+        ],
+        "title": "CollapsedTimestamp",
+        "type": "object"
+      },
       "ConfidenceComponent": {
         "additionalProperties": false,
         "properties": {
@@ -1782,6 +2161,72 @@
         "title": "Cut",
         "type": "object"
       },
+      "DatasetDescriptor": {
+        "additionalProperties": false,
+        "description": "A server-side registered log. The API never accepts a path: only one of these ids.",
+        "properties": {
+          "available": {
+            "title": "Available",
+            "type": "boolean"
+          },
+          "dataset_id": {
+            "title": "Dataset Id",
+            "type": "string"
+          },
+          "expected_sha256": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Expected Sha256"
+          },
+          "filename": {
+            "title": "Filename",
+            "type": "string"
+          },
+          "latest_run_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Latest Run Id"
+          },
+          "size_bytes": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Size Bytes"
+          },
+          "title": {
+            "title": "Title",
+            "type": "string"
+          }
+        },
+        "required": [
+          "dataset_id",
+          "title",
+          "filename",
+          "available",
+          "size_bytes",
+          "expected_sha256",
+          "latest_run_id"
+        ],
+        "title": "DatasetDescriptor",
+        "type": "object"
+      },
       "DatasetInfo": {
         "additionalProperties": false,
         "properties": {
@@ -1842,12 +2287,283 @@
             },
             "title": "Items",
             "type": "array"
+          },
+          "registered": {
+            "items": {
+              "$ref": "#/components/schemas/DatasetDescriptor"
+            },
+            "title": "Registered",
+            "type": "array"
           }
         },
         "required": [
-          "items"
+          "items",
+          "registered"
         ],
         "title": "DatasetList",
+        "type": "object"
+      },
+      "DatasetQualitySummary": {
+        "additionalProperties": false,
+        "properties": {
+          "bytes_accounted": {
+            "title": "Bytes Accounted",
+            "type": "boolean"
+          },
+          "bytes_blank": {
+            "title": "Bytes Blank",
+            "type": "integer"
+          },
+          "bytes_quarantined": {
+            "title": "Bytes Quarantined",
+            "type": "integer"
+          },
+          "bytes_total": {
+            "title": "Bytes Total",
+            "type": "integer"
+          },
+          "bytes_valid": {
+            "title": "Bytes Valid",
+            "type": "integer"
+          },
+          "collapsed_timestamps": {
+            "items": {
+              "$ref": "#/components/schemas/CollapsedTimestamp"
+            },
+            "title": "Collapsed Timestamps",
+            "type": "array"
+          },
+          "earliest_utc": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Earliest Utc"
+          },
+          "exact_duplicates": {
+            "title": "Exact Duplicates",
+            "type": "integer"
+          },
+          "latest_utc": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Latest Utc"
+          },
+          "lines_blank": {
+            "title": "Lines Blank",
+            "type": "integer"
+          },
+          "lines_total": {
+            "title": "Lines Total",
+            "type": "integer"
+          },
+          "quarantine_segments": {
+            "title": "Quarantine Segments",
+            "type": "integer"
+          },
+          "quarantine_segments_truncated": {
+            "default": 0,
+            "title": "Quarantine Segments Truncated",
+            "type": "integer"
+          },
+          "records_in_collapsed_timestamps": {
+            "title": "Records In Collapsed Timestamps",
+            "type": "integer"
+          },
+          "records_rejected": {
+            "title": "Records Rejected",
+            "type": "integer"
+          },
+          "records_valid": {
+            "title": "Records Valid",
+            "type": "integer"
+          },
+          "records_with_conflicting_time": {
+            "title": "Records With Conflicting Time",
+            "type": "integer"
+          },
+          "reject_reasons": {
+            "additionalProperties": {
+              "type": "integer"
+            },
+            "title": "Reject Reasons",
+            "type": "object"
+          },
+          "timezone_conflict": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/TimezoneConflict"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "required": [
+          "bytes_total",
+          "bytes_valid",
+          "bytes_quarantined",
+          "bytes_blank",
+          "bytes_accounted",
+          "lines_total",
+          "records_valid",
+          "records_rejected",
+          "lines_blank",
+          "quarantine_segments",
+          "quarantine_segments_truncated",
+          "reject_reasons",
+          "timezone_conflict",
+          "collapsed_timestamps",
+          "records_in_collapsed_timestamps",
+          "records_with_conflicting_time",
+          "exact_duplicates",
+          "earliest_utc",
+          "latest_utc"
+        ],
+        "title": "DatasetQualitySummary",
+        "type": "object"
+      },
+      "DatasetRun": {
+        "additionalProperties": false,
+        "properties": {
+          "byte_range": {
+            "anyOf": [
+              {
+                "maxItems": 2,
+                "minItems": 2,
+                "prefixItems": [
+                  {
+                    "type": "integer"
+                  },
+                  {
+                    "type": "integer"
+                  }
+                ],
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Byte Range"
+          },
+          "chunks_done": {
+            "title": "Chunks Done",
+            "type": "integer"
+          },
+          "chunks_total": {
+            "title": "Chunks Total",
+            "type": "integer"
+          },
+          "created_at": {
+            "title": "Created At",
+            "type": "string"
+          },
+          "dataset_id": {
+            "title": "Dataset Id",
+            "type": "string"
+          },
+          "detail": {
+            "title": "Detail",
+            "type": "string"
+          },
+          "error": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Error"
+          },
+          "metrics": {
+            "$ref": "#/components/schemas/RunMetrics"
+          },
+          "pid": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Pid"
+          },
+          "recovered": {
+            "default": false,
+            "title": "Recovered",
+            "type": "boolean"
+          },
+          "resume_count": {
+            "default": 0,
+            "title": "Resume Count",
+            "type": "integer"
+          },
+          "run_id": {
+            "title": "Run Id",
+            "type": "string"
+          },
+          "stage": {
+            "enum": [
+              "read",
+              "prepare",
+              "reconstruct",
+              "explain",
+              "done"
+            ],
+            "title": "Stage",
+            "type": "string"
+          },
+          "status": {
+            "enum": [
+              "queued",
+              "running",
+              "cancelling",
+              "cancelled",
+              "interrupted",
+              "failed",
+              "completed"
+            ],
+            "title": "Status",
+            "type": "string"
+          },
+          "updated_at": {
+            "title": "Updated At",
+            "type": "string"
+          }
+        },
+        "required": [
+          "run_id",
+          "dataset_id",
+          "status",
+          "stage",
+          "detail",
+          "byte_range",
+          "chunks_total",
+          "chunks_done",
+          "created_at",
+          "updated_at",
+          "pid",
+          "resume_count",
+          "recovered",
+          "error",
+          "metrics"
+        ],
+        "title": "DatasetRun",
         "type": "object"
       },
       "DemoReset": {
@@ -1937,6 +2653,304 @@
           "source_ids"
         ],
         "title": "Derivation",
+        "type": "object"
+      },
+      "Detection": {
+        "additionalProperties": false,
+        "properties": {
+          "basis": {
+            "enum": [
+              "observed",
+              "inferred"
+            ],
+            "title": "Basis",
+            "type": "string"
+          },
+          "confidence": {
+            "title": "Confidence",
+            "type": "number"
+          },
+          "config_hash": {
+            "title": "Config Hash",
+            "type": "string"
+          },
+          "detection_id": {
+            "title": "Detection Id",
+            "type": "string"
+          },
+          "entities": {
+            "additionalProperties": {
+              "items": {
+                "type": "string"
+              },
+              "type": "array"
+            },
+            "title": "Entities",
+            "type": "object"
+          },
+          "evidence_refs": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Evidence Refs",
+            "type": "array"
+          },
+          "evidence_refs_truncated": {
+            "default": false,
+            "title": "Evidence Refs Truncated",
+            "type": "boolean"
+          },
+          "first_ns": {
+            "title": "First Ns",
+            "type": "integer"
+          },
+          "first_offset": {
+            "title": "First Offset",
+            "type": "integer"
+          },
+          "first_utc": {
+            "title": "First Utc",
+            "type": "string"
+          },
+          "kill_chain_stage": {
+            "enum": [
+              "reconnaissance",
+              "delivery",
+              "exploitation",
+              "installation",
+              "command_and_control",
+              "actions_on_objectives",
+              "defense_evasion",
+              "credential_access",
+              "lateral_movement",
+              "impact"
+            ],
+            "title": "Kill Chain Stage",
+            "type": "string"
+          },
+          "last_ns": {
+            "title": "Last Ns",
+            "type": "integer"
+          },
+          "last_utc": {
+            "title": "Last Utc",
+            "type": "string"
+          },
+          "merged_events": {
+            "title": "Merged Events",
+            "type": "integer"
+          },
+          "reason": {
+            "title": "Reason",
+            "type": "string"
+          },
+          "risk_contribution": {
+            "title": "Risk Contribution",
+            "type": "number"
+          },
+          "rule_id": {
+            "title": "Rule Id",
+            "type": "string"
+          },
+          "rule_version": {
+            "title": "Rule Version",
+            "type": "string"
+          },
+          "status": {
+            "const": "unconfirmed",
+            "default": "unconfirmed",
+            "title": "Status",
+            "type": "string"
+          },
+          "steps": {
+            "items": {
+              "$ref": "#/components/schemas/DetectionStep"
+            },
+            "title": "Steps",
+            "type": "array"
+          },
+          "tactic": {
+            "title": "Tactic",
+            "type": "string"
+          },
+          "target_kind": {
+            "enum": [
+              "device",
+              "host",
+              "service",
+              "account"
+            ],
+            "title": "Target Kind",
+            "type": "string"
+          },
+          "technique_id": {
+            "title": "Technique Id",
+            "type": "string"
+          },
+          "technique_name": {
+            "title": "Technique Name",
+            "type": "string"
+          },
+          "timestamp_quality": {
+            "enum": [
+              "normal",
+              "collapsed",
+              "conflicting"
+            ],
+            "title": "Timestamp Quality",
+            "type": "string"
+          },
+          "title": {
+            "title": "Title",
+            "type": "string"
+          }
+        },
+        "required": [
+          "steps",
+          "target_kind",
+          "detection_id",
+          "rule_id",
+          "rule_version",
+          "title",
+          "reason",
+          "evidence_refs",
+          "evidence_refs_truncated",
+          "risk_contribution",
+          "technique_id",
+          "technique_name",
+          "tactic",
+          "kill_chain_stage",
+          "confidence",
+          "basis",
+          "first_utc",
+          "last_utc",
+          "first_ns",
+          "last_ns",
+          "first_offset",
+          "merged_events",
+          "config_hash",
+          "timestamp_quality",
+          "entities",
+          "status"
+        ],
+        "title": "Detection",
+        "type": "object"
+      },
+      "DetectionStep": {
+        "additionalProperties": false,
+        "description": "One labelled action inside a detection. Merged steps carry a count and sample evidence.",
+        "properties": {
+          "actor": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Actor"
+          },
+          "count": {
+            "title": "Count",
+            "type": "integer"
+          },
+          "evidence_refs": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Evidence Refs",
+            "type": "array"
+          },
+          "label": {
+            "title": "Label",
+            "type": "string"
+          },
+          "last_ns": {
+            "title": "Last Ns",
+            "type": "integer"
+          },
+          "last_utc": {
+            "title": "Last Utc",
+            "type": "string"
+          },
+          "layer": {
+            "enum": [
+              "external",
+              "network_edge",
+              "endpoint",
+              "identity",
+              "application",
+              "critical_asset"
+            ],
+            "title": "Layer",
+            "type": "string"
+          },
+          "ns": {
+            "title": "Ns",
+            "type": "integer"
+          },
+          "offset": {
+            "title": "Offset",
+            "type": "integer"
+          },
+          "stage": {
+            "enum": [
+              "reconnaissance",
+              "delivery",
+              "exploitation",
+              "installation",
+              "command_and_control",
+              "actions_on_objectives",
+              "defense_evasion",
+              "credential_access",
+              "lateral_movement",
+              "impact"
+            ],
+            "title": "Stage",
+            "type": "string"
+          },
+          "target": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Target"
+          },
+          "technique_id": {
+            "title": "Technique Id",
+            "type": "string"
+          },
+          "technique_name": {
+            "title": "Technique Name",
+            "type": "string"
+          },
+          "utc": {
+            "title": "Utc",
+            "type": "string"
+          }
+        },
+        "required": [
+          "label",
+          "utc",
+          "ns",
+          "last_utc",
+          "last_ns",
+          "offset",
+          "count",
+          "evidence_refs",
+          "technique_id",
+          "technique_name",
+          "stage",
+          "layer",
+          "actor",
+          "target"
+        ],
+        "title": "DetectionStep",
         "type": "object"
       },
       "DisplayAction": {
@@ -2221,6 +3235,385 @@
           "record_id"
         ],
         "title": "EventSource",
+        "type": "object"
+      },
+      "EvidenceEvent": {
+        "additionalProperties": false,
+        "description": "One canonical record, cited by evidence id. Missing source fields stay null.",
+        "properties": {
+          "action": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Action"
+          },
+          "app": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "App"
+          },
+          "app_risk": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "App Risk"
+          },
+          "attack": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Attack"
+          },
+          "attack_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Attack Id"
+          },
+          "byte_offset": {
+            "title": "Byte Offset",
+            "type": "integer"
+          },
+          "canonical_sha256": {
+            "title": "Canonical Sha256",
+            "type": "string"
+          },
+          "category": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Category"
+          },
+          "date": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Date"
+          },
+          "dst_ip": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Dst Ip"
+          },
+          "dst_port": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Dst Port"
+          },
+          "dst_role": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Dst Role"
+          },
+          "event_type": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Event Type"
+          },
+          "event_utc": {
+            "title": "Event Utc",
+            "type": "string"
+          },
+          "evidence_id": {
+            "title": "Evidence Id",
+            "type": "string"
+          },
+          "hostname": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Hostname"
+          },
+          "level": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Level"
+          },
+          "line": {
+            "title": "Line",
+            "type": "integer"
+          },
+          "logid": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Logid"
+          },
+          "message": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Message"
+          },
+          "raw_sha256": {
+            "title": "Raw Sha256",
+            "type": "string"
+          },
+          "service": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Service"
+          },
+          "session_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Session Id"
+          },
+          "source_sha256": {
+            "title": "Source Sha256",
+            "type": "string"
+          },
+          "src_ip": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Src Ip"
+          },
+          "src_port": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Src Port"
+          },
+          "src_role": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Src Role"
+          },
+          "status": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Status"
+          },
+          "subtype": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Subtype"
+          },
+          "time": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Time"
+          },
+          "timestamp_quality": {
+            "enum": [
+              "normal",
+              "collapsed",
+              "conflicting"
+            ],
+            "title": "Timestamp Quality",
+            "type": "string"
+          },
+          "tz": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Tz"
+          },
+          "url": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Url"
+          },
+          "user": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "User"
+          },
+          "virus": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Virus"
+          }
+        },
+        "required": [
+          "evidence_id",
+          "event_utc",
+          "timestamp_quality",
+          "date",
+          "time",
+          "tz",
+          "byte_offset",
+          "line",
+          "source_sha256",
+          "raw_sha256",
+          "canonical_sha256",
+          "event_type",
+          "subtype",
+          "logid",
+          "level",
+          "action",
+          "status",
+          "user",
+          "src_ip",
+          "src_port",
+          "dst_ip",
+          "dst_port",
+          "src_role",
+          "dst_role",
+          "session_id",
+          "service",
+          "hostname",
+          "url",
+          "category",
+          "app",
+          "app_risk",
+          "attack",
+          "attack_id",
+          "virus",
+          "message"
+        ],
+        "title": "EvidenceEvent",
         "type": "object"
       },
       "EvidenceRef": {
@@ -2850,6 +4243,7 @@
                 "type": "null"
               }
             ],
+            "default": null,
             "title": "First Seen"
           },
           "historical": {
@@ -2870,7 +4264,8 @@
               {
                 "type": "null"
               }
-            ]
+            ],
+            "default": null
           },
           "kind": {
             "enum": [
@@ -2890,6 +4285,7 @@
                 "type": "null"
               }
             ],
+            "default": null,
             "title": "Origin"
           },
           "provenance": {
@@ -2925,7 +4321,8 @@
               {
                 "type": "null"
               }
-            ]
+            ],
+            "default": null
           }
         },
         "required": [
@@ -2961,7 +4358,8 @@
               {
                 "type": "null"
               }
-            ]
+            ],
+            "default": null
           },
           "criticality": {
             "default": "none",
@@ -2991,6 +4389,7 @@
                 "type": "null"
               }
             ],
+            "default": null,
             "title": "First Seen"
           },
           "id": {
@@ -3031,6 +4430,7 @@
                 "type": "null"
               }
             ],
+            "default": null,
             "title": "Origin"
           },
           "provenance": {
@@ -3070,7 +4470,7 @@
           },
           "edges": {
             "items": {
-              "$ref": "#/components/schemas/GraphEdge"
+              "$ref": "#/components/schemas/halt__contracts__graph__GraphEdge"
             },
             "title": "Edges",
             "type": "array"
@@ -3089,7 +4489,7 @@
           },
           "nodes": {
             "items": {
-              "$ref": "#/components/schemas/GraphNode"
+              "$ref": "#/components/schemas/halt__contracts__graph__GraphNode"
             },
             "title": "Nodes",
             "type": "array"
@@ -3182,53 +4582,57 @@
         "title": "Health",
         "type": "object"
       },
-      "Hypotheses": {
+      "HostInfo": {
         "additionalProperties": false,
         "properties": {
-          "alternates": {
-            "items": {
-              "$ref": "#/components/schemas/PathHypothesis"
-            },
-            "title": "Alternates",
-            "type": "array"
+          "cores": {
+            "title": "Cores",
+            "type": "integer"
           },
-          "rejected_edges": {
-            "items": {
-              "$ref": "#/components/schemas/CandidateEdge"
-            },
-            "title": "Rejected Edges",
-            "type": "array"
-          },
-          "rejected_paths": {
-            "items": {
-              "$ref": "#/components/schemas/PathHypothesis"
-            },
-            "title": "Rejected Paths",
-            "type": "array"
-          },
-          "run_id": {
-            "title": "Run Id",
+          "cpu": {
+            "title": "Cpu",
             "type": "string"
           },
-          "selected": {
+          "node": {
             "anyOf": [
               {
-                "$ref": "#/components/schemas/PathHypothesis"
+                "type": "string"
               },
               {
                 "type": "null"
               }
-            ]
+            ],
+            "title": "Node"
+          },
+          "os": {
+            "title": "Os",
+            "type": "string"
+          },
+          "python": {
+            "title": "Python",
+            "type": "string"
+          },
+          "ram_gb": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Ram Gb"
           }
         },
         "required": [
-          "run_id",
-          "selected",
-          "alternates",
-          "rejected_paths",
-          "rejected_edges"
+          "os",
+          "cpu",
+          "cores",
+          "ram_gb",
+          "python",
+          "node"
         ],
-        "title": "Hypotheses",
+        "title": "HostInfo",
         "type": "object"
       },
       "Impact": {
@@ -3376,25 +4780,137 @@
         "title": "Incident",
         "type": "object"
       },
-      "IncidentList": {
+      "IncidentDetail": {
         "additionalProperties": false,
         "properties": {
-          "items": {
-            "items": {
-              "$ref": "#/components/schemas/IncidentSummary"
+          "affected_entities": {
+            "additionalProperties": {
+              "items": {
+                "type": "string"
+              },
+              "type": "array"
             },
-            "title": "Items",
+            "title": "Affected Entities",
+            "type": "object"
+          },
+          "alert_merge_count": {
+            "title": "Alert Merge Count",
+            "type": "integer"
+          },
+          "detections": {
+            "items": {
+              "$ref": "#/components/schemas/Detection"
+            },
+            "title": "Detections",
             "type": "array"
           },
-          "meta": {
-            "$ref": "#/components/schemas/Meta"
+          "evidence": {
+            "items": {
+              "$ref": "#/components/schemas/EvidenceEvent"
+            },
+            "title": "Evidence",
+            "type": "array"
+          },
+          "evidence_gaps": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Evidence Gaps",
+            "type": "array"
+          },
+          "related_incidents": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Related Incidents",
+            "type": "array"
+          },
+          "response_simulation": {
+            "$ref": "#/components/schemas/ResponseEligibility"
+          },
+          "root_cause": {
+            "title": "Root Cause",
+            "type": "string"
+          },
+          "selected_path_id": {
+            "title": "Selected Path Id",
+            "type": "string"
+          },
+          "summary": {
+            "$ref": "#/components/schemas/halt__firex__contracts__IncidentSummary"
+          },
+          "timeline": {
+            "items": {
+              "$ref": "#/components/schemas/TimelineEntry"
+            },
+            "title": "Timeline",
+            "type": "array"
+          },
+          "uncertainty_margin": {
+            "title": "Uncertainty Margin",
+            "type": "number"
           }
         },
         "required": [
-          "items",
-          "meta"
+          "summary",
+          "root_cause",
+          "selected_path_id",
+          "affected_entities",
+          "evidence_gaps",
+          "uncertainty_margin",
+          "alert_merge_count",
+          "detections",
+          "timeline",
+          "evidence",
+          "related_incidents",
+          "response_simulation"
         ],
-        "title": "IncidentList",
+        "title": "IncidentDetail",
+        "type": "object"
+      },
+      "IncidentGraph": {
+        "additionalProperties": false,
+        "properties": {
+          "edges": {
+            "items": {
+              "$ref": "#/components/schemas/halt__firex__contracts__GraphEdge"
+            },
+            "title": "Edges",
+            "type": "array"
+          },
+          "graph_hash": {
+            "title": "Graph Hash",
+            "type": "string"
+          },
+          "incident_id": {
+            "title": "Incident Id",
+            "type": "string"
+          },
+          "node_cap": {
+            "title": "Node Cap",
+            "type": "integer"
+          },
+          "nodes": {
+            "items": {
+              "$ref": "#/components/schemas/halt__firex__contracts__GraphNode"
+            },
+            "title": "Nodes",
+            "type": "array"
+          },
+          "truncated": {
+            "title": "Truncated",
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "incident_id",
+          "nodes",
+          "edges",
+          "graph_hash",
+          "truncated",
+          "node_cap"
+        ],
+        "title": "IncidentGraph",
         "type": "object"
       },
       "IncidentParams": {
@@ -4120,6 +5636,150 @@
           "note"
         ],
         "title": "MetricResult",
+        "type": "object"
+      },
+      "NarrativeRequest": {
+        "additionalProperties": false,
+        "properties": {
+          "audience": {
+            "default": "analyst",
+            "enum": [
+              "analyst",
+              "executive"
+            ],
+            "title": "Audience",
+            "type": "string"
+          },
+          "question": {
+            "anyOf": [
+              {
+                "maxLength": 500,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Question"
+          }
+        },
+        "title": "NarrativeRequest",
+        "type": "object"
+      },
+      "NarrativeResult": {
+        "additionalProperties": false,
+        "properties": {
+          "fallback_reason": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Fallback Reason"
+          },
+          "fallback_used": {
+            "title": "Fallback Used",
+            "type": "boolean"
+          },
+          "generated_at": {
+            "title": "Generated At",
+            "type": "string"
+          },
+          "incident_id": {
+            "title": "Incident Id",
+            "type": "string"
+          },
+          "label": {
+            "title": "Label",
+            "type": "string"
+          },
+          "model": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Model"
+          },
+          "prompt_version": {
+            "title": "Prompt Version",
+            "type": "string"
+          },
+          "provider": {
+            "title": "Provider",
+            "type": "string"
+          },
+          "rejected_statements": {
+            "title": "Rejected Statements",
+            "type": "integer"
+          },
+          "statements": {
+            "items": {
+              "$ref": "#/components/schemas/NarrativeStatement"
+            },
+            "title": "Statements",
+            "type": "array"
+          },
+          "summary": {
+            "title": "Summary",
+            "type": "string"
+          },
+          "uncertainty_notes": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Uncertainty Notes",
+            "type": "array"
+          },
+          "unsupported_claims": {
+            "title": "Unsupported Claims",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "incident_id",
+          "summary",
+          "statements",
+          "uncertainty_notes",
+          "unsupported_claims",
+          "rejected_statements",
+          "provider",
+          "model",
+          "prompt_version",
+          "generated_at",
+          "fallback_used",
+          "fallback_reason",
+          "label"
+        ],
+        "title": "NarrativeResult",
+        "type": "object"
+      },
+      "NarrativeStatement": {
+        "additionalProperties": false,
+        "properties": {
+          "evidence_ids": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Evidence Ids",
+            "type": "array"
+          },
+          "text": {
+            "title": "Text",
+            "type": "string"
+          }
+        },
+        "required": [
+          "text",
+          "evidence_ids"
+        ],
+        "title": "NarrativeStatement",
         "type": "object"
       },
       "Objective": {
@@ -5288,6 +6948,147 @@
         "title": "ProofClaim",
         "type": "object"
       },
+      "ProofReceipt": {
+        "additionalProperties": false,
+        "properties": {
+          "cited_evidence": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Cited Evidence",
+            "type": "array"
+          },
+          "dataset_id": {
+            "title": "Dataset Id",
+            "type": "string"
+          },
+          "detection_config_hash": {
+            "title": "Detection Config Hash",
+            "type": "string"
+          },
+          "deterministic_replay_id": {
+            "title": "Deterministic Replay Id",
+            "type": "string"
+          },
+          "engine_version": {
+            "title": "Engine Version",
+            "type": "string"
+          },
+          "evidence_coverage": {
+            "title": "Evidence Coverage",
+            "type": "number"
+          },
+          "git_commit": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Git Commit"
+          },
+          "graph_hash": {
+            "title": "Graph Hash",
+            "type": "string"
+          },
+          "incident_id": {
+            "title": "Incident Id",
+            "type": "string"
+          },
+          "parser_version": {
+            "title": "Parser Version",
+            "type": "string"
+          },
+          "processed_byte_range": {
+            "maxItems": 2,
+            "minItems": 2,
+            "prefixItems": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "integer"
+              }
+            ],
+            "title": "Processed Byte Range",
+            "type": "array"
+          },
+          "receipt_id": {
+            "title": "Receipt Id",
+            "type": "string"
+          },
+          "run_id": {
+            "title": "Run Id",
+            "type": "string"
+          },
+          "schema_version": {
+            "const": "halt.firex.proof/1.0",
+            "default": "halt.firex.proof/1.0",
+            "title": "Schema Version",
+            "type": "string"
+          },
+          "seal": {
+            "default": "",
+            "title": "Seal",
+            "type": "string"
+          },
+          "seal_algorithm": {
+            "const": "sha256-canonical-json",
+            "default": "sha256-canonical-json",
+            "title": "Seal Algorithm",
+            "type": "string"
+          },
+          "selected_path_id": {
+            "title": "Selected Path Id",
+            "type": "string"
+          },
+          "source_sha256": {
+            "title": "Source Sha256",
+            "type": "string"
+          },
+          "status": {
+            "const": "unconfirmed",
+            "default": "unconfirmed",
+            "title": "Status",
+            "type": "string"
+          },
+          "uncertainty_margin": {
+            "title": "Uncertainty Margin",
+            "type": "number"
+          },
+          "unsupported_claims": {
+            "title": "Unsupported Claims",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "schema_version",
+          "receipt_id",
+          "incident_id",
+          "run_id",
+          "dataset_id",
+          "source_sha256",
+          "processed_byte_range",
+          "parser_version",
+          "engine_version",
+          "detection_config_hash",
+          "git_commit",
+          "graph_hash",
+          "selected_path_id",
+          "evidence_coverage",
+          "unsupported_claims",
+          "uncertainty_margin",
+          "cited_evidence",
+          "deterministic_replay_id",
+          "status",
+          "seal_algorithm",
+          "seal"
+        ],
+        "title": "ProofReceipt",
+        "type": "object"
+      },
       "ProofVerify": {
         "additionalProperties": false,
         "properties": {
@@ -5314,6 +7115,141 @@
           "meta"
         ],
         "title": "ProofVerify",
+        "type": "object"
+      },
+      "ProofView": {
+        "additionalProperties": false,
+        "properties": {
+          "receipt": {
+            "$ref": "#/components/schemas/ProofReceipt"
+          },
+          "verification": {
+            "$ref": "#/components/schemas/SealVerification"
+          }
+        },
+        "required": [
+          "receipt",
+          "verification"
+        ],
+        "title": "ProofView",
+        "type": "object"
+      },
+      "QuarantineReport": {
+        "additionalProperties": false,
+        "properties": {
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/QuarantineSegment"
+            },
+            "title": "Items",
+            "type": "array"
+          },
+          "run_id": {
+            "title": "Run Id",
+            "type": "string"
+          }
+        },
+        "required": [
+          "run_id",
+          "items"
+        ],
+        "title": "QuarantineReport",
+        "type": "object"
+      },
+      "QuarantineSample": {
+        "additionalProperties": false,
+        "properties": {
+          "length": {
+            "title": "Length",
+            "type": "integer"
+          },
+          "line": {
+            "title": "Line",
+            "type": "integer"
+          },
+          "offset": {
+            "title": "Offset",
+            "type": "integer"
+          },
+          "text": {
+            "title": "Text",
+            "type": "string"
+          }
+        },
+        "required": [
+          "offset",
+          "line",
+          "length",
+          "text"
+        ],
+        "title": "QuarantineSample",
+        "type": "object"
+      },
+      "QuarantineSegment": {
+        "additionalProperties": false,
+        "properties": {
+          "blank_lines": {
+            "title": "Blank Lines",
+            "type": "integer"
+          },
+          "end_line": {
+            "title": "End Line",
+            "type": "integer"
+          },
+          "end_offset": {
+            "title": "End Offset",
+            "type": "integer"
+          },
+          "parser_version": {
+            "title": "Parser Version",
+            "type": "string"
+          },
+          "reason": {
+            "title": "Reason",
+            "type": "string"
+          },
+          "rejected_records": {
+            "title": "Rejected Records",
+            "type": "integer"
+          },
+          "samples": {
+            "items": {
+              "$ref": "#/components/schemas/QuarantineSample"
+            },
+            "title": "Samples",
+            "type": "array"
+          },
+          "segment_id": {
+            "title": "Segment Id",
+            "type": "string"
+          },
+          "source_sha256": {
+            "title": "Source Sha256",
+            "type": "string"
+          },
+          "start_line": {
+            "title": "Start Line",
+            "type": "integer"
+          },
+          "start_offset": {
+            "title": "Start Offset",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "segment_id",
+          "reason",
+          "start_offset",
+          "end_offset",
+          "start_line",
+          "end_line",
+          "rejected_records",
+          "blank_lines",
+          "samples",
+          "source_sha256",
+          "parser_version"
+        ],
+        "title": "QuarantineSegment",
         "type": "object"
       },
       "RawFile": {
@@ -5350,6 +7286,104 @@
           "content"
         ],
         "title": "RawFile",
+        "type": "object"
+      },
+      "ReachabilityResult": {
+        "additionalProperties": false,
+        "properties": {
+          "incident_id": {
+            "title": "Incident Id",
+            "type": "string"
+          },
+          "label": {
+            "default": "Hypothetical: what could be reached next. This is not observed attacker activity.",
+            "title": "Label",
+            "type": "string"
+          },
+          "limitations": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Limitations",
+            "type": "array"
+          },
+          "targets": {
+            "items": {
+              "$ref": "#/components/schemas/ReachableTarget"
+            },
+            "title": "Targets",
+            "type": "array"
+          }
+        },
+        "required": [
+          "incident_id",
+          "label",
+          "targets",
+          "limitations"
+        ],
+        "title": "ReachabilityResult",
+        "type": "object"
+      },
+      "ReachableTarget": {
+        "additionalProperties": false,
+        "properties": {
+          "basis": {
+            "title": "Basis",
+            "type": "string"
+          },
+          "confidence": {
+            "title": "Confidence",
+            "type": "number"
+          },
+          "evidence_refs": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Evidence Refs",
+            "type": "array"
+          },
+          "hypothetical": {
+            "const": true,
+            "default": true,
+            "title": "Hypothetical",
+            "type": "boolean"
+          },
+          "layer": {
+            "enum": [
+              "external",
+              "network_edge",
+              "endpoint",
+              "identity",
+              "application",
+              "critical_asset"
+            ],
+            "title": "Layer",
+            "type": "string"
+          },
+          "observed_connections": {
+            "title": "Observed Connections",
+            "type": "integer"
+          },
+          "target": {
+            "title": "Target",
+            "type": "string"
+          },
+          "via": {
+            "title": "Via",
+            "type": "string"
+          }
+        },
+        "required": [
+          "target",
+          "layer",
+          "via",
+          "basis",
+          "observed_connections",
+          "evidence_refs",
+          "confidence",
+          "hypothetical"
+        ],
+        "title": "ReachableTarget",
         "type": "object"
       },
       "Readiness": {
@@ -5915,6 +7949,35 @@
         "title": "ResponseAction",
         "type": "object"
       },
+      "ResponseEligibility": {
+        "additionalProperties": false,
+        "description": "Response simulation needs business topology and control context this data does not carry.",
+        "properties": {
+          "available": {
+            "title": "Available",
+            "type": "boolean"
+          },
+          "label": {
+            "default": "SIMULATED — NO REAL SECURITY ACTION IS EXECUTED",
+            "title": "Label",
+            "type": "string"
+          },
+          "missing": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Missing",
+            "type": "array"
+          }
+        },
+        "required": [
+          "available",
+          "label",
+          "missing"
+        ],
+        "title": "ResponseEligibility",
+        "type": "object"
+      },
       "Reversibility": {
         "additionalProperties": false,
         "properties": {
@@ -5958,6 +8021,250 @@
           "seconds"
         ],
         "title": "Reversibility",
+        "type": "object"
+      },
+      "RunList": {
+        "additionalProperties": false,
+        "properties": {
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/DatasetRun"
+            },
+            "title": "Items",
+            "type": "array"
+          }
+        },
+        "required": [
+          "items"
+        ],
+        "title": "RunList",
+        "type": "object"
+      },
+      "RunMetrics": {
+        "additionalProperties": false,
+        "properties": {
+          "behavioural_bursts": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Behavioural Bursts"
+          },
+          "bytes_processed": {
+            "default": 0,
+            "title": "Bytes Processed",
+            "type": "integer"
+          },
+          "bytes_total": {
+            "default": 0,
+            "title": "Bytes Total",
+            "type": "integer"
+          },
+          "canonical_records": {
+            "default": 0,
+            "title": "Canonical Records",
+            "type": "integer"
+          },
+          "compression_ratio": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Compression Ratio"
+          },
+          "detections": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Detections"
+          },
+          "duration_s": {
+            "default": 0.0,
+            "title": "Duration S",
+            "type": "number"
+          },
+          "exact_duplicates": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Exact Duplicates"
+          },
+          "incidents": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Incidents"
+          },
+          "mb_per_second": {
+            "default": 0.0,
+            "title": "Mb Per Second",
+            "type": "number"
+          },
+          "output_bytes": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Output Bytes"
+          },
+          "peak_memory_mb": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Peak Memory Mb"
+          },
+          "quarantine_segments": {
+            "default": 0,
+            "title": "Quarantine Segments",
+            "type": "integer"
+          },
+          "records_per_second": {
+            "default": 0.0,
+            "title": "Records Per Second",
+            "type": "number"
+          },
+          "records_processed": {
+            "default": 0,
+            "title": "Records Processed",
+            "type": "integer"
+          },
+          "rejected_records": {
+            "default": 0,
+            "title": "Rejected Records",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "bytes_processed",
+          "bytes_total",
+          "records_processed",
+          "canonical_records",
+          "rejected_records",
+          "quarantine_segments",
+          "exact_duplicates",
+          "behavioural_bursts",
+          "detections",
+          "incidents",
+          "duration_s",
+          "records_per_second",
+          "mb_per_second",
+          "peak_memory_mb",
+          "output_bytes",
+          "compression_ratio"
+        ],
+        "title": "RunMetrics",
+        "type": "object"
+      },
+      "RunRequest": {
+        "additionalProperties": false,
+        "properties": {
+          "dataset_id": {
+            "pattern": "^[a-z0-9][a-z0-9-]{0,63}$",
+            "title": "Dataset Id",
+            "type": "string"
+          },
+          "max_bytes": {
+            "anyOf": [
+              {
+                "minimum": 1.0,
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Max Bytes"
+          }
+        },
+        "required": [
+          "dataset_id"
+        ],
+        "title": "RunRequest",
+        "type": "object"
+      },
+      "ScoreComponent": {
+        "additionalProperties": false,
+        "properties": {
+          "detail": {
+            "title": "Detail",
+            "type": "string"
+          },
+          "name": {
+            "title": "Name",
+            "type": "string"
+          },
+          "value": {
+            "title": "Value",
+            "type": "number"
+          },
+          "weight": {
+            "title": "Weight",
+            "type": "number"
+          }
+        },
+        "required": [
+          "name",
+          "value",
+          "weight",
+          "detail"
+        ],
+        "title": "ScoreComponent",
+        "type": "object"
+      },
+      "SealVerification": {
+        "additionalProperties": false,
+        "properties": {
+          "expected": {
+            "title": "Expected",
+            "type": "string"
+          },
+          "recorded": {
+            "title": "Recorded",
+            "type": "string"
+          },
+          "valid": {
+            "title": "Valid",
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "valid",
+          "expected",
+          "recorded"
+        ],
+        "title": "SealVerification",
         "type": "object"
       },
       "SecurityEvent": {
@@ -6447,78 +8754,6 @@
         "title": "StaleMessage",
         "type": "object"
       },
-      "StoryStatement": {
-        "additionalProperties": false,
-        "properties": {
-          "confidence": {
-            "maximum": 1.0,
-            "minimum": 0.0,
-            "title": "Confidence",
-            "type": "number"
-          },
-          "edge_ids": {
-            "items": {
-              "type": "string"
-            },
-            "title": "Edge Ids",
-            "type": "array"
-          },
-          "event_ids": {
-            "items": {
-              "type": "string"
-            },
-            "title": "Event Ids",
-            "type": "array"
-          },
-          "facts": {
-            "additionalProperties": {
-              "type": "string"
-            },
-            "title": "Facts",
-            "type": "object"
-          },
-          "section": {
-            "enum": [
-              "observed",
-              "inferred",
-              "missing_evidence",
-              "forecast"
-            ],
-            "title": "Section",
-            "type": "string"
-          },
-          "statement_id": {
-            "title": "Statement Id",
-            "type": "string"
-          },
-          "status": {
-            "enum": [
-              "observed",
-              "inferred",
-              "missing",
-              "forecast"
-            ],
-            "title": "Status",
-            "type": "string"
-          },
-          "text": {
-            "title": "Text",
-            "type": "string"
-          }
-        },
-        "required": [
-          "statement_id",
-          "section",
-          "text",
-          "event_ids",
-          "edge_ids",
-          "confidence",
-          "status",
-          "facts"
-        ],
-        "title": "StoryStatement",
-        "type": "object"
-      },
       "SubscribeCommand": {
         "additionalProperties": false,
         "properties": {
@@ -6744,6 +8979,99 @@
         "title": "ThreadNode",
         "type": "object"
       },
+      "TimelineEntry": {
+        "additionalProperties": false,
+        "properties": {
+          "basis": {
+            "enum": [
+              "observed",
+              "inferred"
+            ],
+            "title": "Basis",
+            "type": "string"
+          },
+          "detail": {
+            "title": "Detail",
+            "type": "string"
+          },
+          "detection_id": {
+            "title": "Detection Id",
+            "type": "string"
+          },
+          "evidence_refs": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Evidence Refs",
+            "type": "array"
+          },
+          "order": {
+            "title": "Order",
+            "type": "integer"
+          },
+          "stage": {
+            "title": "Stage",
+            "type": "string"
+          },
+          "timestamp_quality": {
+            "enum": [
+              "normal",
+              "collapsed",
+              "conflicting"
+            ],
+            "title": "Timestamp Quality",
+            "type": "string"
+          },
+          "title": {
+            "title": "Title",
+            "type": "string"
+          },
+          "utc": {
+            "title": "Utc",
+            "type": "string"
+          }
+        },
+        "required": [
+          "order",
+          "utc",
+          "title",
+          "detail",
+          "stage",
+          "basis",
+          "timestamp_quality",
+          "detection_id",
+          "evidence_refs"
+        ],
+        "title": "TimelineEntry",
+        "type": "object"
+      },
+      "TimezoneConflict": {
+        "additionalProperties": false,
+        "properties": {
+          "affected_records": {
+            "title": "Affected Records",
+            "type": "integer"
+          },
+          "declared_tz": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Declared Tz",
+            "type": "array"
+          },
+          "interpretation": {
+            "title": "Interpretation",
+            "type": "string"
+          }
+        },
+        "required": [
+          "declared_tz",
+          "interpretation",
+          "affected_records"
+        ],
+        "title": "TimezoneConflict",
+        "type": "object"
+      },
       "Transition": {
         "additionalProperties": false,
         "description": "EchoLab input: per rollout the hop succeeds with probability p after a uniform delay.",
@@ -6918,6 +9246,1031 @@
         ],
         "title": "VariantList",
         "type": "object"
+      },
+      "halt__contracts__api__IncidentList": {
+        "additionalProperties": false,
+        "properties": {
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/halt__contracts__incident__IncidentSummary"
+            },
+            "title": "Items",
+            "type": "array"
+          },
+          "meta": {
+            "$ref": "#/components/schemas/Meta"
+          }
+        },
+        "required": [
+          "items",
+          "meta"
+        ],
+        "title": "IncidentList",
+        "type": "object"
+      },
+      "halt__contracts__graph__GraphEdge": {
+        "additionalProperties": false,
+        "properties": {
+          "evidence_ids": {
+            "items": {
+              "pattern": "^EV-\\d{2}$",
+              "type": "string"
+            },
+            "title": "Evidence Ids",
+            "type": "array"
+          },
+          "first_seen": {
+            "anyOf": [
+              {
+                "format": "date-time",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "First Seen"
+          },
+          "historical": {
+            "default": false,
+            "title": "Historical",
+            "type": "boolean"
+          },
+          "id": {
+            "pattern": "^[a-z]\\.[a-z0-9-]+$",
+            "title": "Id",
+            "type": "string"
+          },
+          "inference": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/Inference"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "kind": {
+            "enum": [
+              "hostile",
+              "dependency",
+              "identity"
+            ],
+            "title": "Kind",
+            "type": "string"
+          },
+          "origin": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Origin"
+          },
+          "provenance": {
+            "enum": [
+              "observed",
+              "inferred",
+              "forecast",
+              "structural"
+            ],
+            "title": "Provenance",
+            "type": "string"
+          },
+          "relation": {
+            "minLength": 1,
+            "title": "Relation",
+            "type": "string"
+          },
+          "source": {
+            "pattern": "^[a-z]+\\.[a-z0-9_]+$",
+            "title": "Source",
+            "type": "string"
+          },
+          "target": {
+            "pattern": "^[a-z]+\\.[a-z0-9_]+$",
+            "title": "Target",
+            "type": "string"
+          },
+          "transition": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/Transition"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "required": [
+          "id",
+          "source",
+          "target",
+          "kind",
+          "relation",
+          "provenance",
+          "evidence_ids",
+          "origin",
+          "inference",
+          "transition",
+          "historical",
+          "first_seen"
+        ],
+        "title": "GraphEdge",
+        "type": "object"
+      },
+      "halt__contracts__graph__GraphNode": {
+        "additionalProperties": false,
+        "properties": {
+          "attacker_controlled": {
+            "default": false,
+            "title": "Attacker Controlled",
+            "type": "boolean"
+          },
+          "business": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/BusinessInfo"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "criticality": {
+            "default": "none",
+            "enum": [
+              "none",
+              "standard",
+              "critical"
+            ],
+            "title": "Criticality",
+            "type": "string"
+          },
+          "evidence_ids": {
+            "items": {
+              "pattern": "^EV-\\d{2}$",
+              "type": "string"
+            },
+            "title": "Evidence Ids",
+            "type": "array"
+          },
+          "first_seen": {
+            "anyOf": [
+              {
+                "format": "date-time",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "First Seen"
+          },
+          "id": {
+            "pattern": "^[a-z]+\\.[a-z0-9_]+$",
+            "title": "Id",
+            "type": "string"
+          },
+          "kind": {
+            "enum": [
+              "user",
+              "device",
+              "session",
+              "token",
+              "application",
+              "api",
+              "service",
+              "database",
+              "process",
+              "attacker"
+            ],
+            "title": "Kind",
+            "type": "string"
+          },
+          "label": {
+            "minLength": 1,
+            "title": "Label",
+            "type": "string"
+          },
+          "layout": {
+            "$ref": "#/components/schemas/Layout"
+          },
+          "origin": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Origin"
+          },
+          "provenance": {
+            "enum": [
+              "observed",
+              "inferred",
+              "forecast",
+              "structural"
+            ],
+            "title": "Provenance",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "kind",
+          "label",
+          "provenance",
+          "attacker_controlled",
+          "criticality",
+          "business",
+          "evidence_ids",
+          "origin",
+          "first_seen",
+          "layout"
+        ],
+        "title": "GraphNode",
+        "type": "object"
+      },
+      "halt__contracts__incident__IncidentSummary": {
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "pattern": "^INC-\\d{4}$",
+            "title": "Id",
+            "type": "string"
+          },
+          "state": {
+            "enum": [
+              "new",
+              "correlating",
+              "forecast_ready",
+              "simulating",
+              "plan_available",
+              "approval_pending",
+              "executing",
+              "contained",
+              "rollback_available",
+              "rolled_back",
+              "blocked_by_policy",
+              "no_safe_plan"
+            ],
+            "title": "State",
+            "type": "string"
+          },
+          "t0": {
+            "format": "date-time",
+            "title": "T0",
+            "type": "string"
+          },
+          "title": {
+            "title": "Title",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "title",
+          "state",
+          "t0"
+        ],
+        "title": "IncidentSummary",
+        "type": "object"
+      },
+      "halt__firex__contracts__AttackStory": {
+        "additionalProperties": false,
+        "properties": {
+          "checked_statements": {
+            "title": "Checked Statements",
+            "type": "integer"
+          },
+          "incident_id": {
+            "title": "Incident Id",
+            "type": "string"
+          },
+          "reachable_next": {
+            "title": "Reachable Next",
+            "type": "string"
+          },
+          "statements": {
+            "items": {
+              "$ref": "#/components/schemas/halt__firex__contracts__StoryStatement"
+            },
+            "title": "Statements",
+            "type": "array"
+          },
+          "strongest_evidence": {
+            "title": "Strongest Evidence",
+            "type": "string"
+          },
+          "systems_affected": {
+            "title": "Systems Affected",
+            "type": "string"
+          },
+          "uncertain": {
+            "title": "Uncertain",
+            "type": "string"
+          },
+          "unsupported_claims": {
+            "title": "Unsupported Claims",
+            "type": "integer"
+          },
+          "what_happened": {
+            "title": "What Happened",
+            "type": "string"
+          },
+          "where_started": {
+            "title": "Where Started",
+            "type": "string"
+          },
+          "who_compromised": {
+            "title": "Who Compromised",
+            "type": "string"
+          }
+        },
+        "required": [
+          "incident_id",
+          "what_happened",
+          "where_started",
+          "who_compromised",
+          "systems_affected",
+          "strongest_evidence",
+          "uncertain",
+          "reachable_next",
+          "statements",
+          "checked_statements",
+          "unsupported_claims"
+        ],
+        "title": "AttackStory",
+        "type": "object"
+      },
+      "halt__firex__contracts__GraphEdge": {
+        "additionalProperties": false,
+        "properties": {
+          "classification": {
+            "enum": [
+              "observed",
+              "inferred",
+              "reachable"
+            ],
+            "title": "Classification",
+            "type": "string"
+          },
+          "components": {
+            "items": {
+              "$ref": "#/components/schemas/ScoreComponent"
+            },
+            "title": "Components",
+            "type": "array"
+          },
+          "confidence": {
+            "title": "Confidence",
+            "type": "number"
+          },
+          "contradictions": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Contradictions",
+            "type": "array"
+          },
+          "edge_id": {
+            "title": "Edge Id",
+            "type": "string"
+          },
+          "evidence_refs": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Evidence Refs",
+            "type": "array"
+          },
+          "first_utc": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "First Utc"
+          },
+          "last_utc": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Last Utc"
+          },
+          "missing_evidence": {
+            "default": false,
+            "title": "Missing Evidence",
+            "type": "boolean"
+          },
+          "on_selected_path": {
+            "default": false,
+            "title": "On Selected Path",
+            "type": "boolean"
+          },
+          "relation": {
+            "title": "Relation",
+            "type": "string"
+          },
+          "rule": {
+            "title": "Rule",
+            "type": "string"
+          },
+          "rule_version": {
+            "title": "Rule Version",
+            "type": "string"
+          },
+          "source": {
+            "title": "Source",
+            "type": "string"
+          },
+          "target": {
+            "title": "Target",
+            "type": "string"
+          }
+        },
+        "required": [
+          "edge_id",
+          "relation",
+          "source",
+          "target",
+          "confidence",
+          "rule",
+          "rule_version",
+          "evidence_refs",
+          "first_utc",
+          "last_utc",
+          "classification",
+          "contradictions",
+          "components",
+          "on_selected_path",
+          "missing_evidence"
+        ],
+        "title": "GraphEdge",
+        "type": "object"
+      },
+      "halt__firex__contracts__GraphNode": {
+        "additionalProperties": false,
+        "properties": {
+          "attributes": {
+            "additionalProperties": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "integer"
+                },
+                {
+                  "type": "number"
+                },
+                {
+                  "type": "boolean"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "title": "Attributes",
+            "type": "object"
+          },
+          "count": {
+            "default": 1,
+            "title": "Count",
+            "type": "integer"
+          },
+          "detection_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Detection Id"
+          },
+          "evidence_refs": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Evidence Refs",
+            "type": "array"
+          },
+          "first_utc": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "First Utc"
+          },
+          "is_context": {
+            "default": false,
+            "title": "Is Context",
+            "type": "boolean"
+          },
+          "kind": {
+            "enum": [
+              "event",
+              "account",
+              "host",
+              "ip",
+              "session",
+              "application",
+              "service",
+              "critical_asset",
+              "burst"
+            ],
+            "title": "Kind",
+            "type": "string"
+          },
+          "label": {
+            "title": "Label",
+            "type": "string"
+          },
+          "last_utc": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Last Utc"
+          },
+          "layer": {
+            "enum": [
+              "external",
+              "network_edge",
+              "endpoint",
+              "identity",
+              "application",
+              "critical_asset"
+            ],
+            "title": "Layer",
+            "type": "string"
+          },
+          "node_id": {
+            "title": "Node Id",
+            "type": "string"
+          },
+          "on_selected_path": {
+            "default": false,
+            "title": "On Selected Path",
+            "type": "boolean"
+          },
+          "order": {
+            "title": "Order",
+            "type": "integer"
+          },
+          "stage": {
+            "anyOf": [
+              {
+                "enum": [
+                  "reconnaissance",
+                  "delivery",
+                  "exploitation",
+                  "installation",
+                  "command_and_control",
+                  "actions_on_objectives",
+                  "defense_evasion",
+                  "credential_access",
+                  "lateral_movement",
+                  "impact"
+                ],
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Stage"
+          }
+        },
+        "required": [
+          "node_id",
+          "kind",
+          "label",
+          "layer",
+          "order",
+          "stage",
+          "first_utc",
+          "last_utc",
+          "count",
+          "on_selected_path",
+          "is_context",
+          "evidence_refs",
+          "detection_id",
+          "attributes"
+        ],
+        "title": "GraphNode",
+        "type": "object"
+      },
+      "halt__firex__contracts__Hypotheses": {
+        "additionalProperties": false,
+        "properties": {
+          "alternates": {
+            "items": {
+              "$ref": "#/components/schemas/AttackHypothesis"
+            },
+            "title": "Alternates",
+            "type": "array"
+          },
+          "incident_id": {
+            "title": "Incident Id",
+            "type": "string"
+          },
+          "selected": {
+            "$ref": "#/components/schemas/AttackHypothesis"
+          },
+          "uncertainty_margin": {
+            "title": "Uncertainty Margin",
+            "type": "number"
+          }
+        },
+        "required": [
+          "incident_id",
+          "selected",
+          "alternates",
+          "uncertainty_margin"
+        ],
+        "title": "Hypotheses",
+        "type": "object"
+      },
+      "halt__firex__contracts__IncidentList": {
+        "additionalProperties": false,
+        "properties": {
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/halt__firex__contracts__IncidentSummary"
+            },
+            "title": "Items",
+            "type": "array"
+          },
+          "quality": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/DatasetQualitySummary"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "run_id": {
+            "title": "Run Id",
+            "type": "string"
+          }
+        },
+        "required": [
+          "run_id",
+          "items",
+          "quality"
+        ],
+        "title": "IncidentList",
+        "type": "object"
+      },
+      "halt__firex__contracts__IncidentSummary": {
+        "additionalProperties": false,
+        "properties": {
+          "affected_devices": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Affected Devices",
+            "type": "array"
+          },
+          "affected_identity": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Affected Identity"
+          },
+          "confidence": {
+            "title": "Confidence",
+            "type": "number"
+          },
+          "critical_target": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Critical Target"
+          },
+          "detection_count": {
+            "title": "Detection Count",
+            "type": "integer"
+          },
+          "entry_point": {
+            "title": "Entry Point",
+            "type": "string"
+          },
+          "evidence_count": {
+            "title": "Evidence Count",
+            "type": "integer"
+          },
+          "first_utc": {
+            "title": "First Utc",
+            "type": "string"
+          },
+          "incident_id": {
+            "title": "Incident Id",
+            "type": "string"
+          },
+          "last_utc": {
+            "title": "Last Utc",
+            "type": "string"
+          },
+          "merged_events": {
+            "title": "Merged Events",
+            "type": "integer"
+          },
+          "risk": {
+            "title": "Risk",
+            "type": "number"
+          },
+          "run_id": {
+            "title": "Run Id",
+            "type": "string"
+          },
+          "stages": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Stages",
+            "type": "array"
+          },
+          "status": {
+            "const": "unconfirmed",
+            "default": "unconfirmed",
+            "title": "Status",
+            "type": "string"
+          },
+          "techniques": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Techniques",
+            "type": "array"
+          },
+          "timestamp_quality": {
+            "enum": [
+              "normal",
+              "collapsed",
+              "conflicting"
+            ],
+            "title": "Timestamp Quality",
+            "type": "string"
+          },
+          "title": {
+            "title": "Title",
+            "type": "string"
+          }
+        },
+        "required": [
+          "incident_id",
+          "run_id",
+          "title",
+          "status",
+          "first_utc",
+          "last_utc",
+          "timestamp_quality",
+          "entry_point",
+          "affected_identity",
+          "affected_devices",
+          "critical_target",
+          "evidence_count",
+          "merged_events",
+          "detection_count",
+          "confidence",
+          "risk",
+          "stages",
+          "techniques"
+        ],
+        "title": "IncidentSummary",
+        "type": "object"
+      },
+      "halt__firex__contracts__StoryStatement": {
+        "additionalProperties": false,
+        "properties": {
+          "evidence_ids": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Evidence Ids",
+            "type": "array"
+          },
+          "kind": {
+            "enum": [
+              "observed",
+              "inferred",
+              "gap",
+              "hypothetical"
+            ],
+            "title": "Kind",
+            "type": "string"
+          },
+          "statement_id": {
+            "title": "Statement Id",
+            "type": "string"
+          },
+          "text": {
+            "title": "Text",
+            "type": "string"
+          }
+        },
+        "required": [
+          "statement_id",
+          "text",
+          "kind",
+          "evidence_ids"
+        ],
+        "title": "StoryStatement",
+        "type": "object"
+      },
+      "halt__ps2__schema__AttackStory": {
+        "additionalProperties": false,
+        "properties": {
+          "checked_statements": {
+            "title": "Checked Statements",
+            "type": "integer"
+          },
+          "run_id": {
+            "title": "Run Id",
+            "type": "string"
+          },
+          "statements": {
+            "items": {
+              "$ref": "#/components/schemas/halt__ps2__schema__StoryStatement"
+            },
+            "title": "Statements",
+            "type": "array"
+          },
+          "unsupported_claims": {
+            "title": "Unsupported Claims",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "run_id",
+          "statements",
+          "checked_statements",
+          "unsupported_claims"
+        ],
+        "title": "AttackStory",
+        "type": "object"
+      },
+      "halt__ps2__schema__Hypotheses": {
+        "additionalProperties": false,
+        "properties": {
+          "alternates": {
+            "items": {
+              "$ref": "#/components/schemas/PathHypothesis"
+            },
+            "title": "Alternates",
+            "type": "array"
+          },
+          "rejected_edges": {
+            "items": {
+              "$ref": "#/components/schemas/CandidateEdge"
+            },
+            "title": "Rejected Edges",
+            "type": "array"
+          },
+          "rejected_paths": {
+            "items": {
+              "$ref": "#/components/schemas/PathHypothesis"
+            },
+            "title": "Rejected Paths",
+            "type": "array"
+          },
+          "run_id": {
+            "title": "Run Id",
+            "type": "string"
+          },
+          "selected": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/PathHypothesis"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "required": [
+          "run_id",
+          "selected",
+          "alternates",
+          "rejected_paths",
+          "rejected_edges"
+        ],
+        "title": "Hypotheses",
+        "type": "object"
+      },
+      "halt__ps2__schema__StoryStatement": {
+        "additionalProperties": false,
+        "properties": {
+          "confidence": {
+            "maximum": 1.0,
+            "minimum": 0.0,
+            "title": "Confidence",
+            "type": "number"
+          },
+          "edge_ids": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Edge Ids",
+            "type": "array"
+          },
+          "event_ids": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Event Ids",
+            "type": "array"
+          },
+          "facts": {
+            "additionalProperties": {
+              "type": "string"
+            },
+            "title": "Facts",
+            "type": "object"
+          },
+          "section": {
+            "enum": [
+              "observed",
+              "inferred",
+              "missing_evidence",
+              "forecast"
+            ],
+            "title": "Section",
+            "type": "string"
+          },
+          "statement_id": {
+            "title": "Statement Id",
+            "type": "string"
+          },
+          "status": {
+            "enum": [
+              "observed",
+              "inferred",
+              "missing",
+              "forecast"
+            ],
+            "title": "Status",
+            "type": "string"
+          },
+          "text": {
+            "title": "Text",
+            "type": "string"
+          }
+        },
+        "required": [
+          "statement_id",
+          "section",
+          "text",
+          "event_ids",
+          "edge_ids",
+          "confidence",
+          "status",
+          "facts"
+        ],
+        "title": "StoryStatement",
+        "type": "object"
       }
     }
   },
@@ -7044,7 +10397,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/IncidentList"
+                  "$ref": "#/components/schemas/halt__contracts__api__IncidentList"
                 }
               }
             },
@@ -8175,6 +11528,429 @@
         ]
       }
     },
+    "/api/v1/ps2/incidents/{incident_id}": {
+      "get": {
+        "operationId": "get_incident_api_v1_ps2_incidents__incident_id__get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "incident_id",
+            "required": true,
+            "schema": {
+              "title": "Incident Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "run_id",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "pattern": "^frun-[0-9a-f]{16}$",
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Run Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/IncidentDetail"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Get Incident",
+        "tags": [
+          "firex"
+        ]
+      }
+    },
+    "/api/v1/ps2/incidents/{incident_id}/graph": {
+      "get": {
+        "operationId": "get_incident_graph_api_v1_ps2_incidents__incident_id__graph_get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "incident_id",
+            "required": true,
+            "schema": {
+              "title": "Incident Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "run_id",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "pattern": "^frun-[0-9a-f]{16}$",
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Run Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/IncidentGraph"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Get Incident Graph",
+        "tags": [
+          "firex"
+        ]
+      }
+    },
+    "/api/v1/ps2/incidents/{incident_id}/hypotheses": {
+      "get": {
+        "operationId": "get_incident_hypotheses_api_v1_ps2_incidents__incident_id__hypotheses_get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "incident_id",
+            "required": true,
+            "schema": {
+              "title": "Incident Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "run_id",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "pattern": "^frun-[0-9a-f]{16}$",
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Run Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/halt__firex__contracts__Hypotheses"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Get Incident Hypotheses",
+        "tags": [
+          "firex"
+        ]
+      }
+    },
+    "/api/v1/ps2/incidents/{incident_id}/narrative": {
+      "post": {
+        "operationId": "create_narrative_api_v1_ps2_incidents__incident_id__narrative_post",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "incident_id",
+            "required": true,
+            "schema": {
+              "title": "Incident Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "run_id",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "pattern": "^frun-[0-9a-f]{16}$",
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Run Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/NarrativeRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NarrativeResult"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Create Narrative",
+        "tags": [
+          "firex"
+        ]
+      }
+    },
+    "/api/v1/ps2/incidents/{incident_id}/proof": {
+      "get": {
+        "operationId": "get_incident_proof_api_v1_ps2_incidents__incident_id__proof_get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "incident_id",
+            "required": true,
+            "schema": {
+              "title": "Incident Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "run_id",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "pattern": "^frun-[0-9a-f]{16}$",
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Run Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProofView"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Get Incident Proof",
+        "tags": [
+          "firex"
+        ]
+      }
+    },
+    "/api/v1/ps2/incidents/{incident_id}/reachability": {
+      "get": {
+        "operationId": "get_incident_reachability_api_v1_ps2_incidents__incident_id__reachability_get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "incident_id",
+            "required": true,
+            "schema": {
+              "title": "Incident Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "run_id",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "pattern": "^frun-[0-9a-f]{16}$",
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Run Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ReachabilityResult"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Get Incident Reachability",
+        "tags": [
+          "firex"
+        ]
+      }
+    },
+    "/api/v1/ps2/incidents/{incident_id}/story": {
+      "get": {
+        "operationId": "get_incident_story_api_v1_ps2_incidents__incident_id__story_get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "incident_id",
+            "required": true,
+            "schema": {
+              "title": "Incident Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "run_id",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "pattern": "^frun-[0-9a-f]{16}$",
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Run Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/halt__firex__contracts__AttackStory"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Get Incident Story",
+        "tags": [
+          "firex"
+        ]
+      }
+    },
     "/api/v1/ps2/ingestions": {
       "post": {
         "operationId": "create_ingestion_api_v1_ps2_ingestions_post",
@@ -8614,7 +12390,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Hypotheses"
+                  "$ref": "#/components/schemas/halt__ps2__schema__Hypotheses"
                 }
               }
             },
@@ -8740,7 +12516,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/AttackStory"
+                  "$ref": "#/components/schemas/halt__ps2__schema__AttackStory"
                 }
               }
             },
@@ -8760,6 +12536,360 @@
         "summary": "Get Story",
         "tags": [
           "ps2"
+        ]
+      }
+    },
+    "/api/v1/ps2/runs": {
+      "get": {
+        "operationId": "list_runs_api_v1_ps2_runs_get",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RunList"
+                }
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "summary": "List Runs",
+        "tags": [
+          "firex"
+        ]
+      },
+      "post": {
+        "operationId": "create_run_api_v1_ps2_runs_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RunRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DatasetRun"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Create Run",
+        "tags": [
+          "firex"
+        ]
+      }
+    },
+    "/api/v1/ps2/runs/{run_id}": {
+      "get": {
+        "operationId": "get_run_api_v1_ps2_runs__run_id__get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "run_id",
+            "required": true,
+            "schema": {
+              "title": "Run Id",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DatasetRun"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Get Run",
+        "tags": [
+          "firex"
+        ]
+      }
+    },
+    "/api/v1/ps2/runs/{run_id}/benchmark": {
+      "get": {
+        "operationId": "get_benchmark_api_v1_ps2_runs__run_id__benchmark_get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "run_id",
+            "required": true,
+            "schema": {
+              "title": "Run Id",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BenchmarkView"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Get Benchmark",
+        "tags": [
+          "firex"
+        ]
+      }
+    },
+    "/api/v1/ps2/runs/{run_id}/cancel": {
+      "post": {
+        "operationId": "cancel_run_api_v1_ps2_runs__run_id__cancel_post",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "run_id",
+            "required": true,
+            "schema": {
+              "title": "Run Id",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DatasetRun"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Cancel Run",
+        "tags": [
+          "firex"
+        ]
+      }
+    },
+    "/api/v1/ps2/runs/{run_id}/incidents": {
+      "get": {
+        "operationId": "list_incidents_api_v1_ps2_runs__run_id__incidents_get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "run_id",
+            "required": true,
+            "schema": {
+              "title": "Run Id",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/halt__firex__contracts__IncidentList"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "List Incidents",
+        "tags": [
+          "firex"
+        ]
+      }
+    },
+    "/api/v1/ps2/runs/{run_id}/progress": {
+      "get": {
+        "operationId": "get_progress_api_v1_ps2_runs__run_id__progress_get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "run_id",
+            "required": true,
+            "schema": {
+              "title": "Run Id",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DatasetRun"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Get Progress",
+        "tags": [
+          "firex"
+        ]
+      }
+    },
+    "/api/v1/ps2/runs/{run_id}/quarantine": {
+      "get": {
+        "operationId": "get_quarantine_api_v1_ps2_runs__run_id__quarantine_get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "run_id",
+            "required": true,
+            "schema": {
+              "title": "Run Id",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/QuarantineReport"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Get Quarantine",
+        "tags": [
+          "firex"
+        ]
+      }
+    },
+    "/api/v1/ps2/runs/{run_id}/resume": {
+      "post": {
+        "operationId": "resume_run_api_v1_ps2_runs__run_id__resume_post",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "run_id",
+            "required": true,
+            "schema": {
+              "title": "Run Id",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DatasetRun"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Resume Run",
+        "tags": [
+          "firex"
         ]
       }
     },

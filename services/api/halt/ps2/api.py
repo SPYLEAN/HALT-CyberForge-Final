@@ -24,6 +24,8 @@ from fastapi import APIRouter, Depends, Query, Request
 from pydantic import Field, model_validator
 
 from halt.contracts.common import Contract
+from halt.firex.contracts import DatasetDescriptor
+from halt.firex.jobs import describe_datasets
 from halt.ps2.config import load_config
 from halt.ps2.datasets import dataset_ids, load_dataset
 from halt.ps2.engine import Reconstruction, reconstruct, replay_id_of, run_id_of
@@ -64,6 +66,7 @@ class DatasetInfo(Contract):
 
 class DatasetList(Contract):
     items: list[DatasetInfo]
+    registered: list[DatasetDescriptor] = Field(default_factory=list)  # server-side logs, e.g. FireX
 
 
 class IngestionRequest(Contract):
@@ -260,7 +263,7 @@ def datasets() -> DatasetList:
                 has_ground_truth=(GROUND_TRUTH_DIR / f"{d}.json").is_file(),
             )
         )
-    return DatasetList(items=items)
+    return DatasetList(items=items, registered=describe_datasets())
 
 
 @router.get("/intake", response_model=IntakeCapabilities)

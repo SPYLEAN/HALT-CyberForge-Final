@@ -48,6 +48,35 @@
       "synthetic": true,
       "title": "Service-account abuse in a cloud data platform"
      }
+    ],
+    "registered": [
+     {
+      "available": false,
+      "dataset_id": "firex-10g",
+      "expected_sha256": "b71fc95eb5fef198912ba12a03f363c23ec6048ba699d5aad08b0d3ef3cba121",
+      "filename": "firex-10G.log",
+      "latest_run_id": null,
+      "size_bytes": null,
+      "title": "FireX 10G"
+     },
+     {
+      "available": false,
+      "dataset_id": "firex-30g",
+      "expected_sha256": "fedd72b052b5622a1f8e7fb6f54b8feab07418e2e145aca8ae66d27d799482b4",
+      "filename": "firex-30G.log",
+      "latest_run_id": null,
+      "size_bytes": null,
+      "title": "FireX 30G"
+     },
+     {
+      "available": false,
+      "dataset_id": "firex-50g",
+      "expected_sha256": null,
+      "filename": "firex-50G.log",
+      "latest_run_id": null,
+      "size_bytes": null,
+      "title": "FireX 50G"
+     }
     ]
    },
    "status": 200

@@ -516,6 +516,125 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/v1/ps2/incidents/{incident_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get Incident */
+        get: operations["get_incident_api_v1_ps2_incidents__incident_id__get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/ps2/incidents/{incident_id}/graph": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get Incident Graph */
+        get: operations["get_incident_graph_api_v1_ps2_incidents__incident_id__graph_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/ps2/incidents/{incident_id}/hypotheses": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get Incident Hypotheses */
+        get: operations["get_incident_hypotheses_api_v1_ps2_incidents__incident_id__hypotheses_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/ps2/incidents/{incident_id}/narrative": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Create Narrative */
+        post: operations["create_narrative_api_v1_ps2_incidents__incident_id__narrative_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/ps2/incidents/{incident_id}/proof": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get Incident Proof */
+        get: operations["get_incident_proof_api_v1_ps2_incidents__incident_id__proof_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/ps2/incidents/{incident_id}/reachability": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get Incident Reachability */
+        get: operations["get_incident_reachability_api_v1_ps2_incidents__incident_id__reachability_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/ps2/incidents/{incident_id}/story": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get Incident Story */
+        get: operations["get_incident_story_api_v1_ps2_incidents__incident_id__story_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/v1/ps2/ingestions": {
         parameters: {
             query?: never;
@@ -754,6 +873,143 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/v1/ps2/runs": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** List Runs */
+        get: operations["list_runs_api_v1_ps2_runs_get"];
+        put?: never;
+        /** Create Run */
+        post: operations["create_run_api_v1_ps2_runs_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/ps2/runs/{run_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get Run */
+        get: operations["get_run_api_v1_ps2_runs__run_id__get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/ps2/runs/{run_id}/benchmark": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get Benchmark */
+        get: operations["get_benchmark_api_v1_ps2_runs__run_id__benchmark_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/ps2/runs/{run_id}/cancel": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Cancel Run */
+        post: operations["cancel_run_api_v1_ps2_runs__run_id__cancel_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/ps2/runs/{run_id}/incidents": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** List Incidents */
+        get: operations["list_incidents_api_v1_ps2_runs__run_id__incidents_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/ps2/runs/{run_id}/progress": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get Progress */
+        get: operations["get_progress_api_v1_ps2_runs__run_id__progress_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/ps2/runs/{run_id}/quarantine": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get Quarantine */
+        get: operations["get_quarantine_api_v1_ps2_runs__run_id__quarantine_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/ps2/runs/{run_id}/resume": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Resume Run */
+        post: operations["resume_run_api_v1_ps2_runs__run_id__resume_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/v1/ready": {
         parameters: {
             query?: never;
@@ -935,6 +1191,34 @@ export interface components {
             /** Run Id */
             run_id: string;
         };
+        /** AttackHypothesis */
+        AttackHypothesis: {
+            /** Components */
+            components: components["schemas"]["ScoreComponent"][];
+            /** Description */
+            description: string;
+            /** Detection Ids */
+            detection_ids: string[];
+            /** Edge Ids */
+            edge_ids: string[];
+            /** Evidence Gaps */
+            evidence_gaps: string[];
+            /** Hypothesis Id */
+            hypothesis_id: string;
+            /** Node Ids */
+            node_ids: string[];
+            /** Rank */
+            rank: number;
+            /** Score */
+            score: number;
+            /**
+             * Status
+             * @enum {string}
+             */
+            status: "selected" | "alternate";
+            /** Title */
+            title: string;
+        };
         /** AttackPath */
         AttackPath: {
             /** Edge Ids */
@@ -959,17 +1243,6 @@ export interface components {
             target_id: string;
             /** Uncertain */
             uncertain: boolean;
-        };
-        /** AttackStory */
-        AttackStory: {
-            /** Checked Statements */
-            checked_statements: number;
-            /** Run Id */
-            run_id: string;
-            /** Statements */
-            statements: components["schemas"]["StoryStatement"][];
-            /** Unsupported Claims */
-            unsupported_claims: number;
         };
         /** AttackTechnique */
         AttackTechnique: {
@@ -1031,6 +1304,111 @@ export interface components {
             policy_ids: string[];
             /** Required Roles */
             required_roles: string[];
+        };
+        /** BenchmarkReceipt */
+        BenchmarkReceipt: {
+            /** Artifact Hashes */
+            artifact_hashes: {
+                [key: string]: string;
+            };
+            /** Behavioural Bursts */
+            behavioural_bursts: number;
+            /** Bytes Processed */
+            bytes_processed: number;
+            /** Completed At */
+            completed_at: string;
+            /** Dataset Id */
+            dataset_id: string;
+            /** Detection Config Hash */
+            detection_config_hash: string;
+            /** Detections */
+            detections: number;
+            /** Duration S */
+            duration_s: number;
+            /** Engine Version */
+            engine_version: string;
+            /** Error Summary */
+            error_summary: string | null;
+            /** Exact Duplicates */
+            exact_duplicates: number;
+            /** Git Commit */
+            git_commit: string | null;
+            host: components["schemas"]["HostInfo"];
+            /** Incident Open Latency Ms */
+            incident_open_latency_ms: number | null;
+            /** Incidents */
+            incidents: number;
+            /** Mb Per Second */
+            mb_per_second: number;
+            /** Output Bytes */
+            output_bytes: number;
+            /** Parser Version */
+            parser_version: string;
+            /** Peak Memory Mb */
+            peak_memory_mb: number | null;
+            /** Peak Memory Scope */
+            peak_memory_scope: string;
+            /** Processed Byte Range */
+            processed_byte_range: [
+                number,
+                number
+            ];
+            /** Quarantine Bytes */
+            quarantine_bytes: number;
+            /** Quarantine Segments */
+            quarantine_segments: number;
+            /** Range Sha256 */
+            range_sha256: string;
+            /** Receipt Id */
+            receipt_id: string;
+            /** Records Per Second */
+            records_per_second: number;
+            /** Records Rejected */
+            records_rejected: number;
+            /** Records Valid */
+            records_valid: number;
+            /** Run Id */
+            run_id: string;
+            /**
+             * Schema Version
+             * @default halt.firex.benchmark/1.0
+             * @constant
+             */
+            schema_version: "halt.firex.benchmark/1.0";
+            /** Schema Version Canonical */
+            schema_version_canonical: string;
+            /**
+             * Seal
+             * @default
+             */
+            seal: string;
+            /**
+             * Seal Algorithm
+             * @default sha256-canonical-json
+             * @constant
+             */
+            seal_algorithm: "sha256-canonical-json";
+            /** Source Filename */
+            source_filename: string;
+            /** Source Sha256 */
+            source_sha256: string;
+            /** Source Sha256 Verified */
+            source_sha256_verified: boolean;
+            /** Source Size Bytes */
+            source_size_bytes: number;
+            /** Stage Durations S */
+            stage_durations_s: {
+                [key: string]: number;
+            };
+            /** Started At */
+            started_at: string;
+            /** Status */
+            status: string;
+        };
+        /** BenchmarkView */
+        BenchmarkView: {
+            receipt: components["schemas"]["BenchmarkReceipt"];
+            verification: components["schemas"]["SealVerification"];
         };
         /** BusinessInfo */
         BusinessInfo: {
@@ -1243,6 +1621,27 @@ export interface components {
             /** Candidate Ids */
             candidate_ids: string[];
         };
+        /** CollapsedTimestamp */
+        CollapsedTimestamp: {
+            /** Affected Records */
+            affected_records: number;
+            /** Config Version */
+            config_version: string;
+            /** Event Ns */
+            event_ns: number;
+            /** Event Utc */
+            event_utc: string;
+            /** First Line */
+            first_line: number;
+            /** First Offset */
+            first_offset: number;
+            /** Last Line */
+            last_line: number;
+            /** Last Offset */
+            last_offset: number;
+            /** Threshold Records */
+            threshold_records: number;
+        };
         /** ConfidenceComponent */
         ConfidenceComponent: {
             /** Detail */
@@ -1332,6 +1731,26 @@ export interface components {
              */
             strength: "hard" | "soft";
         };
+        /**
+         * DatasetDescriptor
+         * @description A server-side registered log. The API never accepts a path: only one of these ids.
+         */
+        DatasetDescriptor: {
+            /** Available */
+            available: boolean;
+            /** Dataset Id */
+            dataset_id: string;
+            /** Expected Sha256 */
+            expected_sha256: string | null;
+            /** Filename */
+            filename: string;
+            /** Latest Run Id */
+            latest_run_id: string | null;
+            /** Size Bytes */
+            size_bytes: number | null;
+            /** Title */
+            title: string;
+        };
         /** DatasetInfo */
         DatasetInfo: {
             /** Adapters */
@@ -1356,6 +1775,100 @@ export interface components {
         DatasetList: {
             /** Items */
             items: components["schemas"]["DatasetInfo"][];
+            /** Registered */
+            registered: components["schemas"]["DatasetDescriptor"][];
+        };
+        /** DatasetQualitySummary */
+        DatasetQualitySummary: {
+            /** Bytes Accounted */
+            bytes_accounted: boolean;
+            /** Bytes Blank */
+            bytes_blank: number;
+            /** Bytes Quarantined */
+            bytes_quarantined: number;
+            /** Bytes Total */
+            bytes_total: number;
+            /** Bytes Valid */
+            bytes_valid: number;
+            /** Collapsed Timestamps */
+            collapsed_timestamps: components["schemas"]["CollapsedTimestamp"][];
+            /** Earliest Utc */
+            earliest_utc: string | null;
+            /** Exact Duplicates */
+            exact_duplicates: number;
+            /** Latest Utc */
+            latest_utc: string | null;
+            /** Lines Blank */
+            lines_blank: number;
+            /** Lines Total */
+            lines_total: number;
+            /** Quarantine Segments */
+            quarantine_segments: number;
+            /**
+             * Quarantine Segments Truncated
+             * @default 0
+             */
+            quarantine_segments_truncated: number;
+            /** Records In Collapsed Timestamps */
+            records_in_collapsed_timestamps: number;
+            /** Records Rejected */
+            records_rejected: number;
+            /** Records Valid */
+            records_valid: number;
+            /** Records With Conflicting Time */
+            records_with_conflicting_time: number;
+            /** Reject Reasons */
+            reject_reasons: {
+                [key: string]: number;
+            };
+            timezone_conflict: components["schemas"]["TimezoneConflict"] | null;
+        };
+        /** DatasetRun */
+        DatasetRun: {
+            /** Byte Range */
+            byte_range: [
+                number,
+                number
+            ] | null;
+            /** Chunks Done */
+            chunks_done: number;
+            /** Chunks Total */
+            chunks_total: number;
+            /** Created At */
+            created_at: string;
+            /** Dataset Id */
+            dataset_id: string;
+            /** Detail */
+            detail: string;
+            /** Error */
+            error: string | null;
+            metrics: components["schemas"]["RunMetrics"];
+            /** Pid */
+            pid: number | null;
+            /**
+             * Recovered
+             * @default false
+             */
+            recovered: boolean;
+            /**
+             * Resume Count
+             * @default 0
+             */
+            resume_count: number;
+            /** Run Id */
+            run_id: string;
+            /**
+             * Stage
+             * @enum {string}
+             */
+            stage: "read" | "prepare" | "reconstruct" | "explain" | "done";
+            /**
+             * Status
+             * @enum {string}
+             */
+            status: "queued" | "running" | "cancelling" | "cancelled" | "interrupted" | "failed" | "completed";
+            /** Updated At */
+            updated_at: string;
         };
         /**
          * DemoReset
@@ -1386,6 +1899,122 @@ export interface components {
             numerator: number | null;
             /** Source Ids */
             source_ids: string[];
+        };
+        /** Detection */
+        Detection: {
+            /**
+             * Basis
+             * @enum {string}
+             */
+            basis: "observed" | "inferred";
+            /** Confidence */
+            confidence: number;
+            /** Config Hash */
+            config_hash: string;
+            /** Detection Id */
+            detection_id: string;
+            /** Entities */
+            entities: {
+                [key: string]: string[];
+            };
+            /** Evidence Refs */
+            evidence_refs: string[];
+            /**
+             * Evidence Refs Truncated
+             * @default false
+             */
+            evidence_refs_truncated: boolean;
+            /** First Ns */
+            first_ns: number;
+            /** First Offset */
+            first_offset: number;
+            /** First Utc */
+            first_utc: string;
+            /**
+             * Kill Chain Stage
+             * @enum {string}
+             */
+            kill_chain_stage: "reconnaissance" | "delivery" | "exploitation" | "installation" | "command_and_control" | "actions_on_objectives" | "defense_evasion" | "credential_access" | "lateral_movement" | "impact";
+            /** Last Ns */
+            last_ns: number;
+            /** Last Utc */
+            last_utc: string;
+            /** Merged Events */
+            merged_events: number;
+            /** Reason */
+            reason: string;
+            /** Risk Contribution */
+            risk_contribution: number;
+            /** Rule Id */
+            rule_id: string;
+            /** Rule Version */
+            rule_version: string;
+            /**
+             * Status
+             * @default unconfirmed
+             * @constant
+             */
+            status: "unconfirmed";
+            /** Steps */
+            steps: components["schemas"]["DetectionStep"][];
+            /** Tactic */
+            tactic: string;
+            /**
+             * Target Kind
+             * @enum {string}
+             */
+            target_kind: "device" | "host" | "service" | "account";
+            /** Technique Id */
+            technique_id: string;
+            /** Technique Name */
+            technique_name: string;
+            /**
+             * Timestamp Quality
+             * @enum {string}
+             */
+            timestamp_quality: "normal" | "collapsed" | "conflicting";
+            /** Title */
+            title: string;
+        };
+        /**
+         * DetectionStep
+         * @description One labelled action inside a detection. Merged steps carry a count and sample evidence.
+         */
+        DetectionStep: {
+            /** Actor */
+            actor: string | null;
+            /** Count */
+            count: number;
+            /** Evidence Refs */
+            evidence_refs: string[];
+            /** Label */
+            label: string;
+            /** Last Ns */
+            last_ns: number;
+            /** Last Utc */
+            last_utc: string;
+            /**
+             * Layer
+             * @enum {string}
+             */
+            layer: "external" | "network_edge" | "endpoint" | "identity" | "application" | "critical_asset";
+            /** Ns */
+            ns: number;
+            /** Offset */
+            offset: number;
+            /**
+             * Stage
+             * @enum {string}
+             */
+            stage: "reconnaissance" | "delivery" | "exploitation" | "installation" | "command_and_control" | "actions_on_objectives" | "defense_evasion" | "credential_access" | "lateral_movement" | "impact";
+            /** Target */
+            target: string | null;
+            /** Technique Id */
+            technique_id: string;
+            /** Technique Name */
+            technique_name: string;
+            /** Utc */
+            utc: string;
         };
         /** DisplayAction */
         DisplayAction: {
@@ -1479,6 +2108,85 @@ export interface components {
             record_id: string;
             /** System */
             system: string;
+        };
+        /**
+         * EvidenceEvent
+         * @description One canonical record, cited by evidence id. Missing source fields stay null.
+         */
+        EvidenceEvent: {
+            /** Action */
+            action: string | null;
+            /** App */
+            app: string | null;
+            /** App Risk */
+            app_risk: string | null;
+            /** Attack */
+            attack: string | null;
+            /** Attack Id */
+            attack_id: string | null;
+            /** Byte Offset */
+            byte_offset: number;
+            /** Canonical Sha256 */
+            canonical_sha256: string;
+            /** Category */
+            category: string | null;
+            /** Date */
+            date: string | null;
+            /** Dst Ip */
+            dst_ip: string | null;
+            /** Dst Port */
+            dst_port: number | null;
+            /** Dst Role */
+            dst_role: string | null;
+            /** Event Type */
+            event_type: string | null;
+            /** Event Utc */
+            event_utc: string;
+            /** Evidence Id */
+            evidence_id: string;
+            /** Hostname */
+            hostname: string | null;
+            /** Level */
+            level: string | null;
+            /** Line */
+            line: number;
+            /** Logid */
+            logid: string | null;
+            /** Message */
+            message: string | null;
+            /** Raw Sha256 */
+            raw_sha256: string;
+            /** Service */
+            service: string | null;
+            /** Session Id */
+            session_id: string | null;
+            /** Source Sha256 */
+            source_sha256: string;
+            /** Src Ip */
+            src_ip: string | null;
+            /** Src Port */
+            src_port: number | null;
+            /** Src Role */
+            src_role: string | null;
+            /** Status */
+            status: string | null;
+            /** Subtype */
+            subtype: string | null;
+            /** Time */
+            time: string | null;
+            /**
+             * Timestamp Quality
+             * @enum {string}
+             */
+            timestamp_quality: "normal" | "collapsed" | "conflicting";
+            /** Tz */
+            tz: string | null;
+            /** Url */
+            url: string | null;
+            /** User */
+            user: string | null;
+            /** Virus */
+            virus: string | null;
         };
         /**
          * EvidenceRef
@@ -1691,7 +2399,10 @@ export interface components {
         GraphEdge: {
             /** Evidence Ids */
             evidence_ids: string[];
-            /** First Seen */
+            /**
+             * First Seen
+             * @default null
+             */
             first_seen: string | null;
             /**
              * Historical
@@ -1700,13 +2411,17 @@ export interface components {
             historical: boolean;
             /** Id */
             id: string;
+            /** @default null */
             inference: components["schemas"]["Inference"] | null;
             /**
              * Kind
              * @enum {string}
              */
             kind: "hostile" | "dependency" | "identity";
-            /** Origin */
+            /**
+             * Origin
+             * @default null
+             */
             origin: string | null;
             /**
              * Provenance
@@ -1719,6 +2434,7 @@ export interface components {
             source: string;
             /** Target */
             target: string;
+            /** @default null */
             transition: components["schemas"]["Transition"] | null;
         };
         /** GraphNode */
@@ -1728,6 +2444,7 @@ export interface components {
              * @default false
              */
             attacker_controlled: boolean;
+            /** @default null */
             business: components["schemas"]["BusinessInfo"] | null;
             /**
              * Criticality
@@ -1737,7 +2454,10 @@ export interface components {
             criticality: "none" | "standard" | "critical";
             /** Evidence Ids */
             evidence_ids: string[];
-            /** First Seen */
+            /**
+             * First Seen
+             * @default null
+             */
             first_seen: string | null;
             /** Id */
             id: string;
@@ -1749,7 +2469,10 @@ export interface components {
             /** Label */
             label: string;
             layout: components["schemas"]["Layout"];
-            /** Origin */
+            /**
+             * Origin
+             * @default null
+             */
             origin: string | null;
             /**
              * Provenance
@@ -1765,14 +2488,14 @@ export interface components {
              */
             at: string;
             /** Edges */
-            edges: components["schemas"]["GraphEdge"][];
+            edges: components["schemas"]["halt__contracts__graph__GraphEdge"][];
             /** Hash */
             hash: string;
             /** Id */
             id: string;
             meta: components["schemas"]["Meta"];
             /** Nodes */
-            nodes: components["schemas"]["GraphNode"][];
+            nodes: components["schemas"]["halt__contracts__graph__GraphNode"][];
             /**
              * @default {
              *       "edge_ids": [],
@@ -1817,17 +2540,20 @@ export interface components {
             /** Version */
             version: string;
         };
-        /** Hypotheses */
-        Hypotheses: {
-            /** Alternates */
-            alternates: components["schemas"]["PathHypothesis"][];
-            /** Rejected Edges */
-            rejected_edges: components["schemas"]["CandidateEdge"][];
-            /** Rejected Paths */
-            rejected_paths: components["schemas"]["PathHypothesis"][];
-            /** Run Id */
-            run_id: string;
-            selected: components["schemas"]["PathHypothesis"] | null;
+        /** HostInfo */
+        HostInfo: {
+            /** Cores */
+            cores: number;
+            /** Cpu */
+            cpu: string;
+            /** Node */
+            node: string | null;
+            /** Os */
+            os: string;
+            /** Python */
+            python: string;
+            /** Ram Gb */
+            ram_gb: number | null;
         };
         /** Impact */
         Impact: {
@@ -1874,11 +2600,47 @@ export interface components {
             /** Variant */
             variant: string;
         };
-        /** IncidentList */
-        IncidentList: {
-            /** Items */
-            items: components["schemas"]["IncidentSummary"][];
-            meta: components["schemas"]["Meta"];
+        /** IncidentDetail */
+        IncidentDetail: {
+            /** Affected Entities */
+            affected_entities: {
+                [key: string]: string[];
+            };
+            /** Alert Merge Count */
+            alert_merge_count: number;
+            /** Detections */
+            detections: components["schemas"]["Detection"][];
+            /** Evidence */
+            evidence: components["schemas"]["EvidenceEvent"][];
+            /** Evidence Gaps */
+            evidence_gaps: string[];
+            /** Related Incidents */
+            related_incidents: string[];
+            response_simulation: components["schemas"]["ResponseEligibility"];
+            /** Root Cause */
+            root_cause: string;
+            /** Selected Path Id */
+            selected_path_id: string;
+            summary: components["schemas"]["halt__firex__contracts__IncidentSummary"];
+            /** Timeline */
+            timeline: components["schemas"]["TimelineEntry"][];
+            /** Uncertainty Margin */
+            uncertainty_margin: number;
+        };
+        /** IncidentGraph */
+        IncidentGraph: {
+            /** Edges */
+            edges: components["schemas"]["halt__firex__contracts__GraphEdge"][];
+            /** Graph Hash */
+            graph_hash: string;
+            /** Incident Id */
+            incident_id: string;
+            /** Node Cap */
+            node_cap: number;
+            /** Nodes */
+            nodes: components["schemas"]["halt__firex__contracts__GraphNode"][];
+            /** Truncated */
+            truncated: boolean;
         };
         /** IncidentParams */
         IncidentParams: {
@@ -2132,6 +2894,53 @@ export interface components {
             target_met: boolean | null;
             /** Value */
             value: number | null;
+        };
+        /** NarrativeRequest */
+        NarrativeRequest: {
+            /**
+             * Audience
+             * @default analyst
+             * @enum {string}
+             */
+            audience: "analyst" | "executive";
+            /** Question */
+            question?: string | null;
+        };
+        /** NarrativeResult */
+        NarrativeResult: {
+            /** Fallback Reason */
+            fallback_reason: string | null;
+            /** Fallback Used */
+            fallback_used: boolean;
+            /** Generated At */
+            generated_at: string;
+            /** Incident Id */
+            incident_id: string;
+            /** Label */
+            label: string;
+            /** Model */
+            model: string | null;
+            /** Prompt Version */
+            prompt_version: string;
+            /** Provider */
+            provider: string;
+            /** Rejected Statements */
+            rejected_statements: number;
+            /** Statements */
+            statements: components["schemas"]["NarrativeStatement"][];
+            /** Summary */
+            summary: string;
+            /** Uncertainty Notes */
+            uncertainty_notes: string[];
+            /** Unsupported Claims */
+            unsupported_claims: number;
+        };
+        /** NarrativeStatement */
+        NarrativeStatement: {
+            /** Evidence Ids */
+            evidence_ids: string[];
+            /** Text */
+            text: string;
         };
         /** Objective */
         Objective: {
@@ -2512,6 +3321,69 @@ export interface components {
             /** Text */
             text: string;
         };
+        /** ProofReceipt */
+        ProofReceipt: {
+            /** Cited Evidence */
+            cited_evidence: string[];
+            /** Dataset Id */
+            dataset_id: string;
+            /** Detection Config Hash */
+            detection_config_hash: string;
+            /** Deterministic Replay Id */
+            deterministic_replay_id: string;
+            /** Engine Version */
+            engine_version: string;
+            /** Evidence Coverage */
+            evidence_coverage: number;
+            /** Git Commit */
+            git_commit: string | null;
+            /** Graph Hash */
+            graph_hash: string;
+            /** Incident Id */
+            incident_id: string;
+            /** Parser Version */
+            parser_version: string;
+            /** Processed Byte Range */
+            processed_byte_range: [
+                number,
+                number
+            ];
+            /** Receipt Id */
+            receipt_id: string;
+            /** Run Id */
+            run_id: string;
+            /**
+             * Schema Version
+             * @default halt.firex.proof/1.0
+             * @constant
+             */
+            schema_version: "halt.firex.proof/1.0";
+            /**
+             * Seal
+             * @default
+             */
+            seal: string;
+            /**
+             * Seal Algorithm
+             * @default sha256-canonical-json
+             * @constant
+             */
+            seal_algorithm: "sha256-canonical-json";
+            /** Selected Path Id */
+            selected_path_id: string;
+            /** Source Sha256 */
+            source_sha256: string;
+            /**
+             * Status
+             * @default unconfirmed
+             * @constant
+             */
+            status: "unconfirmed";
+            /** Uncertainty Margin */
+            uncertainty_margin: number;
+            /** Unsupported Claims */
+            unsupported_claims: number;
+        };
         /** ProofVerify */
         ProofVerify: {
             /** Certificate Match */
@@ -2521,6 +3393,54 @@ export interface components {
             recomputed: string;
             /** Signature Valid */
             signature_valid: boolean;
+        };
+        /** ProofView */
+        ProofView: {
+            receipt: components["schemas"]["ProofReceipt"];
+            verification: components["schemas"]["SealVerification"];
+        };
+        /** QuarantineReport */
+        QuarantineReport: {
+            /** Items */
+            items: components["schemas"]["QuarantineSegment"][];
+            /** Run Id */
+            run_id: string;
+        };
+        /** QuarantineSample */
+        QuarantineSample: {
+            /** Length */
+            length: number;
+            /** Line */
+            line: number;
+            /** Offset */
+            offset: number;
+            /** Text */
+            text: string;
+        };
+        /** QuarantineSegment */
+        QuarantineSegment: {
+            /** Blank Lines */
+            blank_lines: number;
+            /** End Line */
+            end_line: number;
+            /** End Offset */
+            end_offset: number;
+            /** Parser Version */
+            parser_version: string;
+            /** Reason */
+            reason: string;
+            /** Rejected Records */
+            rejected_records: number;
+            /** Samples */
+            samples: components["schemas"]["QuarantineSample"][];
+            /** Segment Id */
+            segment_id: string;
+            /** Source Sha256 */
+            source_sha256: string;
+            /** Start Line */
+            start_line: number;
+            /** Start Offset */
+            start_offset: number;
         };
         /** RawFile */
         RawFile: {
@@ -2535,6 +3455,46 @@ export interface components {
             content_type: "application/json" | "application/x-ndjson" | "application/jsonl" | "text/csv";
             /** Filename */
             filename: string;
+        };
+        /** ReachabilityResult */
+        ReachabilityResult: {
+            /** Incident Id */
+            incident_id: string;
+            /**
+             * Label
+             * @default Hypothetical: what could be reached next. This is not observed attacker activity.
+             */
+            label: string;
+            /** Limitations */
+            limitations: string[];
+            /** Targets */
+            targets: components["schemas"]["ReachableTarget"][];
+        };
+        /** ReachableTarget */
+        ReachableTarget: {
+            /** Basis */
+            basis: string;
+            /** Confidence */
+            confidence: number;
+            /** Evidence Refs */
+            evidence_refs: string[];
+            /**
+             * Hypothetical
+             * @default true
+             * @constant
+             */
+            hypothetical: true;
+            /**
+             * Layer
+             * @enum {string}
+             */
+            layer: "external" | "network_edge" | "endpoint" | "identity" | "application" | "critical_asset";
+            /** Observed Connections */
+            observed_connections: number;
+            /** Target */
+            target: string;
+            /** Via */
+            via: string;
         };
         /** Readiness */
         Readiness: {
@@ -2724,6 +3684,21 @@ export interface components {
              */
             type: "revoke_oauth_grant" | "revoke_session" | "conditional_access_step_up" | "isolate_api" | "isolate_database" | "isolate_subnet" | "disable_account" | "block_asn" | "revoke_all_consents" | "force_password_reset" | "quarantine_mailbox";
         };
+        /**
+         * ResponseEligibility
+         * @description Response simulation needs business topology and control context this data does not carry.
+         */
+        ResponseEligibility: {
+            /** Available */
+            available: boolean;
+            /**
+             * Label
+             * @default SIMULATED — NO REAL SECURITY ACTION IS EXECUTED
+             */
+            label: string;
+            /** Missing */
+            missing: string[];
+        };
         /** Reversibility */
         Reversibility: {
             /** Method */
@@ -2734,6 +3709,100 @@ export interface components {
             rollback_id: string | null;
             /** Seconds */
             seconds: number | null;
+        };
+        /** RunList */
+        RunList: {
+            /** Items */
+            items: components["schemas"]["DatasetRun"][];
+        };
+        /** RunMetrics */
+        RunMetrics: {
+            /** Behavioural Bursts */
+            behavioural_bursts: number | null;
+            /**
+             * Bytes Processed
+             * @default 0
+             */
+            bytes_processed: number;
+            /**
+             * Bytes Total
+             * @default 0
+             */
+            bytes_total: number;
+            /**
+             * Canonical Records
+             * @default 0
+             */
+            canonical_records: number;
+            /** Compression Ratio */
+            compression_ratio: number | null;
+            /** Detections */
+            detections: number | null;
+            /**
+             * Duration S
+             * @default 0
+             */
+            duration_s: number;
+            /** Exact Duplicates */
+            exact_duplicates: number | null;
+            /** Incidents */
+            incidents: number | null;
+            /**
+             * Mb Per Second
+             * @default 0
+             */
+            mb_per_second: number;
+            /** Output Bytes */
+            output_bytes: number | null;
+            /** Peak Memory Mb */
+            peak_memory_mb: number | null;
+            /**
+             * Quarantine Segments
+             * @default 0
+             */
+            quarantine_segments: number;
+            /**
+             * Records Per Second
+             * @default 0
+             */
+            records_per_second: number;
+            /**
+             * Records Processed
+             * @default 0
+             */
+            records_processed: number;
+            /**
+             * Rejected Records
+             * @default 0
+             */
+            rejected_records: number;
+        };
+        /** RunRequest */
+        RunRequest: {
+            /** Dataset Id */
+            dataset_id: string;
+            /** Max Bytes */
+            max_bytes?: number | null;
+        };
+        /** ScoreComponent */
+        ScoreComponent: {
+            /** Detail */
+            detail: string;
+            /** Name */
+            name: string;
+            /** Value */
+            value: number;
+            /** Weight */
+            weight: number;
+        };
+        /** SealVerification */
+        SealVerification: {
+            /** Expected */
+            expected: string;
+            /** Recorded */
+            recorded: string;
+            /** Valid */
+            valid: boolean;
         };
         /** SecurityEvent */
         SecurityEvent: {
@@ -2929,33 +3998,6 @@ export interface components {
              */
             type: "stale";
         };
-        /** StoryStatement */
-        StoryStatement: {
-            /** Confidence */
-            confidence: number;
-            /** Edge Ids */
-            edge_ids: string[];
-            /** Event Ids */
-            event_ids: string[];
-            /** Facts */
-            facts: {
-                [key: string]: string;
-            };
-            /**
-             * Section
-             * @enum {string}
-             */
-            section: "observed" | "inferred" | "missing_evidence" | "forecast";
-            /** Statement Id */
-            statement_id: string;
-            /**
-             * Status
-             * @enum {string}
-             */
-            status: "observed" | "inferred" | "missing" | "forecast";
-            /** Text */
-            text: string;
-        };
         /** SubscribeCommand */
         SubscribeCommand: {
             /**
@@ -3014,6 +4056,42 @@ export interface components {
             suspicion: number;
             /** Tactic */
             tactic: ("reconnaissance" | "resource-development" | "initial-access" | "execution" | "persistence" | "privilege-escalation" | "defense-evasion" | "credential-access" | "discovery" | "lateral-movement" | "collection" | "command-and-control" | "exfiltration" | "impact") | null;
+        };
+        /** TimelineEntry */
+        TimelineEntry: {
+            /**
+             * Basis
+             * @enum {string}
+             */
+            basis: "observed" | "inferred";
+            /** Detail */
+            detail: string;
+            /** Detection Id */
+            detection_id: string;
+            /** Evidence Refs */
+            evidence_refs: string[];
+            /** Order */
+            order: number;
+            /** Stage */
+            stage: string;
+            /**
+             * Timestamp Quality
+             * @enum {string}
+             */
+            timestamp_quality: "normal" | "collapsed" | "conflicting";
+            /** Title */
+            title: string;
+            /** Utc */
+            utc: string;
+        };
+        /** TimezoneConflict */
+        TimezoneConflict: {
+            /** Affected Records */
+            affected_records: number;
+            /** Declared Tz */
+            declared_tz: string[];
+            /** Interpretation */
+            interpretation: string;
         };
         /**
          * Transition
@@ -3078,6 +4156,342 @@ export interface components {
             /** Items */
             items: components["schemas"]["VariantInfo"][];
             meta: components["schemas"]["Meta"];
+        };
+        /** IncidentList */
+        halt__contracts__api__IncidentList: {
+            /** Items */
+            items: components["schemas"]["halt__contracts__incident__IncidentSummary"][];
+            meta: components["schemas"]["Meta"];
+        };
+        /** GraphEdge */
+        halt__contracts__graph__GraphEdge: {
+            /** Evidence Ids */
+            evidence_ids: string[];
+            /** First Seen */
+            first_seen: string | null;
+            /**
+             * Historical
+             * @default false
+             */
+            historical: boolean;
+            /** Id */
+            id: string;
+            inference: components["schemas"]["Inference"] | null;
+            /**
+             * Kind
+             * @enum {string}
+             */
+            kind: "hostile" | "dependency" | "identity";
+            /** Origin */
+            origin: string | null;
+            /**
+             * Provenance
+             * @enum {string}
+             */
+            provenance: "observed" | "inferred" | "forecast" | "structural";
+            /** Relation */
+            relation: string;
+            /** Source */
+            source: string;
+            /** Target */
+            target: string;
+            transition: components["schemas"]["Transition"] | null;
+        };
+        /** GraphNode */
+        halt__contracts__graph__GraphNode: {
+            /**
+             * Attacker Controlled
+             * @default false
+             */
+            attacker_controlled: boolean;
+            business: components["schemas"]["BusinessInfo"] | null;
+            /**
+             * Criticality
+             * @default none
+             * @enum {string}
+             */
+            criticality: "none" | "standard" | "critical";
+            /** Evidence Ids */
+            evidence_ids: string[];
+            /** First Seen */
+            first_seen: string | null;
+            /** Id */
+            id: string;
+            /**
+             * Kind
+             * @enum {string}
+             */
+            kind: "user" | "device" | "session" | "token" | "application" | "api" | "service" | "database" | "process" | "attacker";
+            /** Label */
+            label: string;
+            layout: components["schemas"]["Layout"];
+            /** Origin */
+            origin: string | null;
+            /**
+             * Provenance
+             * @enum {string}
+             */
+            provenance: "observed" | "inferred" | "forecast" | "structural";
+        };
+        /** IncidentSummary */
+        halt__contracts__incident__IncidentSummary: {
+            /** Id */
+            id: string;
+            /**
+             * State
+             * @enum {string}
+             */
+            state: "new" | "correlating" | "forecast_ready" | "simulating" | "plan_available" | "approval_pending" | "executing" | "contained" | "rollback_available" | "rolled_back" | "blocked_by_policy" | "no_safe_plan";
+            /**
+             * T0
+             * Format: date-time
+             */
+            t0: string;
+            /** Title */
+            title: string;
+        };
+        /** AttackStory */
+        halt__firex__contracts__AttackStory: {
+            /** Checked Statements */
+            checked_statements: number;
+            /** Incident Id */
+            incident_id: string;
+            /** Reachable Next */
+            reachable_next: string;
+            /** Statements */
+            statements: components["schemas"]["halt__firex__contracts__StoryStatement"][];
+            /** Strongest Evidence */
+            strongest_evidence: string;
+            /** Systems Affected */
+            systems_affected: string;
+            /** Uncertain */
+            uncertain: string;
+            /** Unsupported Claims */
+            unsupported_claims: number;
+            /** What Happened */
+            what_happened: string;
+            /** Where Started */
+            where_started: string;
+            /** Who Compromised */
+            who_compromised: string;
+        };
+        /** GraphEdge */
+        halt__firex__contracts__GraphEdge: {
+            /**
+             * Classification
+             * @enum {string}
+             */
+            classification: "observed" | "inferred" | "reachable";
+            /** Components */
+            components: components["schemas"]["ScoreComponent"][];
+            /** Confidence */
+            confidence: number;
+            /** Contradictions */
+            contradictions: string[];
+            /** Edge Id */
+            edge_id: string;
+            /** Evidence Refs */
+            evidence_refs: string[];
+            /** First Utc */
+            first_utc: string | null;
+            /** Last Utc */
+            last_utc: string | null;
+            /**
+             * Missing Evidence
+             * @default false
+             */
+            missing_evidence: boolean;
+            /**
+             * On Selected Path
+             * @default false
+             */
+            on_selected_path: boolean;
+            /** Relation */
+            relation: string;
+            /** Rule */
+            rule: string;
+            /** Rule Version */
+            rule_version: string;
+            /** Source */
+            source: string;
+            /** Target */
+            target: string;
+        };
+        /** GraphNode */
+        halt__firex__contracts__GraphNode: {
+            /** Attributes */
+            attributes: {
+                [key: string]: string | number | boolean | null;
+            };
+            /**
+             * Count
+             * @default 1
+             */
+            count: number;
+            /** Detection Id */
+            detection_id: string | null;
+            /** Evidence Refs */
+            evidence_refs: string[];
+            /** First Utc */
+            first_utc: string | null;
+            /**
+             * Is Context
+             * @default false
+             */
+            is_context: boolean;
+            /**
+             * Kind
+             * @enum {string}
+             */
+            kind: "event" | "account" | "host" | "ip" | "session" | "application" | "service" | "critical_asset" | "burst";
+            /** Label */
+            label: string;
+            /** Last Utc */
+            last_utc: string | null;
+            /**
+             * Layer
+             * @enum {string}
+             */
+            layer: "external" | "network_edge" | "endpoint" | "identity" | "application" | "critical_asset";
+            /** Node Id */
+            node_id: string;
+            /**
+             * On Selected Path
+             * @default false
+             */
+            on_selected_path: boolean;
+            /** Order */
+            order: number;
+            /** Stage */
+            stage: ("reconnaissance" | "delivery" | "exploitation" | "installation" | "command_and_control" | "actions_on_objectives" | "defense_evasion" | "credential_access" | "lateral_movement" | "impact") | null;
+        };
+        /** Hypotheses */
+        halt__firex__contracts__Hypotheses: {
+            /** Alternates */
+            alternates: components["schemas"]["AttackHypothesis"][];
+            /** Incident Id */
+            incident_id: string;
+            selected: components["schemas"]["AttackHypothesis"];
+            /** Uncertainty Margin */
+            uncertainty_margin: number;
+        };
+        /** IncidentList */
+        halt__firex__contracts__IncidentList: {
+            /** Items */
+            items: components["schemas"]["halt__firex__contracts__IncidentSummary"][];
+            quality: components["schemas"]["DatasetQualitySummary"] | null;
+            /** Run Id */
+            run_id: string;
+        };
+        /** IncidentSummary */
+        halt__firex__contracts__IncidentSummary: {
+            /** Affected Devices */
+            affected_devices: string[];
+            /** Affected Identity */
+            affected_identity: string | null;
+            /** Confidence */
+            confidence: number;
+            /** Critical Target */
+            critical_target: string | null;
+            /** Detection Count */
+            detection_count: number;
+            /** Entry Point */
+            entry_point: string;
+            /** Evidence Count */
+            evidence_count: number;
+            /** First Utc */
+            first_utc: string;
+            /** Incident Id */
+            incident_id: string;
+            /** Last Utc */
+            last_utc: string;
+            /** Merged Events */
+            merged_events: number;
+            /** Risk */
+            risk: number;
+            /** Run Id */
+            run_id: string;
+            /** Stages */
+            stages: string[];
+            /**
+             * Status
+             * @default unconfirmed
+             * @constant
+             */
+            status: "unconfirmed";
+            /** Techniques */
+            techniques: string[];
+            /**
+             * Timestamp Quality
+             * @enum {string}
+             */
+            timestamp_quality: "normal" | "collapsed" | "conflicting";
+            /** Title */
+            title: string;
+        };
+        /** StoryStatement */
+        halt__firex__contracts__StoryStatement: {
+            /** Evidence Ids */
+            evidence_ids: string[];
+            /**
+             * Kind
+             * @enum {string}
+             */
+            kind: "observed" | "inferred" | "gap" | "hypothetical";
+            /** Statement Id */
+            statement_id: string;
+            /** Text */
+            text: string;
+        };
+        /** AttackStory */
+        halt__ps2__schema__AttackStory: {
+            /** Checked Statements */
+            checked_statements: number;
+            /** Run Id */
+            run_id: string;
+            /** Statements */
+            statements: components["schemas"]["halt__ps2__schema__StoryStatement"][];
+            /** Unsupported Claims */
+            unsupported_claims: number;
+        };
+        /** Hypotheses */
+        halt__ps2__schema__Hypotheses: {
+            /** Alternates */
+            alternates: components["schemas"]["PathHypothesis"][];
+            /** Rejected Edges */
+            rejected_edges: components["schemas"]["CandidateEdge"][];
+            /** Rejected Paths */
+            rejected_paths: components["schemas"]["PathHypothesis"][];
+            /** Run Id */
+            run_id: string;
+            selected: components["schemas"]["PathHypothesis"] | null;
+        };
+        /** StoryStatement */
+        halt__ps2__schema__StoryStatement: {
+            /** Confidence */
+            confidence: number;
+            /** Edge Ids */
+            edge_ids: string[];
+            /** Event Ids */
+            event_ids: string[];
+            /** Facts */
+            facts: {
+                [key: string]: string;
+            };
+            /**
+             * Section
+             * @enum {string}
+             */
+            section: "observed" | "inferred" | "missing_evidence" | "forecast";
+            /** Statement Id */
+            statement_id: string;
+            /**
+             * Status
+             * @enum {string}
+             */
+            status: "observed" | "inferred" | "missing" | "forecast";
+            /** Text */
+            text: string;
         };
     };
     responses: never;
@@ -3188,7 +4602,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["IncidentList"];
+                    "application/json": components["schemas"]["halt__contracts__api__IncidentList"];
                 };
             };
         };
@@ -4016,6 +5430,241 @@ export interface operations {
             };
         };
     };
+    get_incident_api_v1_ps2_incidents__incident_id__get: {
+        parameters: {
+            query?: {
+                run_id?: string | null;
+            };
+            header?: never;
+            path: {
+                incident_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["IncidentDetail"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    get_incident_graph_api_v1_ps2_incidents__incident_id__graph_get: {
+        parameters: {
+            query?: {
+                run_id?: string | null;
+            };
+            header?: never;
+            path: {
+                incident_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["IncidentGraph"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    get_incident_hypotheses_api_v1_ps2_incidents__incident_id__hypotheses_get: {
+        parameters: {
+            query?: {
+                run_id?: string | null;
+            };
+            header?: never;
+            path: {
+                incident_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["halt__firex__contracts__Hypotheses"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    create_narrative_api_v1_ps2_incidents__incident_id__narrative_post: {
+        parameters: {
+            query?: {
+                run_id?: string | null;
+            };
+            header?: never;
+            path: {
+                incident_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["NarrativeRequest"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["NarrativeResult"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    get_incident_proof_api_v1_ps2_incidents__incident_id__proof_get: {
+        parameters: {
+            query?: {
+                run_id?: string | null;
+            };
+            header?: never;
+            path: {
+                incident_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ProofView"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    get_incident_reachability_api_v1_ps2_incidents__incident_id__reachability_get: {
+        parameters: {
+            query?: {
+                run_id?: string | null;
+            };
+            header?: never;
+            path: {
+                incident_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ReachabilityResult"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    get_incident_story_api_v1_ps2_incidents__incident_id__story_get: {
+        parameters: {
+            query?: {
+                run_id?: string | null;
+            };
+            header?: never;
+            path: {
+                incident_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["halt__firex__contracts__AttackStory"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
     create_ingestion_api_v1_ps2_ingestions_post: {
         parameters: {
             query?: never;
@@ -4339,7 +5988,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["Hypotheses"];
+                    "application/json": components["schemas"]["halt__ps2__schema__Hypotheses"];
                 };
             };
             /** @description Validation Error */
@@ -4432,7 +6081,277 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["AttackStory"];
+                    "application/json": components["schemas"]["halt__ps2__schema__AttackStory"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    list_runs_api_v1_ps2_runs_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["RunList"];
+                };
+            };
+        };
+    };
+    create_run_api_v1_ps2_runs_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["RunRequest"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["DatasetRun"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    get_run_api_v1_ps2_runs__run_id__get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                run_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["DatasetRun"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    get_benchmark_api_v1_ps2_runs__run_id__benchmark_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                run_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["BenchmarkView"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    cancel_run_api_v1_ps2_runs__run_id__cancel_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                run_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["DatasetRun"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    list_incidents_api_v1_ps2_runs__run_id__incidents_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                run_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["halt__firex__contracts__IncidentList"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    get_progress_api_v1_ps2_runs__run_id__progress_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                run_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["DatasetRun"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    get_quarantine_api_v1_ps2_runs__run_id__quarantine_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                run_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["QuarantineReport"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    resume_run_api_v1_ps2_runs__run_id__resume_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                run_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["DatasetRun"];
                 };
             };
             /** @description Validation Error */

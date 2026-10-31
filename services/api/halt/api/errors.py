@@ -8,6 +8,7 @@ from sqlalchemy.exc import SQLAlchemyError
 
 from halt.api.state import describe
 from halt.contracts.common import ApiError
+from halt.firex.jobs import RunError
 from halt.gate.gate import GateError
 from halt.logging import get_logger, request_id_var
 from halt.ps2.intake.intake import IntakeError
@@ -39,6 +40,10 @@ def install(app: FastAPI) -> None:
 
     @app.exception_handler(IntakeError)
     async def intake(_: Request, exc: IntakeError) -> JSONResponse:
+        return _error(exc.status, exc.code, str(exc))
+
+    @app.exception_handler(RunError)
+    async def firex_run(_: Request, exc: RunError) -> JSONResponse:
         return _error(exc.status, exc.code, str(exc))
 
     @app.exception_handler(Unavailable)

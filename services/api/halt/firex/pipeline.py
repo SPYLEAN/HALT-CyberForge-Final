@@ -296,7 +296,7 @@ class Runner:
 
         self.dir.mkdir(parents=True, exist_ok=True)
         previous = self.state()
-        resumed = previous["status"] in ("interrupted", "cancelled", "failed", "running", "cancelling")
+        resumed = (self.dir / "chunks").is_dir()
         if previous["status"] == "completed" and (self.dir / "benchmark_receipt.json").is_file():
             return previous
         (self.dir / "cancel").unlink(missing_ok=True)
