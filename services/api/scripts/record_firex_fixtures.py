@@ -11,6 +11,7 @@ from __future__ import annotations
 
 import json
 import os
+import re
 import sys
 import tempfile
 from pathlib import Path
@@ -43,6 +44,9 @@ VOLATILE = {
     "expected",
     "recorded",
     "receipt_id",
+    "request_id",
+    "benchmark_receipt_id",
+    "benchmark_seal",
     "output_bytes",
     "compression_ratio",
     "artifact_hashes",
@@ -135,16 +139,23 @@ def record() -> dict[str, Any]:
             get(f"{B}/datasets")
             get(f"{B}/runs")
             run_id = runner.run_id
-            for part in ("", "/progress", "/quarantine", "/benchmark"):
+            for part in ("", "/progress", "/quarantine", "/benchmark", "/health", "/trust", "/quality-case"):
                 get(f"{B}/runs/{run_id}{part}")
+            get(f"{B}/runs/{run_id}/case-candidates")
+            get(f"{B}/facts")
             items = get(f"{B}/runs/{run_id}/incidents")["items"]
             for item in items:
                 iid = item["incident_id"]
                 suffix = f"?run_id={run_id}"
                 get(f"{B}/incidents/{iid}{suffix}")
-                for part in ("graph", "story", "hypotheses", "reachability", "proof"):
+                for part in ("graph", "story", "hypotheses", "reachability", "proof", "guide"):
                     get(f"{B}/incidents/{iid}/{part}{suffix}")
                 post(f"{B}/incidents/{iid}/narrative{suffix}", {"audience": "analyst", "question": None})
+            made = post(
+                f"{B}/cases",
+                {"run_id": run_id, "subject": "incident", "incident_id": items[0]["incident_id"]},
+            )
+            get(f"{B}/cases/{made['case_id']}")
         os.environ.pop("HALT_FIREX_DATA_ROOT", None)
     return {
         "_note": "Recorded from the real backend by scripts/record_firex_fixtures.py; do not edit.",
@@ -157,6 +168,10 @@ def record() -> dict[str, Any]:
 
 def main() -> int:
     text = json.dumps(record(), indent=1, sort_keys=True, ensure_ascii=False) + "\n"
+    # A case id hashes the run's benchmark seal, which holds machine timings, so its value is not stable. Nor
+    # are measurements written into display text.
+    text = re.sub(r"fcase-[0-9a-f]{16}", "fcase-0000000000000000", text)
+    text = re.sub(r"\b\d+(?:[.,]\d+)* (ms|s|MB|GB)\b", r"0 \1", text)
     if "--check" in sys.argv:
         if not OUT.exists() or OUT.read_text(encoding="utf-8") != text:
             print(f"{OUT} is stale: run python scripts/record_firex_fixtures.py")

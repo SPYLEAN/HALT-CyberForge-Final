@@ -4,11 +4,12 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
+import { firex, formatBytes, type DatasetDescriptor, type DatasetHealth, type DatasetRun } from "@/lib/firex/api";
 import { classify } from "@/lib/ps2/api";
-import { firex, formatBytes, type DatasetDescriptor, type DatasetRun } from "@/lib/firex/api";
 import { ps2Vars } from "@/styles/ps2-palette";
 
 import s from "./firex.module.css";
+import { StatusBadge } from "./Verdict";
 
 const RANGES: Array<{ label: string; value: number | null }> = [
   { label: "Whole file", value: null },
@@ -16,21 +17,25 @@ const RANGES: Array<{ label: string; value: number | null }> = [
   { label: "First 1 GB (sample)", value: 1_000_000_000 },
 ];
 
-/** Registered logs and their runs. Every figure here comes from the API. */
+/** Log Analysis: the registered logs, each with its verdict. Every figure comes from the API. */
 export function Datasets() {
   const [datasets, setDatasets] = useState<DatasetDescriptor[] | null>(null);
   const [runs, setRuns] = useState<DatasetRun[]>([]);
+  const [health, setHealth] = useState<Record<string, DatasetHealth>>({});
   const [error, setError] = useState<string | null>(null);
   const [retry, setRetry] = useState(0);
 
   useEffect(() => {
     let live = true;
     Promise.all([firex.datasets(), firex.runs()])
-      .then(([d, r]) => {
+      .then(async ([d, r]) => {
         if (!live) return;
         setDatasets(d);
         setRuns(r);
         setError(null);
+        const latest = d.map((x) => x.latest_run_id).filter((id): id is string => Boolean(id));
+        const verdicts = await Promise.all(latest.map((id) => firex.health(id).catch(() => null)));
+        if (live) setHealth(Object.fromEntries(verdicts.filter((v): v is DatasetHealth => Boolean(v)).map((v) => [v.run_id, v])));
       })
       .catch((e: unknown) => live && setError(classify(e).message));
     return () => {
@@ -38,22 +43,21 @@ export function Datasets() {
     };
   }, [retry]);
 
+  const samples = runs.filter((r) => !datasets?.some((d) => d.latest_run_id === r.run_id));
   return (
     <div className={s.root} style={ps2Vars} data-testid="firex-datasets">
-      <header className={s.head}>
-        <div>
-          <h1>Log analysis</h1>
-          <p className={s.lede}>
-            Read a security log, find suspicious activity, and connect it into attack paths backed by evidence. Each result stays
-            unconfirmed until someone validates it.
-          </p>
-        </div>
+      <header>
+        <h1 className={s.title}>Log analysis</h1>
+        <p className={s.lede}>
+          Read a large security log, connect what it shows into attack paths backed by evidence, and see plainly when the evidence cannot
+          support a story.
+        </p>
       </header>
       {error ? (
         <div className={s.alert} role="alert">
           <p>The analysis service could not be reached: {error}</p>
-          <button type="button" className="halt-btn" onClick={() => setRetry((n) => n + 1)}>
-            <span>TRY AGAIN</span>
+          <button type="button" className={s.btn} onClick={() => setRetry((n) => n + 1)}>
+            Try again
           </button>
         </div>
       ) : !datasets ? (
@@ -62,12 +66,12 @@ export function Datasets() {
         <>
           <section className={s.grid} aria-label="Datasets">
             {datasets.map((d) => (
-              <DatasetCard key={d.dataset_id} dataset={d} runs={runs.filter((r) => r.dataset_id === d.dataset_id)} onError={setError} />
+              <DatasetCard key={d.dataset_id} dataset={d} health={d.latest_run_id ? health[d.latest_run_id] : undefined} onError={setError} />
             ))}
           </section>
-          {runs.length ? (
-            <section className={s.card} aria-labelledby="firex-runs">
-              <h2 id="firex-runs">Runs</h2>
+          {samples.length ? (
+            <details className={s.card}>
+              <summary>Other runs ({samples.length})</summary>
               <div className={s.tableWrap}>
                 <table className={s.table}>
                   <thead>
@@ -76,11 +80,10 @@ export function Datasets() {
                       <th>Dataset</th>
                       <th>Status</th>
                       <th>Incidents</th>
-                      <th>Updated</th>
                     </tr>
                   </thead>
                   <tbody>
-                    {runs.map((r) => (
+                    {samples.map((r) => (
                       <tr key={r.run_id}>
                         <td className={s.mono}>
                           <Link href={`/firex/runs/${r.run_id}`}>{r.run_id}</Link>
@@ -88,25 +91,26 @@ export function Datasets() {
                         <td>{r.dataset_id}</td>
                         <td>{r.status}</td>
                         <td>{r.metrics.incidents ?? "—"}</td>
-                        <td className={s.mono}>{r.updated_at}</td>
                       </tr>
                     ))}
                   </tbody>
                 </table>
               </div>
-            </section>
+            </details>
           ) : null}
+          <p className={s.meta}>
+            Small uploads and the bundled scenarios are in <Link href="/reconstruct">Reconstruct</Link>.
+          </p>
         </>
       )}
     </div>
   );
 }
 
-function DatasetCard({ dataset, runs, onError }: { dataset: DatasetDescriptor; runs: DatasetRun[]; onError: (message: string) => void }) {
+function DatasetCard({ dataset, health, onError }: { dataset: DatasetDescriptor; health?: DatasetHealth; onError: (message: string) => void }) {
   const router = useRouter();
   const [range, setRange] = useState("");
   const [busy, setBusy] = useState(false);
-  const latest = runs.find((r) => r.run_id === dataset.latest_run_id) ?? runs[0];
 
   async function start() {
     setBusy(true);
@@ -121,18 +125,24 @@ function DatasetCard({ dataset, runs, onError }: { dataset: DatasetDescriptor; r
 
   return (
     <article className={s.card} aria-label={dataset.title}>
-      <h2>{dataset.title}</h2>
-      <dl className={s.facts}>
-        <div>
-          <dt>Size</dt>
-          <dd>{formatBytes(dataset.size_bytes)}</dd>
-        </div>
-        <div>
-          <dt>Status</dt>
-          <dd>{dataset.available ? "Available" : "Not on this server"}</dd>
-        </div>
-      </dl>
-      {dataset.available ? (
+      <div className={s.actions} style={{ justifyContent: "space-between" }}>
+        <h2>{dataset.title}</h2>
+        {health ? <StatusBadge status={health.state} /> : null}
+      </div>
+      <p className={s.meta}>{dataset.available ? formatBytes(dataset.size_bytes) : "Not on this server"}</p>
+      {health ? (
+        <>
+          <p>{health.headline}</p>
+          <div className={s.actions}>
+            <Link className={s.btnPrimary} href={`/firex/runs/${health.run_id}`}>
+              Open result
+            </Link>
+            <Link className={s.btn} href={`/trust/${health.run_id}`}>
+              Verify
+            </Link>
+          </div>
+        </>
+      ) : dataset.available ? (
         <>
           <label className={s.field}>
             How much to read
@@ -145,14 +155,9 @@ function DatasetCard({ dataset, runs, onError }: { dataset: DatasetDescriptor; r
             </select>
           </label>
           <div className={s.actions}>
-            <button type="button" className="halt-btn halt-btn-primary" disabled={busy} onClick={start}>
-              <span>{busy ? "STARTING…" : "START ANALYSIS"}</span>
+            <button type="button" className={s.btnPrimary} disabled={busy} onClick={start}>
+              {busy ? "Starting…" : "Start analysis"}
             </button>
-            {latest ? (
-              <Link className="halt-btn" href={`/firex/runs/${latest.run_id}`}>
-                <span>LATEST RUN</span>
-              </Link>
-            ) : null}
           </div>
         </>
       ) : (

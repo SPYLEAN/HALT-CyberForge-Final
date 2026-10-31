@@ -11,26 +11,37 @@ from fastapi import APIRouter, Query
 
 from halt.contracts.common import Contract
 from halt.firex import jobs
+from halt.firex.cases import create_case, list_candidates, read_case
 from halt.firex.contracts import (
     BenchmarkReceipt,
+    CaseCandidates,
+    CaseManifest,
+    CaseRequest,
+    DatasetHealth,
     DatasetQualitySummary,
     DatasetRun,
+    FactsResponse,
     FirexAttackStory,
     FirexHypotheses,
     FirexIncidentList,
     FirexIncidentSummary,
     IncidentDetail,
     IncidentGraph,
+    IncidentGuide,
     NarrativeRequest,
     NarrativeResult,
     ProofReceipt,
+    QualityCase,
     QuarantineSegment,
     ReachabilityResult,
     RunRequest,
     SealVerification,
+    TrustReport,
 )
+from halt.firex.guide import build_guide
 from halt.firex.llm import explain
 from halt.firex.receipts import verify_seal
+from halt.firex.trust import build_facts, build_health, build_quality_case, build_trust
 from halt.firex.util import read_json
 
 router = APIRouter(prefix="/ps2", tags=["firex"])
@@ -125,9 +136,49 @@ def get_benchmark(run_id: str) -> BenchmarkView:
     return BenchmarkView(receipt=BenchmarkReceipt.model_validate(doc), verification=verify_seal(doc))
 
 
+@router.get("/runs/{run_id}/health", response_model=DatasetHealth)
+def get_health(run_id: str) -> DatasetHealth:
+    return build_health(run_id)[0]
+
+
+@router.get("/runs/{run_id}/trust", response_model=TrustReport)
+def get_trust(run_id: str) -> TrustReport:
+    return build_trust(run_id)
+
+
+@router.get("/runs/{run_id}/quality-case", response_model=QualityCase)
+def get_quality_case(run_id: str) -> QualityCase:
+    return build_quality_case(run_id)
+
+
+@router.get("/runs/{run_id}/case-candidates", response_model=CaseCandidates)
+def get_case_candidates(run_id: str) -> CaseCandidates:
+    return list_candidates(run_id)
+
+
+@router.post("/cases", response_model=CaseManifest)
+def post_case(body: CaseRequest) -> CaseManifest:
+    return create_case(body)
+
+
+@router.get("/cases/{case_id}", response_model=CaseManifest)
+def get_case(case_id: str) -> CaseManifest:
+    return read_case(case_id)
+
+
+@router.get("/facts", response_model=FactsResponse)
+def get_facts() -> FactsResponse:
+    return build_facts()
+
+
 @router.get("/incidents/{incident_id}", response_model=IncidentDetail)
 def get_incident(incident_id: str, run_id: RunQuery = None) -> IncidentDetail:
     return IncidentDetail.model_validate(_load(jobs.find_incident(incident_id, run_id), "detail"))
+
+
+@router.get("/incidents/{incident_id}/guide", response_model=IncidentGuide)
+def get_incident_guide(incident_id: str, run_id: RunQuery = None) -> IncidentGuide:
+    return build_guide(jobs.find_incident(incident_id, run_id))
 
 
 @router.get("/incidents/{incident_id}/graph", response_model=IncidentGraph)

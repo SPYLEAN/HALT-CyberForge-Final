@@ -7,6 +7,8 @@
  ],
  "normalised": [
   "artifact_hashes",
+  "benchmark_receipt_id",
+  "benchmark_seal",
   "completed_at",
   "compression_ratio",
   "created_at",
@@ -23,12 +25,299 @@
   "receipt_id",
   "recorded",
   "records_per_second",
+  "request_id",
   "seal",
   "stage_durations_s",
   "started_at",
   "updated_at"
  ],
  "responses": {
+  "GET /api/v1/ps2/cases/fcase-0000000000000000": {
+   "body": {
+    "benchmark_receipt_id": "fixture",
+    "benchmark_seal": "fixture",
+    "builder_version": "halt.firex.case/1.0",
+    "case_id": "fcase-0000000000000000",
+    "chapters": [
+     {
+      "body": "10.1.0.44 opened 15 SMB or RDP connections to 15 internal hosts. 4 malware detections (4 name(s)) between 10.1.0.44 and 198.51.100.34, host bad.example.",
+      "camera": {
+       "node_ids": [
+        "entity:ip:10.1.0.44",
+        "step:fdet-69f27285ef14777e:0",
+        "entity:ip:198.51.100.34",
+        "step:fdet-2e9aa05295d60bd1:1",
+        "context:b11aa0fc22b0b18a",
+        "context:7647233f5f445376",
+        "reach:10.30.0.9",
+        "context:a8d292b389fe0680",
+        "context:6bd0044fecfcf306",
+        "context:a5b13f45c71189c9",
+        "context:9756d8122c00377b",
+        "context:76593449199b1248",
+        "context:6fb578469b7fda40",
+        "context:286643f5bc5ca93e",
+        "context:ebcbc8d8e5894f5d",
+        "context:ff801c973d4a9870",
+        "context:7180cf35db60c377",
+        "context:a37fabdb3d9d0d3c",
+        "context:2166f9cdcdbcd28b",
+        "context:f1c34c5e3a458ad5",
+        "context:7347eacba5043abc",
+        "context:0d7f73672b5d83c1"
+       ],
+       "shot": "establish"
+      },
+      "chapter_id": "situation",
+      "evidence_refs": [],
+      "headline": "Internal SMB or RDP fan-out from one host and 1 related",
+      "metrics": [
+       {
+        "label": "Records merged",
+        "value": "19"
+       },
+       {
+        "label": "Status",
+        "value": "Unconfirmed"
+       }
+      ],
+      "presenter_notes": "Say what the rule found, then that it is unconfirmed. Status: unconfirmed.",
+      "title": "Situation",
+      "visual": "world"
+     },
+     {
+      "body": "SMB to 15 internal hosts (Internal SMB or RDP fan-out from one host). Candidate root cause; not confirmed.",
+      "camera": {
+       "node_ids": [
+        "step:fdet-69f27285ef14777e:0"
+       ],
+       "shot": "approach"
+      },
+      "chapter_id": "entry",
+      "evidence_refs": [
+       "ev-bb823635a9601ec680373185",
+       "ev-aaa3231fe09530c448e237e4",
+       "ev-1801e9a6f8d9db3a55dc968f",
+       "ev-54c6fb3a83c36603f5a105ec",
+       "ev-3ff104bbd6022e023495abb5",
+       "ev-5dbf2ec74a841bfd9ec27735",
+       "ev-adb1177d506653c468ed0b03",
+       "ev-28bb0e3eeb4290fcb6d1662a",
+       "ev-87b25c3d7fa8eeffe902aa56",
+       "ev-98573ba487072aaa3ea1987a"
+      ],
+      "headline": "SMB to 15 internal hosts at 2027-01-15T08:00:00Z.",
+      "metrics": [
+       {
+        "label": "First seen (UTC)",
+        "value": "2027-01-15T08:00:00Z"
+       }
+      ],
+      "presenter_notes": "Point to the first step. This is the earliest evidence in this data, not proof of how access began.",
+      "title": "Entry point",
+      "visual": "world"
+     },
+     {
+      "body": "SMB to 15 internal hosts Then: Malware detections to 198.51.100.34: W0/x!tr, W1/x!tr, W2/x!tr, W3/x!tr.",
+      "camera": {
+       "node_ids": [
+        "step:fdet-69f27285ef14777e:0",
+        "step:fdet-2e9aa05295d60bd1:1"
+       ],
+       "shot": "follow"
+      },
+      "chapter_id": "progression",
+      "evidence_refs": [
+       "ev-bb823635a9601ec680373185",
+       "ev-aaa3231fe09530c448e237e4",
+       "ev-1801e9a6f8d9db3a55dc968f",
+       "ev-54c6fb3a83c36603f5a105ec",
+       "ev-3ff104bbd6022e023495abb5",
+       "ev-5dbf2ec74a841bfd9ec27735",
+       "ev-adb1177d506653c468ed0b03",
+       "ev-28bb0e3eeb4290fcb6d1662a",
+       "ev-87b25c3d7fa8eeffe902aa56",
+       "ev-98573ba487072aaa3ea1987a",
+       "ev-cc6555c6c13d9a75ee5655e0",
+       "ev-08eaca15da4c7f49df43ddcc"
+      ],
+      "headline": "2 steps on the selected path",
+      "metrics": [
+       {
+        "label": "Stages",
+        "value": "delivery, lateral movement"
+       }
+      ],
+      "presenter_notes": "Follow the route. Steps are ordered by evidence; links between them are inferred by rules.",
+      "title": "Attack progression",
+      "visual": "world"
+     },
+     {
+      "body": "2 statements checked, 0 without evidence.",
+      "camera": {
+       "node_ids": [
+        "step:fdet-69f27285ef14777e:0"
+       ],
+       "shot": "inspect"
+      },
+      "chapter_id": "evidence",
+      "evidence_refs": [
+       "ev-08eaca15da4c7f49df43ddcc",
+       "ev-1801e9a6f8d9db3a55dc968f",
+       "ev-3ff104bbd6022e023495abb5",
+       "ev-54c6fb3a83c36603f5a105ec",
+       "ev-aaa3231fe09530c448e237e4",
+       "ev-b4f14b8600219e7e590bbcd5",
+       "ev-b56338cb340e4c85d30abdd3",
+       "ev-bb823635a9601ec680373185",
+       "ev-cc6555c6c13d9a75ee5655e0"
+      ],
+      "headline": "Internal SMB or RDP fan-out from one host: 15 record(s), confidence 0.8.",
+      "metrics": [
+       {
+        "label": "Evidence coverage",
+        "value": "100%"
+       },
+       {
+        "label": "Unsupported claims",
+        "value": "0"
+       }
+      ],
+      "presenter_notes": "Open a source record from here if asked. Every statement cites one.",
+      "title": "Evidence",
+      "visual": "world"
+     },
+     {
+      "body": "The best alternative: Unrelated activity sharing an entity. Only “Internal SMB or RDP fan-out from one host” is one sequence. The others share an address or account by coincidence. Other gaps: These logs have no payload or endpoint data, so success of an action cannot be proven from them.",
+      "camera": {
+       "node_ids": [
+        "step:fdet-69f27285ef14777e:0",
+        "step:fdet-2e9aa05295d60bd1:1"
+       ],
+       "shot": "withdraw"
+      },
+      "chapter_id": "uncertainty",
+      "evidence_refs": [],
+      "headline": "Merged activity is cited by a sample of its evidence, not every record.",
+      "metrics": [
+       {
+        "label": "Margin over the best alternative",
+        "value": "0.286"
+       }
+      ],
+      "presenter_notes": "State this plainly. The scores rank explanations; they are not probabilities.",
+      "title": "Uncertainty",
+      "visual": "world"
+     },
+     {
+      "body": "Hypothetical: what could be reached next. This is not observed attacker activity. Based only on connections recorded in this log. No asset inventory or permissions data is available.",
+      "camera": {
+       "node_ids": [
+        "reach:10.30.0.9"
+       ],
+       "shot": "reveal"
+      },
+      "chapter_id": "reachable",
+      "evidence_refs": [
+       "ev-77cffd3cdda4fad97b6afc6a"
+      ],
+      "headline": "1 system(s) could be reached next",
+      "metrics": [
+       {
+        "label": "Hypothetical targets",
+        "value": "1"
+       }
+      ],
+      "presenter_notes": "This is hypothetical. It is a network path seen in the log, not attacker activity.",
+      "title": "Reachable next",
+      "visual": "world"
+     },
+     {
+      "body": "A seal shows that the receipt has not changed. It does not show that the conclusion is true.",
+      "camera": {
+       "node_ids": [
+        "step:fdet-69f27285ef14777e:0",
+        "step:fdet-2e9aa05295d60bd1:1"
+       ],
+       "shot": "withdraw"
+      },
+      "chapter_id": "verification",
+      "evidence_refs": [],
+      "headline": "The result is sealed and repeatable",
+      "metrics": [
+       {
+        "label": "Graph hash",
+        "value": "01abc3fdccd2dbff"
+       },
+       {
+        "label": "Seal",
+        "value": "sha256-canonical-json"
+       }
+      ],
+      "presenter_notes": "Offer to open the Trust Centre. Say the seal is tamper evidence, not a legal signature.",
+      "title": "Verification",
+      "visual": "world"
+     },
+     {
+      "body": "Unconfirmed until validated. No organiser ground truth was provided, so accuracy has not been measured.",
+      "camera": {
+       "node_ids": [
+        "entity:ip:10.1.0.44",
+        "step:fdet-69f27285ef14777e:0",
+        "entity:ip:198.51.100.34",
+        "step:fdet-2e9aa05295d60bd1:1",
+        "context:b11aa0fc22b0b18a",
+        "context:7647233f5f445376",
+        "reach:10.30.0.9",
+        "context:a8d292b389fe0680",
+        "context:6bd0044fecfcf306",
+        "context:a5b13f45c71189c9",
+        "context:9756d8122c00377b",
+        "context:76593449199b1248",
+        "context:6fb578469b7fda40",
+        "context:286643f5bc5ca93e",
+        "context:ebcbc8d8e5894f5d",
+        "context:ff801c973d4a9870",
+        "context:7180cf35db60c377",
+        "context:a37fabdb3d9d0d3c",
+        "context:2166f9cdcdbcd28b",
+        "context:f1c34c5e3a458ad5",
+        "context:7347eacba5043abc",
+        "context:0d7f73672b5d83c1"
+       ],
+       "shot": "present"
+      },
+      "chapter_id": "closing",
+      "evidence_refs": [],
+      "headline": "An evidence-backed candidate, ready for an analyst",
+      "metrics": [
+       {
+        "label": "Status",
+        "value": "Unconfirmed"
+       },
+       {
+        "label": "Accuracy",
+        "value": "Not measured"
+       }
+      ],
+      "presenter_notes": "Hand off to the live evidence.",
+      "title": "Closing result",
+      "visual": "world"
+     }
+    ],
+    "dataset_id": "fixture",
+    "incident_id": "finc-06dbcd7d8183",
+    "llm_notes": null,
+    "proof_receipt_ids": [
+     "fprf-43e6554c3b6a527f"
+    ],
+    "run_id": "frun-370ac3a914901431",
+    "status": "Unconfirmed",
+    "subject": "incident",
+    "title": "Internal SMB or RDP fan-out from one host and 1 related"
+   },
+   "status": 200
+  },
   "GET /api/v1/ps2/datasets": {
    "body": {
     "items": [
@@ -109,6 +398,25 @@
       "title": "Fixture"
      }
     ]
+   },
+   "status": 200
+  },
+  "GET /api/v1/ps2/facts": {
+   "body": {
+    "items": [
+     {
+      "dataset_id": "fixture",
+      "duration_s": "fixture",
+      "exact_duplicates": 0,
+      "incidents": 3,
+      "peak_memory_mb": "fixture",
+      "reconstruction": "ran",
+      "run_id": "frun-370ac3a914901431",
+      "source_bytes": 51343,
+      "state": "Unconfirmed"
+     }
+    ],
+    "note": "Recorded FireX benchmark results on the recorded machine. Not a performance guarantee."
    },
    "status": 200
   },
@@ -509,6 +817,101 @@
      }
     ],
     "truncated": false
+   },
+   "status": 200
+  },
+  "GET /api/v1/ps2/incidents/finc-0526ba4f57ac/guide?run_id=frun-370ac3a914901431": {
+   "body": {
+    "incident_id": "finc-0526ba4f57ac",
+    "next_checks": [
+     {
+      "action": "Inspect the cited source records",
+      "evidence_refs": [
+       "ev-7090074172dcdc0cdd5309f1",
+       "ev-81083a6b2db6fcccb7568553",
+       "ev-8e745ade9716e31b43fde7af",
+       "ev-ab9bbafce5157b79fbe33a32",
+       "ev-0a31a9bad83f113f064bd0da"
+      ],
+      "kind": "inspect_records",
+      "reason": "15 stored records support this incident. Reading them is the fastest way to test it."
+     },
+     {
+      "action": "Confirm the owner and importance of 10.20.0.200",
+      "evidence_refs": [
+       "ev-7090074172dcdc0cdd5309f1",
+       "ev-81083a6b2db6fcccb7568553",
+       "ev-8e745ade9716e31b43fde7af",
+       "ev-ab9bbafce5157b79fbe33a32",
+       "ev-0a31a9bad83f113f064bd0da"
+      ],
+      "kind": "validate_asset",
+      "reason": "The log has no asset inventory, so its business importance is unknown here."
+     },
+     {
+      "action": "Collect endpoint or payload records for the same period",
+      "evidence_refs": [],
+      "kind": "collect_telemetry",
+      "reason": "These logs cannot show whether an attempted action succeeded."
+     },
+     {
+      "action": "Test the alternative: Benign explanation",
+      "evidence_refs": [],
+      "kind": "compare_hypothesis",
+      "reason": "Internet scanning of an exposed service that had no effect on it."
+     }
+    ],
+    "note": "Checks to consider, derived from stored evidence. HALT has not taken any action.",
+    "steps": [
+     {
+      "check_next": "Inspect the cited records for concentrated multi-technique web attack on one target.",
+      "evidence": "5 source records cited, standing in for 20 merged records.",
+      "evidence_refs": [
+       "ev-7090074172dcdc0cdd5309f1",
+       "ev-81083a6b2db6fcccb7568553",
+       "ev-8e745ade9716e31b43fde7af",
+       "ev-ab9bbafce5157b79fbe33a32",
+       "ev-0a31a9bad83f113f064bd0da"
+      ],
+      "node_id": "step:fdet-3afaf7d5231488bd:0",
+      "uncertain": "This is the earliest evidence in this data, not proof of how access began.",
+      "what_happened": "HTTP.URI.SQL.Injection from 203.0.113.20 (20 events).",
+      "who": "203.0.113.20 acted on 10.20.0.200.",
+      "why_it_matters": "This is an attempt to turn a weakness into access."
+     },
+     {
+      "check_next": "Inspect the cited records for concentrated multi-technique web attack on one target.",
+      "evidence": "5 source records cited, standing in for 20 merged records.",
+      "evidence_refs": [
+       "ev-3deaf3f2b3636f28b150256b",
+       "ev-b77b9fb32fe3193b950dddd7",
+       "ev-e756c5ad7af222a1f3e2f2a2",
+       "ev-8ab4a455f3f8a8b490c1019b",
+       "ev-7a4801a220b929914726bc2f"
+      ],
+      "node_id": "step:fdet-3afaf7d5231488bd:1",
+      "uncertain": "A rule inferred the link from the previous step. No single record states it.",
+      "what_happened": "HTTP.Path.Traversal from 203.0.113.21 (20 events).",
+      "who": "203.0.113.21 acted on 10.20.0.200.",
+      "why_it_matters": "This is an attempt to turn a weakness into access."
+     },
+     {
+      "check_next": "Inspect the cited records for concentrated multi-technique web attack on one target.",
+      "evidence": "5 source records cited, standing in for 20 merged records.",
+      "evidence_refs": [
+       "ev-9795355d17f37929a6d67598",
+       "ev-6db15019f88a4baeb47f81f2",
+       "ev-b9f869b5d707b2f4ba8612c3",
+       "ev-69b8b5c38d60ea093bfb9a56",
+       "ev-2ec0c58078d3dea88bc6beda"
+      ],
+      "node_id": "step:fdet-3afaf7d5231488bd:2",
+      "uncertain": "A rule inferred the link from the previous step. No single record states it.",
+      "what_happened": "HTTP.URI.XSS.Attack from 203.0.113.22 (20 events).",
+      "who": "203.0.113.22 acted on 10.20.0.200.",
+      "why_it_matters": "This is an attempt to turn a weakness into access."
+     }
+    ]
    },
    "status": 200
   },
@@ -2423,6 +2826,83 @@
    },
    "status": 200
   },
+  "GET /api/v1/ps2/incidents/finc-06dbcd7d8183/guide?run_id=frun-370ac3a914901431": {
+   "body": {
+    "incident_id": "finc-06dbcd7d8183",
+    "next_checks": [
+     {
+      "action": "Inspect the cited source records",
+      "evidence_refs": [
+       "ev-bb823635a9601ec680373185",
+       "ev-aaa3231fe09530c448e237e4",
+       "ev-1801e9a6f8d9db3a55dc968f",
+       "ev-54c6fb3a83c36603f5a105ec",
+       "ev-3ff104bbd6022e023495abb5"
+      ],
+      "kind": "inspect_records",
+      "reason": "21 stored records support this incident. Reading them is the fastest way to test it."
+     },
+     {
+      "action": "Collect endpoint or payload records for the same period",
+      "evidence_refs": [],
+      "kind": "collect_telemetry",
+      "reason": "These logs cannot show whether an attempted action succeeded."
+     },
+     {
+      "action": "Review the hypothetical next systems: 10.30.0.9",
+      "evidence_refs": [
+       "ev-77cffd3cdda4fad97b6afc6a"
+      ],
+      "kind": "review_reachable",
+      "reason": "Hypothetical: what could be reached next. This is not observed attacker activity."
+     },
+     {
+      "action": "Test the alternative: Unrelated activity sharing an entity",
+      "evidence_refs": [],
+      "kind": "compare_hypothesis",
+      "reason": "Only “Internal SMB or RDP fan-out from one host” is one sequence. The others share an address or account by coincidence."
+     }
+    ],
+    "note": "Checks to consider, derived from stored evidence. HALT has not taken any action.",
+    "steps": [
+     {
+      "check_next": "Inspect the cited records for internal smb or rdp fan-out from one host.",
+      "evidence": "10 source records cited, standing in for 15 merged records.",
+      "evidence_refs": [
+       "ev-bb823635a9601ec680373185",
+       "ev-aaa3231fe09530c448e237e4",
+       "ev-1801e9a6f8d9db3a55dc968f",
+       "ev-54c6fb3a83c36603f5a105ec",
+       "ev-3ff104bbd6022e023495abb5",
+       "ev-5dbf2ec74a841bfd9ec27735",
+       "ev-adb1177d506653c468ed0b03",
+       "ev-28bb0e3eeb4290fcb6d1662a"
+      ],
+      "node_id": "step:fdet-69f27285ef14777e:0",
+      "uncertain": "This is the earliest evidence in this data, not proof of how access began.",
+      "what_happened": "SMB to 15 internal hosts.",
+      "who": "10.1.0.44 is the source named by these records.",
+      "why_it_matters": "One compromised system may be spreading to others."
+     },
+     {
+      "check_next": "Inspect the cited records for repeated malware detections between one host and one destination.",
+      "evidence": "4 source records cited.",
+      "evidence_refs": [
+       "ev-cc6555c6c13d9a75ee5655e0",
+       "ev-08eaca15da4c7f49df43ddcc",
+       "ev-b4f14b8600219e7e590bbcd5",
+       "ev-b56338cb340e4c85d30abdd3"
+      ],
+      "node_id": "step:fdet-2e9aa05295d60bd1:1",
+      "uncertain": "A rule inferred the link from the previous step. No single record states it.",
+      "what_happened": "Malware detections to 198.51.100.34: W0/x!tr, W1/x!tr, W2/x!tr, W3/x!tr.",
+      "who": "10.1.0.44 acted on 198.51.100.34.",
+      "why_it_matters": "This is how harmful content may reach a system."
+     }
+    ]
+   },
+   "status": 200
+  },
   "GET /api/v1/ps2/incidents/finc-06dbcd7d8183/hypotheses?run_id=frun-370ac3a914901431": {
    "body": {
     "alternates": [
@@ -4173,6 +4653,89 @@
    },
    "status": 200
   },
+  "GET /api/v1/ps2/incidents/finc-ec918f810a84/guide?run_id=frun-370ac3a914901431": {
+   "body": {
+    "incident_id": "finc-ec918f810a84",
+    "next_checks": [
+     {
+      "action": "Inspect the cited source records",
+      "evidence_refs": [
+       "ev-3d0a75fe2e1a395939fed6fa"
+      ],
+      "kind": "inspect_records",
+      "reason": "3 stored records support this incident. Reading them is the fastest way to test it."
+     },
+     {
+      "action": "Ask who owns ops.user, temp1, and whether this activity was expected",
+      "evidence_refs": [
+       "ev-3d0a75fe2e1a395939fed6fa"
+      ],
+      "kind": "validate_identity",
+      "reason": "These logs name the accounts but cannot show who was using them."
+     },
+     {
+      "action": "Confirm the owner and importance of FGT-TEST",
+      "evidence_refs": [
+       "ev-3d0a75fe2e1a395939fed6fa"
+      ],
+      "kind": "validate_asset",
+      "reason": "The log has no asset inventory, so its business importance is unknown here."
+     },
+     {
+      "action": "Collect endpoint or payload records for the same period",
+      "evidence_refs": [],
+      "kind": "collect_telemetry",
+      "reason": "These logs cannot show whether an attempted action succeeded."
+     },
+     {
+      "action": "Test the alternative: Benign explanation",
+      "evidence_refs": [],
+      "kind": "compare_hypothesis",
+      "reason": "A legitimate temporary account used for maintenance and then removed."
+     }
+    ],
+    "note": "Checks to consider, derived from stored evidence. HALT has not taken any action.",
+    "steps": [
+     {
+      "check_next": "Inspect the cited records for account created, used, then removed.",
+      "evidence": "1 source record cited.",
+      "evidence_refs": [
+       "ev-3d0a75fe2e1a395939fed6fa"
+      ],
+      "node_id": "step:fdet-1ab891ca6fa8c8ec:0",
+      "uncertain": "This is the earliest evidence in this data, not proof of how access began.",
+      "what_happened": "Account temp1 created by ops.user.",
+      "who": "ops.user acted on temp1.",
+      "why_it_matters": "A new foothold can outlast the original access."
+     },
+     {
+      "check_next": "Inspect the cited records for account created, used, then removed.",
+      "evidence": "1 source record cited.",
+      "evidence_refs": [
+       "ev-1c83125ba842c9a374d99ee4"
+      ],
+      "node_id": "step:fdet-1ab891ca6fa8c8ec:1",
+      "uncertain": "A rule inferred the link from the previous step. No single record states it.",
+      "what_happened": "New account temp1 signed in from 203.0.113.9.",
+      "who": "temp1 acted on FGT-TEST.",
+      "why_it_matters": "This is activity that could directly affect the organisation."
+     },
+     {
+      "check_next": "Inspect the cited records for account created, used, then removed.",
+      "evidence": "1 source record cited.",
+      "evidence_refs": [
+       "ev-cc61c8182013325d90df9359"
+      ],
+      "node_id": "step:fdet-1ab891ca6fa8c8ec:2",
+      "uncertain": "A rule inferred the link from the previous step. No single record states it.",
+      "what_happened": "Account temp1 deleted by ops.user.",
+      "who": "ops.user acted on temp1.",
+      "why_it_matters": "Reducing visibility makes everything after it harder to see."
+     }
+    ]
+   },
+   "status": 200
+  },
   "GET /api/v1/ps2/incidents/finc-ec918f810a84/hypotheses?run_id=frun-370ac3a914901431": {
    "body": {
     "alternates": [
@@ -4805,6 +5368,347 @@
    },
    "status": 200
   },
+  "GET /api/v1/ps2/runs/frun-370ac3a914901431/case-candidates": {
+   "body": {
+    "items": [
+     {
+      "components": [
+       {
+        "detail": "The incident's rule-derived risk",
+        "name": "risk",
+        "value": 0.9,
+        "weight": 0.35
+       },
+       {
+        "detail": "3 step(s) on the path",
+        "name": "path_steps",
+        "value": 0.6,
+        "weight": 0.3
+       },
+       {
+        "detail": "4 kind(s) of entity",
+        "name": "entity_kinds",
+        "value": 1.0,
+        "weight": 0.2
+       },
+       {
+        "detail": "3 organisation layer(s)",
+        "name": "layers",
+        "value": 0.75,
+        "weight": 0.15
+       }
+      ],
+      "incident_id": "finc-ec918f810a84",
+      "path_steps": 3,
+      "recommended": true,
+      "risk": 0.9,
+      "score": 0.807,
+      "status": "unconfirmed",
+      "title": "Account created, used, then removed"
+     },
+     {
+      "components": [
+       {
+        "detail": "The incident's rule-derived risk",
+        "name": "risk",
+        "value": 0.94,
+        "weight": 0.35
+       },
+       {
+        "detail": "2 step(s) on the path",
+        "name": "path_steps",
+        "value": 0.4,
+        "weight": 0.3
+       },
+       {
+        "detail": "4 kind(s) of entity",
+        "name": "entity_kinds",
+        "value": 1.0,
+        "weight": 0.2
+       },
+       {
+        "detail": "3 organisation layer(s)",
+        "name": "layers",
+        "value": 0.75,
+        "weight": 0.15
+       }
+      ],
+      "incident_id": "finc-06dbcd7d8183",
+      "path_steps": 2,
+      "recommended": false,
+      "risk": 0.94,
+      "score": 0.761,
+      "status": "unconfirmed",
+      "title": "Internal SMB or RDP fan-out from one host and 1 related"
+     },
+     {
+      "components": [
+       {
+        "detail": "The incident's rule-derived risk",
+        "name": "risk",
+        "value": 0.8,
+        "weight": 0.35
+       },
+       {
+        "detail": "3 step(s) on the path",
+        "name": "path_steps",
+        "value": 0.6,
+        "weight": 0.3
+       },
+       {
+        "detail": "3 kind(s) of entity",
+        "name": "entity_kinds",
+        "value": 0.75,
+        "weight": 0.2
+       },
+       {
+        "detail": "3 organisation layer(s)",
+        "name": "layers",
+        "value": 0.75,
+        "weight": 0.15
+       }
+      ],
+      "incident_id": "finc-0526ba4f57ac",
+      "path_steps": 3,
+      "recommended": false,
+      "risk": 0.8,
+      "score": 0.722,
+      "status": "unconfirmed",
+      "title": "Concentrated multi-technique web attack on one target"
+     }
+    ],
+    "note": "Recommended means this incident has the most to show. It does not mean the incident is confirmed.",
+    "quality_case_available": false,
+    "run_id": "frun-370ac3a914901431"
+   },
+   "status": 200
+  },
+  "GET /api/v1/ps2/runs/frun-370ac3a914901431/health": {
+   "body": {
+    "canonical_records": 143,
+    "dataset_id": "fixture",
+    "dimensions": [
+     {
+      "id": "source",
+      "items": [
+       {
+        "is_hash": false,
+        "label": "Filename",
+        "status": null,
+        "value": "fixture.log"
+       },
+       {
+        "is_hash": false,
+        "label": "Source size",
+        "status": null,
+        "value": "51,343 bytes"
+       },
+       {
+        "is_hash": true,
+        "label": "Source hash",
+        "status": null,
+        "value": "5246c5d53f02b0c36b06df4cd7888bbd064213050995cf4304abcc462d3e7c73"
+       },
+       {
+        "is_hash": false,
+        "label": "Hash verification",
+        "status": "Verified",
+        "value": "Verified"
+       },
+       {
+        "is_hash": false,
+        "label": "Valid bytes",
+        "status": null,
+        "value": "51,323"
+       },
+       {
+        "is_hash": false,
+        "label": "Quarantined bytes",
+        "status": null,
+        "value": "20"
+       },
+       {
+        "is_hash": false,
+        "label": "Reject reasons",
+        "status": null,
+        "value": "not_log_prefix: 1"
+       },
+       {
+        "is_hash": false,
+        "label": "Timestamp quality",
+        "status": "Verified",
+        "value": "No collapsed timestamp"
+       },
+       {
+        "is_hash": false,
+        "label": "Time-zone conflict",
+        "status": "Needs review",
+        "value": "143 records. date and time equal eventtime when read as UTC, although tz declares another offset. eventtime is used as UTC; the original fields are preserved."
+       }
+      ],
+      "status": "Verified",
+      "title": "Source integrity",
+      "verdict": "This is the expected file: its whole-file hash matches."
+     },
+     {
+      "id": "processing",
+      "items": [
+       {
+        "is_hash": false,
+        "label": "Parser version",
+        "status": null,
+        "value": "halt.firex.parser/1.0.0"
+       },
+       {
+        "is_hash": false,
+        "label": "Engine version",
+        "status": null,
+        "value": "halt.firex.engine/1.0.0"
+       },
+       {
+        "is_hash": true,
+        "label": "Git commit",
+        "status": null,
+        "value": "b7102156ae8679a14ea7ad5f5c4e6496bc8be980"
+       },
+       {
+        "is_hash": false,
+        "label": "Bytes accounted for",
+        "status": "Verified",
+        "value": "Yes"
+       },
+       {
+        "is_hash": false,
+        "label": "Records parsed",
+        "status": null,
+        "value": "143"
+       },
+       {
+        "is_hash": false,
+        "label": "Exact duplicates removed",
+        "status": null,
+        "value": "0"
+       },
+       {
+        "is_hash": false,
+        "label": "Duration",
+        "status": null,
+        "value": "0 s"
+       },
+       {
+        "is_hash": false,
+        "label": "Throughput",
+        "status": null,
+        "value": "0 MB/s"
+       },
+       {
+        "is_hash": false,
+        "label": "Peak memory",
+        "status": null,
+        "value": "0 MB, upper bound: highest worker peak × workers + driver peak"
+       },
+       {
+        "is_hash": false,
+        "label": "Recovery",
+        "status": null,
+        "value": "No resume recorded"
+       }
+      ],
+      "status": "Verified",
+      "title": "Processing integrity",
+      "verdict": "Every byte is accounted for and the benchmark receipt's seal is valid."
+     },
+     {
+      "id": "reconstruction",
+      "items": [
+       {
+        "is_hash": false,
+        "label": "Incident count",
+        "status": null,
+        "value": "3"
+       },
+       {
+        "is_hash": false,
+        "label": "Observed relationships",
+        "status": null,
+        "value": "35"
+       },
+       {
+        "is_hash": false,
+        "label": "Inferred relationships",
+        "status": null,
+        "value": "5"
+       },
+       {
+        "is_hash": false,
+        "label": "Missing evidence",
+        "status": null,
+        "value": "0 link(s)"
+       },
+       {
+        "is_hash": false,
+        "label": "Evidence coverage",
+        "status": "Verified",
+        "value": "100%"
+       },
+       {
+        "is_hash": false,
+        "label": "Why it ran or was withheld",
+        "status": null,
+        "value": "Reconstruction ran on a usable time axis."
+       },
+       {
+        "is_hash": false,
+        "label": "Incident-open latency",
+        "status": null,
+        "value": "0 ms"
+       }
+      ],
+      "status": "Needs review",
+      "title": "Reconstruction trust",
+      "verdict": "Incidents are candidates until someone validates them."
+     },
+     {
+      "id": "ground_truth",
+      "items": [
+       {
+        "is_hash": false,
+        "label": "Ground truth available",
+        "status": "Not measured",
+        "value": "No"
+       },
+       {
+        "is_hash": false,
+        "label": "Accuracy",
+        "status": "Not measured",
+        "value": "Not measured"
+       }
+      ],
+      "status": "Not measured",
+      "title": "Ground-truth validation",
+      "verdict": "Organiser ground truth was not provided, so accuracy has not been measured."
+     }
+    ],
+    "duration_s": "fixture",
+    "exact_duplicates": 0,
+    "explanation": "The source and processing check out. The conclusions are candidates, because no ground truth was provided.",
+    "headline": "3 incidents reconstructed, all unconfirmed.",
+    "incident_count": 3,
+    "incident_open_latency_label": "0 ms",
+    "incident_open_latency_ms": "fixture",
+    "is_sample": false,
+    "mb_per_second": "fixture",
+    "peak_memory_mb": "fixture",
+    "quarantined_fraction": 0.0004,
+    "reconstruction": "ran",
+    "reconstruction_reason": "Reconstruction ran on a usable time axis.",
+    "run_id": "frun-370ac3a914901431",
+    "source_bytes": 51343,
+    "state": "Unconfirmed",
+    "valid_fraction": 0.9996
+   },
+   "status": 200
+  },
   "GET /api/v1/ps2/runs/frun-370ac3a914901431/incidents": {
    "body": {
     "items": [
@@ -4973,6 +5877,15 @@
    },
    "status": 200
   },
+  "GET /api/v1/ps2/runs/frun-370ac3a914901431/quality-case": {
+   "body": {
+    "code": "not_found",
+    "detail": null,
+    "message": "this run has no quality case: reconstruction was not withheld",
+    "request_id": "fixture"
+   },
+   "status": 404
+  },
   "GET /api/v1/ps2/runs/frun-370ac3a914901431/quarantine": {
    "body": {
     "items": [
@@ -4998,6 +5911,550 @@
      }
     ],
     "run_id": "frun-370ac3a914901431"
+   },
+   "status": 200
+  },
+  "GET /api/v1/ps2/runs/frun-370ac3a914901431/trust": {
+   "body": {
+    "artifact_hashes": "fixture",
+    "benchmark_seal": "fixture",
+    "benchmark_seal_valid": true,
+    "health": {
+     "canonical_records": 143,
+     "dataset_id": "fixture",
+     "dimensions": [
+      {
+       "id": "source",
+       "items": [
+        {
+         "is_hash": false,
+         "label": "Filename",
+         "status": null,
+         "value": "fixture.log"
+        },
+        {
+         "is_hash": false,
+         "label": "Source size",
+         "status": null,
+         "value": "51,343 bytes"
+        },
+        {
+         "is_hash": true,
+         "label": "Source hash",
+         "status": null,
+         "value": "5246c5d53f02b0c36b06df4cd7888bbd064213050995cf4304abcc462d3e7c73"
+        },
+        {
+         "is_hash": false,
+         "label": "Hash verification",
+         "status": "Verified",
+         "value": "Verified"
+        },
+        {
+         "is_hash": false,
+         "label": "Valid bytes",
+         "status": null,
+         "value": "51,323"
+        },
+        {
+         "is_hash": false,
+         "label": "Quarantined bytes",
+         "status": null,
+         "value": "20"
+        },
+        {
+         "is_hash": false,
+         "label": "Reject reasons",
+         "status": null,
+         "value": "not_log_prefix: 1"
+        },
+        {
+         "is_hash": false,
+         "label": "Timestamp quality",
+         "status": "Verified",
+         "value": "No collapsed timestamp"
+        },
+        {
+         "is_hash": false,
+         "label": "Time-zone conflict",
+         "status": "Needs review",
+         "value": "143 records. date and time equal eventtime when read as UTC, although tz declares another offset. eventtime is used as UTC; the original fields are preserved."
+        }
+       ],
+       "status": "Verified",
+       "title": "Source integrity",
+       "verdict": "This is the expected file: its whole-file hash matches."
+      },
+      {
+       "id": "processing",
+       "items": [
+        {
+         "is_hash": false,
+         "label": "Parser version",
+         "status": null,
+         "value": "halt.firex.parser/1.0.0"
+        },
+        {
+         "is_hash": false,
+         "label": "Engine version",
+         "status": null,
+         "value": "halt.firex.engine/1.0.0"
+        },
+        {
+         "is_hash": true,
+         "label": "Git commit",
+         "status": null,
+         "value": "b7102156ae8679a14ea7ad5f5c4e6496bc8be980"
+        },
+        {
+         "is_hash": false,
+         "label": "Bytes accounted for",
+         "status": "Verified",
+         "value": "Yes"
+        },
+        {
+         "is_hash": false,
+         "label": "Records parsed",
+         "status": null,
+         "value": "143"
+        },
+        {
+         "is_hash": false,
+         "label": "Exact duplicates removed",
+         "status": null,
+         "value": "0"
+        },
+        {
+         "is_hash": false,
+         "label": "Duration",
+         "status": null,
+         "value": "0 s"
+        },
+        {
+         "is_hash": false,
+         "label": "Throughput",
+         "status": null,
+         "value": "0 MB/s"
+        },
+        {
+         "is_hash": false,
+         "label": "Peak memory",
+         "status": null,
+         "value": "0 MB, upper bound: highest worker peak × workers + driver peak"
+        },
+        {
+         "is_hash": false,
+         "label": "Recovery",
+         "status": null,
+         "value": "No resume recorded"
+        }
+       ],
+       "status": "Verified",
+       "title": "Processing integrity",
+       "verdict": "Every byte is accounted for and the benchmark receipt's seal is valid."
+      },
+      {
+       "id": "reconstruction",
+       "items": [
+        {
+         "is_hash": false,
+         "label": "Incident count",
+         "status": null,
+         "value": "3"
+        },
+        {
+         "is_hash": false,
+         "label": "Observed relationships",
+         "status": null,
+         "value": "35"
+        },
+        {
+         "is_hash": false,
+         "label": "Inferred relationships",
+         "status": null,
+         "value": "5"
+        },
+        {
+         "is_hash": false,
+         "label": "Missing evidence",
+         "status": null,
+         "value": "0 link(s)"
+        },
+        {
+         "is_hash": false,
+         "label": "Evidence coverage",
+         "status": "Verified",
+         "value": "100%"
+        },
+        {
+         "is_hash": false,
+         "label": "Why it ran or was withheld",
+         "status": null,
+         "value": "Reconstruction ran on a usable time axis."
+        },
+        {
+         "is_hash": false,
+         "label": "Incident-open latency",
+         "status": null,
+         "value": "0 ms"
+        }
+       ],
+       "status": "Needs review",
+       "title": "Reconstruction trust",
+       "verdict": "Incidents are candidates until someone validates them."
+      },
+      {
+       "id": "ground_truth",
+       "items": [
+        {
+         "is_hash": false,
+         "label": "Ground truth available",
+         "status": "Not measured",
+         "value": "No"
+        },
+        {
+         "is_hash": false,
+         "label": "Accuracy",
+         "status": "Not measured",
+         "value": "Not measured"
+        }
+       ],
+       "status": "Not measured",
+       "title": "Ground-truth validation",
+       "verdict": "Organiser ground truth was not provided, so accuracy has not been measured."
+      }
+     ],
+     "duration_s": "fixture",
+     "exact_duplicates": 0,
+     "explanation": "The source and processing check out. The conclusions are candidates, because no ground truth was provided.",
+     "headline": "3 incidents reconstructed, all unconfirmed.",
+     "incident_count": 3,
+     "incident_open_latency_label": "0 ms",
+     "incident_open_latency_ms": "fixture",
+     "is_sample": false,
+     "mb_per_second": "fixture",
+     "peak_memory_mb": "fixture",
+     "quarantined_fraction": 0.0004,
+     "reconstruction": "ran",
+     "reconstruction_reason": "Reconstruction ran on a usable time axis.",
+     "run_id": "frun-370ac3a914901431",
+     "source_bytes": 51343,
+     "state": "Unconfirmed",
+     "valid_fraction": 0.9996
+    },
+    "proofs": [
+     {
+      "evidence_coverage": 1.0,
+      "graph_hash": "01abc3fdccd2dbff919e23c934ff9800e80869ee6fa9fec824fd0e12b829f644",
+      "incident_id": "finc-06dbcd7d8183",
+      "seal_valid": true,
+      "title": "Internal SMB or RDP fan-out from one host and 1 related",
+      "unsupported_claims": 0
+     },
+     {
+      "evidence_coverage": 1.0,
+      "graph_hash": "7246cf94f64e19f607e6171a0a59faccc8f316f6becf98e58d2e3be81215ac72",
+      "incident_id": "finc-ec918f810a84",
+      "seal_valid": true,
+      "title": "Account created, used, then removed",
+      "unsupported_claims": 0
+     },
+     {
+      "evidence_coverage": 1.0,
+      "graph_hash": "a96998c8faf70ebebbd5677566c5e785624a4e2945486a9661cb7becc33e1793",
+      "incident_id": "finc-0526ba4f57ac",
+      "seal_valid": true,
+      "title": "Concentrated multi-technique web attack on one target",
+      "unsupported_claims": 0
+     }
+    ],
+    "seal_algorithm": "sha256-canonical-json"
+   },
+   "status": 200
+  },
+  "POST /api/v1/ps2/cases": {
+   "body": {
+    "benchmark_receipt_id": "fixture",
+    "benchmark_seal": "fixture",
+    "builder_version": "halt.firex.case/1.0",
+    "case_id": "fcase-0000000000000000",
+    "chapters": [
+     {
+      "body": "10.1.0.44 opened 15 SMB or RDP connections to 15 internal hosts. 4 malware detections (4 name(s)) between 10.1.0.44 and 198.51.100.34, host bad.example.",
+      "camera": {
+       "node_ids": [
+        "entity:ip:10.1.0.44",
+        "step:fdet-69f27285ef14777e:0",
+        "entity:ip:198.51.100.34",
+        "step:fdet-2e9aa05295d60bd1:1",
+        "context:b11aa0fc22b0b18a",
+        "context:7647233f5f445376",
+        "reach:10.30.0.9",
+        "context:a8d292b389fe0680",
+        "context:6bd0044fecfcf306",
+        "context:a5b13f45c71189c9",
+        "context:9756d8122c00377b",
+        "context:76593449199b1248",
+        "context:6fb578469b7fda40",
+        "context:286643f5bc5ca93e",
+        "context:ebcbc8d8e5894f5d",
+        "context:ff801c973d4a9870",
+        "context:7180cf35db60c377",
+        "context:a37fabdb3d9d0d3c",
+        "context:2166f9cdcdbcd28b",
+        "context:f1c34c5e3a458ad5",
+        "context:7347eacba5043abc",
+        "context:0d7f73672b5d83c1"
+       ],
+       "shot": "establish"
+      },
+      "chapter_id": "situation",
+      "evidence_refs": [],
+      "headline": "Internal SMB or RDP fan-out from one host and 1 related",
+      "metrics": [
+       {
+        "label": "Records merged",
+        "value": "19"
+       },
+       {
+        "label": "Status",
+        "value": "Unconfirmed"
+       }
+      ],
+      "presenter_notes": "Say what the rule found, then that it is unconfirmed. Status: unconfirmed.",
+      "title": "Situation",
+      "visual": "world"
+     },
+     {
+      "body": "SMB to 15 internal hosts (Internal SMB or RDP fan-out from one host). Candidate root cause; not confirmed.",
+      "camera": {
+       "node_ids": [
+        "step:fdet-69f27285ef14777e:0"
+       ],
+       "shot": "approach"
+      },
+      "chapter_id": "entry",
+      "evidence_refs": [
+       "ev-bb823635a9601ec680373185",
+       "ev-aaa3231fe09530c448e237e4",
+       "ev-1801e9a6f8d9db3a55dc968f",
+       "ev-54c6fb3a83c36603f5a105ec",
+       "ev-3ff104bbd6022e023495abb5",
+       "ev-5dbf2ec74a841bfd9ec27735",
+       "ev-adb1177d506653c468ed0b03",
+       "ev-28bb0e3eeb4290fcb6d1662a",
+       "ev-87b25c3d7fa8eeffe902aa56",
+       "ev-98573ba487072aaa3ea1987a"
+      ],
+      "headline": "SMB to 15 internal hosts at 2027-01-15T08:00:00Z.",
+      "metrics": [
+       {
+        "label": "First seen (UTC)",
+        "value": "2027-01-15T08:00:00Z"
+       }
+      ],
+      "presenter_notes": "Point to the first step. This is the earliest evidence in this data, not proof of how access began.",
+      "title": "Entry point",
+      "visual": "world"
+     },
+     {
+      "body": "SMB to 15 internal hosts Then: Malware detections to 198.51.100.34: W0/x!tr, W1/x!tr, W2/x!tr, W3/x!tr.",
+      "camera": {
+       "node_ids": [
+        "step:fdet-69f27285ef14777e:0",
+        "step:fdet-2e9aa05295d60bd1:1"
+       ],
+       "shot": "follow"
+      },
+      "chapter_id": "progression",
+      "evidence_refs": [
+       "ev-bb823635a9601ec680373185",
+       "ev-aaa3231fe09530c448e237e4",
+       "ev-1801e9a6f8d9db3a55dc968f",
+       "ev-54c6fb3a83c36603f5a105ec",
+       "ev-3ff104bbd6022e023495abb5",
+       "ev-5dbf2ec74a841bfd9ec27735",
+       "ev-adb1177d506653c468ed0b03",
+       "ev-28bb0e3eeb4290fcb6d1662a",
+       "ev-87b25c3d7fa8eeffe902aa56",
+       "ev-98573ba487072aaa3ea1987a",
+       "ev-cc6555c6c13d9a75ee5655e0",
+       "ev-08eaca15da4c7f49df43ddcc"
+      ],
+      "headline": "2 steps on the selected path",
+      "metrics": [
+       {
+        "label": "Stages",
+        "value": "delivery, lateral movement"
+       }
+      ],
+      "presenter_notes": "Follow the route. Steps are ordered by evidence; links between them are inferred by rules.",
+      "title": "Attack progression",
+      "visual": "world"
+     },
+     {
+      "body": "2 statements checked, 0 without evidence.",
+      "camera": {
+       "node_ids": [
+        "step:fdet-69f27285ef14777e:0"
+       ],
+       "shot": "inspect"
+      },
+      "chapter_id": "evidence",
+      "evidence_refs": [
+       "ev-08eaca15da4c7f49df43ddcc",
+       "ev-1801e9a6f8d9db3a55dc968f",
+       "ev-3ff104bbd6022e023495abb5",
+       "ev-54c6fb3a83c36603f5a105ec",
+       "ev-aaa3231fe09530c448e237e4",
+       "ev-b4f14b8600219e7e590bbcd5",
+       "ev-b56338cb340e4c85d30abdd3",
+       "ev-bb823635a9601ec680373185",
+       "ev-cc6555c6c13d9a75ee5655e0"
+      ],
+      "headline": "Internal SMB or RDP fan-out from one host: 15 record(s), confidence 0.8.",
+      "metrics": [
+       {
+        "label": "Evidence coverage",
+        "value": "100%"
+       },
+       {
+        "label": "Unsupported claims",
+        "value": "0"
+       }
+      ],
+      "presenter_notes": "Open a source record from here if asked. Every statement cites one.",
+      "title": "Evidence",
+      "visual": "world"
+     },
+     {
+      "body": "The best alternative: Unrelated activity sharing an entity. Only “Internal SMB or RDP fan-out from one host” is one sequence. The others share an address or account by coincidence. Other gaps: These logs have no payload or endpoint data, so success of an action cannot be proven from them.",
+      "camera": {
+       "node_ids": [
+        "step:fdet-69f27285ef14777e:0",
+        "step:fdet-2e9aa05295d60bd1:1"
+       ],
+       "shot": "withdraw"
+      },
+      "chapter_id": "uncertainty",
+      "evidence_refs": [],
+      "headline": "Merged activity is cited by a sample of its evidence, not every record.",
+      "metrics": [
+       {
+        "label": "Margin over the best alternative",
+        "value": "0.286"
+       }
+      ],
+      "presenter_notes": "State this plainly. The scores rank explanations; they are not probabilities.",
+      "title": "Uncertainty",
+      "visual": "world"
+     },
+     {
+      "body": "Hypothetical: what could be reached next. This is not observed attacker activity. Based only on connections recorded in this log. No asset inventory or permissions data is available.",
+      "camera": {
+       "node_ids": [
+        "reach:10.30.0.9"
+       ],
+       "shot": "reveal"
+      },
+      "chapter_id": "reachable",
+      "evidence_refs": [
+       "ev-77cffd3cdda4fad97b6afc6a"
+      ],
+      "headline": "1 system(s) could be reached next",
+      "metrics": [
+       {
+        "label": "Hypothetical targets",
+        "value": "1"
+       }
+      ],
+      "presenter_notes": "This is hypothetical. It is a network path seen in the log, not attacker activity.",
+      "title": "Reachable next",
+      "visual": "world"
+     },
+     {
+      "body": "A seal shows that the receipt has not changed. It does not show that the conclusion is true.",
+      "camera": {
+       "node_ids": [
+        "step:fdet-69f27285ef14777e:0",
+        "step:fdet-2e9aa05295d60bd1:1"
+       ],
+       "shot": "withdraw"
+      },
+      "chapter_id": "verification",
+      "evidence_refs": [],
+      "headline": "The result is sealed and repeatable",
+      "metrics": [
+       {
+        "label": "Graph hash",
+        "value": "01abc3fdccd2dbff"
+       },
+       {
+        "label": "Seal",
+        "value": "sha256-canonical-json"
+       }
+      ],
+      "presenter_notes": "Offer to open the Trust Centre. Say the seal is tamper evidence, not a legal signature.",
+      "title": "Verification",
+      "visual": "world"
+     },
+     {
+      "body": "Unconfirmed until validated. No organiser ground truth was provided, so accuracy has not been measured.",
+      "camera": {
+       "node_ids": [
+        "entity:ip:10.1.0.44",
+        "step:fdet-69f27285ef14777e:0",
+        "entity:ip:198.51.100.34",
+        "step:fdet-2e9aa05295d60bd1:1",
+        "context:b11aa0fc22b0b18a",
+        "context:7647233f5f445376",
+        "reach:10.30.0.9",
+        "context:a8d292b389fe0680",
+        "context:6bd0044fecfcf306",
+        "context:a5b13f45c71189c9",
+        "context:9756d8122c00377b",
+        "context:76593449199b1248",
+        "context:6fb578469b7fda40",
+        "context:286643f5bc5ca93e",
+        "context:ebcbc8d8e5894f5d",
+        "context:ff801c973d4a9870",
+        "context:7180cf35db60c377",
+        "context:a37fabdb3d9d0d3c",
+        "context:2166f9cdcdbcd28b",
+        "context:f1c34c5e3a458ad5",
+        "context:7347eacba5043abc",
+        "context:0d7f73672b5d83c1"
+       ],
+       "shot": "present"
+      },
+      "chapter_id": "closing",
+      "evidence_refs": [],
+      "headline": "An evidence-backed candidate, ready for an analyst",
+      "metrics": [
+       {
+        "label": "Status",
+        "value": "Unconfirmed"
+       },
+       {
+        "label": "Accuracy",
+        "value": "Not measured"
+       }
+      ],
+      "presenter_notes": "Hand off to the live evidence.",
+      "title": "Closing result",
+      "visual": "world"
+     }
+    ],
+    "dataset_id": "fixture",
+    "incident_id": "finc-06dbcd7d8183",
+    "llm_notes": null,
+    "proof_receipt_ids": [
+     "fprf-43e6554c3b6a527f"
+    ],
+    "run_id": "frun-370ac3a914901431",
+    "status": "Unconfirmed",
+    "subject": "incident",
+    "title": "Internal SMB or RDP fan-out from one host and 1 related"
    },
    "status": 200
   },

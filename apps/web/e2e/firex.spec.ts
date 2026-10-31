@@ -1,5 +1,5 @@
 // FireX end to end against the real API, a real run process and a production build. The log is synthetic and written
-// to a temporary data root; nothing official is read. Screenshots go to artifacts/firex-workspace/.
+// to a temporary data root; nothing official is read.
 import { mkdirSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 import { tmpdir } from "node:os";
@@ -11,8 +11,6 @@ import { API } from "./support";
 
 const PS2 = `${API}/ps2`;
 const ROOT = process.env.HALT_FIREX_DATA_ROOT ?? join(tmpdir(), "halt-e2e-firex");
-const SHOTS = join(__dirname, "../../../artifacts/firex-workspace");
-mkdirSync(SHOTS, { recursive: true });
 
 const DAY = 1_800_000_000;
 function stamp(ts: number): string {
@@ -57,30 +55,27 @@ async function axe(page: Page): Promise<string[]> {
   return results.violations.map((v) => `${v.id}: ${v.nodes.map((n) => n.target.join(" ")).join(", ")}`);
 }
 
-test("dataset, run and Open Incident use real data, never the authored demo", async ({ page, request }) => {
+test("dataset, run and incident use real data, never the authored demo", async ({ page, request }) => {
   const { runId, top } = await finishedRun(request);
   await page.goto("/firex");
   await expect(page.getByRole("article", { name: "E2E Fixture" })).toBeVisible();
   await expect(page.getByRole("article", { name: "FireX 10G" })).toBeVisible();
   await expect(page.getByRole("link", { name: /OPEN INCIDENT/ })).toHaveCount(0);
   expect(await axe(page)).toEqual([]);
-  await page.screenshot({ path: join(SHOTS, "datasets.png"), fullPage: true });
 
   await page.goto(`/firex/runs/${runId}`);
-  await expect(page.getByRole("heading", { name: "Completed" })).toBeVisible();
-  await expect(page.getByRole("list", { name: "Analysis stages" }).locator("li")).toHaveCount(4);
+  await expect(page.getByRole("heading", { level: 1 })).toBeVisible();
+  await expect(page.locator("body")).not.toContainText("No threats found");
   expect(await axe(page)).toEqual([]);
-  await page.screenshot({ path: join(SHOTS, "run.png"), fullPage: true });
 
-  await page.getByRole("link", { name: `Open incident ${top}` }).click();
+  await page.locator(`a[href="/firex/incidents/${top}?run=${runId}"]`).first().click();
   await expect(page).toHaveURL(new RegExp(`/firex/incidents/${top}\\?run=${runId}`));
   await expect(page.getByRole("heading", { name: "What happened?" })).toBeVisible();
   await expect(page.locator("body")).not.toContainText("INC-2417");
   expect(await axe(page)).toEqual([]);
-  await page.screenshot({ path: join(SHOTS, "incident-summary.png"), fullPage: true });
 });
 
-test("3D graph renders in WebGL, selects, replays and falls back to shared 2D", async ({ page, request }) => {
+test("Attack World renders in WebGL, selects, replays and falls back to the shared 2D view", async ({ page, request }) => {
   const { runId } = await finishedRun(request);
   const list = await (await request.get(`${PS2}/runs/${runId}/incidents`)).json();
   // The incident with the most steps exercises the most of the view.
@@ -88,17 +83,18 @@ test("3D graph renders in WebGL, selects, replays and falls back to shared 2D", 
   const errors: string[] = [];
   page.on("pageerror", (e) => errors.push(e.message));
   await page.goto(`/firex/incidents/${target}?run=${runId}`);
-  await page.getByRole("tab", { name: "3D Attack Path" }).click();
+  await page.getByRole("tab", { name: "Attack World" }).click();
   const frame = page.getByTestId("firex-3d");
   await expect(frame.locator("canvas")).toBeVisible();
   const painted = await frame.locator("canvas").evaluate((c: HTMLCanvasElement) => c.width > 0 && c.height > 0);
   expect(painted).toBe(true);
-  await page.waitForTimeout(500);
-  await page.screenshot({ path: join(SHOTS, "incident-3d.png"), fullPage: true });
 
-  await page.getByRole("list", { name: "Attack path steps" }).getByRole("button").first().click();
-  await expect(page.getByTestId("firex-drawer").getByRole("heading")).not.toBeEmpty();
-  const chosen = await page.getByTestId("firex-drawer").getByRole("heading").textContent();
+  // Selection is shared between the list, the scene and the Evidence Lens, and focus returns on close.
+  const firstStep = page.getByRole("list", { name: "Attack path steps" }).getByRole("button").first();
+  await firstStep.click();
+  const lens = page.getByTestId("firex-drawer");
+  const chosen = await lens.getByRole("heading", { level: 3 }).textContent();
+  expect(chosen).toBeTruthy();
 
   const box = (await frame.boundingBox())!;
   await page.mouse.move(box.x + box.width / 2, box.y + box.height / 2);
@@ -106,29 +102,50 @@ test("3D graph renders in WebGL, selects, replays and falls back to shared 2D", 
   await page.mouse.move(box.x + box.width / 2 + 80, box.y + box.height / 2 + 20, { steps: 4 });
   await page.mouse.up();
   await page.mouse.wheel(0, 200);
-  await page.getByRole("button", { name: "RESET CAMERA" }).click();
-  await page.getByRole("button", { name: "FOCUS PATH" }).click();
+  await page.getByRole("button", { name: "Focus path" }).click();
+
+  const replay = page.getByRole("region", { name: "Replay" });
+  await replay.getByRole("button", { name: "Next", exact: true }).click();
+  await expect(replay.getByText(/^Step 1 of/)).toBeVisible();
+  await expect(page.getByRole("region", { name: "What this step means" })).toContainText("What proves it");
+  await replay.getByRole("button", { name: "Play", exact: true }).click();
+  await replay.getByRole("button", { name: "Pause", exact: true }).click();
+  await expect(replay.getByText(/^Step 1 of/)).toBeVisible();
+  await replay.getByRole("button", { name: "Play", exact: true }).click();
+  await expect(replay.getByText(/^Step 2 of/)).toBeVisible({ timeout: 6_000 });
+  await replay.getByRole("button", { name: "Show all" }).click();
+
+  // Keyboard: the scene is reachable and steps with the arrow keys.
+  await frame.focus();
+  await page.keyboard.press("ArrowRight");
+  await expect(replay.getByText(/^Step 1 of/)).toBeVisible();
+  await page.keyboard.press("Escape");
+
+  // Analyst mode adds the analyst controls and the flat layout, on the same selection.
+  await firstStep.click();
+  await page.getByRole("checkbox", { name: "Analyst mode" }).check();
   await page.getByLabel("Camera preset").selectOption("Entry Point");
   await page.getByRole("checkbox", { name: /Reachable/ }).uncheck();
   await page.getByRole("checkbox", { name: /Reachable/ }).check();
-
-  await page.getByRole("button", { name: /^NEXT$/ }).click();
-  await expect(page.getByText(/^Step 1 of/)).toBeVisible();
-  await page.getByRole("button", { name: "PLAY" }).click();
-  await page.getByRole("button", { name: "PAUSE" }).click(); // well within the first step's delay
-  await expect(page.getByRole("button", { name: "PLAY" })).toBeVisible();
-  await expect(page.getByText(/^Step 1 of/)).toBeVisible();
-  await page.getByRole("button", { name: "PLAY" }).click();
-  await expect(page.getByText(/^Step 2 of/)).toBeVisible({ timeout: 5_000 });
-  await page.getByRole("button", { name: "SHOW ALL" }).click();
-
-  await page.getByRole("list", { name: "Attack path steps" }).getByRole("button").first().click();
-  await page.getByRole("button", { name: "2D", exact: true }).click();
+  await page.getByRole("checkbox", { name: "Flat 2D layout" }).check();
   await expect(page.getByTestId("firex-2d")).toBeVisible();
-  await expect(page.getByTestId("firex-drawer").getByRole("heading")).toHaveText(chosen!);
-  await page.screenshot({ path: join(SHOTS, "incident-2d.png"), fullPage: true });
+  await expect(lens.getByRole("heading", { level: 3 })).toHaveText(chosen!);
   expect(errors).toEqual([]);
   expect(await axe(page)).toEqual([]);
+});
+
+test("WebGL unavailable falls back to the flat view with the same content", async ({ browser, request }) => {
+  const { runId, top } = await finishedRun(request);
+  const context = await browser.newContext({ viewport: { width: 1280, height: 800 } });
+  await context.addInitScript(() => {
+    HTMLCanvasElement.prototype.getContext = () => null;
+  });
+  const page = await context.newPage();
+  await page.goto(`http://localhost:3000/firex/incidents/${top}?run=${runId}`);
+  await page.getByRole("tab", { name: "Attack World" }).click();
+  await expect(page.getByText(/3D is not available in this browser/)).toBeVisible();
+  await expect(page.getByTestId("firex-2d")).toBeVisible();
+  await context.close();
 });
 
 test("reduced motion and phone get a usable view", async ({ page, request, browser }) => {
@@ -136,40 +153,52 @@ test("reduced motion and phone get a usable view", async ({ page, request, brows
   const reduced = await browser.newContext({ reducedMotion: "reduce", viewport: { width: 1280, height: 800 } });
   const motion = await reduced.newPage();
   await motion.goto(`http://localhost:3000/firex/incidents/${top}?run=${runId}`);
-  await motion.getByRole("tab", { name: "3D Attack Path" }).click();
+  await motion.getByRole("tab", { name: "Attack World" }).click();
   await expect(motion.getByTestId("firex-3d").locator("canvas")).toBeVisible();
   await reduced.close();
 
   await page.setViewportSize({ width: 390, height: 800 });
   await page.goto(`/firex/incidents/${top}?run=${runId}`);
-  await page.getByRole("tab", { name: "3D Attack Path" }).click();
+  await page.getByRole("tab", { name: "Attack World" }).click();
   await expect(page.getByText(/Guided view for small screens/)).toBeVisible();
   await expect(page.getByTestId("firex-3d")).toHaveCount(0);
   await expect(page.getByRole("list", { name: "Attack path steps" })).toBeVisible();
   const overflow = await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth);
   expect(overflow).toBeLessThanOrEqual(1);
-  await page.screenshot({ path: join(SHOTS, "incident-phone.png"), fullPage: true });
 });
 
-test("theatre and story present the same run and hand off to the incident", async ({ page, request }) => {
+test("a case is built from a run, plays in Theatre and hands off to the incident", async ({ page, request }) => {
   const { runId, top } = await finishedRun(request);
-  await page.goto(`/firex/runs/${runId}/theatre`);
-  await expect(page.getByRole("heading", { name: /pile of disconnected events/ })).toBeVisible();
+  const made = await (await request.post(`${PS2}/cases`, { data: { run_id: runId, subject: "incident", incident_id: top } })).json();
+  const again = await (await request.post(`${PS2}/cases`, { data: { run_id: runId, subject: "incident", incident_id: top } })).json();
+  expect(again.case_id).toBe(made.case_id); // deterministic
+  await page.goto(`/firex/runs/${runId}`);
+  await page.getByRole("button", { name: /Build|Create|Present/ }).first().click();
+  await expect(page).toHaveURL(/\/theatre\/fcase-/);
+  await expect(page.getByTestId("theatre")).toBeVisible();
+  await expect(page.getByText(/^1 of 8\. Situation/)).toBeVisible();
   await page.keyboard.press("ArrowRight");
-  await expect(page.getByText("2 of 10")).toBeVisible();
+  await expect(page.getByText(/^2 of 8\. Entry point/)).toBeVisible();
+  await page.keyboard.press("Space");
+  await expect(page.getByRole("button", { name: "Pause" })).toBeVisible();
+  await page.keyboard.press("Space");
   expect(await axe(page)).toEqual([]);
-  await page.screenshot({ path: join(SHOTS, "theatre.png"), fullPage: true });
-  await page.getByRole("link", { name: /OPEN INCIDENT/ }).click();
-  await expect(page).toHaveURL(new RegExp(`/firex/incidents/${top}`));
-  await page.goto("/firex/story");
-  await expect(page.getByRole("heading", { name: /Every result is sealed/ })).toBeVisible();
-  await page.screenshot({ path: join(SHOTS, "story.png"), fullPage: true });
+  await page.getByRole("link", { name: "Open live evidence" }).click();
+  await expect(page).toHaveURL(/\/firex\/incidents\/finc-/);
+});
+
+test("the Trust Centre leads with the verdict and keeps ground truth unmeasured", async ({ page, request }) => {
+  const { runId } = await finishedRun(request);
+  await page.goto(`/trust/${runId}`);
+  await expect(page.getByRole("heading", { level: 1 })).toBeVisible();
+  await expect(page.locator("body")).toContainText("Not measured");
+  expect(await axe(page)).toEqual([]);
 });
 
 test("API failure shows an explicit error, not substituted data", async ({ page }) => {
   await page.route("**/api/v1/ps2/incidents/**", (route) => route.abort());
   await page.goto("/firex/incidents/finc-000000000000");
   await expect(page.getByRole("alert").filter({ hasText: "could not be loaded" })).toBeVisible();
-  await expect(page.getByRole("button", { name: /TRY AGAIN/ })).toBeVisible();
+  await expect(page.getByRole("button", { name: /Try again/i })).toBeVisible();
   await expect(page.locator("body")).not.toContainText("INC-2417");
 });

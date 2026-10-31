@@ -3,7 +3,6 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 
-import { classify } from "@/lib/ps2/api";
 import {
   ACTIVE_STATUSES,
   RESUMABLE_STATUSES,
@@ -13,19 +12,22 @@ import {
   formatCount,
   percentOf,
   stageState,
-  type BenchmarkView,
+  type DatasetHealth,
   type DatasetRun,
   type IncidentList,
   type QuarantineSegment,
 } from "@/lib/firex/api";
+import { classify } from "@/lib/ps2/api";
 import { ps2Vars } from "@/styles/ps2-palette";
 
+import { CaseBuilder } from "./CaseBuilder";
 import s from "./firex.module.css";
+import { HealthVerdict, StatusBadge } from "./Verdict";
 
 const POLL_MS = 1500;
 const STATUS_TEXT: Record<DatasetRun["status"], string> = {
   queued: "Starting",
-  running: "Running",
+  running: "Reading the log",
   cancelling: "Stopping",
   cancelled: "Stopped",
   interrupted: "Interrupted",
@@ -37,6 +39,7 @@ const STATUS_TEXT: Record<DatasetRun["status"], string> = {
 export function RunView({ runId }: { runId: string }) {
   const [run, setRun] = useState<DatasetRun | null>(null);
   const [incidents, setIncidents] = useState<IncidentList | null>(null);
+  const [health, setHealth] = useState<DatasetHealth | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [expired, setExpired] = useState(false);
   const status = run?.status;
@@ -71,9 +74,12 @@ export function RunView({ runId }: { runId: string }) {
   useEffect(() => {
     if (status !== "completed") return;
     let live = true;
-    firex
-      .incidents(runId)
-      .then((list) => live && setIncidents(list))
+    Promise.all([firex.incidents(runId), firex.health(runId)])
+      .then(([list, verdict]) => {
+        if (!live) return;
+        setIncidents(list);
+        setHealth(verdict);
+      })
       .catch((e: unknown) => live && setError(classify(e).message));
     return () => {
       live = false;
@@ -112,38 +118,20 @@ export function RunView({ runId }: { runId: string }) {
     );
   }
 
-  const m = run.metrics;
+  const finished = run.status === "completed";
   return (
     <div className={s.root} style={ps2Vars} data-testid="firex-run">
-      <header className={s.head}>
-        <div>
-          <p className={s.meta}>
-            <Link href="/firex">Datasets</Link> / {run.dataset_id}
+      <header>
+        <p className={s.crumbs}>
+          <Link href="/firex">Log analysis</Link> / {run.dataset_id}
+        </p>
+        {finished && health ? null : <h1 className={s.title}>{STATUS_TEXT[run.status]}</h1>}
+        {finished && health ? <span className={s.meta}>Result for {run.dataset_id}</span> : null}
+        {!finished && run.detail !== STATUS_TEXT[run.status] ? (
+          <p className={s.lede} role="status">
+            {run.detail}
           </p>
-          <h1>{STATUS_TEXT[run.status]}</h1>
-          {run.detail !== STATUS_TEXT[run.status] ? (
-            <p className={s.lede} role="status">
-              {run.detail}
-            </p>
-          ) : null}
-        </div>
-        <div className={s.actions}>
-          {ACTIVE_STATUSES.includes(run.status) && run.status !== "cancelling" ? (
-            <button type="button" className="halt-btn" onClick={() => act("cancel")}>
-              <span>STOP</span>
-            </button>
-          ) : null}
-          {RESUMABLE_STATUSES.includes(run.status) ? (
-            <button type="button" className="halt-btn halt-btn-primary" onClick={() => act("resume")}>
-              <span>RESUME</span>
-            </button>
-          ) : null}
-          {run.status === "completed" && incidents?.items.length ? (
-            <Link className="halt-btn" href={`/firex/runs/${run.run_id}/theatre`}>
-              <span>THEATRE</span>
-            </Link>
-          ) : null}
-        </div>
+        ) : null}
       </header>
 
       {error ? (
@@ -160,6 +148,20 @@ export function RunView({ runId }: { runId: string }) {
         <p className={s.notice}>This run stopped unexpectedly and was recovered from its stored progress. Finished work is kept.</p>
       ) : null}
 
+      {finished && health ? <HealthVerdict health={health} titleLevel={1} /> : null}
+      {!finished ? <Progress run={run} onAct={act} /> : null}
+      {finished && health?.reconstruction === "withheld" ? <QualityFinding runId={run.run_id} health={health} /> : null}
+      {finished && incidents && health?.reconstruction !== "withheld" ? <Incidents list={incidents} /> : null}
+      {finished ? <CaseBuilder runId={run.run_id} /> : null}
+      {finished ? <RunDetails run={run} list={incidents} /> : null}
+    </div>
+  );
+}
+
+function Progress({ run, onAct }: { run: DatasetRun; onAct: (action: "cancel" | "resume") => void }) {
+  const m = run.metrics;
+  return (
+    <>
       <ol className={s.stages} aria-label="Analysis stages">
         {STAGES.map((stage) => (
           <li key={stage.id} className={s.stage} data-state={stageState(run, stage.id)}>
@@ -168,35 +170,42 @@ export function RunView({ runId }: { runId: string }) {
           </li>
         ))}
       </ol>
-
       <section className={s.card} aria-label="Progress">
-        <div
-          className={s.bar}
-          role="progressbar"
-          aria-valuenow={percentOf(run)}
-          aria-valuemin={0}
-          aria-valuemax={100}
-          aria-label="Bytes read"
-        >
+        <div className={s.bar} role="progressbar" aria-valuenow={percentOf(run)} aria-valuemin={0} aria-valuemax={100} aria-label="Bytes read">
           <div className={s.barFill} style={{ width: `${percentOf(run)}%` }} />
         </div>
-        <dl className={s.facts}>
-          <Fact label="Read" value={`${percentOf(run)}% · ${formatBytes(m.bytes_processed)} of ${formatBytes(m.bytes_total)}`} />
-          <Fact label="Records" value={formatCount(m.records_processed)} />
-          <Fact label="Throughput" value={`${formatCount(Math.round(m.records_per_second))} records/s · ${m.mb_per_second} MB/s`} />
-          <Fact label="Peak memory" value={m.peak_memory_mb === null ? "Measured at the end" : `${formatCount(m.peak_memory_mb)} MB (upper bound)`} />
-          <Fact label="Rejected" value={`${formatCount(m.rejected_records)} in ${formatCount(m.quarantine_segments)} segment(s)`} />
-          <Fact label="Exact duplicates" value={formatCount(m.exact_duplicates)} />
-          <Fact label="Suspicious candidates" value={formatCount(m.detections)} />
-          <Fact label="Incidents" value={formatCount(m.incidents)} />
-          <Fact label="Elapsed" value={`${m.duration_s} s`} />
-          <Fact label="Recovery" value={run.resume_count ? `Resumed ${run.resume_count} time(s)` : "Not needed"} />
-        </dl>
+        <Metrics run={run} />
+        <div className={s.actions}>
+          {ACTIVE_STATUSES.includes(run.status) && run.status !== "cancelling" ? (
+            <button type="button" className={s.btn} onClick={() => onAct("cancel")}>
+              Stop
+            </button>
+          ) : null}
+          {RESUMABLE_STATUSES.includes(run.status) ? (
+            <button type="button" className={s.btnPrimary} onClick={() => onAct("resume")}>
+              Resume
+            </button>
+          ) : null}
+        </div>
+        <p className={s.meta}>Read {formatBytes(m.bytes_processed)} of {formatBytes(m.bytes_total)}. Figures come from the run&apos;s own progress.</p>
       </section>
+    </>
+  );
+}
 
-      {run.status === "completed" && incidents ? <Incidents list={incidents} /> : null}
-      <AnalystDetails run={run} list={incidents} />
-    </div>
+function Metrics({ run }: { run: DatasetRun }) {
+  const m = run.metrics;
+  return (
+    <dl className={s.facts}>
+      <Fact label="Records" value={formatCount(m.records_processed)} />
+      <Fact label="Throughput" value={`${m.mb_per_second} MB/s`} />
+      <Fact label="Peak memory" value={m.peak_memory_mb === null ? "Measured at the end" : `${formatCount(m.peak_memory_mb)} MB (upper bound)`} />
+      <Fact label="Rejected" value={`${formatCount(m.rejected_records)} in ${formatCount(m.quarantine_segments)} segment(s)`} />
+      <Fact label="Exact duplicates" value={formatCount(m.exact_duplicates)} />
+      <Fact label="Candidates" value={formatCount(m.detections)} />
+      <Fact label="Elapsed" value={`${m.duration_s} s`} />
+      <Fact label="Recovery" value={run.resume_count ? `Resumed ${run.resume_count} time(s)` : "Not needed"} />
+    </dl>
   );
 }
 
@@ -209,158 +218,121 @@ function Fact({ label, value }: { label: string; value: string }) {
   );
 }
 
-function Incidents({ list }: { list: IncidentList }) {
-  if (!list.items.length) {
-    return (
-      <section className={s.card} aria-label="Incidents">
-        <h2>No incidents</h2>
-        <p>No rule found a supported attack pattern in the data read. Isolated alerts are not reported as incidents.</p>
-      </section>
-    );
-  }
+function QualityFinding({ runId, health }: { runId: string; health: DatasetHealth }) {
   return (
-    <section className={s.card} aria-labelledby="firex-incidents">
-      <h2 id="firex-incidents">Incidents ({list.items.length})</h2>
-      <p className={s.meta}>Candidates from rules. None is confirmed.</p>
-      <div className={s.tableWrap}>
-        <table className={s.table}>
-          <thead>
-            <tr>
-              <th>Incident</th>
-              <th>Time range (UTC)</th>
-              <th>Entry point</th>
-              <th>Identity or device</th>
-              <th>Target</th>
-              <th>Evidence</th>
-              <th>Confidence</th>
-              <th>Risk</th>
-              <th>Status</th>
-              <th />
-            </tr>
-          </thead>
-          <tbody>
-            {list.items.map((i) => (
-              <tr key={i.incident_id}>
-                <td>
-                  <strong>{i.title}</strong>
-                  <div className={`${s.mono} ${s.meta}`}>{i.incident_id}</div>
-                </td>
-                <td className={s.mono}>
-                  <div className={s.nowrap}>{i.first_utc}</div>
-                  <div className={s.nowrap}>{i.last_utc}</div>
-                  {i.timestamp_quality === "collapsed" ? <div className={s.meta}>Some times are collapsed</div> : null}
-                </td>
-                <td className={`${s.mono} ${s.nowrap}`}>{i.entry_point}</td>
-                <td>{i.affected_identity ?? i.affected_devices[0] ?? "—"}</td>
-                <td className={`${s.mono} ${s.nowrap}`}>{i.critical_target ?? "—"}</td>
-                <td>{formatCount(i.merged_events)}</td>
-                <td>{i.confidence}</td>
-                <td>{i.risk}</td>
-                <td>
-                  <span className={`${s.chip} ${s.chipUnconfirmed}`}>{i.status}</span>
-                </td>
-                <td>
-                  <Link
-                    className={`halt-btn halt-btn-primary ${s.nowrap}`}
-                    href={`/firex/incidents/${i.incident_id}?run=${list.run_id}`}
-                    aria-label={`Open incident ${i.incident_id}`}
-                  >
-                    <span>OPEN INCIDENT</span>
-                  </Link>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+    <section className={s.card} aria-labelledby="quality-finding">
+      <h2 id="quality-finding">Quality finding</h2>
+      <p className={s.statement2}>HALT refused to invent a story from this source.</p>
+      <p>{health.reconstruction_reason}</p>
+      <div className={s.actions}>
+        <Link className={s.btnPrimary} href={`/firex/runs/${runId}/quality`}>
+          Open the Quality Case
+        </Link>
       </div>
     </section>
   );
 }
 
-function AnalystDetails({ run, list }: { run: DatasetRun; list: IncidentList | null }) {
+function Incidents({ list }: { list: IncidentList }) {
+  if (!list.items.length) {
+    return (
+      <section className={s.card} aria-label="Incidents">
+        <h2>No incidents</h2>
+        <p>No rule found a supported pattern in the data read. Isolated alerts are not reported as incidents, and this is not proof that the data is clean.</p>
+      </section>
+    );
+  }
+  return (
+    <section className={s.section} aria-labelledby="firex-incidents">
+      <h2 id="firex-incidents" className={s.sectionTitle}>
+        Incidents
+      </h2>
+      <ul className={s.incidentList}>
+        {list.items.map((i) => (
+          <li key={i.incident_id} className={s.incidentRow}>
+            <div>
+              <h3>{i.title}</h3>
+              <ul className={s.incidentFacts}>
+                <li>
+                  Begins at <span className={s.mono}>{i.entry_point}</span>
+                </li>
+                {i.affected_identity ? <li>Identity {i.affected_identity}</li> : null}
+                {i.critical_target ? (
+                  <li>
+                    Target <span className={s.mono}>{i.critical_target}</span>
+                  </li>
+                ) : null}
+                <li>{formatCount(i.merged_events)} records</li>
+                <li>Risk {i.risk}</li>
+              </ul>
+            </div>
+            <div className={s.actions}>
+              <StatusBadge status="Unconfirmed" />
+              <Link className={s.btnPrimary} href={`/firex/incidents/${i.incident_id}?run=${list.run_id}`} aria-label={`Open incident ${i.incident_id}`}>
+                Open incident
+              </Link>
+            </div>
+          </li>
+        ))}
+      </ul>
+    </section>
+  );
+}
+
+function RunDetails({ run, list }: { run: DatasetRun; list: IncidentList | null }) {
   const [open, setOpen] = useState(false);
   const [segments, setSegments] = useState<QuarantineSegment[] | null>(null);
-  const [benchmark, setBenchmark] = useState<BenchmarkView | null>(null);
   const q = list?.quality;
 
   useEffect(() => {
-    if (!open || run.status !== "completed") return;
+    if (!open) return;
     let live = true;
-    firex.quarantine(run.run_id).then((r) => live && setSegments(r.items)).catch(() => undefined);
-    firex.benchmark(run.run_id).then((r) => live && setBenchmark(r)).catch(() => undefined);
+    firex
+      .quarantine(run.run_id)
+      .then((r) => live && setSegments(r.items))
+      .catch(() => undefined);
     return () => {
       live = false;
     };
-  }, [open, run.run_id, run.status]);
+  }, [open, run.run_id]);
 
   return (
     <details className={s.card} onToggle={(e) => setOpen(e.currentTarget.open)}>
-      <summary>Analyst details</summary>
+      <summary>Processing details</summary>
+      <Metrics run={run} />
       <dl className={s.facts}>
         <Fact label="Run" value={run.run_id} />
-        <Fact label="Internal stage" value={run.stage} />
         <Fact label="Chunks" value={`${run.chunks_done} of ${run.chunks_total}`} />
-        <Fact label="Byte range" value={run.byte_range ? `${run.byte_range[0]} to ${run.byte_range[1]}` : "—"} />
         <Fact label="Output" value={formatBytes(run.metrics.output_bytes)} />
-        <Fact label="Compression" value={run.metrics.compression_ratio ? `${run.metrics.compression_ratio}×` : "—"} />
+        {q ? <Fact label="Earliest to latest (UTC)" value={`${q.earliest_utc ?? "—"} to ${q.latest_utc ?? "—"}`} /> : null}
+        {q ? <Fact label="Records with a collapsed time" value={formatCount(q.records_in_collapsed_timestamps)} /> : null}
       </dl>
-      {q ? (
-        <>
-          <h3>Data quality</h3>
-          <dl className={s.facts}>
-            <Fact label="Every byte accounted for" value={q.bytes_accounted ? "Yes" : "No"} />
-            <Fact label="Valid bytes" value={formatBytes(q.bytes_valid)} />
-            <Fact label="Quarantined bytes" value={formatBytes(q.bytes_quarantined)} />
-            <Fact label="Earliest to latest (UTC)" value={`${q.earliest_utc ?? "—"} to ${q.latest_utc ?? "—"}`} />
-            <Fact label="Records with a collapsed time" value={formatCount(q.records_in_collapsed_timestamps)} />
-          </dl>
-          {q.timezone_conflict ? (
-            <p className={s.notice}>
-              Time zone conflict on {formatCount(q.timezone_conflict.affected_records)} records. {q.timezone_conflict.interpretation}
-            </p>
-          ) : null}
-        </>
-      ) : null}
       {segments?.length ? (
-        <>
-          <h3>Quarantine segments</h3>
-          <div className={s.tableWrap}>
-            <table className={s.table}>
-              <thead>
-                <tr>
-                  <th>Reason</th>
-                  <th>Bytes</th>
-                  <th>Lines</th>
-                  <th>Rejected</th>
+        <div className={s.tableWrap}>
+          <table className={s.table}>
+            <caption className={s.meta} style={{ textAlign: "left" }}>
+              Quarantine segments
+            </caption>
+            <thead>
+              <tr>
+                <th>Reason</th>
+                <th>Bytes</th>
+                <th>Rejected lines</th>
+              </tr>
+            </thead>
+            <tbody>
+              {segments.map((g) => (
+                <tr key={g.segment_id}>
+                  <td>{g.reason}</td>
+                  <td className={s.mono}>
+                    {g.start_offset} to {g.end_offset}
+                  </td>
+                  <td>{formatCount(g.rejected_records)}</td>
                 </tr>
-              </thead>
-              <tbody>
-                {segments.map((g) => (
-                  <tr key={g.segment_id}>
-                    <td>{g.reason}</td>
-                    <td className={s.mono}>
-                      {g.start_offset} to {g.end_offset}
-                    </td>
-                    <td className={s.mono}>
-                      {g.start_line} to {g.end_line}
-                    </td>
-                    <td>{formatCount(g.rejected_records)}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        </>
-      ) : null}
-      {benchmark ? (
-        <>
-          <h3>Benchmark receipt</h3>
-          <p className={s.meta}>
-            Seal {benchmark.verification.valid ? "valid" : "INVALID"}: a SHA-256 seal over this receipt, not a legal digital signature.{" "}
-            {benchmark.receipt.source_sha256_verified ? "Whole-file hash verified." : "Sample only: the whole-file hash was not re-verified."}
-          </p>
-          <pre className={s.pre}>{JSON.stringify(benchmark.receipt, null, 1)}</pre>
-        </>
+              ))}
+            </tbody>
+          </table>
+        </div>
       ) : null}
     </details>
   );

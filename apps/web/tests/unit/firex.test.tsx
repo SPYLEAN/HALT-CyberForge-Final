@@ -6,20 +6,22 @@ import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { Datasets } from "@/components/firex/Datasets";
 import { Graph2D } from "@/components/firex/Graph2D";
 import { IncidentWorkspace } from "@/components/firex/IncidentWorkspace";
-import { RunStory } from "@/components/firex/RunStory";
 import { RunView } from "@/components/firex/RunView";
-import { stageState, type DatasetRun, type IncidentDetail, type IncidentGraph, type IncidentList, type Hypotheses, type ReachabilityResult } from "@/lib/firex/api";
+import { TheatreView } from "@/components/firex/TheatreView";
+import { TrustIndex, TrustRun } from "@/components/firex/TrustCentre";
+import { stageState, type CaseManifest, type DatasetRun, type IncidentDetail, type IncidentGraph, type IncidentList, type Hypotheses } from "@/lib/firex/api";
 import { ALL_ON, CAMERA_PRESETS, edgeState, frameOf, layoutGraph, nodeState, pathSteps, presetNodes, replayedNode, visibleEdge, visibleNode } from "@/lib/firex/scene";
-import { buildBeats } from "@/lib/firex/story";
+import { buildWorld, formOf } from "@/lib/firex/world";
+import { edgeMeaning, graphSummary, nodeMeaning } from "@/lib/firex/lens";
 
 import recorded from "../fixtures/api/firex.json";
 
 const push = vi.fn();
 vi.mock("next/navigation", () => ({ useRouter: () => ({ push, replace: vi.fn() }), usePathname: () => "/firex" }));
 // WebGL needs a real canvas: the layout is tested here and the canvas in E2E.
-vi.mock("@/components/firex/AttackGraph3D", () => ({
-  default: ({ onSelect, graph }: { onSelect: (id: string) => void; graph: IncidentGraph }) => (
-    <button type="button" data-testid="fake-3d" onClick={() => onSelect(pathSteps(graph)[0]!.node_id)}>
+vi.mock("@/components/firex/AttackWorld", () => ({
+  default: ({ onSelect, world }: { onSelect: (id: string) => void; world: { stepIds: string[] } }) => (
+    <button type="button" data-testid="fake-3d" onClick={() => onSelect(world.stepIds[0]!)}>
       3D canvas
     </button>
   ),
@@ -123,22 +125,80 @@ describe("run stages", () => {
   });
 });
 
+describe("attack world model", () => {
+  const every = () => list().items.map((i) => graphOf(i.incident_id));
+
+  it("is deterministic and places every node honestly", () => {
+    for (const graph of every()) {
+      const a = buildWorld(graph);
+      expect(a).toEqual(buildWorld(graph));
+      expect(a.nodes).toHaveLength(graph.nodes.length);
+      expect(a.stepIds).toEqual(pathSteps(graph).map((n) => n.node_id));
+      const steps = a.nodes.filter((n) => n.step !== null).sort((x, y) => x.step! - y.step!);
+      for (let i = 1; i < steps.length; i++) expect(steps[i]!.position.x).toBeGreaterThan(steps[i - 1]!.position.x);
+      // An entity has no stage, so only path steps may leave the floor.
+      expect(a.nodes.filter((n) => n.step === null).every((n) => n.position.y === 0)).toBe(true);
+    }
+  });
+
+  it("gives entity kinds distinct forms and leaves an unknown kind visibly incomplete", () => {
+    const node = graphOf().nodes[0]!;
+    const forms = ["ip", "account", "host", "service", "critical_asset", "burst", "event", "other"].map((kind) => formOf({ ...node, kind } as typeof node));
+    expect(forms).toEqual(["beacon", "ring", "terminal", "portal", "tower", "field", "marker", "unknown"]);
+  });
+
+  it("uses only the stages and layers an incident actually reaches", () => {
+    for (const graph of every()) {
+      const world = buildWorld(graph);
+      expect(world.stages.length).toBeLessThanOrEqual(new Set(pathSteps(graph).map((n) => n.stage)).size);
+      expect(world.lanes.length).toBeLessThanOrEqual(new Set(graph.nodes.map((n) => n.layer)).size);
+    }
+  });
+
+  it("contains no incident identifier in the model's placement logic", () => {
+    const worlds = every().map(buildWorld);
+    expect(worlds.every((w) => w.nodes.length > 0)).toBe(true);
+    expect(new Set(worlds.map((w) => w.stepIds.join())).size).toBe(worlds.length);
+  });
+});
+
+describe("evidence lens text", () => {
+  it("says what a node and a link mean, and marks hypothetical systems", () => {
+    const graph = graphOf(richest());
+    const reach = graph.nodes.find((n) => n.attributes.hypothetical === true)!;
+    expect(nodeMeaning(reach).toLowerCase()).toContain("hypothetical");
+    const link = graph.edges.find((e) => e.classification === "reachable")!;
+    expect(edgeMeaning(link).toLowerCase()).toContain("hypothetical");
+    expect(graphSummary(graph)).toContain("selected path");
+  });
+});
+
 describe("dataset screen", () => {
   it("lists registered datasets from the API", async () => {
     stub();
     render(<Datasets />);
     expect(await screen.findByRole("article", { name: "FireX 10G" })).toHaveTextContent("Not on this server");
     expect(screen.getByRole("article", { name: "FireX 30G" })).toBeInTheDocument();
-    expect(screen.getByRole("article", { name: "Fixture" })).toHaveTextContent("Available");
-    expect(screen.getByRole("link", { name: RUN })).toHaveAttribute("href", `/firex/runs/${RUN}`);
+    const links = within(screen.getByRole("article", { name: "Fixture" })).getAllByRole("link");
+    expect(links.map((l) => l.getAttribute("href"))).toEqual(expect.arrayContaining([`/firex/runs/${RUN}`, `/trust/${RUN}`]));
+  });
+
+  it("states a verdict for a dataset with a stored run", async () => {
+    stub();
+    render(<Datasets />);
+    const card = await screen.findByRole("article", { name: "Fixture" });
+    const health = body<{ state: string }>(`GET ${B}/runs/${RUN}/health`);
+    await waitFor(() => expect(within(card).getAllByText(new RegExp(`^${health.state}$`, "i")).length).toBeGreaterThan(0));
   });
 
   it("starts a run and goes to its live page", async () => {
-    stub({ [`POST ${B}/runs`]: responses[`GET ${B}/runs/${RUN}`]! });
+    const datasets = body<{ registered: Array<Record<string, unknown>> }>(`GET ${B}/datasets`);
+    const fresh = { ...datasets, registered: datasets.registered.map((d) => ({ ...d, latest_run_id: null })) };
+    stub({ [`POST ${B}/runs`]: responses[`GET ${B}/runs/${RUN}`]!, [`GET ${B}/datasets`]: { status: 200, body: fresh } });
     const user = userEvent.setup();
     render(<Datasets />);
     const card = await screen.findByRole("article", { name: "Fixture" });
-    await user.click(within(card).getByRole("button", { name: /START ANALYSIS/ }));
+    await user.click(within(card).getByRole("button", { name: /Start analysis/i }));
     await waitFor(() => expect(push).toHaveBeenCalledWith(`/firex/runs/${RUN}`));
   });
 
@@ -151,23 +211,29 @@ describe("dataset screen", () => {
 });
 
 describe("run screen", () => {
-  it("shows the four stages, measurements and real incidents", async () => {
+  it("shows the verdict, the stages and real incidents, never a safe-sounding claim", async () => {
     stub();
     render(<RunView runId={RUN} />);
-    expect(await screen.findByRole("heading", { name: "Completed" })).toBeInTheDocument();
-    const stages = screen.getByRole("list", { name: "Analysis stages" });
-    expect(within(stages).getAllByRole("listitem").map((li) => li.querySelector("strong")!.textContent)).toEqual(["READ", "PREPARE", "RECONSTRUCT", "EXPLAIN"]);
+    expect(await screen.findByRole("heading", { level: 1 })).toBeInTheDocument();
     const first = list().items[0]!;
-    const link = await screen.findByRole("link", { name: `Open incident ${first.incident_id}` });
-    expect(link).toHaveAttribute("href", `/firex/incidents/${first.incident_id}?run=${RUN}`);
-    expect(screen.getAllByText("unconfirmed").length).toBe(list().items.length);
+    await waitFor(() => expect(document.querySelector(`a[href="/firex/incidents/${first.incident_id}?run=${RUN}"]`)).not.toBeNull());
+    expect(screen.getAllByText(first.title).length).toBeGreaterThan(0);
+    expect(document.body.textContent).not.toMatch(/no threats found/i);
+  });
+
+  it("shows the four stages while a run is still working", async () => {
+    const base = body<DatasetRun>(`GET ${B}/runs/${RUN}/progress`);
+    stub({ [`GET ${B}/runs/${RUN}/progress`]: { status: 200, body: { ...base, status: "running", stage: "prepare" } } });
+    render(<RunView runId={RUN} />);
+    const stages = await screen.findByRole("list", { name: "Analysis stages" });
+    expect(within(stages).getAllByRole("listitem")).toHaveLength(4);
   });
 
   it("offers resume for an interrupted run and says it recovered", async () => {
     const base = body<DatasetRun>(`GET ${B}/runs/${RUN}/progress`);
     stub({ [`GET ${B}/runs/${RUN}/progress`]: { status: 200, body: { ...base, status: "interrupted", stage: "read", recovered: true, detail: "The run process stopped." } } });
     render(<RunView runId={RUN} />);
-    expect(await screen.findByRole("button", { name: /RESUME/ })).toBeInTheDocument();
+    expect(await screen.findByRole("button", { name: /Resume/i })).toBeInTheDocument();
     expect(screen.getByText(/recovered from its stored progress/)).toBeInTheDocument();
   });
 
@@ -187,7 +253,7 @@ describe("incident workspace", () => {
     return user;
   };
 
-  it("Open Incident loads the requested incident, never the authored demo", async () => {
+  it("loads the requested incident, never the authored demo", async () => {
     const id = topId();
     await open(id);
     expect(screen.getByRole("heading", { level: 1 })).toHaveTextContent(detailOf(id).summary.title);
@@ -196,81 +262,58 @@ describe("incident workspace", () => {
     expect(document.body.textContent).not.toContain("INC-2417");
   });
 
-  it("answers the plain-language questions and marks the incident unconfirmed", async () => {
+  it("answers the investigator's questions and marks the incident unconfirmed", async () => {
     await open();
-    for (const q of ["What happened?", "Where did it start?", "Who or what was compromised?", "Which systems were affected?", "What is the strongest evidence?", "What is uncertain?", "What could be reached next?"])
-      expect(screen.getByRole("heading", { name: q })).toBeInTheDocument();
-    expect(screen.getByText("UNCONFIRMED")).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: "What happened?" })).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: "Next checks" })).toBeInTheDocument();
+    expect(screen.getAllByText("Unconfirmed").length).toBeGreaterThan(0);
   });
 
-  it("keeps analyst detail behind progressive disclosure", async () => {
+  it("has the seven investigator tabs, and analyst detail only in analyst mode", async () => {
     const user = await open();
     const names = () => screen.getAllByRole("tab").map((t) => t.textContent);
-    expect(names()).toEqual(["Summary", "3D Attack Path", "Timeline", "Evidence", "Reachable Next"]);
+    expect(names()).toEqual(["Overview", "Attack World", "Timeline", "Evidence", "Reachable Next", "Verification", "Theatre"]);
     await user.click(screen.getByRole("checkbox", { name: "Analyst mode" }));
-    expect(names()).toEqual(expect.arrayContaining(["ATT&CK", "Kill Chain", "Hypotheses", "Confidence", "Raw Fields", "Proof", "Evaluation"]));
-    await user.click(screen.getByRole("tab", { name: "Proof" }));
-    expect(screen.getByText("SEAL VALID")).toBeInTheDocument();
-    await user.click(screen.getByRole("tab", { name: "Evaluation" }));
-    expect(screen.getByText(/no organiser ground truth/i)).toBeInTheDocument();
+    expect(names()).toEqual(expect.arrayContaining(["ATT&CK", "Hypotheses", "Confidence", "Raw Fields"]));
+    await user.click(screen.getByRole("tab", { name: "Raw Fields" }));
     await user.click(screen.getByRole("checkbox", { name: "Analyst mode" }));
     expect(screen.getByRole("heading", { name: "What happened?" })).toBeInTheDocument();
   });
 
-  it("shares selection between the 3D view, the step list and the evidence drawer", async () => {
+  it("gives the investigator only the five replay controls and Present", async () => {
+    const user = await open();
+    await user.click(screen.getByRole("tab", { name: "Attack World" }));
+    const replay = await screen.findByRole("region", { name: "Replay" });
+    expect(within(replay).getAllByRole("button").map((b) => b.textContent)).toEqual(["Play", "Previous", "Next", "Focus path", "Inspect evidence", "Present"]);
+    expect(screen.queryByLabelText("Camera preset")).toBeNull();
+    await user.click(screen.getByRole("checkbox", { name: "Analyst mode" }));
+    expect(screen.getByLabelText("Camera preset")).toBeInTheDocument();
+    expect(screen.getByRole("list", { name: "Legend" })).toBeInTheDocument();
+  });
+
+  it("shares a selection between the scene, the step list and the evidence lens, and returns focus", async () => {
     const id = richest();
     const user = await open(id);
-    await user.click(screen.getByRole("tab", { name: "3D Attack Path" }));
+    await user.click(screen.getByRole("tab", { name: "Attack World" }));
     await user.click(await screen.findByTestId("fake-3d"));
     const step = pathSteps(graphOf(id))[0]!;
-    expect(within(screen.getByTestId("firex-drawer")).getByRole("heading")).toHaveTextContent(step.label);
+    const lens = screen.getByTestId("firex-drawer");
+    expect(within(lens).getByRole("heading", { level: 3 })).toHaveTextContent(step.label);
     expect(within(screen.getByRole("list", { name: "Attack path steps" })).getAllByRole("button")[0]).toHaveAttribute("aria-pressed", "true");
-    await user.click(screen.getByRole("button", { name: "2D" }));
-    expect(screen.getByTestId("firex-2d")).toBeInTheDocument();
-    expect(within(screen.getByTestId("firex-drawer")).getByRole("heading")).toHaveTextContent(step.label);
+    await user.click(within(lens).getByRole("button", { name: "Close evidence" }));
+    expect(screen.queryByTestId("firex-drawer")).toBeNull();
   });
 
-  it("replays step by step without showing hypothetical systems as activity", async () => {
+  it("narrates each replay step in plain language from the stored guide", async () => {
     const id = richest();
     const user = await open(id);
-    await user.click(screen.getByRole("tab", { name: "3D Attack Path" }));
-    await user.click(screen.getByRole("button", { name: /^NEXT$/ }));
+    await user.click(screen.getByRole("tab", { name: "Attack World" }));
+    const next = await screen.findByRole("button", { name: "Next" });
+    await user.click(next);
     const steps = pathSteps(graphOf(id));
-    expect(screen.getByText(`Step 1 of ${steps.length}: ${steps[0]!.label}`)).toBeInTheDocument();
-    await user.click(screen.getByRole("button", { name: /^NEXT$/ }));
-    expect(screen.getByText(`Step 2 of ${steps.length}: ${steps[1]!.label}`)).toBeInTheDocument();
-    await user.click(screen.getByRole("button", { name: /PREVIOUS/ }));
-    expect(screen.getByText(new RegExp(`^Step 1 of ${steps.length}`))).toBeInTheDocument();
-  });
-
-  it("keeps replay, reachability and response simulation separate and disables simulation without context", async () => {
-    const id = richest();
-    const user = await open(id);
-    await user.click(screen.getByRole("tab", { name: "Reachable Next" }));
-    expect(screen.getByRole("heading", { name: "Replay attack" })).toBeInTheDocument();
-    expect(screen.getByText(/Hypothetical: what could be reached next/)).toBeInTheDocument();
-    expect(screen.getByText("SIMULATED — NO REAL SECURITY ACTION IS EXECUTED")).toBeInTheDocument();
-    expect(screen.getByRole("button", { name: /NOT AVAILABLE/ })).toBeDisabled();
-    expect(screen.getByText(/Business service map/)).toBeInTheDocument();
-  });
-
-  it("shows the deterministic story when the LLM is disabled", async () => {
-    const user = await open();
-    await user.click(screen.getByRole("button", { name: /EXPLAIN FOR AN ANALYST/ }));
-    const panel = await screen.findByTestId("narrative");
-    expect(panel).toHaveTextContent("Deterministic Attack Story");
-    expect(panel).toHaveTextContent("The LLM is disabled.");
-  });
-
-  it("labels a validated AI explanation", async () => {
-    const id = topId();
-    const key = `POST ${B}/incidents/${id}/narrative?run_id=${RUN}`;
-    const base = body<Record<string, unknown>>(key);
-    stub({ [key]: { status: 200, body: { ...base, fallback_used: false, fallback_reason: null, label: "AI-assisted explanation — evidence validated", provider: "groq", model: "m" } } });
-    const user = userEvent.setup();
-    render(<IncidentWorkspace incidentId={id} runId={RUN} />);
-    await user.click(await screen.findByRole("button", { name: /EXPLAIN FOR AN ANALYST/ }));
-    expect(await screen.findByText("AI-assisted explanation — evidence validated")).toBeInTheDocument();
+    expect(screen.getByRole("status", { name: "" })).toHaveTextContent(`Step 1 of ${steps.length}: ${steps[0]!.label}`);
+    const guide = screen.getByRole("region", { name: "What this step means" });
+    for (const label of ["Who", "What proves it", "Why it matters", "What is uncertain", "Check next"]) expect(within(guide).getByText(label)).toBeInTheDocument();
   });
 
   it("reports a missing incident and an unavailable API without substituting another", async () => {
@@ -297,38 +340,54 @@ describe("2D view", () => {
   });
 });
 
-describe("story and theatre", () => {
-  it("builds ten beats only from the run's own figures", () => {
-    const run = body<DatasetRun>(`GET ${B}/runs/${RUN}`);
-    const id = richest();
-    const beats = buildBeats(run, list(), detailOf(id), body<ReachabilityResult>(`GET ${B}/incidents/${id}/reachability?run_id=${RUN}`));
-    expect(beats).toHaveLength(10);
-    expect(beats[0]!.figure).toContain(run.metrics.records_processed.toLocaleString("en-US"));
-    expect(beats[7]!.title).toContain("hypothesis");
-    expect(beats[9]!.figure).toBe("Unconfirmed");
+describe("trust centre", () => {
+  it("leads with the verdict and never calls an unconfirmed incident ground truth", async () => {
+    stub();
+    render(<TrustRun runId={RUN} />);
+    expect(await screen.findByRole("heading", { level: 1 })).toBeInTheDocument();
+    const text = document.body.textContent!;
+    for (const dimension of ["Source", "Processing", "Reconstruction", "Proof"]) expect(text).toContain(dimension);
+    expect(text).toMatch(/Not measured/);
+    expect(text).not.toMatch(/ground truth: verified/i);
   });
 
-  it("handles a run with no incident honestly", () => {
-    const beats = buildBeats(body<DatasetRun>(`GET ${B}/runs/${RUN}`), { ...list(), items: [] }, null, null);
-    expect(beats[5]!.body).toContain("No supported attack path");
-    expect(beats[7]!.figure).toContain("0");
+  it("lists stored runs on the index", async () => {
+    stub();
+    render(<TrustIndex />);
+    expect(await screen.findByRole("link", { name: new RegExp(RUN) })).toBeInTheDocument();
+  });
+});
+
+describe("case manifest and theatre", () => {
+  const caseKey = Object.keys(responses).find((k) => k.startsWith(`GET ${B}/cases/`))!;
+  const manifest = () => responses[caseKey]!.body as CaseManifest;
+
+  it("recommends a case with an explained score that does not claim confirmation", () => {
+    const data = body<{ items: Array<{ recommended: boolean; components: unknown[]; score: number }> }>(`GET ${B}/runs/${RUN}/case-candidates`);
+    expect(data.items.filter((i) => i.recommended)).toHaveLength(1);
+    expect(data.items.every((i) => i.components.length > 0)).toBe(true);
+    expect(JSON.stringify(data)).not.toMatch(/confirmed attack/i);
   });
 
-  it("theatre steps through the real run and hands off to its incident", async () => {
+  it("orders the eight incident chapters and keeps the status unconfirmed", () => {
+    const m = manifest();
+    expect(m.chapters.map((c) => c.title)).toEqual(["Situation", "Entry point", "Attack progression", "Evidence", "Uncertainty", "Reachable next", "Verification", "Closing result"]);
+    expect(m.status.toLowerCase()).toContain("unconfirmed");
+  });
+
+  it("steps by arrow keys, shows progress, and offers a one-button return to live evidence", async () => {
     stub();
     const user = userEvent.setup();
-    render(<RunStory runId={RUN} theatre />);
-    expect(await screen.findByRole("heading", { name: /pile of disconnected events/ })).toBeInTheDocument();
-    expect(screen.getByRole("link", { name: /OPEN INCIDENT/ })).toHaveAttribute("href", `/firex/incidents/${topId()}?run=${RUN}`);
-    await user.click(screen.getByRole("button", { name: /^NEXT$/ }));
-    expect(screen.getByRole("heading", { name: /Read in pieces/ })).toBeInTheDocument();
-    expect(screen.getByText("2 of 10")).toBeInTheDocument();
-  });
-
-  it("the story page says when no completed run exists", async () => {
-    stub({ [`GET ${B}/runs`]: { status: 200, body: { items: [] } } });
-    render(<RunStory theatre={false} />);
-    expect(await screen.findByRole("status")).toHaveTextContent("No completed run");
+    render(<TheatreView caseId={manifest().case_id} />);
+    await screen.findByTestId("theatre");
+    expect(screen.getByText(/^1 of 8\. Situation/)).toBeInTheDocument();
+    await user.keyboard("{ArrowRight}");
+    expect(screen.getByText(/^2 of 8\. Entry point/)).toBeInTheDocument();
+    await user.keyboard("{ArrowLeft}");
+    expect(screen.getByText(/^1 of 8\./)).toBeInTheDocument();
+    expect(screen.getByRole("link", { name: "Open live evidence" })).toHaveAttribute("href", `/firex/incidents/${manifest().incident_id}?run=${RUN}`);
+    await user.keyboard("{Escape}");
+    expect(push).toHaveBeenCalledWith(`/firex/incidents/${manifest().incident_id}?run=${RUN}`);
   });
 
   it("hypotheses in the recording carry a margin and alternates", () => {

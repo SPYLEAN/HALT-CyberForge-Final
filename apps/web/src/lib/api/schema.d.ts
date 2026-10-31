@@ -477,6 +477,40 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/v1/ps2/cases": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Post Case */
+        post: operations["post_case_api_v1_ps2_cases_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/ps2/cases/{case_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get Case */
+        get: operations["get_case_api_v1_ps2_cases__case_id__get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/v1/ps2/datasets": {
         parameters: {
             query?: never;
@@ -516,6 +550,23 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/v1/ps2/facts": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get Facts */
+        get: operations["get_facts_api_v1_ps2_facts_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/v1/ps2/incidents/{incident_id}": {
         parameters: {
             query?: never;
@@ -542,6 +593,23 @@ export interface paths {
         };
         /** Get Incident Graph */
         get: operations["get_incident_graph_api_v1_ps2_incidents__incident_id__graph_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/ps2/incidents/{incident_id}/guide": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get Incident Guide */
+        get: operations["get_incident_guide_api_v1_ps2_incidents__incident_id__guide_get"];
         put?: never;
         post?: never;
         delete?: never;
@@ -942,6 +1010,40 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/v1/ps2/runs/{run_id}/case-candidates": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get Case Candidates */
+        get: operations["get_case_candidates_api_v1_ps2_runs__run_id__case_candidates_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/ps2/runs/{run_id}/health": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get Health */
+        get: operations["get_health_api_v1_ps2_runs__run_id__health_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/v1/ps2/runs/{run_id}/incidents": {
         parameters: {
             query?: never;
@@ -968,6 +1070,23 @@ export interface paths {
         };
         /** Get Progress */
         get: operations["get_progress_api_v1_ps2_runs__run_id__progress_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/ps2/runs/{run_id}/quality-case": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get Quality Case */
+        get: operations["get_quality_case_api_v1_ps2_runs__run_id__quality_case_get"];
         put?: never;
         post?: never;
         delete?: never;
@@ -1004,6 +1123,23 @@ export interface paths {
         put?: never;
         /** Resume Run */
         post: operations["resume_run_api_v1_ps2_runs__run_id__resume_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/ps2/runs/{run_id}/trust": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get Trust */
+        get: operations["get_trust_api_v1_ps2_runs__run_id__trust_get"];
+        put?: never;
+        post?: never;
         delete?: never;
         options?: never;
         head?: never;
@@ -1602,6 +1738,123 @@ export interface components {
             /** Total */
             total: number;
         };
+        /** CaseCamera */
+        CaseCamera: {
+            /** Node Ids */
+            node_ids: string[];
+            /**
+             * Shot
+             * @enum {string}
+             */
+            shot: "establish" | "approach" | "follow" | "inspect" | "reveal" | "withdraw" | "present";
+        };
+        /** CaseCandidate */
+        CaseCandidate: {
+            /** Components */
+            components: components["schemas"]["ScoreComponent"][];
+            /** Incident Id */
+            incident_id: string;
+            /** Path Steps */
+            path_steps: number;
+            /** Recommended */
+            recommended: boolean;
+            /** Risk */
+            risk: number;
+            /** Score */
+            score: number;
+            /** Status */
+            status: string;
+            /** Title */
+            title: string;
+        };
+        /** CaseCandidates */
+        CaseCandidates: {
+            /** Items */
+            items: components["schemas"]["CaseCandidate"][];
+            /** Note */
+            note: string;
+            /** Quality Case Available */
+            quality_case_available: boolean;
+            /** Run Id */
+            run_id: string;
+        };
+        /** CaseChapter */
+        CaseChapter: {
+            /** Body */
+            body: string;
+            camera: components["schemas"]["CaseCamera"];
+            /** Chapter Id */
+            chapter_id: string;
+            /** Evidence Refs */
+            evidence_refs: string[];
+            /** Headline */
+            headline: string;
+            /** Metrics */
+            metrics: components["schemas"]["CaseMetric"][];
+            /** Presenter Notes */
+            presenter_notes: string;
+            /** Title */
+            title: string;
+            /**
+             * Visual
+             * @enum {string}
+             */
+            visual: "world" | "bytes" | "time" | "withheld";
+        };
+        /**
+         * CaseManifest
+         * @description Deterministic and free of wall-clock time. Building one never changes the run or incident behind it.
+         */
+        CaseManifest: {
+            /** Benchmark Receipt Id */
+            benchmark_receipt_id: string;
+            /** Benchmark Seal */
+            benchmark_seal: string;
+            /** Builder Version */
+            builder_version: string;
+            /** Case Id */
+            case_id: string;
+            /** Chapters */
+            chapters: components["schemas"]["CaseChapter"][];
+            /** Dataset Id */
+            dataset_id: string;
+            /** Incident Id */
+            incident_id: string | null;
+            /** Llm Notes */
+            llm_notes: string | null;
+            /** Proof Receipt Ids */
+            proof_receipt_ids: string[];
+            /** Run Id */
+            run_id: string;
+            /** Status */
+            status: string;
+            /**
+             * Subject
+             * @enum {string}
+             */
+            subject: "incident" | "quality";
+            /** Title */
+            title: string;
+        };
+        /** CaseMetric */
+        CaseMetric: {
+            /** Label */
+            label: string;
+            /** Value */
+            value: string;
+        };
+        /** CaseRequest */
+        CaseRequest: {
+            /** Incident Id */
+            incident_id?: string | null;
+            /** Run Id */
+            run_id: string;
+            /**
+             * Subject
+             * @enum {string}
+             */
+            subject: "incident" | "quality";
+        };
         /** ClockMessage */
         ClockMessage: {
             /** Playing */
@@ -1758,6 +2011,58 @@ export interface components {
             size_bytes: number | null;
             /** Title */
             title: string;
+        };
+        /**
+         * DatasetHealth
+         * @description A verdict derived from stored files. Verified source or processing never means an incident is true.
+         */
+        DatasetHealth: {
+            /** Canonical Records */
+            canonical_records: number | null;
+            /** Dataset Id */
+            dataset_id: string;
+            /** Dimensions */
+            dimensions: components["schemas"]["TrustDimension"][];
+            /** Duration S */
+            duration_s: number | null;
+            /** Exact Duplicates */
+            exact_duplicates: number | null;
+            /** Explanation */
+            explanation: string;
+            /** Headline */
+            headline: string;
+            /** Incident Count */
+            incident_count: number;
+            /** Incident Open Latency Label */
+            incident_open_latency_label: string;
+            /** Incident Open Latency Ms */
+            incident_open_latency_ms: number | null;
+            /** Is Sample */
+            is_sample: boolean;
+            /** Mb Per Second */
+            mb_per_second: number | null;
+            /** Peak Memory Mb */
+            peak_memory_mb: number | null;
+            /** Quarantined Fraction */
+            quarantined_fraction: number | null;
+            /**
+             * Reconstruction
+             * @enum {string}
+             */
+            reconstruction: "ran" | "withheld" | "not_run";
+            /** Reconstruction Reason */
+            reconstruction_reason: string;
+            /** Run Id */
+            run_id: string;
+            /** Source Bytes */
+            source_bytes: number | null;
+            /**
+             * State
+             * @enum {string}
+             */
+            state: "Verified" | "Degraded" | "Unconfirmed" | "Failed";
+            /** Valid Fraction */
+            valid_fraction: number | null;
         };
         /** DatasetInfo */
         DatasetInfo: {
@@ -2272,6 +2577,13 @@ export interface components {
             subject_id: string;
             /** Text */
             text: string;
+        };
+        /** FactsResponse */
+        FactsResponse: {
+            /** Items */
+            items: components["schemas"]["RecordedFact"][];
+            /** Note */
+            note: string;
         };
         /** FileReport */
         FileReport: {
@@ -2837,6 +3149,17 @@ export interface components {
             /** Truncated */
             truncated: boolean;
         };
+        /** IncidentGuide */
+        IncidentGuide: {
+            /** Incident Id */
+            incident_id: string;
+            /** Next Checks */
+            next_checks: components["schemas"]["NextCheck"][];
+            /** Note */
+            note: string;
+            /** Steps */
+            steps: components["schemas"]["StepGuide"][];
+        };
         /** IncidentList */
         IncidentList: {
             /** Items */
@@ -2859,6 +3182,21 @@ export interface components {
             soft_cut_evasion_p: number;
             /** Target Id */
             target_id: string;
+        };
+        /** IncidentProofStatus */
+        IncidentProofStatus: {
+            /** Evidence Coverage */
+            evidence_coverage: number;
+            /** Graph Hash */
+            graph_hash: string;
+            /** Incident Id */
+            incident_id: string;
+            /** Seal Valid */
+            seal_valid: boolean;
+            /** Title */
+            title: string;
+            /** Unsupported Claims */
+            unsupported_claims: number;
         };
         /** IncidentReadiness */
         IncidentReadiness: {
@@ -3142,6 +3480,23 @@ export interface components {
             evidence_ids: string[];
             /** Text */
             text: string;
+        };
+        /**
+         * NextCheck
+         * @description Something an analyst could check. It is never remediation, and nothing here has been done.
+         */
+        NextCheck: {
+            /** Action */
+            action: string;
+            /** Evidence Refs */
+            evidence_refs: string[];
+            /**
+             * Kind
+             * @enum {string}
+             */
+            kind: "inspect_records" | "validate_identity" | "validate_asset" | "collect_telemetry" | "review_reachable" | "compare_hypothesis";
+            /** Reason */
+            reason: string;
         };
         /** Objective */
         Objective: {
@@ -3597,6 +3952,73 @@ export interface components {
             receipt: components["schemas"]["ProofReceipt"];
             verification: components["schemas"]["SealVerification"];
         };
+        /**
+         * QualityCase
+         * @description Why a source cannot support reconstruction. It deliberately has no graph.
+         */
+        QualityCase: {
+            /** Benchmark Seal Valid */
+            benchmark_seal_valid: boolean;
+            /** Bytes Accounted */
+            bytes_accounted: boolean;
+            /** Bytes Blank */
+            bytes_blank: number;
+            /** Bytes Quarantined */
+            bytes_quarantined: number;
+            /** Bytes Valid */
+            bytes_valid: number;
+            /** Canonical Records */
+            canonical_records: number;
+            /** Collapsed Records */
+            collapsed_records: number;
+            /** Collapsed Utc */
+            collapsed_utc: string;
+            /** Dataset Id */
+            dataset_id: string;
+            /** Declared Tz */
+            declared_tz: string[];
+            /** Exact Duplicates */
+            exact_duplicates: number;
+            /** Filename */
+            filename: string;
+            /** Incident Open Latency Label */
+            incident_open_latency_label: string;
+            /** Quarantined Fraction */
+            quarantined_fraction: number;
+            /** Reason */
+            reason: string;
+            /** Run Id */
+            run_id: string;
+            /** Segments */
+            segments: components["schemas"]["QualitySegment"][];
+            /** Source Bytes */
+            source_bytes: number;
+            /** Source Hash Verified */
+            source_hash_verified: boolean;
+            /** Source Sha256 */
+            source_sha256: string;
+            /** Timezone Interpretation */
+            timezone_interpretation: string | null;
+            /** Valid Fraction */
+            valid_fraction: number;
+            /** Withheld Statement */
+            withheld_statement: string;
+            /** Zero Statement */
+            zero_statement: string;
+        };
+        /** QualitySegment */
+        QualitySegment: {
+            /** Bytes */
+            bytes: number;
+            /** End Offset */
+            end_offset: number;
+            /** Reason */
+            reason: string;
+            /** Segment Id */
+            segment_id: string;
+            /** Start Offset */
+            start_offset: number;
+        };
         /** QuarantineReport */
         QuarantineReport: {
             /** Items */
@@ -3807,6 +4229,33 @@ export interface components {
             field: string | null;
             /** Message */
             message: string;
+        };
+        /** RecordedFact */
+        RecordedFact: {
+            /** Dataset Id */
+            dataset_id: string;
+            /** Duration S */
+            duration_s: number;
+            /** Exact Duplicates */
+            exact_duplicates: number;
+            /** Incidents */
+            incidents: number;
+            /** Peak Memory Mb */
+            peak_memory_mb: number | null;
+            /**
+             * Reconstruction
+             * @enum {string}
+             */
+            reconstruction: "ran" | "withheld" | "not_run";
+            /** Run Id */
+            run_id: string;
+            /** Source Bytes */
+            source_bytes: number;
+            /**
+             * State
+             * @enum {string}
+             */
+            state: "Verified" | "Degraded" | "Unconfirmed" | "Failed";
         };
         /** Rejection */
         Rejection: {
@@ -4196,6 +4645,28 @@ export interface components {
              */
             type: "stale";
         };
+        /**
+         * StepGuide
+         * @description Plain language for one path step, from stored evidence.
+         */
+        StepGuide: {
+            /** Check Next */
+            check_next: string;
+            /** Evidence */
+            evidence: string;
+            /** Evidence Refs */
+            evidence_refs: string[];
+            /** Node Id */
+            node_id: string;
+            /** Uncertain */
+            uncertain: string;
+            /** What Happened */
+            what_happened: string;
+            /** Who */
+            who: string;
+            /** Why It Matters */
+            why_it_matters: string;
+        };
         /** StoryStatement */
         StoryStatement: {
             /** Confidence */
@@ -4330,6 +4801,55 @@ export interface components {
             ];
             /** P */
             p: number;
+        };
+        /** TrustDimension */
+        TrustDimension: {
+            /**
+             * Id
+             * @enum {string}
+             */
+            id: "source" | "processing" | "reconstruction" | "ground_truth";
+            /** Items */
+            items: components["schemas"]["TrustItem"][];
+            /**
+             * Status
+             * @enum {string}
+             */
+            status: "Verified" | "Needs review" | "Not measured" | "Not applicable" | "Failed";
+            /** Title */
+            title: string;
+            /** Verdict */
+            verdict: string;
+        };
+        /** TrustItem */
+        TrustItem: {
+            /**
+             * Is Hash
+             * @default false
+             */
+            is_hash: boolean;
+            /** Label */
+            label: string;
+            /** Status */
+            status: ("Verified" | "Needs review" | "Not measured" | "Not applicable" | "Failed") | null;
+            /** Value */
+            value: string;
+        };
+        /** TrustReport */
+        TrustReport: {
+            /** Artifact Hashes */
+            artifact_hashes: {
+                [key: string]: string;
+            };
+            /** Benchmark Seal */
+            benchmark_seal: string | null;
+            /** Benchmark Seal Valid */
+            benchmark_seal_valid: boolean | null;
+            health: components["schemas"]["DatasetHealth"];
+            /** Proofs */
+            proofs: components["schemas"]["IncidentProofStatus"][];
+            /** Seal Algorithm */
+            seal_algorithm: string | null;
         };
         /** Uncertainty */
         Uncertainty: {
@@ -5279,6 +5799,70 @@ export interface operations {
             };
         };
     };
+    post_case_api_v1_ps2_cases_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["CaseRequest"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CaseManifest"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    get_case_api_v1_ps2_cases__case_id__get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                case_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CaseManifest"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
     datasets_api_v1_ps2_datasets_get: {
         parameters: {
             query?: never;
@@ -5315,6 +5899,26 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["DemoReset"];
+                };
+            };
+        };
+    };
+    get_facts_api_v1_ps2_facts_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["FactsResponse"];
                 };
             };
         };
@@ -5372,6 +5976,39 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["IncidentGraph"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    get_incident_guide_api_v1_ps2_incidents__incident_id__guide_get: {
+        parameters: {
+            query?: {
+                run_id?: string | null;
+            };
+            header?: never;
+            path: {
+                incident_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["IncidentGuide"];
                 };
             };
             /** @description Validation Error */
@@ -6130,6 +6767,68 @@ export interface operations {
             };
         };
     };
+    get_case_candidates_api_v1_ps2_runs__run_id__case_candidates_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                run_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CaseCandidates"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    get_health_api_v1_ps2_runs__run_id__health_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                run_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["DatasetHealth"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
     list_incidents_api_v1_ps2_runs__run_id__incidents_get: {
         parameters: {
             query?: never;
@@ -6192,6 +6891,37 @@ export interface operations {
             };
         };
     };
+    get_quality_case_api_v1_ps2_runs__run_id__quality_case_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                run_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["QualityCase"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
     get_quarantine_api_v1_ps2_runs__run_id__quarantine_get: {
         parameters: {
             query?: never;
@@ -6241,6 +6971,37 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["DatasetRun"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    get_trust_api_v1_ps2_runs__run_id__trust_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                run_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["TrustReport"];
                 };
             };
             /** @description Validation Error */

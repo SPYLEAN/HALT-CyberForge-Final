@@ -24,6 +24,16 @@ export type Detection = S["Detection"];
 export type NarrativeResult = S["NarrativeResult"];
 export type DatasetQualitySummary = S["DatasetQualitySummary"];
 export type QuarantineSegment = S["QuarantineSegment"];
+export type DatasetHealth = S["DatasetHealth"];
+export type TrustReport = S["TrustReport"];
+export type QualityCase = S["QualityCase"];
+export type CaseCandidates = S["CaseCandidates"];
+export type CaseManifest = S["CaseManifest"];
+export type CaseChapter = S["CaseChapter"];
+export type FactsResponse = S["FactsResponse"];
+export type IncidentGuide = S["IncidentGuide"];
+export type StepGuide = S["StepGuide"];
+export type RecordedFact = S["RecordedFact"];
 
 export const ACTIVE_STATUSES: ReadonlyArray<DatasetRun["status"]> = ["queued", "running", "cancelling"];
 export const RESUMABLE_STATUSES: ReadonlyArray<DatasetRun["status"]> = ["cancelled", "interrupted", "failed"];
@@ -44,7 +54,16 @@ export const firex = {
   incidents: async (run_id: string) => unwrap(await api.GET("/api/v1/ps2/runs/{run_id}/incidents", runPath(run_id))),
   quarantine: async (run_id: string) => unwrap(await api.GET("/api/v1/ps2/runs/{run_id}/quarantine", runPath(run_id))),
   benchmark: async (run_id: string) => unwrap(await api.GET("/api/v1/ps2/runs/{run_id}/benchmark", runPath(run_id))),
+  health: async (run_id: string) => unwrap(await api.GET("/api/v1/ps2/runs/{run_id}/health", runPath(run_id))),
+  trust: async (run_id: string) => unwrap(await api.GET("/api/v1/ps2/runs/{run_id}/trust", runPath(run_id))),
+  qualityCase: async (run_id: string) => unwrap(await api.GET("/api/v1/ps2/runs/{run_id}/quality-case", runPath(run_id))),
+  candidates: async (run_id: string) => unwrap(await api.GET("/api/v1/ps2/runs/{run_id}/case-candidates", runPath(run_id))),
+  createCase: async (run_id: string, incident_id: string | null) =>
+    unwrap(await api.POST("/api/v1/ps2/cases", { body: { run_id, subject: incident_id ? "incident" : "quality", incident_id } })),
+  getCase: async (case_id: string) => unwrap(await api.GET("/api/v1/ps2/cases/{case_id}", { params: { path: { case_id } } })),
+  facts: async () => unwrap(await api.GET("/api/v1/ps2/facts")),
   incident: async (id: string, run?: string) => unwrap(await api.GET("/api/v1/ps2/incidents/{incident_id}", incidentPath(id, run))),
+  guide: async (id: string, run?: string) => unwrap(await api.GET("/api/v1/ps2/incidents/{incident_id}/guide", incidentPath(id, run))),
   graph: async (id: string, run?: string) => unwrap(await api.GET("/api/v1/ps2/incidents/{incident_id}/graph", incidentPath(id, run))),
   story: async (id: string, run?: string) => unwrap(await api.GET("/api/v1/ps2/incidents/{incident_id}/story", incidentPath(id, run))),
   hypotheses: async (id: string, run?: string) => unwrap(await api.GET("/api/v1/ps2/incidents/{incident_id}/hypotheses", incidentPath(id, run))),
@@ -73,10 +92,10 @@ export function percentOf(run: DatasetRun): number {
 
 /** The four user-facing stages, each with what it covers. Detail stays under Analyst Details. */
 export const STAGES: ReadonlyArray<{ id: DatasetRun["stage"]; label: string; description: string }> = [
-  { id: "read", label: "READ", description: "File selected and ingestion started" },
-  { id: "prepare", label: "PREPARE", description: "Parsed, normalised, deduplicated and grouped" },
-  { id: "reconstruct", label: "RECONSTRUCT", description: "Suspicious activity detected and connected" },
-  { id: "explain", label: "EXPLAIN", description: "Graph, story, hypotheses and receipts created" },
+  { id: "read", label: "Read", description: "File selected and ingestion started" },
+  { id: "prepare", label: "Prepare", description: "Parsed, normalised, deduplicated and grouped" },
+  { id: "reconstruct", label: "Reconstruct", description: "Suspicious activity detected and connected" },
+  { id: "explain", label: "Explain", description: "Graph, story, hypotheses and receipts created" },
 ];
 
 export function stageState(run: DatasetRun, stage: DatasetRun["stage"]): "done" | "active" | "waiting" | "stopped" {

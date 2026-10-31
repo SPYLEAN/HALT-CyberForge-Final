@@ -206,6 +206,14 @@
 .v2-platform-bar nav a:hover { color: var(--v2-text); background: var(--v2-elevated); }
 .v2-platform-bar nav a[aria-current="page"] { color: var(--v2-text); background: var(--v2-command); }
 .v2-platform-bar nav a:focus-visible { outline: none; box-shadow: var(--v2-focus); }
+.v2-platform-menu { display: none; position: relative; }
+.v2-platform-menu summary { display: inline-flex; align-items: center; gap: var(--space-2); min-height: 44px; padding: 0 var(--space-3); cursor: pointer; list-style: none; color: var(--v2-text); font-size: 14px; border: var(--border-hairline) solid var(--v2-border); border-radius: var(--v2-radius-m); }
+.v2-platform-menu summary::-webkit-details-marker { display: none; }
+.v2-platform-menu summary:focus-visible { outline: none; box-shadow: var(--v2-focus); }
+.v2-platform-menu nav { position: absolute; top: calc(100% + var(--space-2)); left: 0; z-index: var(--z-topbar); width: min(280px, calc(100vw - 2 * var(--space-4))); display: flex; flex-direction: column; gap: 2px; padding: var(--space-2); background: var(--v2-command); border: var(--border-hairline) solid var(--v2-border-strong); border-radius: var(--v2-radius-l); }
+.v2-platform-menu nav a { display: flex; align-items: center; gap: var(--space-3); min-height: 44px; padding: 0 var(--space-3); color: var(--v2-text); text-decoration: none; font-size: 15px; border-radius: var(--v2-radius-m); }
+.v2-platform-menu nav a[aria-current="page"] { background: var(--v2-elevated); }
+.v2-platform-menu nav a:focus-visible { outline: none; box-shadow: var(--v2-focus); }
 .v2-platform-main { max-width: var(--max-app); margin: 0 auto; padding: var(--space-7) var(--space-6) var(--space-9); }
 
 /* ---------- responsive ---------- */
@@ -335,8 +343,9 @@
   .v2-platform-bar .halt-btn > span:first-child { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
   .v2-platform-bar img { width: 84px; height: auto; }
   .v2-platform-bar nav a { padding: 8px; }
-  /* Five destinations no longer fit beside the logo and button on a phone: the row scrolls, the page does not. */
-  .v2-platform-bar nav { flex: 1 1 auto; min-width: 0; overflow-x: auto; scrollbar-width: none; }
+  /* A phone gets an intentional menu, not the desktop bar squeezed into a row. */
+  .v2-platform-bar > nav { display: none; }
+  .v2-platform-menu { display: block; }
 }
 @media (max-width: 639px) {
   /* Phone: steps get their own row; SIMULATED and the step count stay visible, only the keyboard hint goes. */

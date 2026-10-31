@@ -12,11 +12,17 @@ import { Icon, type IconName } from "../icons";
 
 const ITEMS: Array<{ href: string; label: string; icon: IconName }> = [
   { href: "/mission", label: "Mission Control", icon: "mission" },
-  { href: "/incidents", label: "Incident Rooms", icon: "rooms" },
-  { href: "/reconstruct", label: "Reconstruct", icon: "reconstruct" },
   { href: "/firex", label: "Log Analysis", icon: "reconstruct" },
+  { href: "/incidents", label: "Incident Rooms", icon: "rooms" },
+  { href: "/trust", label: "Trust Centre", icon: "proofseal" },
   { href: "/architecture", label: "System Architecture", icon: "architecture" },
 ];
+
+function currentFor(path: string, href: string): boolean {
+  if (path === href) return true;
+  if (href === "/firex") return path.startsWith("/firex/") || path === "/reconstruct" || path.startsWith("/reconstructions/");
+  return href === "/trust" && path.startsWith("/trust/");
+}
 
 /** The platform's own chrome: the places above any single incident. */
 export function PlatformShell({ children }: { children: ReactNode }) {
@@ -30,15 +36,29 @@ export function PlatformShell({ children }: { children: ReactNode }) {
         </Link>
         <nav aria-label="Platform">
           {ITEMS.map((i) => (
-            <Link key={i.href} href={i.href} aria-label={i.label} aria-current={path === i.href || (i.href === "/reconstruct" && path.startsWith("/reconstructions/")) || (i.href === "/firex" && path.startsWith("/firex/")) ? "page" : undefined}>
+            <Link key={i.href} href={i.href} aria-label={i.label} aria-current={currentFor(path, i.href) ? "page" : undefined}>
               <Icon name={i.icon} size={18} />
               <span>{i.label}</span>
             </Link>
           ))}
         </nav>
+        <details className="v2-platform-menu" key={path}>
+          <summary aria-label="Open navigation menu">
+            <span aria-hidden>☰</span>
+            <span>Menu</span>
+          </summary>
+          <nav aria-label="Platform menu">
+            {ITEMS.map((i) => (
+              <Link key={i.href} href={i.href} aria-current={currentFor(path, i.href) ? "page" : undefined}>
+                <Icon name={i.icon} size={18} />
+                <span>{i.label}</span>
+              </Link>
+            ))}
+          </nav>
+        </details>
         <span style={{ marginLeft: "auto", display: "flex", gap: "var(--space-3)", alignItems: "center" }}>
           {/* FireX pages open their own reconstructed incidents; the authored demo incident never stands in. */}
-          {path.startsWith("/firex") ? null : (
+          {path.startsWith("/firex") || path.startsWith("/trust") ? null : (
             <>
               <SimulatedChip simulated={state.simulated} />
               <Link className="halt-btn halt-btn-primary" href={`/incidents/${state.incidentId}?view=overview`}>

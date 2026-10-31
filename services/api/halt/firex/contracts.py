@@ -529,3 +529,219 @@ class NarrativeResult(Contract):
     fallback_used: bool
     fallback_reason: str | None
     label: str
+
+
+TrustLabel = Literal["Verified", "Needs review", "Not measured", "Not applicable", "Failed"]
+HealthState = Literal["Verified", "Degraded", "Unconfirmed", "Failed"]
+
+
+class TrustItem(Contract):
+    label: str
+    value: str
+    status: TrustLabel | None = None
+    is_hash: bool = False
+
+
+class TrustDimension(Contract):
+    id: Literal["source", "processing", "reconstruction", "ground_truth"]
+    title: str
+    status: TrustLabel
+    verdict: str
+    items: list[TrustItem]
+
+
+class DatasetHealth(Contract):
+    """A verdict derived from stored files. Verified source or processing never means an incident is true."""
+
+    run_id: str
+    dataset_id: str
+    state: HealthState
+    headline: str
+    explanation: str
+    is_sample: bool
+    reconstruction: Literal["ran", "withheld", "not_run"]
+    reconstruction_reason: str
+    incident_count: int
+    source_bytes: int | None
+    valid_fraction: float | None
+    quarantined_fraction: float | None
+    canonical_records: int | None
+    exact_duplicates: int | None
+    duration_s: float | None
+    mb_per_second: float | None
+    peak_memory_mb: float | None
+    incident_open_latency_ms: float | None
+    incident_open_latency_label: str
+    dimensions: list[TrustDimension]
+
+
+class IncidentProofStatus(Contract):
+    incident_id: str
+    title: str
+    seal_valid: bool
+    graph_hash: str
+    evidence_coverage: float
+    unsupported_claims: int
+
+
+class TrustReport(Contract):
+    health: DatasetHealth
+    benchmark_seal_valid: bool | None
+    benchmark_seal: str | None
+    seal_algorithm: str | None
+    artifact_hashes: dict[str, str]
+    proofs: list[IncidentProofStatus]
+
+
+class QualitySegment(Contract):
+    segment_id: str
+    reason: str
+    start_offset: int
+    end_offset: int
+    bytes: int
+
+
+class QualityCase(Contract):
+    """Why a source cannot support reconstruction. It deliberately has no graph."""
+
+    run_id: str
+    dataset_id: str
+    filename: str
+    source_bytes: int
+    source_sha256: str
+    source_hash_verified: bool
+    bytes_valid: int
+    bytes_quarantined: int
+    bytes_blank: int
+    bytes_accounted: bool
+    valid_fraction: float
+    quarantined_fraction: float
+    canonical_records: int
+    exact_duplicates: int
+    collapsed_utc: str
+    collapsed_records: int
+    declared_tz: list[str]
+    timezone_interpretation: str | None
+    segments: list[QualitySegment]
+    reason: str
+    withheld_statement: str
+    zero_statement: str
+    incident_open_latency_label: str
+    benchmark_seal_valid: bool
+
+
+class RecordedFact(Contract):
+    run_id: str
+    dataset_id: str
+    source_bytes: int
+    duration_s: float
+    exact_duplicates: int
+    peak_memory_mb: float | None
+    incidents: int
+    reconstruction: Literal["ran", "withheld", "not_run"]
+    state: HealthState
+
+
+class FactsResponse(Contract):
+    items: list[RecordedFact]
+    note: str
+
+
+class CaseCandidate(Contract):
+    incident_id: str
+    title: str
+    status: str
+    risk: float
+    path_steps: int
+    score: float
+    components: list[ScoreComponent]
+    recommended: bool
+
+
+class CaseCandidates(Contract):
+    run_id: str
+    items: list[CaseCandidate]
+    quality_case_available: bool
+    note: str
+
+
+class CaseRequest(Contract):
+    run_id: str = Field(pattern=r"^frun-[0-9a-f]{16}$")
+    subject: Literal["incident", "quality"]
+    incident_id: str | None = Field(default=None, pattern=r"^finc-[0-9a-f]{12}$")
+
+
+class CaseCamera(Contract):
+    shot: Literal["establish", "approach", "follow", "inspect", "reveal", "withdraw", "present"]
+    node_ids: list[str]
+
+
+class CaseMetric(Contract):
+    label: str
+    value: str
+
+
+class CaseChapter(Contract):
+    chapter_id: str
+    title: str
+    headline: str
+    body: str
+    presenter_notes: str
+    evidence_refs: list[str]
+    camera: CaseCamera
+    metrics: list[CaseMetric]
+    visual: Literal["world", "bytes", "time", "withheld"]
+
+
+class CaseManifest(Contract):
+    """Deterministic and free of wall-clock time. Building one never changes the run or incident behind it."""
+
+    case_id: str
+    builder_version: str
+    run_id: str
+    dataset_id: str
+    subject: Literal["incident", "quality"]
+    incident_id: str | None
+    title: str
+    status: str
+    benchmark_receipt_id: str
+    benchmark_seal: str
+    proof_receipt_ids: list[str]
+    chapters: list[CaseChapter]
+    llm_notes: str | None
+
+
+class StepGuide(Contract):
+    """Plain language for one path step, from stored evidence."""
+
+    node_id: str
+    what_happened: str
+    who: str
+    evidence: str
+    why_it_matters: str
+    uncertain: str
+    check_next: str
+    evidence_refs: list[str]
+
+
+class NextCheck(Contract):
+    """Something an analyst could check. It is never remediation, and nothing here has been done."""
+
+    kind: Literal[
+        "inspect_records",
+        "validate_identity",
+        "validate_asset",
+        "collect_telemetry",
+        "review_reachable",
+        "compare_hypothesis",
+    ]
+    action: str
+    reason: str
+    evidence_refs: list[str]
+
+
+class IncidentGuide(Contract):
+    incident_id: str
+    steps: list[StepGuide]
+    next_checks: list[NextCheck]
+    note: str

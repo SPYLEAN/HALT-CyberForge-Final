@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 
+import { FirexMissionPanel } from "@/components/firex/FirexMissionPanel";
 import { StatusChip } from "@/components/halt";
 import { STAGE_LABEL } from "@/components/shell/stages";
 import { api, unwrap } from "@/lib/api/client";
@@ -122,6 +123,7 @@ export function MissionControl() {
   const services = nodes.filter((n) => n.kind === "process" && n.criticality === "critical");
   return (
     <>
+      <FirexMissionPanel />
       <div style={{ display: "grid", gridTemplateColumns: "minmax(0, 5fr) minmax(0, 7fr)", gap: "var(--space-7)", alignItems: "center" }} className="v2-mission-hero">
         <div>
           <p className="v2-kicker">Mission Control · 1 active incident</p>
