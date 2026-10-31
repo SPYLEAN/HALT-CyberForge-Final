@@ -8,6 +8,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { firex, type CaseChapter, type CaseManifest, type IncidentGraph, type QualityCase, type TimeQuality } from "@/lib/firex/api";
 import { ALL_ON, layoutGraph } from "@/lib/firex/scene";
 import { buildWorld, type Shot } from "@/lib/firex/world";
+import { presentTitle } from "@/lib/firex/wording";
 import { classify } from "@/lib/ps2/api";
 import { ps2Vars } from "@/styles/ps2-palette";
 
@@ -126,7 +127,7 @@ function Stage({ data }: { data: Loaded }) {
     <div ref={root} className={s.theatre} style={ps2Vars} data-testid="theatre">
       <header className={s.theatreBar}>
         <span className={s.meta}>
-          {manifest.dataset_id}: {manifest.title}
+          {manifest.dataset_id}: {manifest.subject === "incident" ? presentTitle(manifest.title) : manifest.title}
         </span>
         <StatusBadge status={manifest.status} />
       </header>
@@ -135,7 +136,7 @@ function Stage({ data }: { data: Loaded }) {
           <p className={s.theatreKicker}>
             {index + 1} of {manifest.chapters.length}. {chapter.title}
           </p>
-          <h1 className={s.theatreHeadline}>{chapter.headline}</h1>
+          <h1 className={s.theatreHeadline}>{chapter.headline === manifest.title && manifest.subject === "incident" ? presentTitle(chapter.headline) : chapter.headline}</h1>
           <p className={s.theatreBody}>{chapter.body}</p>
           {chapter.metrics.length ? (
             <dl className={s.theatreMetrics}>

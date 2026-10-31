@@ -11,6 +11,7 @@ import { buildWorld, type Shot } from "@/lib/firex/world";
 import { EvidenceLens } from "./EvidenceLens";
 import s from "./firex.module.css";
 import { Graph2D } from "./Graph2D";
+import { WhyHere } from "./SourceTrace";
 
 // WebGL has no server rendering, and three.js is only downloaded when an Attack World opens.
 const AttackWorld = dynamic(() => import("./AttackWorld"), { ssr: false, loading: () => <p role="status">Loading the Attack World…</p> });
@@ -314,6 +315,7 @@ export function AttackWorldView({
                   <dd>{stepGuide.check_next}</dd>
                 </div>
               </dl>
+              <WhyHere runId={detail.summary.run_id} query={{ incident_id: detail.summary.incident_id, node_id: stepGuide.node_id }} />
             </section>
           ) : finished ? (
             <section className={s.guide} aria-live="polite" aria-label="The complete story">

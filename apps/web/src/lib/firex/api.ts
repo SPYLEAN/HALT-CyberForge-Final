@@ -27,6 +27,14 @@ export type QuarantineSegment = S["QuarantineSegment"];
 export type DatasetHealth = S["DatasetHealth"];
 export type TrustReport = S["TrustReport"];
 export type TimeQuality = S["TimeQuality"];
+export type SearchResponse = S["SearchResponse"];
+export type TraceRecord = S["TraceRecord"];
+export type ProvenanceChain = S["ProvenanceChain"];
+export type ProvenanceSummary = S["ProvenanceSummary"];
+export type AnalystReview = S["AnalystReview"];
+export type ReviewDecision = S["ReviewRequest"]["decision"];
+export type ProvenanceQuery = { incident_id?: string | null; evidence_id?: string | null; statement_id?: string | null; node_id?: string | null; edge_id?: string | null };
+export const REVIEW_DECISIONS: ReviewDecision[] = ["Confirmed", "False positive", "Incorrect mapping", "Incorrect correlation", "Needs more evidence", "Benign administrative activity"];
 export type IncidentTimeScope = S["IncidentTimeScope"];
 export type QualityCase = S["QualityCase"];
 export type CaseCandidates = S["CaseCandidates"];
@@ -64,6 +72,12 @@ export const firex = {
     unwrap(await api.POST("/api/v1/ps2/cases", { body: { run_id, subject, incident_id } })),
   getCase: async (case_id: string) => unwrap(await api.GET("/api/v1/ps2/cases/{case_id}", { params: { path: { case_id } } })),
   facts: async () => unwrap(await api.GET("/api/v1/ps2/facts")),
+  search: async (run_id: string, q: string, options: { field?: string; relationship?: string; cursor?: string } = {}) =>
+    unwrap(await api.GET("/api/v1/ps2/runs/{run_id}/search", { params: { path: { run_id }, query: { q, ...options } as never } })),
+  suggest: async (run_id: string, q: string) => unwrap(await api.GET("/api/v1/ps2/runs/{run_id}/search/suggestions", { params: { path: { run_id }, query: { q } } })),
+  provenance: async (run_id: string, query: ProvenanceQuery) => unwrap(await api.GET("/api/v1/ps2/runs/{run_id}/provenance", { params: { path: { run_id }, query: query as never } })),
+  provenanceSummary: async (run_id: string) => unwrap(await api.GET("/api/v1/ps2/runs/{run_id}/provenance-summary", runPath(run_id))),
+  addReview: async (run_id: string, body: S["ReviewRequest"]) => unwrap(await api.POST("/api/v1/ps2/runs/{run_id}/reviews", { params: { path: { run_id } }, body })),
   incident: async (id: string, run?: string) => unwrap(await api.GET("/api/v1/ps2/incidents/{incident_id}", incidentPath(id, run))),
   guide: async (id: string, run?: string) => unwrap(await api.GET("/api/v1/ps2/incidents/{incident_id}/guide", incidentPath(id, run))),
   graph: async (id: string, run?: string) => unwrap(await api.GET("/api/v1/ps2/incidents/{incident_id}/graph", incidentPath(id, run))),

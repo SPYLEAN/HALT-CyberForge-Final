@@ -91,6 +91,88 @@
         "title": "Alias",
         "type": "object"
       },
+      "AnalystReview": {
+        "additionalProperties": false,
+        "description": "Kept apart from sealed results. `original_conclusion` is what the stored result says, unchanged.",
+        "properties": {
+          "analyst": {
+            "title": "Analyst",
+            "type": "string"
+          },
+          "at": {
+            "title": "At",
+            "type": "string"
+          },
+          "audit_reference": {
+            "title": "Audit Reference",
+            "type": "string"
+          },
+          "decision": {
+            "enum": [
+              "Confirmed",
+              "False positive",
+              "Incorrect mapping",
+              "Incorrect correlation",
+              "Needs more evidence",
+              "Benign administrative activity"
+            ],
+            "title": "Decision",
+            "type": "string"
+          },
+          "evidence_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Evidence Id"
+          },
+          "incident_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Incident Id"
+          },
+          "original_conclusion": {
+            "title": "Original Conclusion",
+            "type": "string"
+          },
+          "reason": {
+            "title": "Reason",
+            "type": "string"
+          },
+          "run_id": {
+            "title": "Run Id",
+            "type": "string"
+          },
+          "seq": {
+            "title": "Seq",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "seq",
+          "run_id",
+          "incident_id",
+          "evidence_id",
+          "original_conclusion",
+          "decision",
+          "reason",
+          "analyst",
+          "at",
+          "audit_reference"
+        ],
+        "title": "AnalystReview",
+        "type": "object"
+      },
       "ApiError": {
         "additionalProperties": false,
         "properties": {
@@ -5307,6 +5389,41 @@
         "title": "FutureResult",
         "type": "object"
       },
+      "GateCheck": {
+        "additionalProperties": false,
+        "properties": {
+          "detail": {
+            "title": "Detail",
+            "type": "string"
+          },
+          "id": {
+            "title": "Id",
+            "type": "string"
+          },
+          "label": {
+            "title": "Label",
+            "type": "string"
+          },
+          "status": {
+            "enum": [
+              "passed",
+              "failed",
+              "unavailable",
+              "not_applicable"
+            ],
+            "title": "Status",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "label",
+          "status",
+          "detail"
+        ],
+        "title": "GateCheck",
+        "type": "object"
+      },
       "GateMessage": {
         "additionalProperties": false,
         "properties": {
@@ -6260,6 +6377,53 @@
           "unsupported_claims"
         ],
         "title": "IncidentProofStatus",
+        "type": "object"
+      },
+      "IncidentProvenance": {
+        "additionalProperties": false,
+        "properties": {
+          "cited_records": {
+            "title": "Cited Records",
+            "type": "integer"
+          },
+          "failed_links": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Failed Links",
+            "type": "array"
+          },
+          "incident_id": {
+            "title": "Incident Id",
+            "type": "string"
+          },
+          "status": {
+            "title": "Status",
+            "type": "string"
+          },
+          "title": {
+            "title": "Title",
+            "type": "string"
+          },
+          "unavailable_records": {
+            "title": "Unavailable Records",
+            "type": "integer"
+          },
+          "verified_records": {
+            "title": "Verified Records",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "incident_id",
+          "title",
+          "status",
+          "cited_records",
+          "verified_records",
+          "unavailable_records",
+          "failed_links"
+        ],
+        "title": "IncidentProvenance",
         "type": "object"
       },
       "IncidentReadiness": {
@@ -8531,6 +8695,288 @@
         "title": "ProofView",
         "type": "object"
       },
+      "ProvenanceChain": {
+        "additionalProperties": false,
+        "properties": {
+          "cited_records": {
+            "title": "Cited Records",
+            "type": "integer"
+          },
+          "failed_link": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Failed Link"
+          },
+          "gate": {
+            "items": {
+              "$ref": "#/components/schemas/GateCheck"
+            },
+            "title": "Gate",
+            "type": "array"
+          },
+          "incident_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Incident Id"
+          },
+          "incident_status": {
+            "title": "Incident Status",
+            "type": "string"
+          },
+          "original_conclusion": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Original Conclusion"
+          },
+          "plain": {
+            "title": "Plain",
+            "type": "string"
+          },
+          "proof_receipt_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Proof Receipt Id"
+          },
+          "records": {
+            "items": {
+              "$ref": "#/components/schemas/TraceRecord"
+            },
+            "title": "Records",
+            "type": "array"
+          },
+          "relationship_status": {
+            "title": "Relationship Status",
+            "type": "string"
+          },
+          "reviews": {
+            "items": {
+              "$ref": "#/components/schemas/AnalystReview"
+            },
+            "title": "Reviews",
+            "type": "array"
+          },
+          "run": {
+            "$ref": "#/components/schemas/TraceRun"
+          },
+          "source_status": {
+            "title": "Source Status",
+            "type": "string"
+          },
+          "stages": {
+            "items": {
+              "$ref": "#/components/schemas/ProvenanceStage"
+            },
+            "title": "Stages",
+            "type": "array"
+          },
+          "statuses": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Statuses",
+            "type": "array"
+          },
+          "subject_id": {
+            "title": "Subject Id",
+            "type": "string"
+          },
+          "subject_kind": {
+            "enum": [
+              "incident",
+              "statement",
+              "node",
+              "edge",
+              "record"
+            ],
+            "title": "Subject Kind",
+            "type": "string"
+          },
+          "subject_label": {
+            "title": "Subject Label",
+            "type": "string"
+          }
+        },
+        "required": [
+          "run",
+          "subject_kind",
+          "subject_id",
+          "subject_label",
+          "incident_id",
+          "original_conclusion",
+          "plain",
+          "statuses",
+          "source_status",
+          "relationship_status",
+          "incident_status",
+          "failed_link",
+          "gate",
+          "stages",
+          "records",
+          "cited_records",
+          "proof_receipt_id",
+          "reviews"
+        ],
+        "title": "ProvenanceChain",
+        "type": "object"
+      },
+      "ProvenanceStage": {
+        "additionalProperties": false,
+        "properties": {
+          "evidence_refs": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Evidence Refs",
+            "type": "array"
+          },
+          "id": {
+            "title": "Id",
+            "type": "string"
+          },
+          "input": {
+            "title": "Input",
+            "type": "string"
+          },
+          "output": {
+            "title": "Output",
+            "type": "string"
+          },
+          "plain": {
+            "title": "Plain",
+            "type": "string"
+          },
+          "rule": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Rule"
+          },
+          "state": {
+            "title": "State",
+            "type": "string"
+          },
+          "status": {
+            "enum": [
+              "ok",
+              "failed",
+              "unavailable",
+              "not_applicable"
+            ],
+            "title": "Status",
+            "type": "string"
+          },
+          "title": {
+            "title": "Title",
+            "type": "string"
+          },
+          "transformation": {
+            "title": "Transformation",
+            "type": "string"
+          },
+          "version": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Version"
+          }
+        },
+        "required": [
+          "id",
+          "title",
+          "plain",
+          "input",
+          "transformation",
+          "output",
+          "rule",
+          "version",
+          "evidence_refs",
+          "state",
+          "status"
+        ],
+        "title": "ProvenanceStage",
+        "type": "object"
+      },
+      "ProvenanceSummary": {
+        "additionalProperties": false,
+        "properties": {
+          "cited_records": {
+            "title": "Cited Records",
+            "type": "integer"
+          },
+          "failed_incidents": {
+            "title": "Failed Incidents",
+            "type": "integer"
+          },
+          "incidents": {
+            "items": {
+              "$ref": "#/components/schemas/IncidentProvenance"
+            },
+            "title": "Incidents",
+            "type": "array"
+          },
+          "note": {
+            "title": "Note",
+            "type": "string"
+          },
+          "run_id": {
+            "title": "Run Id",
+            "type": "string"
+          },
+          "status": {
+            "title": "Status",
+            "type": "string"
+          },
+          "verified_records": {
+            "title": "Verified Records",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "run_id",
+          "status",
+          "incidents",
+          "verified_records",
+          "cited_records",
+          "failed_incidents",
+          "note"
+        ],
+        "title": "ProvenanceSummary",
+        "type": "object"
+      },
       "QualityCase": {
         "additionalProperties": false,
         "description": "Why a source cannot support reconstruction. It deliberately has no graph.",
@@ -9700,6 +10146,93 @@
         "title": "Reversibility",
         "type": "object"
       },
+      "ReviewList": {
+        "additionalProperties": false,
+        "properties": {
+          "chain_valid": {
+            "title": "Chain Valid",
+            "type": "boolean"
+          },
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/AnalystReview"
+            },
+            "title": "Items",
+            "type": "array"
+          },
+          "run_id": {
+            "title": "Run Id",
+            "type": "string"
+          }
+        },
+        "required": [
+          "run_id",
+          "items",
+          "chain_valid"
+        ],
+        "title": "ReviewList",
+        "type": "object"
+      },
+      "ReviewRequest": {
+        "additionalProperties": false,
+        "properties": {
+          "analyst": {
+            "default": "demo-analyst",
+            "maxLength": 120,
+            "minLength": 1,
+            "title": "Analyst",
+            "type": "string"
+          },
+          "decision": {
+            "enum": [
+              "Confirmed",
+              "False positive",
+              "Incorrect mapping",
+              "Incorrect correlation",
+              "Needs more evidence",
+              "Benign administrative activity"
+            ],
+            "title": "Decision",
+            "type": "string"
+          },
+          "evidence_id": {
+            "anyOf": [
+              {
+                "pattern": "^ev-[0-9a-f]{8,}$",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Evidence Id"
+          },
+          "incident_id": {
+            "anyOf": [
+              {
+                "pattern": "^finc-[0-9a-f]{12}$",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Incident Id"
+          },
+          "reason": {
+            "maxLength": 2000,
+            "minLength": 1,
+            "title": "Reason",
+            "type": "string"
+          }
+        },
+        "required": [
+          "decision",
+          "reason"
+        ],
+        "title": "ReviewRequest",
+        "type": "object"
+      },
       "RunList": {
         "additionalProperties": false,
         "properties": {
@@ -9942,6 +10475,174 @@
           "recorded"
         ],
         "title": "SealVerification",
+        "type": "object"
+      },
+      "SearchResponse": {
+        "additionalProperties": false,
+        "properties": {
+          "canonical_events": {
+            "items": {
+              "$ref": "#/components/schemas/TraceRecord"
+            },
+            "title": "Canonical Events",
+            "type": "array"
+          },
+          "complete": {
+            "title": "Complete",
+            "type": "boolean"
+          },
+          "detections": {
+            "items": {
+              "$ref": "#/components/schemas/TraceDetection"
+            },
+            "title": "Detections",
+            "type": "array"
+          },
+          "field": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Field"
+          },
+          "graph_relationships": {
+            "items": {
+              "$ref": "#/components/schemas/TraceRelationship"
+            },
+            "title": "Graph Relationships",
+            "type": "array"
+          },
+          "incident_steps": {
+            "items": {
+              "$ref": "#/components/schemas/TraceStep"
+            },
+            "title": "Incident Steps",
+            "type": "array"
+          },
+          "next_cursor": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Next Cursor"
+          },
+          "not_found": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Not Found"
+          },
+          "proof_receipts": {
+            "items": {
+              "$ref": "#/components/schemas/TraceProof"
+            },
+            "title": "Proof Receipts",
+            "type": "array"
+          },
+          "query": {
+            "title": "Query",
+            "type": "string"
+          },
+          "read_as": {
+            "title": "Read As",
+            "type": "string"
+          },
+          "run": {
+            "$ref": "#/components/schemas/TraceRun"
+          },
+          "scanned_parts": {
+            "title": "Scanned Parts",
+            "type": "integer"
+          },
+          "source_records": {
+            "items": {
+              "$ref": "#/components/schemas/TraceRecord"
+            },
+            "title": "Source Records",
+            "type": "array"
+          },
+          "total_parts": {
+            "title": "Total Parts",
+            "type": "integer"
+          },
+          "value_kind": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Value Kind"
+          },
+          "value_note": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Value Note"
+          }
+        },
+        "required": [
+          "run",
+          "query",
+          "field",
+          "read_as",
+          "value_kind",
+          "value_note",
+          "source_records",
+          "canonical_events",
+          "detections",
+          "incident_steps",
+          "graph_relationships",
+          "proof_receipts",
+          "next_cursor",
+          "scanned_parts",
+          "total_parts",
+          "complete",
+          "not_found"
+        ],
+        "title": "SearchResponse",
+        "type": "object"
+      },
+      "SearchSuggestions": {
+        "additionalProperties": false,
+        "properties": {
+          "run_id": {
+            "title": "Run Id",
+            "type": "string"
+          },
+          "values": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Values",
+            "type": "array"
+          }
+        },
+        "required": [
+          "run_id",
+          "values"
+        ],
+        "title": "SearchSuggestions",
         "type": "object"
       },
       "SecurityEvent": {
@@ -10966,6 +11667,513 @@
           "affected_records"
         ],
         "title": "TimezoneConflict",
+        "type": "object"
+      },
+      "TraceDetection": {
+        "additionalProperties": false,
+        "properties": {
+          "basis": {
+            "title": "Basis",
+            "type": "string"
+          },
+          "detection_id": {
+            "title": "Detection Id",
+            "type": "string"
+          },
+          "incident_id": {
+            "title": "Incident Id",
+            "type": "string"
+          },
+          "reason": {
+            "title": "Reason",
+            "type": "string"
+          },
+          "rule_id": {
+            "title": "Rule Id",
+            "type": "string"
+          },
+          "rule_version": {
+            "title": "Rule Version",
+            "type": "string"
+          },
+          "status": {
+            "title": "Status",
+            "type": "string"
+          },
+          "title": {
+            "title": "Title",
+            "type": "string"
+          }
+        },
+        "required": [
+          "detection_id",
+          "rule_id",
+          "rule_version",
+          "title",
+          "reason",
+          "basis",
+          "incident_id",
+          "status"
+        ],
+        "title": "TraceDetection",
+        "type": "object"
+      },
+      "TraceProof": {
+        "additionalProperties": false,
+        "properties": {
+          "graph_hash": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Graph Hash"
+          },
+          "incident_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Incident Id"
+          },
+          "kind": {
+            "enum": [
+              "incident",
+              "benchmark"
+            ],
+            "title": "Kind",
+            "type": "string"
+          },
+          "receipt_id": {
+            "title": "Receipt Id",
+            "type": "string"
+          },
+          "seal_valid": {
+            "title": "Seal Valid",
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "receipt_id",
+          "kind",
+          "incident_id",
+          "seal_valid",
+          "graph_hash"
+        ],
+        "title": "TraceProof",
+        "type": "object"
+      },
+      "TraceRecord": {
+        "additionalProperties": false,
+        "description": "One record. `label` says what `excerpt` is. A field that is not stored is absent, not invented.",
+        "properties": {
+          "bursts": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Bursts",
+            "type": "array"
+          },
+          "byte_offset": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Byte Offset"
+          },
+          "canonical_sha256": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Canonical Sha256"
+          },
+          "detections": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Detections",
+            "type": "array"
+          },
+          "duplicate": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Duplicate"
+          },
+          "event_utc": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Event Utc"
+          },
+          "evidence_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Evidence Id"
+          },
+          "excerpt": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Excerpt"
+          },
+          "fields": {
+            "additionalProperties": {
+              "type": "string"
+            },
+            "title": "Fields",
+            "type": "object"
+          },
+          "incidents": {
+            "items": {
+              "$ref": "#/components/schemas/TraceUse"
+            },
+            "title": "Incidents",
+            "type": "array"
+          },
+          "label": {
+            "anyOf": [
+              {
+                "enum": [
+                  "RAW RECORD",
+                  "STORED SOURCE EXCERPT",
+                  "CANONICAL EVENT"
+                ],
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Label"
+          },
+          "line": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Line"
+          },
+          "quarantine_reason": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Quarantine Reason"
+          },
+          "raw_sha256": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Raw Sha256"
+          },
+          "raw_status": {
+            "enum": [
+              "verified",
+              "unavailable",
+              "mismatch",
+              "not_applicable"
+            ],
+            "title": "Raw Status",
+            "type": "string"
+          },
+          "state": {
+            "enum": [
+              "canonical",
+              "quarantined"
+            ],
+            "title": "State",
+            "type": "string"
+          },
+          "truncated": {
+            "title": "Truncated",
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "state",
+          "evidence_id",
+          "line",
+          "byte_offset",
+          "event_utc",
+          "label",
+          "excerpt",
+          "truncated",
+          "raw_status",
+          "fields",
+          "raw_sha256",
+          "canonical_sha256",
+          "duplicate",
+          "bursts",
+          "detections",
+          "incidents",
+          "quarantine_reason"
+        ],
+        "title": "TraceRecord",
+        "type": "object"
+      },
+      "TraceRelationship": {
+        "additionalProperties": false,
+        "properties": {
+          "classification": {
+            "title": "Classification",
+            "type": "string"
+          },
+          "element_id": {
+            "title": "Element Id",
+            "type": "string"
+          },
+          "evidence_refs": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Evidence Refs",
+            "type": "array"
+          },
+          "incident_id": {
+            "title": "Incident Id",
+            "type": "string"
+          },
+          "kind": {
+            "enum": [
+              "node",
+              "edge"
+            ],
+            "title": "Kind",
+            "type": "string"
+          },
+          "label": {
+            "title": "Label",
+            "type": "string"
+          },
+          "missing_evidence": {
+            "title": "Missing Evidence",
+            "type": "boolean"
+          },
+          "on_selected_path": {
+            "title": "On Selected Path",
+            "type": "boolean"
+          },
+          "rule": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Rule"
+          },
+          "rule_version": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Rule Version"
+          }
+        },
+        "required": [
+          "incident_id",
+          "kind",
+          "element_id",
+          "label",
+          "classification",
+          "on_selected_path",
+          "missing_evidence",
+          "rule",
+          "rule_version",
+          "evidence_refs"
+        ],
+        "title": "TraceRelationship",
+        "type": "object"
+      },
+      "TraceRun": {
+        "additionalProperties": false,
+        "description": "Every SourceTrace answer names the one run it came from.",
+        "properties": {
+          "dataset_id": {
+            "title": "Dataset Id",
+            "type": "string"
+          },
+          "health_state": {
+            "enum": [
+              "Verified",
+              "Degraded",
+              "Unconfirmed",
+              "Failed"
+            ],
+            "title": "Health State",
+            "type": "string"
+          },
+          "narrative": {
+            "title": "Narrative",
+            "type": "string"
+          },
+          "run_id": {
+            "title": "Run Id",
+            "type": "string"
+          },
+          "source_available": {
+            "title": "Source Available",
+            "type": "boolean"
+          },
+          "source_filename": {
+            "title": "Source Filename",
+            "type": "string"
+          },
+          "source_hash_verified": {
+            "title": "Source Hash Verified",
+            "type": "boolean"
+          },
+          "source_sha256": {
+            "title": "Source Sha256",
+            "type": "string"
+          }
+        },
+        "required": [
+          "dataset_id",
+          "run_id",
+          "source_filename",
+          "source_sha256",
+          "source_hash_verified",
+          "source_available",
+          "health_state",
+          "narrative"
+        ],
+        "title": "TraceRun",
+        "type": "object"
+      },
+      "TraceStep": {
+        "additionalProperties": false,
+        "properties": {
+          "count": {
+            "title": "Count",
+            "type": "integer"
+          },
+          "evidence_refs": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Evidence Refs",
+            "type": "array"
+          },
+          "incident_id": {
+            "title": "Incident Id",
+            "type": "string"
+          },
+          "incident_title": {
+            "title": "Incident Title",
+            "type": "string"
+          },
+          "label": {
+            "title": "Label",
+            "type": "string"
+          },
+          "node_id": {
+            "title": "Node Id",
+            "type": "string"
+          },
+          "stage": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Stage"
+          }
+        },
+        "required": [
+          "incident_id",
+          "incident_title",
+          "node_id",
+          "label",
+          "stage",
+          "count",
+          "evidence_refs"
+        ],
+        "title": "TraceStep",
+        "type": "object"
+      },
+      "TraceUse": {
+        "additionalProperties": false,
+        "properties": {
+          "incident_id": {
+            "title": "Incident Id",
+            "type": "string"
+          },
+          "status": {
+            "title": "Status",
+            "type": "string"
+          },
+          "title": {
+            "title": "Title",
+            "type": "string"
+          }
+        },
+        "required": [
+          "incident_id",
+          "title",
+          "status"
+        ],
+        "title": "TraceUse",
         "type": "object"
       },
       "Transition": {
@@ -14106,6 +15314,175 @@
         ]
       }
     },
+    "/api/v1/ps2/runs/{run_id}/provenance": {
+      "get": {
+        "operationId": "get_provenance_api_v1_ps2_runs__run_id__provenance_get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "run_id",
+            "required": true,
+            "schema": {
+              "title": "Run Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "incident_id",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "pattern": "^finc-[0-9a-f]{12}$",
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Incident Id"
+            }
+          },
+          {
+            "in": "query",
+            "name": "evidence_id",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "maxLength": 80,
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Evidence Id"
+            }
+          },
+          {
+            "in": "query",
+            "name": "statement_id",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "maxLength": 40,
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Statement Id"
+            }
+          },
+          {
+            "in": "query",
+            "name": "node_id",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "maxLength": 300,
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Node Id"
+            }
+          },
+          {
+            "in": "query",
+            "name": "edge_id",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "maxLength": 80,
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Edge Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProvenanceChain"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Get Provenance",
+        "tags": [
+          "firex"
+        ]
+      }
+    },
+    "/api/v1/ps2/runs/{run_id}/provenance-summary": {
+      "get": {
+        "operationId": "get_provenance_summary_api_v1_ps2_runs__run_id__provenance_summary_get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "run_id",
+            "required": true,
+            "schema": {
+              "title": "Run Id",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProvenanceSummary"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Get Provenance Summary",
+        "tags": [
+          "firex"
+        ]
+      }
+    },
     "/api/v1/ps2/runs/{run_id}/quality-case": {
       "get": {
         "operationId": "get_quality_case_api_v1_ps2_runs__run_id__quality_case_get",
@@ -14227,6 +15604,287 @@
           }
         },
         "summary": "Resume Run",
+        "tags": [
+          "firex"
+        ]
+      }
+    },
+    "/api/v1/ps2/runs/{run_id}/reviews": {
+      "get": {
+        "operationId": "get_reviews_api_v1_ps2_runs__run_id__reviews_get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "run_id",
+            "required": true,
+            "schema": {
+              "title": "Run Id",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ReviewList"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Get Reviews",
+        "tags": [
+          "firex"
+        ]
+      },
+      "post": {
+        "operationId": "post_review_api_v1_ps2_runs__run_id__reviews_post",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "run_id",
+            "required": true,
+            "schema": {
+              "title": "Run Id",
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ReviewRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AnalystReview"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Post Review",
+        "tags": [
+          "firex"
+        ]
+      }
+    },
+    "/api/v1/ps2/runs/{run_id}/search": {
+      "get": {
+        "operationId": "get_search_api_v1_ps2_runs__run_id__search_get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "run_id",
+            "required": true,
+            "schema": {
+              "title": "Run Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "q",
+            "required": true,
+            "schema": {
+              "maxLength": 200,
+              "minLength": 2,
+              "title": "Q",
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "field",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "enum": [
+                    "user",
+                    "ip",
+                    "host",
+                    "device",
+                    "destination",
+                    "service",
+                    "action",
+                    "message",
+                    "event_id",
+                    "line",
+                    "timestamp",
+                    "incident",
+                    "detection",
+                    "node",
+                    "edge",
+                    "receipt"
+                  ],
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Field"
+            }
+          },
+          {
+            "in": "query",
+            "name": "relationship",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "enum": [
+                    "observed",
+                    "inferred"
+                  ],
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Relationship"
+            }
+          },
+          {
+            "in": "query",
+            "name": "cursor",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "maxLength": 40,
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Cursor"
+            }
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "required": false,
+            "schema": {
+              "default": 20,
+              "maximum": 50,
+              "minimum": 1,
+              "title": "Limit",
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SearchResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Get Search",
+        "tags": [
+          "firex"
+        ]
+      }
+    },
+    "/api/v1/ps2/runs/{run_id}/search/suggestions": {
+      "get": {
+        "operationId": "get_search_suggestions_api_v1_ps2_runs__run_id__search_suggestions_get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "run_id",
+            "required": true,
+            "schema": {
+              "title": "Run Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "q",
+            "required": true,
+            "schema": {
+              "maxLength": 200,
+              "minLength": 1,
+              "title": "Q",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SearchSuggestions"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Get Search Suggestions",
         "tags": [
           "firex"
         ]

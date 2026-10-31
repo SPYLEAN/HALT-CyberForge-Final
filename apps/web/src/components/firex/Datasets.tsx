@@ -9,6 +9,7 @@ import { classify } from "@/lib/ps2/api";
 import { ps2Vars } from "@/styles/ps2-palette";
 
 import s from "./firex.module.css";
+import { SearchEvidence } from "./SourceTrace";
 import { StatusBadge } from "./Verdict";
 
 const RANGES: Array<{ label: string; value: number | null }> = [
@@ -46,12 +47,13 @@ export function Datasets() {
   const samples = runs.filter((r) => !datasets?.some((d) => d.latest_run_id === r.run_id));
   return (
     <div className={s.root} style={ps2Vars} data-testid="firex-datasets">
-      <header>
+      <header style={{ display: "flex", flexDirection: "column", gap: "var(--space-3)", alignItems: "flex-start" }}>
         <h1 className={s.title}>Log analysis</h1>
         <p className={s.lede}>
           Read a large security log, connect what it shows into attack paths backed by evidence, and see plainly when the evidence cannot
           support a story.
         </p>
+        {Object.keys(health).length ? <SearchEvidence advanced runs={Object.values(health).map((h) => ({ run_id: h.run_id, label: `${h.dataset_id} (${h.run_id})` }))} /> : null}
       </header>
       {error ? (
         <div className={s.alert} role="alert">

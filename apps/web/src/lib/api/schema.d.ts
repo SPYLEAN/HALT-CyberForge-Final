@@ -1078,6 +1078,40 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/v1/ps2/runs/{run_id}/provenance": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get Provenance */
+        get: operations["get_provenance_api_v1_ps2_runs__run_id__provenance_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/ps2/runs/{run_id}/provenance-summary": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get Provenance Summary */
+        get: operations["get_provenance_summary_api_v1_ps2_runs__run_id__provenance_summary_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/v1/ps2/runs/{run_id}/quality-case": {
         parameters: {
             query?: never;
@@ -1123,6 +1157,58 @@ export interface paths {
         put?: never;
         /** Resume Run */
         post: operations["resume_run_api_v1_ps2_runs__run_id__resume_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/ps2/runs/{run_id}/reviews": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get Reviews */
+        get: operations["get_reviews_api_v1_ps2_runs__run_id__reviews_get"];
+        put?: never;
+        /** Post Review */
+        post: operations["post_review_api_v1_ps2_runs__run_id__reviews_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/ps2/runs/{run_id}/search": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get Search */
+        get: operations["get_search_api_v1_ps2_runs__run_id__search_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/ps2/runs/{run_id}/search/suggestions": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get Search Suggestions */
+        get: operations["get_search_suggestions_api_v1_ps2_runs__run_id__search_suggestions_get"];
+        put?: never;
+        post?: never;
         delete?: never;
         options?: never;
         head?: never;
@@ -1216,6 +1302,35 @@ export interface components {
             field: string;
             /** Value */
             value: string;
+        };
+        /**
+         * AnalystReview
+         * @description Kept apart from sealed results. `original_conclusion` is what the stored result says, unchanged.
+         */
+        AnalystReview: {
+            /** Analyst */
+            analyst: string;
+            /** At */
+            at: string;
+            /** Audit Reference */
+            audit_reference: string;
+            /**
+             * Decision
+             * @enum {string}
+             */
+            decision: "Confirmed" | "False positive" | "Incorrect mapping" | "Incorrect correlation" | "Needs more evidence" | "Benign administrative activity";
+            /** Evidence Id */
+            evidence_id: string | null;
+            /** Incident Id */
+            incident_id: string | null;
+            /** Original Conclusion */
+            original_conclusion: string;
+            /** Reason */
+            reason: string;
+            /** Run Id */
+            run_id: string;
+            /** Seq */
+            seq: number;
         };
         /** ApiError */
         ApiError: {
@@ -2879,6 +2994,20 @@ export interface components {
             target_reached: components["schemas"]["Derivation"];
             users_affected: components["schemas"]["Derivation"];
         };
+        /** GateCheck */
+        GateCheck: {
+            /** Detail */
+            detail: string;
+            /** Id */
+            id: string;
+            /** Label */
+            label: string;
+            /**
+             * Status
+             * @enum {string}
+             */
+            status: "passed" | "failed" | "unavailable" | "not_applicable";
+        };
         /** GateMessage */
         GateMessage: {
             execution: components["schemas"]["Execution"];
@@ -3202,6 +3331,23 @@ export interface components {
             title: string;
             /** Unsupported Claims */
             unsupported_claims: number;
+        };
+        /** IncidentProvenance */
+        IncidentProvenance: {
+            /** Cited Records */
+            cited_records: number;
+            /** Failed Links */
+            failed_links: string[];
+            /** Incident Id */
+            incident_id: string;
+            /** Status */
+            status: string;
+            /** Title */
+            title: string;
+            /** Unavailable Records */
+            unavailable_records: number;
+            /** Verified Records */
+            verified_records: number;
         };
         /** IncidentReadiness */
         IncidentReadiness: {
@@ -3986,6 +4132,92 @@ export interface components {
             receipt: components["schemas"]["ProofReceipt"];
             verification: components["schemas"]["SealVerification"];
         };
+        /** ProvenanceChain */
+        ProvenanceChain: {
+            /** Cited Records */
+            cited_records: number;
+            /** Failed Link */
+            failed_link: string | null;
+            /** Gate */
+            gate: components["schemas"]["GateCheck"][];
+            /** Incident Id */
+            incident_id: string | null;
+            /** Incident Status */
+            incident_status: string;
+            /** Original Conclusion */
+            original_conclusion: string | null;
+            /** Plain */
+            plain: string;
+            /** Proof Receipt Id */
+            proof_receipt_id: string | null;
+            /** Records */
+            records: components["schemas"]["TraceRecord"][];
+            /** Relationship Status */
+            relationship_status: string;
+            /** Reviews */
+            reviews: components["schemas"]["AnalystReview"][];
+            run: components["schemas"]["TraceRun"];
+            /** Source Status */
+            source_status: string;
+            /** Stages */
+            stages: components["schemas"]["ProvenanceStage"][];
+            /** Statuses */
+            statuses: string[];
+            /** Subject Id */
+            subject_id: string;
+            /**
+             * Subject Kind
+             * @enum {string}
+             */
+            subject_kind: "incident" | "statement" | "node" | "edge" | "record";
+            /** Subject Label */
+            subject_label: string;
+        };
+        /** ProvenanceStage */
+        ProvenanceStage: {
+            /** Evidence Refs */
+            evidence_refs: string[];
+            /** Id */
+            id: string;
+            /** Input */
+            input: string;
+            /** Output */
+            output: string;
+            /** Plain */
+            plain: string;
+            /** Rule */
+            rule: string | null;
+            /** State */
+            state: string;
+            /**
+             * Status
+             * @enum {string}
+             */
+            status: "ok" | "failed" | "unavailable" | "not_applicable";
+            /** Title */
+            title: string;
+            /** Transformation */
+            transformation: string;
+            /** Version */
+            version: string | null;
+        };
+        /** ProvenanceSummary */
+        ProvenanceSummary: {
+            /** Cited Records */
+            cited_records: number;
+            /** Failed Incidents */
+            failed_incidents: number;
+            /** Incidents */
+            incidents: components["schemas"]["IncidentProvenance"][];
+            /** Note */
+            note: string;
+            /** Run Id */
+            run_id: string;
+            /** Status */
+            status: string;
+            /** Verified Records */
+            verified_records: number;
+        };
         /**
          * QualityCase
          * @description Why a source cannot support reconstruction. It deliberately has no graph.
@@ -4403,6 +4635,34 @@ export interface components {
             /** Seconds */
             seconds: number | null;
         };
+        /** ReviewList */
+        ReviewList: {
+            /** Chain Valid */
+            chain_valid: boolean;
+            /** Items */
+            items: components["schemas"]["AnalystReview"][];
+            /** Run Id */
+            run_id: string;
+        };
+        /** ReviewRequest */
+        ReviewRequest: {
+            /**
+             * Analyst
+             * @default demo-analyst
+             */
+            analyst: string;
+            /**
+             * Decision
+             * @enum {string}
+             */
+            decision: "Confirmed" | "False positive" | "Incorrect mapping" | "Incorrect correlation" | "Needs more evidence" | "Benign administrative activity";
+            /** Evidence Id */
+            evidence_id?: string | null;
+            /** Incident Id */
+            incident_id?: string | null;
+            /** Reason */
+            reason: string;
+        };
         /** RunList */
         RunList: {
             /** Items */
@@ -4496,6 +4756,49 @@ export interface components {
             recorded: string;
             /** Valid */
             valid: boolean;
+        };
+        /** SearchResponse */
+        SearchResponse: {
+            /** Canonical Events */
+            canonical_events: components["schemas"]["TraceRecord"][];
+            /** Complete */
+            complete: boolean;
+            /** Detections */
+            detections: components["schemas"]["TraceDetection"][];
+            /** Field */
+            field: string | null;
+            /** Graph Relationships */
+            graph_relationships: components["schemas"]["TraceRelationship"][];
+            /** Incident Steps */
+            incident_steps: components["schemas"]["TraceStep"][];
+            /** Next Cursor */
+            next_cursor: string | null;
+            /** Not Found */
+            not_found: string | null;
+            /** Proof Receipts */
+            proof_receipts: components["schemas"]["TraceProof"][];
+            /** Query */
+            query: string;
+            /** Read As */
+            read_as: string;
+            run: components["schemas"]["TraceRun"];
+            /** Scanned Parts */
+            scanned_parts: number;
+            /** Source Records */
+            source_records: components["schemas"]["TraceRecord"][];
+            /** Total Parts */
+            total_parts: number;
+            /** Value Kind */
+            value_kind: string | null;
+            /** Value Note */
+            value_note: string | null;
+        };
+        /** SearchSuggestions */
+        SearchSuggestions: {
+            /** Run Id */
+            run_id: string;
+            /** Values */
+            values: string[];
         };
         /** SecurityEvent */
         SecurityEvent: {
@@ -4868,6 +5171,166 @@ export interface components {
             declared_tz: string[];
             /** Interpretation */
             interpretation: string;
+        };
+        /** TraceDetection */
+        TraceDetection: {
+            /** Basis */
+            basis: string;
+            /** Detection Id */
+            detection_id: string;
+            /** Incident Id */
+            incident_id: string;
+            /** Reason */
+            reason: string;
+            /** Rule Id */
+            rule_id: string;
+            /** Rule Version */
+            rule_version: string;
+            /** Status */
+            status: string;
+            /** Title */
+            title: string;
+        };
+        /** TraceProof */
+        TraceProof: {
+            /** Graph Hash */
+            graph_hash: string | null;
+            /** Incident Id */
+            incident_id: string | null;
+            /**
+             * Kind
+             * @enum {string}
+             */
+            kind: "incident" | "benchmark";
+            /** Receipt Id */
+            receipt_id: string;
+            /** Seal Valid */
+            seal_valid: boolean;
+        };
+        /**
+         * TraceRecord
+         * @description One record. `label` says what `excerpt` is. A field that is not stored is absent, not invented.
+         */
+        TraceRecord: {
+            /** Bursts */
+            bursts: string[];
+            /** Byte Offset */
+            byte_offset: number | null;
+            /** Canonical Sha256 */
+            canonical_sha256: string | null;
+            /** Detections */
+            detections: string[];
+            /** Duplicate */
+            duplicate: boolean | null;
+            /** Event Utc */
+            event_utc: string | null;
+            /** Evidence Id */
+            evidence_id: string | null;
+            /** Excerpt */
+            excerpt: string | null;
+            /** Fields */
+            fields: {
+                [key: string]: string;
+            };
+            /** Incidents */
+            incidents: components["schemas"]["TraceUse"][];
+            /** Label */
+            label: ("RAW RECORD" | "STORED SOURCE EXCERPT" | "CANONICAL EVENT") | null;
+            /** Line */
+            line: number | null;
+            /** Quarantine Reason */
+            quarantine_reason: string | null;
+            /** Raw Sha256 */
+            raw_sha256: string | null;
+            /**
+             * Raw Status
+             * @enum {string}
+             */
+            raw_status: "verified" | "unavailable" | "mismatch" | "not_applicable";
+            /**
+             * State
+             * @enum {string}
+             */
+            state: "canonical" | "quarantined";
+            /** Truncated */
+            truncated: boolean;
+        };
+        /** TraceRelationship */
+        TraceRelationship: {
+            /** Classification */
+            classification: string;
+            /** Element Id */
+            element_id: string;
+            /** Evidence Refs */
+            evidence_refs: string[];
+            /** Incident Id */
+            incident_id: string;
+            /**
+             * Kind
+             * @enum {string}
+             */
+            kind: "node" | "edge";
+            /** Label */
+            label: string;
+            /** Missing Evidence */
+            missing_evidence: boolean;
+            /** On Selected Path */
+            on_selected_path: boolean;
+            /** Rule */
+            rule: string | null;
+            /** Rule Version */
+            rule_version: string | null;
+        };
+        /**
+         * TraceRun
+         * @description Every SourceTrace answer names the one run it came from.
+         */
+        TraceRun: {
+            /** Dataset Id */
+            dataset_id: string;
+            /**
+             * Health State
+             * @enum {string}
+             */
+            health_state: "Verified" | "Degraded" | "Unconfirmed" | "Failed";
+            /** Narrative */
+            narrative: string;
+            /** Run Id */
+            run_id: string;
+            /** Source Available */
+            source_available: boolean;
+            /** Source Filename */
+            source_filename: string;
+            /** Source Hash Verified */
+            source_hash_verified: boolean;
+            /** Source Sha256 */
+            source_sha256: string;
+        };
+        /** TraceStep */
+        TraceStep: {
+            /** Count */
+            count: number;
+            /** Evidence Refs */
+            evidence_refs: string[];
+            /** Incident Id */
+            incident_id: string;
+            /** Incident Title */
+            incident_title: string;
+            /** Label */
+            label: string;
+            /** Node Id */
+            node_id: string;
+            /** Stage */
+            stage: string | null;
+        };
+        /** TraceUse */
+        TraceUse: {
+            /** Incident Id */
+            incident_id: string;
+            /** Status */
+            status: string;
+            /** Title */
+            title: string;
         };
         /**
          * Transition
@@ -6975,6 +7438,74 @@ export interface operations {
             };
         };
     };
+    get_provenance_api_v1_ps2_runs__run_id__provenance_get: {
+        parameters: {
+            query?: {
+                incident_id?: string | null;
+                evidence_id?: string | null;
+                statement_id?: string | null;
+                node_id?: string | null;
+                edge_id?: string | null;
+            };
+            header?: never;
+            path: {
+                run_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ProvenanceChain"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    get_provenance_summary_api_v1_ps2_runs__run_id__provenance_summary_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                run_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ProvenanceSummary"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
     get_quality_case_api_v1_ps2_runs__run_id__quality_case_get: {
         parameters: {
             query?: never;
@@ -7055,6 +7586,142 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["DatasetRun"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    get_reviews_api_v1_ps2_runs__run_id__reviews_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                run_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ReviewList"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    post_review_api_v1_ps2_runs__run_id__reviews_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                run_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["ReviewRequest"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["AnalystReview"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    get_search_api_v1_ps2_runs__run_id__search_get: {
+        parameters: {
+            query: {
+                q: string;
+                field?: ("user" | "ip" | "host" | "device" | "destination" | "service" | "action" | "message" | "event_id" | "line" | "timestamp" | "incident" | "detection" | "node" | "edge" | "receipt") | null;
+                relationship?: ("observed" | "inferred") | null;
+                cursor?: string | null;
+                limit?: number;
+            };
+            header?: never;
+            path: {
+                run_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["SearchResponse"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    get_search_suggestions_api_v1_ps2_runs__run_id__search_suggestions_get: {
+        parameters: {
+            query: {
+                q: string;
+            };
+            header?: never;
+            path: {
+                run_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["SearchSuggestions"];
                 };
             };
             /** @description Validation Error */

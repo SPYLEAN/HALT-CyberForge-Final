@@ -4,6 +4,7 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
 import { firex, type CaseCandidates } from "@/lib/firex/api";
+import { presentTitle } from "@/lib/firex/wording";
 import { classify } from "@/lib/ps2/api";
 
 import s from "./firex.module.css";
@@ -58,7 +59,7 @@ export function CaseBuilder({ runId }: { runId: string }) {
           {data.partial_case_available ? <option value="partial">Partial reconstruction: the whole source</option> : null}
           {data.items.map((i) => (
             <option key={i.incident_id} value={i.incident_id}>
-              {i.title}
+              {presentTitle(i.title)}
               {i.recommended ? " (recommended)" : ""}
             </option>
           ))}

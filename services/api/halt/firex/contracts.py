@@ -790,3 +790,212 @@ class IncidentGuide(Contract):
     steps: list[StepGuide]
     next_checks: list[NextCheck]
     note: str
+
+
+class TraceUse(Contract):
+    incident_id: str
+    title: str
+    status: str
+
+
+class TraceRun(Contract):
+    """Every SourceTrace answer names the one run it came from."""
+
+    dataset_id: str
+    run_id: str
+    source_filename: str
+    source_sha256: str
+    source_hash_verified: bool
+    source_available: bool
+    health_state: HealthState
+    narrative: str
+
+
+class TraceRecord(Contract):
+    """One record. `label` says what `excerpt` is. A field that is not stored is absent, not invented."""
+
+    state: Literal["canonical", "quarantined"]
+    evidence_id: str | None
+    line: int | None
+    byte_offset: int | None
+    event_utc: str | None
+    label: Literal["RAW RECORD", "STORED SOURCE EXCERPT", "CANONICAL EVENT"] | None
+    excerpt: str | None
+    truncated: bool
+    raw_status: Literal["verified", "unavailable", "mismatch", "not_applicable"]
+    fields: dict[str, str]
+    raw_sha256: str | None
+    canonical_sha256: str | None
+    duplicate: bool | None
+    bursts: list[str]
+    detections: list[str]
+    incidents: list[TraceUse]
+    quarantine_reason: str | None
+
+
+class TraceDetection(Contract):
+    detection_id: str
+    rule_id: str
+    rule_version: str
+    title: str
+    reason: str
+    basis: str
+    incident_id: str
+    status: str
+
+
+class TraceStep(Contract):
+    incident_id: str
+    incident_title: str
+    node_id: str
+    label: str
+    stage: str | None
+    count: int
+    evidence_refs: list[str]
+
+
+class TraceRelationship(Contract):
+    incident_id: str
+    kind: Literal["node", "edge"]
+    element_id: str
+    label: str
+    classification: str
+    on_selected_path: bool
+    missing_evidence: bool
+    rule: str | None
+    rule_version: str | None
+    evidence_refs: list[str]
+
+
+class TraceProof(Contract):
+    receipt_id: str
+    kind: Literal["incident", "benchmark"]
+    incident_id: str | None
+    seal_valid: bool
+    graph_hash: str | None
+
+
+class SearchResponse(Contract):
+    run: TraceRun
+    query: str
+    field: str | None
+    read_as: str
+    value_kind: str | None
+    value_note: str | None
+    source_records: list[TraceRecord]
+    canonical_events: list[TraceRecord]
+    detections: list[TraceDetection]
+    incident_steps: list[TraceStep]
+    graph_relationships: list[TraceRelationship]
+    proof_receipts: list[TraceProof]
+    next_cursor: str | None
+    scanned_parts: int
+    total_parts: int
+    complete: bool
+    not_found: str | None
+
+
+class SearchSuggestions(Contract):
+    run_id: str
+    values: list[str]
+
+
+class GateCheck(Contract):
+    id: str
+    label: str
+    status: Literal["passed", "failed", "unavailable", "not_applicable"]
+    detail: str
+
+
+class ProvenanceStage(Contract):
+    id: str
+    title: str
+    plain: str
+    input: str
+    transformation: str
+    output: str
+    rule: str | None
+    version: str | None
+    evidence_refs: list[str]
+    state: str
+    status: Literal["ok", "failed", "unavailable", "not_applicable"]
+
+
+ReviewDecision = Literal[
+    "Confirmed",
+    "False positive",
+    "Incorrect mapping",
+    "Incorrect correlation",
+    "Needs more evidence",
+    "Benign administrative activity",
+]
+
+
+class ReviewRequest(Contract):
+    incident_id: str | None = Field(default=None, pattern=r"^finc-[0-9a-f]{12}$")
+    evidence_id: str | None = Field(default=None, pattern=r"^ev-[0-9a-f]{8,}$")
+    decision: ReviewDecision
+    reason: str = Field(min_length=1, max_length=2000)
+    analyst: str = Field(default="demo-analyst", min_length=1, max_length=120)
+
+
+class AnalystReview(Contract):
+    """Kept apart from sealed results. `original_conclusion` is what the stored result says, unchanged."""
+
+    seq: int
+    run_id: str
+    incident_id: str | None
+    evidence_id: str | None
+    original_conclusion: str
+    decision: ReviewDecision
+    reason: str
+    analyst: str
+    at: str
+    audit_reference: str
+
+
+class ReviewList(Contract):
+    run_id: str
+    items: list[AnalystReview]
+    chain_valid: bool
+
+
+class ProvenanceChain(Contract):
+    run: TraceRun
+    subject_kind: Literal["incident", "statement", "node", "edge", "record"]
+    subject_id: str
+    subject_label: str
+    incident_id: str | None
+    original_conclusion: str | None
+    plain: str
+    statuses: list[str]
+    source_status: str
+    relationship_status: str
+    incident_status: str
+    failed_link: str | None
+    gate: list[GateCheck]
+    stages: list[ProvenanceStage]
+    records: list[TraceRecord]
+    cited_records: int
+    proof_receipt_id: str | None
+    reviews: list[AnalystReview]
+
+
+class IncidentProvenance(Contract):
+    incident_id: str
+    title: str
+    status: str
+    cited_records: int
+    verified_records: int
+    unavailable_records: int
+    failed_links: list[str]
+
+
+class ProvenanceSummary(Contract):
+    run_id: str
+    status: str
+    incidents: list[IncidentProvenance]
+    verified_records: int
+    cited_records: int
+    failed_incidents: int
+    note: str

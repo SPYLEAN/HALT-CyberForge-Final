@@ -15,6 +15,14 @@ const STATUS: Record<string, { glyph: string; tone: Tone }> = {
   Failed: { glyph: "✕", tone: "threat" },
   Degraded: { glyph: "▲", tone: "threat" },
   Unconfirmed: { glyph: "?", tone: "review" },
+  "SOURCE VERIFIED": { glyph: "✓", tone: "proof" },
+  "RELATIONSHIP OBSERVED": { glyph: "✓", tone: "proof" },
+  "RELATIONSHIP INFERRED": { glyph: "~", tone: "review" },
+  "INCIDENT UNCONFIRMED": { glyph: "?", tone: "review" },
+  "ANALYST CONFIRMED": { glyph: "✓", tone: "review" },
+  "PROVENANCE FAILED": { glyph: "✕", tone: "threat" },
+  "SOURCE UNAVAILABLE": { glyph: "–", tone: "quiet" },
+  "NOT APPLICABLE": { glyph: "∅", tone: "quiet" },
 };
 
 export function StatusBadge({ status, large }: { status: string; large?: boolean }) {

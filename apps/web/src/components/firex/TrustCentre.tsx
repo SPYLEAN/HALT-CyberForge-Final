@@ -3,12 +3,14 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 
-import { firex, type DatasetHealth, type TrustReport } from "@/lib/firex/api";
+import { firex, type DatasetHealth, type ProvenanceSummary, type TrustReport } from "@/lib/firex/api";
+import { presentTitle } from "@/lib/firex/wording";
 import { classify } from "@/lib/ps2/api";
 import { ps2Vars } from "@/styles/ps2-palette";
 
 import s from "./firex.module.css";
 import { TimeRegionMap } from "./QualityCaseView";
+import { SearchEvidence, WhyHere } from "./SourceTrace";
 import { HealthVerdict, StatusBadge } from "./Verdict";
 
 /** The first view is a verdict for each run. Hashes are one expansion away. */
@@ -101,6 +103,9 @@ export function TrustRun({ runId }: { runId: string }) {
         </p>
       </header>
       <HealthVerdict health={health} titleLevel={1} trustLink={false} />
+      <div>
+        <SearchEvidence runId={health.run_id} advanced />
+      </div>
       <p className={s.notice}>Verified means the file and the processing check out. It does not mean an incident is true.</p>
 
       <section className={s.grid} aria-label="Trust dimensions in detail">
@@ -152,7 +157,7 @@ export function TrustRun({ runId }: { runId: string }) {
                   {data.incident_scopes.map((i) => (
                     <tr key={i.incident_id}>
                       <td>
-                        <Link href={`/firex/incidents/${i.incident_id}?run=${health.run_id}`}>{i.title}</Link>
+                        <Link href={`/firex/incidents/${i.incident_id}?run=${health.run_id}`}>{presentTitle(i.title)}</Link>
                       </td>
                       <td>{i.scope_label}</td>
                       <td>
@@ -167,6 +172,8 @@ export function TrustRun({ runId }: { runId: string }) {
           ) : null}
         </section>
       ) : null}
+
+      <ProvenanceSection runId={health.run_id} />
 
       <section className={s.card} aria-labelledby="trust-proof">
         <div className={s.actions} style={{ justifyContent: "space-between" }}>
@@ -199,7 +206,7 @@ export function TrustRun({ runId }: { runId: string }) {
                   {data.proofs.map((p) => (
                     <tr key={p.incident_id}>
                       <td>
-                        <Link href={`/firex/incidents/${p.incident_id}?run=${health.run_id}`}>{p.title}</Link>
+                        <Link href={`/firex/incidents/${p.incident_id}?run=${health.run_id}`}>{presentTitle(p.title)}</Link>
                       </td>
                       <td>{p.seal_valid ? "Valid" : "Failed"}</td>
                       <td>{Math.round(p.evidence_coverage * 100)}%</td>
@@ -220,5 +227,55 @@ export function TrustRun({ runId }: { runId: string }) {
         </details>
       </section>
     </div>
+  );
+}
+
+/** The provenance gate over every incident's citations. A failed claim is named here and never counted as verified. */
+function ProvenanceSection({ runId }: { runId: string }) {
+  const [data, setData] = useState<ProvenanceSummary | null>(null);
+  const [failure, setFailure] = useState<string | null>(null);
+  useEffect(() => {
+    let live = true;
+    firex
+      .provenanceSummary(runId)
+      .then((d) => live && setData(d))
+      .catch((e: unknown) => live && setFailure(classify(e).message));
+    return () => {
+      live = false;
+    };
+  }, [runId]);
+  return (
+    <section className={s.card} aria-labelledby="trust-provenance">
+      <div className={s.actions} style={{ justifyContent: "space-between" }}>
+        <h2 id="trust-provenance">Source provenance</h2>
+        {data ? <StatusBadge status={data.status} /> : null}
+      </div>
+      {failure ? <p className={s.meta}>Provenance could not be checked: {failure}</p> : null}
+      {!data && !failure ? <p role="status">Checking each cited record against its source…</p> : null}
+      {data ? (
+        <>
+          <p>{data.note}</p>
+          {data.incidents.length ? (
+            <p className={s.meta}>
+              {data.verified_records} of {data.cited_records} cited records verified to their source line. {data.failed_incidents} incident(s) failed.
+            </p>
+          ) : null}
+          {data.incidents.length ? (
+            <ul className={s.traceList} aria-label="Provenance of each incident">
+              {data.incidents.map((i) => (
+                <li key={i.incident_id} className={s.traceRow}>
+                  <div className={s.actions} style={{ justifyContent: "space-between" }}>
+                    <span>{presentTitle(i.title)}</span>
+                    <StatusBadge status={i.status} />
+                  </div>
+                  {i.failed_links.length ? <p className={s.alert}>Failed: {i.failed_links.join(". ")}</p> : null}
+                  <WhyHere runId={runId} query={{ incident_id: i.incident_id }} />
+                </li>
+              ))}
+            </ul>
+          ) : null}
+        </>
+      ) : null}
+    </section>
   );
 }

@@ -5576,7 +5576,7 @@
         "is_hash": true,
         "label": "Git commit",
         "status": null,
-        "value": "2ef8c063faa4e93c370b3465473ad176560105bd"
+        "value": "4f9a572431bf763f562baa720a1f163ebfe80846"
        },
        {
         "is_hash": false,
@@ -5886,6 +5886,2120 @@
    },
    "status": 200
   },
+  "GET /api/v1/ps2/runs/frun-370ac3a914901431/provenance-summary": {
+   "body": {
+    "cited_records": 39,
+    "failed_incidents": 0,
+    "incidents": [
+     {
+      "cited_records": 21,
+      "failed_links": [],
+      "incident_id": "finc-06dbcd7d8183",
+      "status": "SOURCE VERIFIED",
+      "title": "Internal SMB or RDP fan-out from one host and 1 related",
+      "unavailable_records": 0,
+      "verified_records": 21
+     },
+     {
+      "cited_records": 3,
+      "failed_links": [],
+      "incident_id": "finc-ec918f810a84",
+      "status": "SOURCE VERIFIED",
+      "title": "Account created, used, then removed",
+      "unavailable_records": 0,
+      "verified_records": 3
+     },
+     {
+      "cited_records": 15,
+      "failed_links": [],
+      "incident_id": "finc-0526ba4f57ac",
+      "status": "SOURCE VERIFIED",
+      "title": "Concentrated multi-technique web attack on one target",
+      "unavailable_records": 0,
+      "verified_records": 15
+     }
+    ],
+    "note": "Source verified means each cited record resolves to its source line. It does not mean an incident is true: every incident stays unconfirmed until an analyst reviews it.",
+    "run_id": "frun-370ac3a914901431",
+    "status": "SOURCE VERIFIED",
+    "verified_records": 39
+   },
+   "status": 200
+  },
+  "GET /api/v1/ps2/runs/frun-370ac3a914901431/provenance?incident_id=finc-0526ba4f57ac": {
+   "body": {
+    "cited_records": 15,
+    "failed_link": null,
+    "gate": [
+     {
+      "detail": "Dataset fixture.",
+      "id": "dataset",
+      "label": "The dataset matches the run",
+      "status": "passed"
+     },
+     {
+      "detail": "Run frun-370ac3a914901431.",
+      "id": "run",
+      "label": "The run matches the incident",
+      "status": "passed"
+     },
+     {
+      "detail": "fixture.log.",
+      "id": "filename",
+      "label": "The source filename matches the dataset",
+      "status": "passed"
+     },
+     {
+      "detail": "Plan, receipts and cited records agree on 5246c5d53f02b0c3…. The whole file was hashed during the run, and is not hashed again here.",
+      "id": "source_hash",
+      "label": "The source hash matches the stored run",
+      "status": "passed"
+     },
+     {
+      "detail": "15 of 15 cited record(s) resolve to a stored line.",
+      "id": "origin",
+      "label": "The cited line resolves",
+      "status": "passed"
+     },
+     {
+      "detail": "The cited events exist, and their canonical hashes match.",
+      "id": "canonical",
+      "label": "The canonical event exists",
+      "status": "passed"
+     },
+     {
+      "detail": "15 line(s) read at the stored offset match their stored hash.",
+      "id": "source_record",
+      "label": "The source line matches its stored hash",
+      "status": "passed"
+     },
+     {
+      "detail": "1 detection(s) are stored and cite evidence.",
+      "id": "detection",
+      "label": "The detection references valid evidence",
+      "status": "passed"
+     },
+     {
+      "detail": "No graph element was asked about.",
+      "id": "graph",
+      "label": "The graph element cites the expected evidence",
+      "status": "not_applicable"
+     },
+     {
+      "detail": "No statement was asked about.",
+      "id": "statement",
+      "label": "The story statement cites stored evidence",
+      "status": "not_applicable"
+     },
+     {
+      "detail": "Seal valid, graph hash matches. 6 artifacts match the hashes in the benchmark receipt.",
+      "id": "proof",
+      "label": "The proof contains the expected hashes",
+      "status": "passed"
+     }
+    ],
+    "incident_id": "finc-0526ba4f57ac",
+    "incident_status": "INCIDENT UNCONFIRMED",
+    "original_conclusion": "unconfirmed",
+    "plain": "This record exists in the source: dropped. The connection to other records is inferred by a rule. The incident is unconfirmed: this shows what the evidence holds, not malicious intent.",
+    "proof_receipt_id": "fprf-89042af3d73bdf39",
+    "records": [
+     {
+      "bursts": [
+       "fbur-b25685584fa0f567"
+      ],
+      "byte_offset": 28703,
+      "canonical_sha256": "1ec1a6bf9c8e5947e2d2c87d8baa958d",
+      "detections": [
+       "fdet-3afaf7d5231488bd"
+      ],
+      "duplicate": false,
+      "event_utc": "2027-01-15T08:16:40Z",
+      "evidence_id": "ev-7090074172dcdc0cdd5309f1",
+      "excerpt": "date=2027-01-15 time=08:16:40 eventtime=1800001000000000000 tz=\"+0530\" devname=\"FGT-TEST\" devid=\"FGT-TEST\" logid=\"0419016384\" type=\"utm\" subtype=\"ips\" level=\"alert\" vd=\"root\" srcip=203.0.113.20 srcintfrole=\"wan\" dstip=10.20.0.200 dstintfrole=\"dmz\" dstport=443 sessionid=2000 proto=6 action=\"dropped\" service=\"HTTPS\" attack=\"HTTP.URI.SQL.Injection\" attackid=15000 severity=\"high\"",
+      "fields": {
+       "action": "dropped",
+       "attack": "HTTP.URI.SQL.Injection",
+       "attack_id": "15000",
+       "date": "2027-01-15",
+       "devid": "FGT-TEST",
+       "devname": "FGT-TEST",
+       "dst_ip": "10.20.0.200",
+       "dst_port": "443",
+       "dst_role": "dmz",
+       "event_type": "utm",
+       "level": "alert",
+       "logid": "0419016384",
+       "proto": "6",
+       "service": "HTTPS",
+       "session_id": "2000",
+       "severity": "high",
+       "src_ip": "203.0.113.20",
+       "src_role": "wan",
+       "subtype": "ips",
+       "time": "08:16:40",
+       "tz": "+0530",
+       "vd": "root"
+      },
+      "incidents": [
+       {
+        "incident_id": "finc-0526ba4f57ac",
+        "status": "unconfirmed",
+        "title": "Concentrated multi-technique web attack on one target"
+       }
+      ],
+      "label": "RAW RECORD",
+      "line": 84,
+      "quarantine_reason": null,
+      "raw_sha256": "2fdeaae7f67f139f5ab4ee03cd2dd59c",
+      "raw_status": "verified",
+      "state": "canonical",
+      "truncated": false
+     },
+     {
+      "bursts": [
+       "fbur-b25685584fa0f567"
+      ],
+      "byte_offset": 29834,
+      "canonical_sha256": "2788bdcc8309a7f1cfd97f9753f3be56",
+      "detections": [
+       "fdet-3afaf7d5231488bd"
+      ],
+      "duplicate": false,
+      "event_utc": "2027-01-15T08:16:43Z",
+      "evidence_id": "ev-81083a6b2db6fcccb7568553",
+      "excerpt": "date=2027-01-15 time=08:16:43 eventtime=1800001003000000000 tz=\"+0530\" devname=\"FGT-TEST\" devid=\"FGT-TEST\" logid=\"0419016384\" type=\"utm\" subtype=\"ips\" level=\"alert\" vd=\"root\" srcip=203.0.113.20 srcintfrole=\"wan\" dstip=10.20.0.200 dstintfrole=\"dmz\" dstport=443 sessionid=2003 proto=6 action=\"dropped\" service=\"HTTPS\" attack=\"HTTP.URI.SQL.Injection\" attackid=15003 severity=\"high\"",
+      "fields": {
+       "action": "dropped",
+       "attack": "HTTP.URI.SQL.Injection",
+       "attack_id": "15003",
+       "date": "2027-01-15",
+       "devid": "FGT-TEST",
+       "devname": "FGT-TEST",
+       "dst_ip": "10.20.0.200",
+       "dst_port": "443",
+       "dst_role": "dmz",
+       "event_type": "utm",
+       "level": "alert",
+       "logid": "0419016384",
+       "proto": "6",
+       "service": "HTTPS",
+       "session_id": "2003",
+       "severity": "high",
+       "src_ip": "203.0.113.20",
+       "src_role": "wan",
+       "subtype": "ips",
+       "time": "08:16:43",
+       "tz": "+0530",
+       "vd": "root"
+      },
+      "incidents": [
+       {
+        "incident_id": "finc-0526ba4f57ac",
+        "status": "unconfirmed",
+        "title": "Concentrated multi-technique web attack on one target"
+       }
+      ],
+      "label": "RAW RECORD",
+      "line": 87,
+      "quarantine_reason": null,
+      "raw_sha256": "08d25dbef4deab316a4fe797f413616a",
+      "raw_status": "verified",
+      "state": "canonical",
+      "truncated": false
+     },
+     {
+      "bursts": [
+       "fbur-b25685584fa0f567"
+      ],
+      "byte_offset": 30965,
+      "canonical_sha256": "a518a8db52fe017ebcdad077c4d36969",
+      "detections": [
+       "fdet-3afaf7d5231488bd"
+      ],
+      "duplicate": false,
+      "event_utc": "2027-01-15T08:16:46Z",
+      "evidence_id": "ev-8e745ade9716e31b43fde7af",
+      "excerpt": "date=2027-01-15 time=08:16:46 eventtime=1800001006000000000 tz=\"+0530\" devname=\"FGT-TEST\" devid=\"FGT-TEST\" logid=\"0419016384\" type=\"utm\" subtype=\"ips\" level=\"alert\" vd=\"root\" srcip=203.0.113.20 srcintfrole=\"wan\" dstip=10.20.0.200 dstintfrole=\"dmz\" dstport=443 sessionid=2006 proto=6 action=\"dropped\" service=\"HTTPS\" attack=\"HTTP.URI.SQL.Injection\" attackid=15006 severity=\"high\"",
+      "fields": {
+       "action": "dropped",
+       "attack": "HTTP.URI.SQL.Injection",
+       "attack_id": "15006",
+       "date": "2027-01-15",
+       "devid": "FGT-TEST",
+       "devname": "FGT-TEST",
+       "dst_ip": "10.20.0.200",
+       "dst_port": "443",
+       "dst_role": "dmz",
+       "event_type": "utm",
+       "level": "alert",
+       "logid": "0419016384",
+       "proto": "6",
+       "service": "HTTPS",
+       "session_id": "2006",
+       "severity": "high",
+       "src_ip": "203.0.113.20",
+       "src_role": "wan",
+       "subtype": "ips",
+       "time": "08:16:46",
+       "tz": "+0530",
+       "vd": "root"
+      },
+      "incidents": [
+       {
+        "incident_id": "finc-0526ba4f57ac",
+        "status": "unconfirmed",
+        "title": "Concentrated multi-technique web attack on one target"
+       }
+      ],
+      "label": "RAW RECORD",
+      "line": 90,
+      "quarantine_reason": null,
+      "raw_sha256": "dd718a0c423677e1e8d678b18e96ea55",
+      "raw_status": "verified",
+      "state": "canonical",
+      "truncated": false
+     },
+     {
+      "bursts": [
+       "fbur-b25685584fa0f567"
+      ],
+      "byte_offset": 32096,
+      "canonical_sha256": "ebe29a430ad24c4ab9c725262409ce2d",
+      "detections": [
+       "fdet-3afaf7d5231488bd"
+      ],
+      "duplicate": false,
+      "event_utc": "2027-01-15T08:16:49Z",
+      "evidence_id": "ev-ab9bbafce5157b79fbe33a32",
+      "excerpt": "date=2027-01-15 time=08:16:49 eventtime=1800001009000000000 tz=\"+0530\" devname=\"FGT-TEST\" devid=\"FGT-TEST\" logid=\"0419016384\" type=\"utm\" subtype=\"ips\" level=\"alert\" vd=\"root\" srcip=203.0.113.20 srcintfrole=\"wan\" dstip=10.20.0.200 dstintfrole=\"dmz\" dstport=443 sessionid=2009 proto=6 action=\"dropped\" service=\"HTTPS\" attack=\"HTTP.URI.SQL.Injection\" attackid=15009 severity=\"high\"",
+      "fields": {
+       "action": "dropped",
+       "attack": "HTTP.URI.SQL.Injection",
+       "attack_id": "15009",
+       "date": "2027-01-15",
+       "devid": "FGT-TEST",
+       "devname": "FGT-TEST",
+       "dst_ip": "10.20.0.200",
+       "dst_port": "443",
+       "dst_role": "dmz",
+       "event_type": "utm",
+       "level": "alert",
+       "logid": "0419016384",
+       "proto": "6",
+       "service": "HTTPS",
+       "session_id": "2009",
+       "severity": "high",
+       "src_ip": "203.0.113.20",
+       "src_role": "wan",
+       "subtype": "ips",
+       "time": "08:16:49",
+       "tz": "+0530",
+       "vd": "root"
+      },
+      "incidents": [
+       {
+        "incident_id": "finc-0526ba4f57ac",
+        "status": "unconfirmed",
+        "title": "Concentrated multi-technique web attack on one target"
+       }
+      ],
+      "label": "RAW RECORD",
+      "line": 93,
+      "quarantine_reason": null,
+      "raw_sha256": "f35284d375c6c66fd3f7050596bbd32d",
+      "raw_status": "verified",
+      "state": "canonical",
+      "truncated": false
+     },
+     {
+      "bursts": [
+       "fbur-b25685584fa0f567"
+      ],
+      "byte_offset": 33227,
+      "canonical_sha256": "627b8cf03631022caf938c46b29f8d3e",
+      "detections": [
+       "fdet-3afaf7d5231488bd"
+      ],
+      "duplicate": false,
+      "event_utc": "2027-01-15T08:16:52Z",
+      "evidence_id": "ev-0a31a9bad83f113f064bd0da",
+      "excerpt": "date=2027-01-15 time=08:16:52 eventtime=1800001012000000000 tz=\"+0530\" devname=\"FGT-TEST\" devid=\"FGT-TEST\" logid=\"0419016384\" type=\"utm\" subtype=\"ips\" level=\"alert\" vd=\"root\" srcip=203.0.113.20 srcintfrole=\"wan\" dstip=10.20.0.200 dstintfrole=\"dmz\" dstport=443 sessionid=2012 proto=6 action=\"dropped\" service=\"HTTPS\" attack=\"HTTP.URI.SQL.Injection\" attackid=15012 severity=\"high\"",
+      "fields": {
+       "action": "dropped",
+       "attack": "HTTP.URI.SQL.Injection",
+       "attack_id": "15012",
+       "date": "2027-01-15",
+       "devid": "FGT-TEST",
+       "devname": "FGT-TEST",
+       "dst_ip": "10.20.0.200",
+       "dst_port": "443",
+       "dst_role": "dmz",
+       "event_type": "utm",
+       "level": "alert",
+       "logid": "0419016384",
+       "proto": "6",
+       "service": "HTTPS",
+       "session_id": "2012",
+       "severity": "high",
+       "src_ip": "203.0.113.20",
+       "src_role": "wan",
+       "subtype": "ips",
+       "time": "08:16:52",
+       "tz": "+0530",
+       "vd": "root"
+      },
+      "incidents": [
+       {
+        "incident_id": "finc-0526ba4f57ac",
+        "status": "unconfirmed",
+        "title": "Concentrated multi-technique web attack on one target"
+       }
+      ],
+      "label": "RAW RECORD",
+      "line": 96,
+      "quarantine_reason": null,
+      "raw_sha256": "8c22b726bc6971e0f0d94ba742e96673",
+      "raw_status": "verified",
+      "state": "canonical",
+      "truncated": false
+     },
+     {
+      "bursts": [
+       "fbur-95776f0c53dd33f4"
+      ],
+      "byte_offset": 29082,
+      "canonical_sha256": "39f9bef734beb116c3fd356959d2c565",
+      "detections": [
+       "fdet-3afaf7d5231488bd"
+      ],
+      "duplicate": false,
+      "event_utc": "2027-01-15T08:16:41Z",
+      "evidence_id": "ev-3deaf3f2b3636f28b150256b",
+      "excerpt": "date=2027-01-15 time=08:16:41 eventtime=1800001001000000000 tz=\"+0530\" devname=\"FGT-TEST\" devid=\"FGT-TEST\" logid=\"0419016384\" type=\"utm\" subtype=\"ips\" level=\"alert\" vd=\"root\" srcip=203.0.113.21 srcintfrole=\"wan\" dstip=10.20.0.200 dstintfrole=\"dmz\" dstport=443 sessionid=2001 proto=6 action=\"dropped\" service=\"HTTPS\" attack=\"HTTP.Path.Traversal\" attackid=15001 severity=\"high\"",
+      "fields": {
+       "action": "dropped",
+       "attack": "HTTP.Path.Traversal",
+       "attack_id": "15001",
+       "date": "2027-01-15",
+       "devid": "FGT-TEST",
+       "devname": "FGT-TEST",
+       "dst_ip": "10.20.0.200",
+       "dst_port": "443",
+       "dst_role": "dmz",
+       "event_type": "utm",
+       "level": "alert",
+       "logid": "0419016384",
+       "proto": "6",
+       "service": "HTTPS",
+       "session_id": "2001",
+       "severity": "high",
+       "src_ip": "203.0.113.21",
+       "src_role": "wan",
+       "subtype": "ips",
+       "time": "08:16:41",
+       "tz": "+0530",
+       "vd": "root"
+      },
+      "incidents": [
+       {
+        "incident_id": "finc-0526ba4f57ac",
+        "status": "unconfirmed",
+        "title": "Concentrated multi-technique web attack on one target"
+       }
+      ],
+      "label": "RAW RECORD",
+      "line": 85,
+      "quarantine_reason": null,
+      "raw_sha256": "3cf417be71024fc59ecec94b91c6740d",
+      "raw_status": "verified",
+      "state": "canonical",
+      "truncated": false
+     },
+     {
+      "bursts": [
+       "fbur-95776f0c53dd33f4"
+      ],
+      "byte_offset": 30213,
+      "canonical_sha256": "0b3de4e3db0e991a8480aa9c5ce08955",
+      "detections": [
+       "fdet-3afaf7d5231488bd"
+      ],
+      "duplicate": false,
+      "event_utc": "2027-01-15T08:16:44Z",
+      "evidence_id": "ev-b77b9fb32fe3193b950dddd7",
+      "excerpt": "date=2027-01-15 time=08:16:44 eventtime=1800001004000000000 tz=\"+0530\" devname=\"FGT-TEST\" devid=\"FGT-TEST\" logid=\"0419016384\" type=\"utm\" subtype=\"ips\" level=\"alert\" vd=\"root\" srcip=203.0.113.21 srcintfrole=\"wan\" dstip=10.20.0.200 dstintfrole=\"dmz\" dstport=443 sessionid=2004 proto=6 action=\"dropped\" service=\"HTTPS\" attack=\"HTTP.Path.Traversal\" attackid=15004 severity=\"high\"",
+      "fields": {
+       "action": "dropped",
+       "attack": "HTTP.Path.Traversal",
+       "attack_id": "15004",
+       "date": "2027-01-15",
+       "devid": "FGT-TEST",
+       "devname": "FGT-TEST",
+       "dst_ip": "10.20.0.200",
+       "dst_port": "443",
+       "dst_role": "dmz",
+       "event_type": "utm",
+       "level": "alert",
+       "logid": "0419016384",
+       "proto": "6",
+       "service": "HTTPS",
+       "session_id": "2004",
+       "severity": "high",
+       "src_ip": "203.0.113.21",
+       "src_role": "wan",
+       "subtype": "ips",
+       "time": "08:16:44",
+       "tz": "+0530",
+       "vd": "root"
+      },
+      "incidents": [
+       {
+        "incident_id": "finc-0526ba4f57ac",
+        "status": "unconfirmed",
+        "title": "Concentrated multi-technique web attack on one target"
+       }
+      ],
+      "label": "RAW RECORD",
+      "line": 88,
+      "quarantine_reason": null,
+      "raw_sha256": "2d306894ff8f919e87fbe78530db86d1",
+      "raw_status": "verified",
+      "state": "canonical",
+      "truncated": false
+     },
+     {
+      "bursts": [
+       "fbur-95776f0c53dd33f4"
+      ],
+      "byte_offset": 31344,
+      "canonical_sha256": "554a59a37a31f6cdde6786379997a121",
+      "detections": [
+       "fdet-3afaf7d5231488bd"
+      ],
+      "duplicate": false,
+      "event_utc": "2027-01-15T08:16:47Z",
+      "evidence_id": "ev-e756c5ad7af222a1f3e2f2a2",
+      "excerpt": "date=2027-01-15 time=08:16:47 eventtime=1800001007000000000 tz=\"+0530\" devname=\"FGT-TEST\" devid=\"FGT-TEST\" logid=\"0419016384\" type=\"utm\" subtype=\"ips\" level=\"alert\" vd=\"root\" srcip=203.0.113.21 srcintfrole=\"wan\" dstip=10.20.0.200 dstintfrole=\"dmz\" dstport=443 sessionid=2007 proto=6 action=\"dropped\" service=\"HTTPS\" attack=\"HTTP.Path.Traversal\" attackid=15007 severity=\"high\"",
+      "fields": {
+       "action": "dropped",
+       "attack": "HTTP.Path.Traversal",
+       "attack_id": "15007",
+       "date": "2027-01-15",
+       "devid": "FGT-TEST",
+       "devname": "FGT-TEST",
+       "dst_ip": "10.20.0.200",
+       "dst_port": "443",
+       "dst_role": "dmz",
+       "event_type": "utm",
+       "level": "alert",
+       "logid": "0419016384",
+       "proto": "6",
+       "service": "HTTPS",
+       "session_id": "2007",
+       "severity": "high",
+       "src_ip": "203.0.113.21",
+       "src_role": "wan",
+       "subtype": "ips",
+       "time": "08:16:47",
+       "tz": "+0530",
+       "vd": "root"
+      },
+      "incidents": [
+       {
+        "incident_id": "finc-0526ba4f57ac",
+        "status": "unconfirmed",
+        "title": "Concentrated multi-technique web attack on one target"
+       }
+      ],
+      "label": "RAW RECORD",
+      "line": 91,
+      "quarantine_reason": null,
+      "raw_sha256": "5eef91a67d9d7358ae4cfb6ae326736b",
+      "raw_status": "verified",
+      "state": "canonical",
+      "truncated": false
+     },
+     {
+      "bursts": [
+       "fbur-95776f0c53dd33f4"
+      ],
+      "byte_offset": 32475,
+      "canonical_sha256": "671c643680a7cafd776897aa16da7b85",
+      "detections": [
+       "fdet-3afaf7d5231488bd"
+      ],
+      "duplicate": false,
+      "event_utc": "2027-01-15T08:16:50Z",
+      "evidence_id": "ev-8ab4a455f3f8a8b490c1019b",
+      "excerpt": "date=2027-01-15 time=08:16:50 eventtime=1800001010000000000 tz=\"+0530\" devname=\"FGT-TEST\" devid=\"FGT-TEST\" logid=\"0419016384\" type=\"utm\" subtype=\"ips\" level=\"alert\" vd=\"root\" srcip=203.0.113.21 srcintfrole=\"wan\" dstip=10.20.0.200 dstintfrole=\"dmz\" dstport=443 sessionid=2010 proto=6 action=\"dropped\" service=\"HTTPS\" attack=\"HTTP.Path.Traversal\" attackid=15010 severity=\"high\"",
+      "fields": {
+       "action": "dropped",
+       "attack": "HTTP.Path.Traversal",
+       "attack_id": "15010",
+       "date": "2027-01-15",
+       "devid": "FGT-TEST",
+       "devname": "FGT-TEST",
+       "dst_ip": "10.20.0.200",
+       "dst_port": "443",
+       "dst_role": "dmz",
+       "event_type": "utm",
+       "level": "alert",
+       "logid": "0419016384",
+       "proto": "6",
+       "service": "HTTPS",
+       "session_id": "2010",
+       "severity": "high",
+       "src_ip": "203.0.113.21",
+       "src_role": "wan",
+       "subtype": "ips",
+       "time": "08:16:50",
+       "tz": "+0530",
+       "vd": "root"
+      },
+      "incidents": [
+       {
+        "incident_id": "finc-0526ba4f57ac",
+        "status": "unconfirmed",
+        "title": "Concentrated multi-technique web attack on one target"
+       }
+      ],
+      "label": "RAW RECORD",
+      "line": 94,
+      "quarantine_reason": null,
+      "raw_sha256": "2dd8e90ee561452467ce5638c99fdd44",
+      "raw_status": "verified",
+      "state": "canonical",
+      "truncated": false
+     },
+     {
+      "bursts": [
+       "fbur-95776f0c53dd33f4"
+      ],
+      "byte_offset": 33606,
+      "canonical_sha256": "c7aeae7710ad38a5f862fa83bcf8eb2e",
+      "detections": [
+       "fdet-3afaf7d5231488bd"
+      ],
+      "duplicate": false,
+      "event_utc": "2027-01-15T08:16:53Z",
+      "evidence_id": "ev-7a4801a220b929914726bc2f",
+      "excerpt": "date=2027-01-15 time=08:16:53 eventtime=1800001013000000000 tz=\"+0530\" devname=\"FGT-TEST\" devid=\"FGT-TEST\" logid=\"0419016384\" type=\"utm\" subtype=\"ips\" level=\"alert\" vd=\"root\" srcip=203.0.113.21 srcintfrole=\"wan\" dstip=10.20.0.200 dstintfrole=\"dmz\" dstport=443 sessionid=2013 proto=6 action=\"dropped\" service=\"HTTPS\" attack=\"HTTP.Path.Traversal\" attackid=15013 severity=\"high\"",
+      "fields": {
+       "action": "dropped",
+       "attack": "HTTP.Path.Traversal",
+       "attack_id": "15013",
+       "date": "2027-01-15",
+       "devid": "FGT-TEST",
+       "devname": "FGT-TEST",
+       "dst_ip": "10.20.0.200",
+       "dst_port": "443",
+       "dst_role": "dmz",
+       "event_type": "utm",
+       "level": "alert",
+       "logid": "0419016384",
+       "proto": "6",
+       "service": "HTTPS",
+       "session_id": "2013",
+       "severity": "high",
+       "src_ip": "203.0.113.21",
+       "src_role": "wan",
+       "subtype": "ips",
+       "time": "08:16:53",
+       "tz": "+0530",
+       "vd": "root"
+      },
+      "incidents": [
+       {
+        "incident_id": "finc-0526ba4f57ac",
+        "status": "unconfirmed",
+        "title": "Concentrated multi-technique web attack on one target"
+       }
+      ],
+      "label": "RAW RECORD",
+      "line": 97,
+      "quarantine_reason": null,
+      "raw_sha256": "550dae8fb3e6c489fb4e9e8dc9d4cda0",
+      "raw_status": "verified",
+      "state": "canonical",
+      "truncated": false
+     },
+     {
+      "bursts": [
+       "fbur-832aa496946874a8"
+      ],
+      "byte_offset": 29458,
+      "canonical_sha256": "ca126ad056129e52d90db778da9761af",
+      "detections": [
+       "fdet-3afaf7d5231488bd"
+      ],
+      "duplicate": false,
+      "event_utc": "2027-01-15T08:16:42Z",
+      "evidence_id": "ev-9795355d17f37929a6d67598",
+      "excerpt": "date=2027-01-15 time=08:16:42 eventtime=1800001002000000000 tz=\"+0530\" devname=\"FGT-TEST\" devid=\"FGT-TEST\" logid=\"0419016384\" type=\"utm\" subtype=\"ips\" level=\"alert\" vd=\"root\" srcip=203.0.113.22 srcintfrole=\"wan\" dstip=10.20.0.200 dstintfrole=\"dmz\" dstport=443 sessionid=2002 proto=6 action=\"dropped\" service=\"HTTPS\" attack=\"HTTP.URI.XSS.Attack\" attackid=15002 severity=\"high\"",
+      "fields": {
+       "action": "dropped",
+       "attack": "HTTP.URI.XSS.Attack",
+       "attack_id": "15002",
+       "date": "2027-01-15",
+       "devid": "FGT-TEST",
+       "devname": "FGT-TEST",
+       "dst_ip": "10.20.0.200",
+       "dst_port": "443",
+       "dst_role": "dmz",
+       "event_type": "utm",
+       "level": "alert",
+       "logid": "0419016384",
+       "proto": "6",
+       "service": "HTTPS",
+       "session_id": "2002",
+       "severity": "high",
+       "src_ip": "203.0.113.22",
+       "src_role": "wan",
+       "subtype": "ips",
+       "time": "08:16:42",
+       "tz": "+0530",
+       "vd": "root"
+      },
+      "incidents": [
+       {
+        "incident_id": "finc-0526ba4f57ac",
+        "status": "unconfirmed",
+        "title": "Concentrated multi-technique web attack on one target"
+       }
+      ],
+      "label": "RAW RECORD",
+      "line": 86,
+      "quarantine_reason": null,
+      "raw_sha256": "12f85e6944587dce7c49496aaf40812f",
+      "raw_status": "verified",
+      "state": "canonical",
+      "truncated": false
+     },
+     {
+      "bursts": [
+       "fbur-832aa496946874a8"
+      ],
+      "byte_offset": 30589,
+      "canonical_sha256": "8973330203238ee67510f7019aaac392",
+      "detections": [
+       "fdet-3afaf7d5231488bd"
+      ],
+      "duplicate": false,
+      "event_utc": "2027-01-15T08:16:45Z",
+      "evidence_id": "ev-6db15019f88a4baeb47f81f2",
+      "excerpt": "date=2027-01-15 time=08:16:45 eventtime=1800001005000000000 tz=\"+0530\" devname=\"FGT-TEST\" devid=\"FGT-TEST\" logid=\"0419016384\" type=\"utm\" subtype=\"ips\" level=\"alert\" vd=\"root\" srcip=203.0.113.22 srcintfrole=\"wan\" dstip=10.20.0.200 dstintfrole=\"dmz\" dstport=443 sessionid=2005 proto=6 action=\"dropped\" service=\"HTTPS\" attack=\"HTTP.URI.XSS.Attack\" attackid=15005 severity=\"high\"",
+      "fields": {
+       "action": "dropped",
+       "attack": "HTTP.URI.XSS.Attack",
+       "attack_id": "15005",
+       "date": "2027-01-15",
+       "devid": "FGT-TEST",
+       "devname": "FGT-TEST",
+       "dst_ip": "10.20.0.200",
+       "dst_port": "443",
+       "dst_role": "dmz",
+       "event_type": "utm",
+       "level": "alert",
+       "logid": "0419016384",
+       "proto": "6",
+       "service": "HTTPS",
+       "session_id": "2005",
+       "severity": "high",
+       "src_ip": "203.0.113.22",
+       "src_role": "wan",
+       "subtype": "ips",
+       "time": "08:16:45",
+       "tz": "+0530",
+       "vd": "root"
+      },
+      "incidents": [
+       {
+        "incident_id": "finc-0526ba4f57ac",
+        "status": "unconfirmed",
+        "title": "Concentrated multi-technique web attack on one target"
+       }
+      ],
+      "label": "RAW RECORD",
+      "line": 89,
+      "quarantine_reason": null,
+      "raw_sha256": "67852e22bd70e9047248099789506515",
+      "raw_status": "verified",
+      "state": "canonical",
+      "truncated": false
+     }
+    ],
+    "relationship_status": "RELATIONSHIP INFERRED",
+    "reviews": [],
+    "run": {
+     "dataset_id": "fixture",
+     "health_state": "Unconfirmed",
+     "narrative": "Reconstructed, unconfirmed incidents",
+     "run_id": "frun-370ac3a914901431",
+     "source_available": true,
+     "source_filename": "fixture.log",
+     "source_hash_verified": true,
+     "source_sha256": "5246c5d53f02b0c36b06df4cd7888bbd064213050995cf4304abcc462d3e7c73"
+    },
+    "source_status": "SOURCE VERIFIED",
+    "stages": [
+     {
+      "evidence_refs": [
+       "ev-7090074172dcdc0cdd5309f1"
+      ],
+      "id": "source",
+      "input": "fixture.log, SHA-256 5246c5d53f02b0c36b06df4cd7888bbd064213050995cf4304abcc462d3e7c73",
+      "output": "Line 84, byte offset 28,703.",
+      "plain": "Line 84 of fixture.log holds this record, and its stored hash matches.",
+      "rule": null,
+      "state": "observed",
+      "status": "ok",
+      "title": "Source record",
+      "transformation": "One line, read by seeking to its stored byte offset.",
+      "version": null
+     },
+     {
+      "evidence_refs": [
+       "ev-7090074172dcdc0cdd5309f1"
+      ],
+      "id": "parser",
+      "input": "The raw key=value text.",
+      "output": "eventtime → event_ns, date → date, time → time, tz → tz, devname → devname, devid → devid, vd → vd, type → event_type, subtype → subtype, logid → logid, level → level, action → action, srcip → src_ip, dstip → dst_ip, srcintfrole → src_role, dstintfrole → dst_role, sessionid → session_id, proto → proto, service → service, attack → attack, attackid → attack_id, severity → severity, dstport → dst_port",
+      "plain": "The parser read the record's key=value pairs and mapped each known key to a named field. It does not guess values.",
+      "rule": "Field mapping",
+      "state": "observed",
+      "status": "ok",
+      "title": "Parser mapping",
+      "transformation": "Each known key is mapped to one canonical field. Unknown keys are kept in extra_json.",
+      "version": "halt.firex.parser/1.0.0"
+     },
+     {
+      "evidence_refs": [
+       "ev-7090074172dcdc0cdd5309f1"
+      ],
+      "id": "canonical",
+      "input": "The mapped fields.",
+      "output": "evidence_id ev-7090074172dcdc0cdd5309f1, canonical hash 1ec1a6bf9c8e5947e2d2c87d8baa958d",
+      "plain": "It became stored event ev-7090074172dcdc0cdd5309f1, and its time was read from eventtime.",
+      "rule": null,
+      "state": "observed",
+      "status": "ok",
+      "title": "Canonical event",
+      "transformation": "Hashed into a canonical hash and an evidence id. eventtime gives the time. Other fields are unchanged.",
+      "version": "halt.firex.parser/1.0.0"
+     },
+     {
+      "evidence_refs": [
+       "ev-7090074172dcdc0cdd5309f1"
+      ],
+      "id": "dedupe",
+      "input": "All canonical events.",
+      "output": "Kept. Bursts: fbur-b25685584fa0f567.",
+      "plain": "This record is not a duplicate. It belongs to 1 stored burst(s).",
+      "rule": "burst.repeated_behaviour",
+      "state": "observed",
+      "status": "ok",
+      "title": "Duplicate and burst handling",
+      "transformation": "Lines with the same raw hash count once. Repeated behaviour is grouped into bursts, and each burst keeps only a sample of its citations.",
+      "version": null
+     },
+     {
+      "evidence_refs": [
+       "ev-7090074172dcdc0cdd5309f1",
+       "ev-81083a6b2db6fcccb7568553",
+       "ev-8e745ade9716e31b43fde7af",
+       "ev-ab9bbafce5157b79fbe33a32",
+       "ev-0a31a9bad83f113f064bd0da"
+      ],
+      "id": "detection",
+      "input": "Canonical events and bursts.",
+      "output": "Detection fdet-3afaf7d5231488bd, status unconfirmed, basis observed.",
+      "plain": "Rule web_attack_concentration 1.0 included it. 60 IPS events using 3 attack signatures from 3 source(s) targeted 10.20.0.200.",
+      "rule": "web_attack_concentration",
+      "state": "observed",
+      "status": "ok",
+      "title": "Detection rule",
+      "transformation": "Concentrated multi-technique web attack on one target",
+      "version": "1.0"
+     },
+     {
+      "evidence_refs": [
+       "ev-3deaf3f2b3636f28b150256b",
+       "ev-7090074172dcdc0cdd5309f1",
+       "ev-81083a6b2db6fcccb7568553",
+       "ev-8e745ade9716e31b43fde7af",
+       "ev-b77b9fb32fe3193b950dddd7"
+      ],
+      "id": "relationship",
+      "input": "Detection steps and the entities they name.",
+      "output": "2 inferred link(s) on the selected path.",
+      "plain": "A rule connected these records, and no single record states the connection.",
+      "rule": "same_detection_sequence",
+      "state": "inferred",
+      "status": "ok",
+      "title": "Evidence relationship",
+      "transformation": "Steps are joined only through a shared account, source or pivot.",
+      "version": "halt.firex.graph/1.0"
+     },
+     {
+      "evidence_refs": [],
+      "id": "hypothesis",
+      "input": "The connected steps.",
+      "output": "Selected fhyp-6f5ae3febb0cc9e2, score 0.727, margin 0.567.",
+      "plain": "HALT's leading explanation is: One connected attack sequence. It ranks explanations. It does not prove one.",
+      "rule": null,
+      "state": "inferred",
+      "status": "ok",
+      "title": "Hypothesis",
+      "transformation": "Candidate explanations are scored from the evidence. Scores rank them and are not probabilities.",
+      "version": null
+     },
+     {
+      "evidence_refs": [],
+      "id": "statement",
+      "input": "The selected path and its citations.",
+      "output": "3 statements checked, 0 unsupported.",
+      "plain": "This incident's statements cite this record.",
+      "rule": null,
+      "state": "inferred",
+      "status": "ok",
+      "title": "Incident statement",
+      "transformation": "Each statement is written from a template and must cite evidence.",
+      "version": null
+     },
+     {
+      "evidence_refs": [],
+      "id": "proof",
+      "input": "The graph, the cited evidence and the versions.",
+      "output": "Graph hash a96998c8faf70ebebbd5677566c5e785624a4e2945486a9661cb7becc33e1793, seal 337f6593737578dde90ccf770d003a4646f99f7a4d085ed8e073f03ff55180a7",
+      "plain": "Receipt fprf-89042af3d73bdf39 seals this incident. A seal shows the receipt has not changed. It does not show the conclusion is true.",
+      "rule": "sha256-canonical-json",
+      "state": "observed",
+      "status": "ok",
+      "title": "Proof receipt",
+      "transformation": "SHA-256 over canonical JSON.",
+      "version": "halt.firex.proof/1.0"
+     }
+    ],
+    "statuses": [
+     "SOURCE VERIFIED",
+     "RELATIONSHIP INFERRED",
+     "INCIDENT UNCONFIRMED"
+    ],
+    "subject_id": "finc-0526ba4f57ac",
+    "subject_kind": "incident",
+    "subject_label": "Concentrated multi-technique web attack on one target"
+   },
+   "status": 200
+  },
+  "GET /api/v1/ps2/runs/frun-370ac3a914901431/provenance?incident_id=finc-06dbcd7d8183": {
+   "body": {
+    "cited_records": 21,
+    "failed_link": null,
+    "gate": [
+     {
+      "detail": "Dataset fixture.",
+      "id": "dataset",
+      "label": "The dataset matches the run",
+      "status": "passed"
+     },
+     {
+      "detail": "Run frun-370ac3a914901431.",
+      "id": "run",
+      "label": "The run matches the incident",
+      "status": "passed"
+     },
+     {
+      "detail": "fixture.log.",
+      "id": "filename",
+      "label": "The source filename matches the dataset",
+      "status": "passed"
+     },
+     {
+      "detail": "Plan, receipts and cited records agree on 5246c5d53f02b0c3…. The whole file was hashed during the run, and is not hashed again here.",
+      "id": "source_hash",
+      "label": "The source hash matches the stored run",
+      "status": "passed"
+     },
+     {
+      "detail": "21 of 21 cited record(s) resolve to a stored line.",
+      "id": "origin",
+      "label": "The cited line resolves",
+      "status": "passed"
+     },
+     {
+      "detail": "The cited events exist, and their canonical hashes match.",
+      "id": "canonical",
+      "label": "The canonical event exists",
+      "status": "passed"
+     },
+     {
+      "detail": "21 line(s) read at the stored offset match their stored hash.",
+      "id": "source_record",
+      "label": "The source line matches its stored hash",
+      "status": "passed"
+     },
+     {
+      "detail": "2 detection(s) are stored and cite evidence.",
+      "id": "detection",
+      "label": "The detection references valid evidence",
+      "status": "passed"
+     },
+     {
+      "detail": "No graph element was asked about.",
+      "id": "graph",
+      "label": "The graph element cites the expected evidence",
+      "status": "not_applicable"
+     },
+     {
+      "detail": "No statement was asked about.",
+      "id": "statement",
+      "label": "The story statement cites stored evidence",
+      "status": "not_applicable"
+     },
+     {
+      "detail": "Seal valid, graph hash matches. 6 artifacts match the hashes in the benchmark receipt.",
+      "id": "proof",
+      "label": "The proof contains the expected hashes",
+      "status": "passed"
+     }
+    ],
+    "incident_id": "finc-06dbcd7d8183",
+    "incident_status": "INCIDENT UNCONFIRMED",
+    "original_conclusion": "unconfirmed",
+    "plain": "This record exists in the source: accept. The connection to other records is inferred by a rule. The incident is unconfirmed: this shows what the evidence holds, not malicious intent.",
+    "proof_receipt_id": "fprf-43e6554c3b6a527f",
+    "records": [
+     {
+      "bursts": [],
+      "byte_offset": 21819,
+      "canonical_sha256": "5401b41d1006ffd7fdda2df0cf330695",
+      "detections": [
+       "fdet-69f27285ef14777e"
+      ],
+      "duplicate": false,
+      "event_utc": "2027-01-15T08:00:00Z",
+      "evidence_id": "ev-bb823635a9601ec680373185",
+      "excerpt": "date=2027-01-15 time=08:00:00 eventtime=1800000000000000000 tz=\"+0530\" devname=\"FGT-TEST\" devid=\"FGT-TEST\" logid=\"0000000013\" type=\"traffic\" subtype=\"forward\" level=\"notice\" vd=\"root\" srcip=10.1.0.44 srcintfrole=\"lan\" dstip=10.20.0.1 dstintfrole=\"dmz\" dstport=445 sessionid=500 proto=6 action=\"accept\" service=\"SMB\" sentbyte=100 rcvdbyte=10",
+      "fields": {
+       "action": "accept",
+       "date": "2027-01-15",
+       "devid": "FGT-TEST",
+       "devname": "FGT-TEST",
+       "dst_ip": "10.20.0.1",
+       "dst_port": "445",
+       "dst_role": "dmz",
+       "event_type": "traffic",
+       "level": "notice",
+       "logid": "0000000013",
+       "proto": "6",
+       "rcvd_bytes": "10",
+       "sent_bytes": "100",
+       "service": "SMB",
+       "session_id": "500",
+       "src_ip": "10.1.0.44",
+       "src_role": "lan",
+       "subtype": "forward",
+       "time": "08:00:00",
+       "tz": "+0530",
+       "vd": "root"
+      },
+      "incidents": [
+       {
+        "incident_id": "finc-06dbcd7d8183",
+        "status": "unconfirmed",
+        "title": "Internal SMB or RDP fan-out from one host and 1 related"
+       }
+      ],
+      "label": "RAW RECORD",
+      "line": 64,
+      "quarantine_reason": null,
+      "raw_sha256": "b84c249d963d854fc787f2bc71d59ce0",
+      "raw_status": "verified",
+      "state": "canonical",
+      "truncated": false
+     },
+     {
+      "bursts": [],
+      "byte_offset": 22160,
+      "canonical_sha256": "9b9e446c1384374a4a910e5a67cdc307",
+      "detections": [
+       "fdet-69f27285ef14777e"
+      ],
+      "duplicate": false,
+      "event_utc": "2027-01-15T08:00:01Z",
+      "evidence_id": "ev-aaa3231fe09530c448e237e4",
+      "excerpt": "date=2027-01-15 time=08:00:01 eventtime=1800000001000000000 tz=\"+0530\" devname=\"FGT-TEST\" devid=\"FGT-TEST\" logid=\"0000000013\" type=\"traffic\" subtype=\"forward\" level=\"notice\" vd=\"root\" srcip=10.1.0.44 srcintfrole=\"lan\" dstip=10.20.0.2 dstintfrole=\"dmz\" dstport=445 sessionid=501 proto=6 action=\"accept\" service=\"SMB\" sentbyte=100 rcvdbyte=10",
+      "fields": {
+       "action": "accept",
+       "date": "2027-01-15",
+       "devid": "FGT-TEST",
+       "devname": "FGT-TEST",
+       "dst_ip": "10.20.0.2",
+       "dst_port": "445",
+       "dst_role": "dmz",
+       "event_type": "traffic",
+       "level": "notice",
+       "logid": "0000000013",
+       "proto": "6",
+       "rcvd_bytes": "10",
+       "sent_bytes": "100",
+       "service": "SMB",
+       "session_id": "501",
+       "src_ip": "10.1.0.44",
+       "src_role": "lan",
+       "subtype": "forward",
+       "time": "08:00:01",
+       "tz": "+0530",
+       "vd": "root"
+      },
+      "incidents": [
+       {
+        "incident_id": "finc-06dbcd7d8183",
+        "status": "unconfirmed",
+        "title": "Internal SMB or RDP fan-out from one host and 1 related"
+       }
+      ],
+      "label": "RAW RECORD",
+      "line": 65,
+      "quarantine_reason": null,
+      "raw_sha256": "a331b2973f0f89723f6209a01b0205fb",
+      "raw_status": "verified",
+      "state": "canonical",
+      "truncated": false
+     },
+     {
+      "bursts": [],
+      "byte_offset": 22501,
+      "canonical_sha256": "d83826a4aae7837b43cfb273c8c61a2b",
+      "detections": [
+       "fdet-69f27285ef14777e"
+      ],
+      "duplicate": false,
+      "event_utc": "2027-01-15T08:00:02Z",
+      "evidence_id": "ev-1801e9a6f8d9db3a55dc968f",
+      "excerpt": "date=2027-01-15 time=08:00:02 eventtime=1800000002000000000 tz=\"+0530\" devname=\"FGT-TEST\" devid=\"FGT-TEST\" logid=\"0000000013\" type=\"traffic\" subtype=\"forward\" level=\"notice\" vd=\"root\" srcip=10.1.0.44 srcintfrole=\"lan\" dstip=10.20.0.3 dstintfrole=\"dmz\" dstport=445 sessionid=502 proto=6 action=\"accept\" service=\"SMB\" sentbyte=100 rcvdbyte=10",
+      "fields": {
+       "action": "accept",
+       "date": "2027-01-15",
+       "devid": "FGT-TEST",
+       "devname": "FGT-TEST",
+       "dst_ip": "10.20.0.3",
+       "dst_port": "445",
+       "dst_role": "dmz",
+       "event_type": "traffic",
+       "level": "notice",
+       "logid": "0000000013",
+       "proto": "6",
+       "rcvd_bytes": "10",
+       "sent_bytes": "100",
+       "service": "SMB",
+       "session_id": "502",
+       "src_ip": "10.1.0.44",
+       "src_role": "lan",
+       "subtype": "forward",
+       "time": "08:00:02",
+       "tz": "+0530",
+       "vd": "root"
+      },
+      "incidents": [
+       {
+        "incident_id": "finc-06dbcd7d8183",
+        "status": "unconfirmed",
+        "title": "Internal SMB or RDP fan-out from one host and 1 related"
+       }
+      ],
+      "label": "RAW RECORD",
+      "line": 66,
+      "quarantine_reason": null,
+      "raw_sha256": "449f4e5d1bb3de6a14440de0fa717ed4",
+      "raw_status": "verified",
+      "state": "canonical",
+      "truncated": false
+     },
+     {
+      "bursts": [],
+      "byte_offset": 22842,
+      "canonical_sha256": "6864fff90956c4043eb98ea75046c478",
+      "detections": [
+       "fdet-69f27285ef14777e"
+      ],
+      "duplicate": false,
+      "event_utc": "2027-01-15T08:00:03Z",
+      "evidence_id": "ev-54c6fb3a83c36603f5a105ec",
+      "excerpt": "date=2027-01-15 time=08:00:03 eventtime=1800000003000000000 tz=\"+0530\" devname=\"FGT-TEST\" devid=\"FGT-TEST\" logid=\"0000000013\" type=\"traffic\" subtype=\"forward\" level=\"notice\" vd=\"root\" srcip=10.1.0.44 srcintfrole=\"lan\" dstip=10.20.0.4 dstintfrole=\"dmz\" dstport=445 sessionid=503 proto=6 action=\"accept\" service=\"SMB\" sentbyte=100 rcvdbyte=10",
+      "fields": {
+       "action": "accept",
+       "date": "2027-01-15",
+       "devid": "FGT-TEST",
+       "devname": "FGT-TEST",
+       "dst_ip": "10.20.0.4",
+       "dst_port": "445",
+       "dst_role": "dmz",
+       "event_type": "traffic",
+       "level": "notice",
+       "logid": "0000000013",
+       "proto": "6",
+       "rcvd_bytes": "10",
+       "sent_bytes": "100",
+       "service": "SMB",
+       "session_id": "503",
+       "src_ip": "10.1.0.44",
+       "src_role": "lan",
+       "subtype": "forward",
+       "time": "08:00:03",
+       "tz": "+0530",
+       "vd": "root"
+      },
+      "incidents": [
+       {
+        "incident_id": "finc-06dbcd7d8183",
+        "status": "unconfirmed",
+        "title": "Internal SMB or RDP fan-out from one host and 1 related"
+       }
+      ],
+      "label": "RAW RECORD",
+      "line": 67,
+      "quarantine_reason": null,
+      "raw_sha256": "93a622287cbabebf1788e098d4507d86",
+      "raw_status": "verified",
+      "state": "canonical",
+      "truncated": false
+     },
+     {
+      "bursts": [],
+      "byte_offset": 23183,
+      "canonical_sha256": "658d66c5995301769952ed813b8b7739",
+      "detections": [
+       "fdet-69f27285ef14777e"
+      ],
+      "duplicate": false,
+      "event_utc": "2027-01-15T08:00:04Z",
+      "evidence_id": "ev-3ff104bbd6022e023495abb5",
+      "excerpt": "date=2027-01-15 time=08:00:04 eventtime=1800000004000000000 tz=\"+0530\" devname=\"FGT-TEST\" devid=\"FGT-TEST\" logid=\"0000000013\" type=\"traffic\" subtype=\"forward\" level=\"notice\" vd=\"root\" srcip=10.1.0.44 srcintfrole=\"lan\" dstip=10.20.0.5 dstintfrole=\"dmz\" dstport=445 sessionid=504 proto=6 action=\"accept\" service=\"SMB\" sentbyte=100 rcvdbyte=10",
+      "fields": {
+       "action": "accept",
+       "date": "2027-01-15",
+       "devid": "FGT-TEST",
+       "devname": "FGT-TEST",
+       "dst_ip": "10.20.0.5",
+       "dst_port": "445",
+       "dst_role": "dmz",
+       "event_type": "traffic",
+       "level": "notice",
+       "logid": "0000000013",
+       "proto": "6",
+       "rcvd_bytes": "10",
+       "sent_bytes": "100",
+       "service": "SMB",
+       "session_id": "504",
+       "src_ip": "10.1.0.44",
+       "src_role": "lan",
+       "subtype": "forward",
+       "time": "08:00:04",
+       "tz": "+0530",
+       "vd": "root"
+      },
+      "incidents": [
+       {
+        "incident_id": "finc-06dbcd7d8183",
+        "status": "unconfirmed",
+        "title": "Internal SMB or RDP fan-out from one host and 1 related"
+       }
+      ],
+      "label": "RAW RECORD",
+      "line": 68,
+      "quarantine_reason": null,
+      "raw_sha256": "b79b91fffa4f938966b2a4496d5a44b3",
+      "raw_status": "verified",
+      "state": "canonical",
+      "truncated": false
+     },
+     {
+      "bursts": [],
+      "byte_offset": 23524,
+      "canonical_sha256": "40287cd2ac102818a89101df137f3e5b",
+      "detections": [
+       "fdet-69f27285ef14777e"
+      ],
+      "duplicate": false,
+      "event_utc": "2027-01-15T08:00:05Z",
+      "evidence_id": "ev-5dbf2ec74a841bfd9ec27735",
+      "excerpt": "date=2027-01-15 time=08:00:05 eventtime=1800000005000000000 tz=\"+0530\" devname=\"FGT-TEST\" devid=\"FGT-TEST\" logid=\"0000000013\" type=\"traffic\" subtype=\"forward\" level=\"notice\" vd=\"root\" srcip=10.1.0.44 srcintfrole=\"lan\" dstip=10.20.0.6 dstintfrole=\"dmz\" dstport=445 sessionid=505 proto=6 action=\"accept\" service=\"SMB\" sentbyte=100 rcvdbyte=10",
+      "fields": {
+       "action": "accept",
+       "date": "2027-01-15",
+       "devid": "FGT-TEST",
+       "devname": "FGT-TEST",
+       "dst_ip": "10.20.0.6",
+       "dst_port": "445",
+       "dst_role": "dmz",
+       "event_type": "traffic",
+       "level": "notice",
+       "logid": "0000000013",
+       "proto": "6",
+       "rcvd_bytes": "10",
+       "sent_bytes": "100",
+       "service": "SMB",
+       "session_id": "505",
+       "src_ip": "10.1.0.44",
+       "src_role": "lan",
+       "subtype": "forward",
+       "time": "08:00:05",
+       "tz": "+0530",
+       "vd": "root"
+      },
+      "incidents": [
+       {
+        "incident_id": "finc-06dbcd7d8183",
+        "status": "unconfirmed",
+        "title": "Internal SMB or RDP fan-out from one host and 1 related"
+       }
+      ],
+      "label": "RAW RECORD",
+      "line": 69,
+      "quarantine_reason": null,
+      "raw_sha256": "ba5fa6c1936ad5dfcf473d31a59575a6",
+      "raw_status": "verified",
+      "state": "canonical",
+      "truncated": false
+     },
+     {
+      "bursts": [],
+      "byte_offset": 23865,
+      "canonical_sha256": "75587ffad6d7f2756e4cfb4aad703cde",
+      "detections": [
+       "fdet-69f27285ef14777e"
+      ],
+      "duplicate": false,
+      "event_utc": "2027-01-15T08:00:06Z",
+      "evidence_id": "ev-adb1177d506653c468ed0b03",
+      "excerpt": "date=2027-01-15 time=08:00:06 eventtime=1800000006000000000 tz=\"+0530\" devname=\"FGT-TEST\" devid=\"FGT-TEST\" logid=\"0000000013\" type=\"traffic\" subtype=\"forward\" level=\"notice\" vd=\"root\" srcip=10.1.0.44 srcintfrole=\"lan\" dstip=10.20.0.7 dstintfrole=\"dmz\" dstport=445 sessionid=506 proto=6 action=\"accept\" service=\"SMB\" sentbyte=100 rcvdbyte=10",
+      "fields": {
+       "action": "accept",
+       "date": "2027-01-15",
+       "devid": "FGT-TEST",
+       "devname": "FGT-TEST",
+       "dst_ip": "10.20.0.7",
+       "dst_port": "445",
+       "dst_role": "dmz",
+       "event_type": "traffic",
+       "level": "notice",
+       "logid": "0000000013",
+       "proto": "6",
+       "rcvd_bytes": "10",
+       "sent_bytes": "100",
+       "service": "SMB",
+       "session_id": "506",
+       "src_ip": "10.1.0.44",
+       "src_role": "lan",
+       "subtype": "forward",
+       "time": "08:00:06",
+       "tz": "+0530",
+       "vd": "root"
+      },
+      "incidents": [
+       {
+        "incident_id": "finc-06dbcd7d8183",
+        "status": "unconfirmed",
+        "title": "Internal SMB or RDP fan-out from one host and 1 related"
+       }
+      ],
+      "label": "RAW RECORD",
+      "line": 70,
+      "quarantine_reason": null,
+      "raw_sha256": "d37c570eac8e57cd7d9c8f97b9ca98ec",
+      "raw_status": "verified",
+      "state": "canonical",
+      "truncated": false
+     },
+     {
+      "bursts": [],
+      "byte_offset": 24206,
+      "canonical_sha256": "7c319274c57cd4ba1d5238bc2fd6d036",
+      "detections": [
+       "fdet-69f27285ef14777e"
+      ],
+      "duplicate": false,
+      "event_utc": "2027-01-15T08:00:07Z",
+      "evidence_id": "ev-28bb0e3eeb4290fcb6d1662a",
+      "excerpt": "date=2027-01-15 time=08:00:07 eventtime=1800000007000000000 tz=\"+0530\" devname=\"FGT-TEST\" devid=\"FGT-TEST\" logid=\"0000000013\" type=\"traffic\" subtype=\"forward\" level=\"notice\" vd=\"root\" srcip=10.1.0.44 srcintfrole=\"lan\" dstip=10.20.0.8 dstintfrole=\"dmz\" dstport=445 sessionid=507 proto=6 action=\"accept\" service=\"SMB\" sentbyte=100 rcvdbyte=10",
+      "fields": {
+       "action": "accept",
+       "date": "2027-01-15",
+       "devid": "FGT-TEST",
+       "devname": "FGT-TEST",
+       "dst_ip": "10.20.0.8",
+       "dst_port": "445",
+       "dst_role": "dmz",
+       "event_type": "traffic",
+       "level": "notice",
+       "logid": "0000000013",
+       "proto": "6",
+       "rcvd_bytes": "10",
+       "sent_bytes": "100",
+       "service": "SMB",
+       "session_id": "507",
+       "src_ip": "10.1.0.44",
+       "src_role": "lan",
+       "subtype": "forward",
+       "time": "08:00:07",
+       "tz": "+0530",
+       "vd": "root"
+      },
+      "incidents": [
+       {
+        "incident_id": "finc-06dbcd7d8183",
+        "status": "unconfirmed",
+        "title": "Internal SMB or RDP fan-out from one host and 1 related"
+       }
+      ],
+      "label": "RAW RECORD",
+      "line": 71,
+      "quarantine_reason": null,
+      "raw_sha256": "48124efe45fa10f8444c2754966497f1",
+      "raw_status": "verified",
+      "state": "canonical",
+      "truncated": false
+     },
+     {
+      "bursts": [],
+      "byte_offset": 24547,
+      "canonical_sha256": "1c3b40688a85a0790949b524343f4fe6",
+      "detections": [
+       "fdet-69f27285ef14777e"
+      ],
+      "duplicate": false,
+      "event_utc": "2027-01-15T08:00:08Z",
+      "evidence_id": "ev-87b25c3d7fa8eeffe902aa56",
+      "excerpt": "date=2027-01-15 time=08:00:08 eventtime=1800000008000000000 tz=\"+0530\" devname=\"FGT-TEST\" devid=\"FGT-TEST\" logid=\"0000000013\" type=\"traffic\" subtype=\"forward\" level=\"notice\" vd=\"root\" srcip=10.1.0.44 srcintfrole=\"lan\" dstip=10.20.0.9 dstintfrole=\"dmz\" dstport=445 sessionid=508 proto=6 action=\"accept\" service=\"SMB\" sentbyte=100 rcvdbyte=10",
+      "fields": {
+       "action": "accept",
+       "date": "2027-01-15",
+       "devid": "FGT-TEST",
+       "devname": "FGT-TEST",
+       "dst_ip": "10.20.0.9",
+       "dst_port": "445",
+       "dst_role": "dmz",
+       "event_type": "traffic",
+       "level": "notice",
+       "logid": "0000000013",
+       "proto": "6",
+       "rcvd_bytes": "10",
+       "sent_bytes": "100",
+       "service": "SMB",
+       "session_id": "508",
+       "src_ip": "10.1.0.44",
+       "src_role": "lan",
+       "subtype": "forward",
+       "time": "08:00:08",
+       "tz": "+0530",
+       "vd": "root"
+      },
+      "incidents": [
+       {
+        "incident_id": "finc-06dbcd7d8183",
+        "status": "unconfirmed",
+        "title": "Internal SMB or RDP fan-out from one host and 1 related"
+       }
+      ],
+      "label": "RAW RECORD",
+      "line": 72,
+      "quarantine_reason": null,
+      "raw_sha256": "6d14c8df2a35c4f0d28a71f3243f8c71",
+      "raw_status": "verified",
+      "state": "canonical",
+      "truncated": false
+     },
+     {
+      "bursts": [],
+      "byte_offset": 24888,
+      "canonical_sha256": "ab50c75927c51db57c3826ee3230c014",
+      "detections": [
+       "fdet-69f27285ef14777e"
+      ],
+      "duplicate": false,
+      "event_utc": "2027-01-15T08:00:09Z",
+      "evidence_id": "ev-98573ba487072aaa3ea1987a",
+      "excerpt": "date=2027-01-15 time=08:00:09 eventtime=1800000009000000000 tz=\"+0530\" devname=\"FGT-TEST\" devid=\"FGT-TEST\" logid=\"0000000013\" type=\"traffic\" subtype=\"forward\" level=\"notice\" vd=\"root\" srcip=10.1.0.44 srcintfrole=\"lan\" dstip=10.20.0.10 dstintfrole=\"dmz\" dstport=445 sessionid=509 proto=6 action=\"accept\" service=\"SMB\" sentbyte=100 rcvdbyte=10",
+      "fields": {
+       "action": "accept",
+       "date": "2027-01-15",
+       "devid": "FGT-TEST",
+       "devname": "FGT-TEST",
+       "dst_ip": "10.20.0.10",
+       "dst_port": "445",
+       "dst_role": "dmz",
+       "event_type": "traffic",
+       "level": "notice",
+       "logid": "0000000013",
+       "proto": "6",
+       "rcvd_bytes": "10",
+       "sent_bytes": "100",
+       "service": "SMB",
+       "session_id": "509",
+       "src_ip": "10.1.0.44",
+       "src_role": "lan",
+       "subtype": "forward",
+       "time": "08:00:09",
+       "tz": "+0530",
+       "vd": "root"
+      },
+      "incidents": [
+       {
+        "incident_id": "finc-06dbcd7d8183",
+        "status": "unconfirmed",
+        "title": "Internal SMB or RDP fan-out from one host and 1 related"
+       }
+      ],
+      "label": "RAW RECORD",
+      "line": 73,
+      "quarantine_reason": null,
+      "raw_sha256": "c25e30d56fd95c9e02947987355ab753",
+      "raw_status": "verified",
+      "state": "canonical",
+      "truncated": false
+     },
+     {
+      "bursts": [],
+      "byte_offset": 26940,
+      "canonical_sha256": "5e9e018f51d17f2737e32094cf2219f0",
+      "detections": [
+       "fdet-2e9aa05295d60bd1"
+      ],
+      "duplicate": false,
+      "event_utc": "2027-01-15T08:01:40Z",
+      "evidence_id": "ev-cc6555c6c13d9a75ee5655e0",
+      "excerpt": "date=2027-01-15 time=08:01:40 eventtime=1800000100000000000 tz=\"+0530\" devname=\"FGT-TEST\" devid=\"FGT-TEST\" logid=\"0211008192\" type=\"utm\" subtype=\"virus\" level=\"warning\" vd=\"root\" srcip=10.1.0.44 srcintfrole=\"lan\" dstip=198.51.100.34 dstintfrole=\"wan\" dstport=80 sessionid=900 proto=6 action=\"blocked\" service=\"HTTP\" virus=\"W0/x!tr\" hostname=\"bad.example\"",
+      "fields": {
+       "action": "blocked",
+       "date": "2027-01-15",
+       "devid": "FGT-TEST",
+       "devname": "FGT-TEST",
+       "dst_ip": "198.51.100.34",
+       "dst_port": "80",
+       "dst_role": "wan",
+       "event_type": "utm",
+       "hostname": "bad.example",
+       "level": "warning",
+       "logid": "0211008192",
+       "proto": "6",
+       "service": "HTTP",
+       "session_id": "900",
+       "src_ip": "10.1.0.44",
+       "src_role": "lan",
+       "subtype": "virus",
+       "time": "08:01:40",
+       "tz": "+0530",
+       "vd": "root",
+       "virus": "W0/x!tr"
+      },
+      "incidents": [
+       {
+        "incident_id": "finc-06dbcd7d8183",
+        "status": "unconfirmed",
+        "title": "Internal SMB or RDP fan-out from one host and 1 related"
+       }
+      ],
+      "label": "RAW RECORD",
+      "line": 79,
+      "quarantine_reason": null,
+      "raw_sha256": "faac3317ba38be1d6ccea21b9fd7370c",
+      "raw_status": "verified",
+      "state": "canonical",
+      "truncated": false
+     },
+     {
+      "bursts": [],
+      "byte_offset": 27295,
+      "canonical_sha256": "900b9d22f52ded40f8c1eb7f901de24d",
+      "detections": [
+       "fdet-2e9aa05295d60bd1"
+      ],
+      "duplicate": false,
+      "event_utc": "2027-01-15T08:02:40Z",
+      "evidence_id": "ev-08eaca15da4c7f49df43ddcc",
+      "excerpt": "date=2027-01-15 time=08:02:40 eventtime=1800000160000000000 tz=\"+0530\" devname=\"FGT-TEST\" devid=\"FGT-TEST\" logid=\"0211008192\" type=\"utm\" subtype=\"virus\" level=\"warning\" vd=\"root\" srcip=10.1.0.44 srcintfrole=\"lan\" dstip=198.51.100.34 dstintfrole=\"wan\" dstport=80 sessionid=901 proto=6 action=\"blocked\" service=\"HTTP\" virus=\"W1/x!tr\" hostname=\"bad.example\"",
+      "fields": {
+       "action": "blocked",
+       "date": "2027-01-15",
+       "devid": "FGT-TEST",
+       "devname": "FGT-TEST",
+       "dst_ip": "198.51.100.34",
+       "dst_port": "80",
+       "dst_role": "wan",
+       "event_type": "utm",
+       "hostname": "bad.example",
+       "level": "warning",
+       "logid": "0211008192",
+       "proto": "6",
+       "service": "HTTP",
+       "session_id": "901",
+       "src_ip": "10.1.0.44",
+       "src_role": "lan",
+       "subtype": "virus",
+       "time": "08:02:40",
+       "tz": "+0530",
+       "vd": "root",
+       "virus": "W1/x!tr"
+      },
+      "incidents": [
+       {
+        "incident_id": "finc-06dbcd7d8183",
+        "status": "unconfirmed",
+        "title": "Internal SMB or RDP fan-out from one host and 1 related"
+       }
+      ],
+      "label": "RAW RECORD",
+      "line": 80,
+      "quarantine_reason": null,
+      "raw_sha256": "3532249df292152d70e37ad21f81a672",
+      "raw_status": "verified",
+      "state": "canonical",
+      "truncated": false
+     }
+    ],
+    "relationship_status": "RELATIONSHIP INFERRED",
+    "reviews": [],
+    "run": {
+     "dataset_id": "fixture",
+     "health_state": "Unconfirmed",
+     "narrative": "Reconstructed, unconfirmed incidents",
+     "run_id": "frun-370ac3a914901431",
+     "source_available": true,
+     "source_filename": "fixture.log",
+     "source_hash_verified": true,
+     "source_sha256": "5246c5d53f02b0c36b06df4cd7888bbd064213050995cf4304abcc462d3e7c73"
+    },
+    "source_status": "SOURCE VERIFIED",
+    "stages": [
+     {
+      "evidence_refs": [
+       "ev-bb823635a9601ec680373185"
+      ],
+      "id": "source",
+      "input": "fixture.log, SHA-256 5246c5d53f02b0c36b06df4cd7888bbd064213050995cf4304abcc462d3e7c73",
+      "output": "Line 64, byte offset 21,819.",
+      "plain": "Line 64 of fixture.log holds this record, and its stored hash matches.",
+      "rule": null,
+      "state": "observed",
+      "status": "ok",
+      "title": "Source record",
+      "transformation": "One line, read by seeking to its stored byte offset.",
+      "version": null
+     },
+     {
+      "evidence_refs": [
+       "ev-bb823635a9601ec680373185"
+      ],
+      "id": "parser",
+      "input": "The raw key=value text.",
+      "output": "eventtime → event_ns, date → date, time → time, tz → tz, devname → devname, devid → devid, vd → vd, type → event_type, subtype → subtype, logid → logid, level → level, action → action, srcip → src_ip, dstip → dst_ip, srcintfrole → src_role, dstintfrole → dst_role, sessionid → session_id, proto → proto, service → service, dstport → dst_port, sentbyte → sent_bytes, rcvdbyte → rcvd_bytes",
+      "plain": "The parser read the record's key=value pairs and mapped each known key to a named field. It does not guess values.",
+      "rule": "Field mapping",
+      "state": "observed",
+      "status": "ok",
+      "title": "Parser mapping",
+      "transformation": "Each known key is mapped to one canonical field. Unknown keys are kept in extra_json.",
+      "version": "halt.firex.parser/1.0.0"
+     },
+     {
+      "evidence_refs": [
+       "ev-bb823635a9601ec680373185"
+      ],
+      "id": "canonical",
+      "input": "The mapped fields.",
+      "output": "evidence_id ev-bb823635a9601ec680373185, canonical hash 5401b41d1006ffd7fdda2df0cf330695",
+      "plain": "It became stored event ev-bb823635a9601ec680373185, and its time was read from eventtime.",
+      "rule": null,
+      "state": "observed",
+      "status": "ok",
+      "title": "Canonical event",
+      "transformation": "Hashed into a canonical hash and an evidence id. eventtime gives the time. Other fields are unchanged.",
+      "version": "halt.firex.parser/1.0.0"
+     },
+     {
+      "evidence_refs": [
+       "ev-bb823635a9601ec680373185"
+      ],
+      "id": "dedupe",
+      "input": "All canonical events.",
+      "output": "Kept. Bursts: none listed.",
+      "plain": "This record is not a duplicate, and no stored burst sample lists it.",
+      "rule": null,
+      "state": "observed",
+      "status": "ok",
+      "title": "Duplicate and burst handling",
+      "transformation": "Lines with the same raw hash count once. Repeated behaviour is grouped into bursts, and each burst keeps only a sample of its citations.",
+      "version": null
+     },
+     {
+      "evidence_refs": [
+       "ev-bb823635a9601ec680373185",
+       "ev-aaa3231fe09530c448e237e4",
+       "ev-1801e9a6f8d9db3a55dc968f",
+       "ev-54c6fb3a83c36603f5a105ec",
+       "ev-3ff104bbd6022e023495abb5"
+      ],
+      "id": "detection",
+      "input": "Canonical events and bursts.",
+      "output": "Detection fdet-69f27285ef14777e, status unconfirmed, basis observed.",
+      "plain": "Rule internal_fanout 1.0 included it. 10.1.0.44 opened 15 SMB or RDP connections to 15 internal hosts.",
+      "rule": "internal_fanout",
+      "state": "observed",
+      "status": "ok",
+      "title": "Detection rule",
+      "transformation": "Internal SMB or RDP fan-out from one host",
+      "version": "1.0"
+     },
+     {
+      "evidence_refs": [
+       "ev-08eaca15da4c7f49df43ddcc",
+       "ev-1801e9a6f8d9db3a55dc968f",
+       "ev-aaa3231fe09530c448e237e4",
+       "ev-b4f14b8600219e7e590bbcd5",
+       "ev-bb823635a9601ec680373185"
+      ],
+      "id": "relationship",
+      "input": "Detection steps and the entities they name.",
+      "output": "1 inferred link(s) on the selected path.",
+      "plain": "A rule connected these records, and no single record states the connection.",
+      "rule": "shared_entity_sequence",
+      "state": "inferred",
+      "status": "ok",
+      "title": "Evidence relationship",
+      "transformation": "Steps are joined only through a shared account, source or pivot.",
+      "version": "halt.firex.graph/1.0"
+     },
+     {
+      "evidence_refs": [],
+      "id": "hypothesis",
+      "input": "The connected steps.",
+      "output": "Selected fhyp-a30b4b4c09273a36, score 0.716, margin 0.286.",
+      "plain": "HALT's leading explanation is: One connected attack sequence. It ranks explanations. It does not prove one.",
+      "rule": null,
+      "state": "inferred",
+      "status": "ok",
+      "title": "Hypothesis",
+      "transformation": "Candidate explanations are scored from the evidence. Scores rank them and are not probabilities.",
+      "version": null
+     },
+     {
+      "evidence_refs": [],
+      "id": "statement",
+      "input": "The selected path and its citations.",
+      "output": "2 statements checked, 0 unsupported.",
+      "plain": "This incident's statements cite this record.",
+      "rule": null,
+      "state": "inferred",
+      "status": "ok",
+      "title": "Incident statement",
+      "transformation": "Each statement is written from a template and must cite evidence.",
+      "version": null
+     },
+     {
+      "evidence_refs": [],
+      "id": "proof",
+      "input": "The graph, the cited evidence and the versions.",
+      "output": "Graph hash 01abc3fdccd2dbff919e23c934ff9800e80869ee6fa9fec824fd0e12b829f644, seal 2e2847182e4980b9dc148726ff0b641b9d9d8d07c80c17b9dfa62c1416027291",
+      "plain": "Receipt fprf-43e6554c3b6a527f seals this incident. A seal shows the receipt has not changed. It does not show the conclusion is true.",
+      "rule": "sha256-canonical-json",
+      "state": "observed",
+      "status": "ok",
+      "title": "Proof receipt",
+      "transformation": "SHA-256 over canonical JSON.",
+      "version": "halt.firex.proof/1.0"
+     }
+    ],
+    "statuses": [
+     "SOURCE VERIFIED",
+     "RELATIONSHIP INFERRED",
+     "INCIDENT UNCONFIRMED"
+    ],
+    "subject_id": "finc-06dbcd7d8183",
+    "subject_kind": "incident",
+    "subject_label": "Internal SMB or RDP fan-out from one host and 1 related"
+   },
+   "status": 200
+  },
+  "GET /api/v1/ps2/runs/frun-370ac3a914901431/provenance?incident_id=finc-ec918f810a84": {
+   "body": {
+    "cited_records": 3,
+    "failed_link": null,
+    "gate": [
+     {
+      "detail": "Dataset fixture.",
+      "id": "dataset",
+      "label": "The dataset matches the run",
+      "status": "passed"
+     },
+     {
+      "detail": "Run frun-370ac3a914901431.",
+      "id": "run",
+      "label": "The run matches the incident",
+      "status": "passed"
+     },
+     {
+      "detail": "fixture.log.",
+      "id": "filename",
+      "label": "The source filename matches the dataset",
+      "status": "passed"
+     },
+     {
+      "detail": "Plan, receipts and cited records agree on 5246c5d53f02b0c3…. The whole file was hashed during the run, and is not hashed again here.",
+      "id": "source_hash",
+      "label": "The source hash matches the stored run",
+      "status": "passed"
+     },
+     {
+      "detail": "3 of 3 cited record(s) resolve to a stored line.",
+      "id": "origin",
+      "label": "The cited line resolves",
+      "status": "passed"
+     },
+     {
+      "detail": "The cited events exist, and their canonical hashes match.",
+      "id": "canonical",
+      "label": "The canonical event exists",
+      "status": "passed"
+     },
+     {
+      "detail": "3 line(s) read at the stored offset match their stored hash.",
+      "id": "source_record",
+      "label": "The source line matches its stored hash",
+      "status": "passed"
+     },
+     {
+      "detail": "1 detection(s) are stored and cite evidence.",
+      "id": "detection",
+      "label": "The detection references valid evidence",
+      "status": "passed"
+     },
+     {
+      "detail": "No graph element was asked about.",
+      "id": "graph",
+      "label": "The graph element cites the expected evidence",
+      "status": "not_applicable"
+     },
+     {
+      "detail": "No statement was asked about.",
+      "id": "statement",
+      "label": "The story statement cites stored evidence",
+      "status": "not_applicable"
+     },
+     {
+      "detail": "Seal valid, graph hash matches. 6 artifacts match the hashes in the benchmark receipt.",
+      "id": "proof",
+      "label": "The proof contains the expected hashes",
+      "status": "passed"
+     }
+    ],
+    "incident_id": "finc-ec918f810a84",
+    "incident_status": "INCIDENT UNCONFIRMED",
+    "original_conclusion": "unconfirmed",
+    "plain": "This record exists in the source: Add system.admin temp1. The connection to other records is inferred by a rule. The incident is unconfirmed: this shows what the evidence holds, not malicious intent.",
+    "proof_receipt_id": "fprf-99fbc300bcf1939a",
+    "records": [
+     {
+      "bursts": [],
+      "byte_offset": 20852,
+      "canonical_sha256": "c2aa21c3de832cae09349fa698e08c0a",
+      "detections": [
+       "fdet-1ab891ca6fa8c8ec"
+      ],
+      "duplicate": false,
+      "event_utc": "2027-01-15T08:00:00Z",
+      "evidence_id": "ev-3d0a75fe2e1a395939fed6fa",
+      "excerpt": "date=2027-01-15 time=08:00:00 eventtime=1800000000000000000 tz=\"+0530\" devname=\"FGT-TEST\" devid=\"FGT-TEST\" logid=\"0100044547\" type=\"event\" subtype=\"system\" level=\"information\" vd=\"root\" user=\"ops.user\" srcip=203.0.113.9 srcintfrole=\"wan\" dstip=10.99.0.1 dstintfrole=\"lan\" proto=6 action=\"Add\" msg=\"Add system.admin temp1\"",
+      "fields": {
+       "action": "Add",
+       "date": "2027-01-15",
+       "devid": "FGT-TEST",
+       "devname": "FGT-TEST",
+       "dst_ip": "10.99.0.1",
+       "dst_role": "lan",
+       "event_type": "event",
+       "level": "information",
+       "logid": "0100044547",
+       "message": "Add system.admin temp1",
+       "proto": "6",
+       "src_ip": "203.0.113.9",
+       "src_role": "wan",
+       "subtype": "system",
+       "time": "08:00:00",
+       "tz": "+0530",
+       "user": "ops.user",
+       "vd": "root"
+      },
+      "incidents": [
+       {
+        "incident_id": "finc-ec918f810a84",
+        "status": "unconfirmed",
+        "title": "Account created, used, then removed"
+       }
+      ],
+      "label": "RAW RECORD",
+      "line": 61,
+      "quarantine_reason": null,
+      "raw_sha256": "30344513f6aadb222e7ceb0b66228f7e",
+      "raw_status": "verified",
+      "state": "canonical",
+      "truncated": false
+     },
+     {
+      "bursts": [],
+      "byte_offset": 21174,
+      "canonical_sha256": "762eff77f4e35580cf4abe4f52f90a43",
+      "detections": [
+       "fdet-1ab891ca6fa8c8ec"
+      ],
+      "duplicate": false,
+      "event_utc": "2027-01-15T08:05:00Z",
+      "evidence_id": "ev-1c83125ba842c9a374d99ee4",
+      "excerpt": "date=2027-01-15 time=08:05:00 eventtime=1800000300000000000 tz=\"+0530\" devname=\"FGT-TEST\" devid=\"FGT-TEST\" logid=\"0100032001\" type=\"event\" subtype=\"system\" level=\"information\" vd=\"root\" user=\"temp1\" srcip=203.0.113.9 srcintfrole=\"wan\" dstip=10.99.0.1 dstintfrole=\"lan\" proto=6 action=\"login\" msg=\"m\" status=\"success\"",
+      "fields": {
+       "action": "login",
+       "date": "2027-01-15",
+       "devid": "FGT-TEST",
+       "devname": "FGT-TEST",
+       "dst_ip": "10.99.0.1",
+       "dst_role": "lan",
+       "event_type": "event",
+       "level": "information",
+       "logid": "0100032001",
+       "message": "m",
+       "proto": "6",
+       "src_ip": "203.0.113.9",
+       "src_role": "wan",
+       "status": "success",
+       "subtype": "system",
+       "time": "08:05:00",
+       "tz": "+0530",
+       "user": "temp1",
+       "vd": "root"
+      },
+      "incidents": [
+       {
+        "incident_id": "finc-ec918f810a84",
+        "status": "unconfirmed",
+        "title": "Account created, used, then removed"
+       }
+      ],
+      "label": "RAW RECORD",
+      "line": 62,
+      "quarantine_reason": null,
+      "raw_sha256": "1c626eae014ed3e05e752b637b128369",
+      "raw_status": "verified",
+      "state": "canonical",
+      "truncated": false
+     },
+     {
+      "bursts": [],
+      "byte_offset": 21491,
+      "canonical_sha256": "e26c738943d9eaece50f300ded052890",
+      "detections": [
+       "fdet-1ab891ca6fa8c8ec"
+      ],
+      "duplicate": false,
+      "event_utc": "2027-01-15T08:10:00Z",
+      "evidence_id": "ev-cc61c8182013325d90df9359",
+      "excerpt": "date=2027-01-15 time=08:10:00 eventtime=1800000600000000000 tz=\"+0530\" devname=\"FGT-TEST\" devid=\"FGT-TEST\" logid=\"0100044547\" type=\"event\" subtype=\"system\" level=\"information\" vd=\"root\" user=\"ops.user\" srcip=203.0.113.9 srcintfrole=\"wan\" dstip=10.99.0.1 dstintfrole=\"lan\" proto=6 action=\"Delete\" msg=\"Delete system.admin temp1\"",
+      "fields": {
+       "action": "Delete",
+       "date": "2027-01-15",
+       "devid": "FGT-TEST",
+       "devname": "FGT-TEST",
+       "dst_ip": "10.99.0.1",
+       "dst_role": "lan",
+       "event_type": "event",
+       "level": "information",
+       "logid": "0100044547",
+       "message": "Delete system.admin temp1",
+       "proto": "6",
+       "src_ip": "203.0.113.9",
+       "src_role": "wan",
+       "subtype": "system",
+       "time": "08:10:00",
+       "tz": "+0530",
+       "user": "ops.user",
+       "vd": "root"
+      },
+      "incidents": [
+       {
+        "incident_id": "finc-ec918f810a84",
+        "status": "unconfirmed",
+        "title": "Account created, used, then removed"
+       }
+      ],
+      "label": "RAW RECORD",
+      "line": 63,
+      "quarantine_reason": null,
+      "raw_sha256": "6506599b5c2a49754def17740143bd0a",
+      "raw_status": "verified",
+      "state": "canonical",
+      "truncated": false
+     }
+    ],
+    "relationship_status": "RELATIONSHIP INFERRED",
+    "reviews": [],
+    "run": {
+     "dataset_id": "fixture",
+     "health_state": "Unconfirmed",
+     "narrative": "Reconstructed, unconfirmed incidents",
+     "run_id": "frun-370ac3a914901431",
+     "source_available": true,
+     "source_filename": "fixture.log",
+     "source_hash_verified": true,
+     "source_sha256": "5246c5d53f02b0c36b06df4cd7888bbd064213050995cf4304abcc462d3e7c73"
+    },
+    "source_status": "SOURCE VERIFIED",
+    "stages": [
+     {
+      "evidence_refs": [
+       "ev-3d0a75fe2e1a395939fed6fa"
+      ],
+      "id": "source",
+      "input": "fixture.log, SHA-256 5246c5d53f02b0c36b06df4cd7888bbd064213050995cf4304abcc462d3e7c73",
+      "output": "Line 61, byte offset 20,852.",
+      "plain": "Line 61 of fixture.log holds this record, and its stored hash matches.",
+      "rule": null,
+      "state": "observed",
+      "status": "ok",
+      "title": "Source record",
+      "transformation": "One line, read by seeking to its stored byte offset.",
+      "version": null
+     },
+     {
+      "evidence_refs": [
+       "ev-3d0a75fe2e1a395939fed6fa"
+      ],
+      "id": "parser",
+      "input": "The raw key=value text.",
+      "output": "eventtime → event_ns, date → date, time → time, tz → tz, devname → devname, devid → devid, vd → vd, type → event_type, subtype → subtype, logid → logid, level → level, action → action, user → user, srcip → src_ip, dstip → dst_ip, srcintfrole → src_role, dstintfrole → dst_role, proto → proto, msg → message",
+      "plain": "The parser read the record's key=value pairs and mapped each known key to a named field. It does not guess values.",
+      "rule": "Field mapping",
+      "state": "observed",
+      "status": "ok",
+      "title": "Parser mapping",
+      "transformation": "Each known key is mapped to one canonical field. Unknown keys are kept in extra_json.",
+      "version": "halt.firex.parser/1.0.0"
+     },
+     {
+      "evidence_refs": [
+       "ev-3d0a75fe2e1a395939fed6fa"
+      ],
+      "id": "canonical",
+      "input": "The mapped fields.",
+      "output": "evidence_id ev-3d0a75fe2e1a395939fed6fa, canonical hash c2aa21c3de832cae09349fa698e08c0a",
+      "plain": "It became stored event ev-3d0a75fe2e1a395939fed6fa, and its time was read from eventtime.",
+      "rule": null,
+      "state": "observed",
+      "status": "ok",
+      "title": "Canonical event",
+      "transformation": "Hashed into a canonical hash and an evidence id. eventtime gives the time. Other fields are unchanged.",
+      "version": "halt.firex.parser/1.0.0"
+     },
+     {
+      "evidence_refs": [
+       "ev-3d0a75fe2e1a395939fed6fa"
+      ],
+      "id": "dedupe",
+      "input": "All canonical events.",
+      "output": "Kept. Bursts: none listed.",
+      "plain": "This record is not a duplicate, and no stored burst sample lists it.",
+      "rule": null,
+      "state": "observed",
+      "status": "ok",
+      "title": "Duplicate and burst handling",
+      "transformation": "Lines with the same raw hash count once. Repeated behaviour is grouped into bursts, and each burst keeps only a sample of its citations.",
+      "version": null
+     },
+     {
+      "evidence_refs": [
+       "ev-3d0a75fe2e1a395939fed6fa",
+       "ev-1c83125ba842c9a374d99ee4",
+       "ev-cc61c8182013325d90df9359"
+      ],
+      "id": "detection",
+      "input": "Canonical events and bursts.",
+      "output": "Detection fdet-1ab891ca6fa8c8ec, status unconfirmed, basis observed.",
+      "plain": "Rule account_lifecycle 1.0 included it. Account temp1 was created, used to sign in and deleted within the configured window.",
+      "rule": "account_lifecycle",
+      "state": "observed",
+      "status": "ok",
+      "title": "Detection rule",
+      "transformation": "Account created, used, then removed",
+      "version": "1.0"
+     },
+     {
+      "evidence_refs": [
+       "ev-1c83125ba842c9a374d99ee4",
+       "ev-cc61c8182013325d90df9359",
+       "ev-1c83125ba842c9a374d99ee4",
+       "ev-3d0a75fe2e1a395939fed6fa"
+      ],
+      "id": "relationship",
+      "input": "Detection steps and the entities they name.",
+      "output": "2 inferred link(s) on the selected path.",
+      "plain": "A rule connected these records, and no single record states the connection.",
+      "rule": "same_detection_sequence",
+      "state": "inferred",
+      "status": "ok",
+      "title": "Evidence relationship",
+      "transformation": "Steps are joined only through a shared account, source or pivot.",
+      "version": "halt.firex.graph/1.0"
+     },
+     {
+      "evidence_refs": [],
+      "id": "hypothesis",
+      "input": "The connected steps.",
+      "output": "Selected fhyp-ee9072b969bfa2ae, score 0.793, margin 0.673.",
+      "plain": "HALT's leading explanation is: One connected attack sequence. It ranks explanations. It does not prove one.",
+      "rule": null,
+      "state": "inferred",
+      "status": "ok",
+      "title": "Hypothesis",
+      "transformation": "Candidate explanations are scored from the evidence. Scores rank them and are not probabilities.",
+      "version": null
+     },
+     {
+      "evidence_refs": [],
+      "id": "statement",
+      "input": "The selected path and its citations.",
+      "output": "3 statements checked, 0 unsupported.",
+      "plain": "This incident's statements cite this record.",
+      "rule": null,
+      "state": "inferred",
+      "status": "ok",
+      "title": "Incident statement",
+      "transformation": "Each statement is written from a template and must cite evidence.",
+      "version": null
+     },
+     {
+      "evidence_refs": [],
+      "id": "proof",
+      "input": "The graph, the cited evidence and the versions.",
+      "output": "Graph hash 7246cf94f64e19f607e6171a0a59faccc8f316f6becf98e58d2e3be81215ac72, seal 6e3ff53152c49a912555e6a4966ea062d8f3eda11eae03db622e2cbb2cdfba71",
+      "plain": "Receipt fprf-99fbc300bcf1939a seals this incident. A seal shows the receipt has not changed. It does not show the conclusion is true.",
+      "rule": "sha256-canonical-json",
+      "state": "observed",
+      "status": "ok",
+      "title": "Proof receipt",
+      "transformation": "SHA-256 over canonical JSON.",
+      "version": "halt.firex.proof/1.0"
+     }
+    ],
+    "statuses": [
+     "SOURCE VERIFIED",
+     "RELATIONSHIP INFERRED",
+     "INCIDENT UNCONFIRMED"
+    ],
+    "subject_id": "finc-ec918f810a84",
+    "subject_kind": "incident",
+    "subject_label": "Account created, used, then removed"
+   },
+   "status": 200
+  },
   "GET /api/v1/ps2/runs/frun-370ac3a914901431/quality-case": {
    "body": {
     "code": "not_found",
@@ -5920,6 +8034,621 @@
      }
     ],
     "run_id": "frun-370ac3a914901431"
+   },
+   "status": 200
+  },
+  "GET /api/v1/ps2/runs/frun-370ac3a914901431/search/suggestions?q=temp1": {
+   "body": {
+    "run_id": "frun-370ac3a914901431",
+    "values": [
+     "temp1"
+    ]
+   },
+   "status": 200
+  },
+  "GET /api/v1/ps2/runs/frun-370ac3a914901431/search?q=no-such-value": {
+   "body": {
+    "canonical_events": [],
+    "complete": true,
+    "detections": [],
+    "field": null,
+    "graph_relationships": [],
+    "incident_steps": [],
+    "next_cursor": null,
+    "not_found": "No matching source or canonical evidence was found in this run.\nHALT has not substituted data from another dataset.",
+    "proof_receipts": [],
+    "query": "no-such-value",
+    "read_as": "text",
+    "run": {
+     "dataset_id": "fixture",
+     "health_state": "Unconfirmed",
+     "narrative": "Reconstructed, unconfirmed incidents",
+     "run_id": "frun-370ac3a914901431",
+     "source_available": true,
+     "source_filename": "fixture.log",
+     "source_hash_verified": true,
+     "source_sha256": "5246c5d53f02b0c36b06df4cd7888bbd064213050995cf4304abcc462d3e7c73"
+    },
+    "scanned_parts": 1,
+    "source_records": [],
+    "total_parts": 1,
+    "value_kind": null,
+    "value_note": null
+   },
+   "status": 200
+  },
+  "GET /api/v1/ps2/runs/frun-370ac3a914901431/search?q=temp1": {
+   "body": {
+    "canonical_events": [
+     {
+      "bursts": [],
+      "byte_offset": 20852,
+      "canonical_sha256": "c2aa21c3de832cae09349fa698e08c0a",
+      "detections": [
+       "fdet-1ab891ca6fa8c8ec"
+      ],
+      "duplicate": false,
+      "event_utc": "2027-01-15T08:00:00Z",
+      "evidence_id": "ev-3d0a75fe2e1a395939fed6fa",
+      "excerpt": null,
+      "fields": {
+       "action": "Add",
+       "date": "2027-01-15",
+       "devid": "FGT-TEST",
+       "devname": "FGT-TEST",
+       "dst_ip": "10.99.0.1",
+       "dst_role": "lan",
+       "event_type": "event",
+       "level": "information",
+       "logid": "0100044547",
+       "message": "Add system.admin temp1",
+       "proto": "6",
+       "src_ip": "203.0.113.9",
+       "src_role": "wan",
+       "subtype": "system",
+       "time": "08:00:00",
+       "tz": "+0530",
+       "user": "ops.user",
+       "vd": "root"
+      },
+      "incidents": [
+       {
+        "incident_id": "finc-ec918f810a84",
+        "status": "unconfirmed",
+        "title": "Account created, used, then removed"
+       }
+      ],
+      "label": "CANONICAL EVENT",
+      "line": 61,
+      "quarantine_reason": null,
+      "raw_sha256": "30344513f6aadb222e7ceb0b66228f7e",
+      "raw_status": "verified",
+      "state": "canonical",
+      "truncated": false
+     },
+     {
+      "bursts": [],
+      "byte_offset": 21174,
+      "canonical_sha256": "762eff77f4e35580cf4abe4f52f90a43",
+      "detections": [
+       "fdet-1ab891ca6fa8c8ec"
+      ],
+      "duplicate": false,
+      "event_utc": "2027-01-15T08:05:00Z",
+      "evidence_id": "ev-1c83125ba842c9a374d99ee4",
+      "excerpt": null,
+      "fields": {
+       "action": "login",
+       "date": "2027-01-15",
+       "devid": "FGT-TEST",
+       "devname": "FGT-TEST",
+       "dst_ip": "10.99.0.1",
+       "dst_role": "lan",
+       "event_type": "event",
+       "level": "information",
+       "logid": "0100032001",
+       "message": "m",
+       "proto": "6",
+       "src_ip": "203.0.113.9",
+       "src_role": "wan",
+       "status": "success",
+       "subtype": "system",
+       "time": "08:05:00",
+       "tz": "+0530",
+       "user": "temp1",
+       "vd": "root"
+      },
+      "incidents": [
+       {
+        "incident_id": "finc-ec918f810a84",
+        "status": "unconfirmed",
+        "title": "Account created, used, then removed"
+       }
+      ],
+      "label": "CANONICAL EVENT",
+      "line": 62,
+      "quarantine_reason": null,
+      "raw_sha256": "1c626eae014ed3e05e752b637b128369",
+      "raw_status": "verified",
+      "state": "canonical",
+      "truncated": false
+     },
+     {
+      "bursts": [],
+      "byte_offset": 21491,
+      "canonical_sha256": "e26c738943d9eaece50f300ded052890",
+      "detections": [
+       "fdet-1ab891ca6fa8c8ec"
+      ],
+      "duplicate": false,
+      "event_utc": "2027-01-15T08:10:00Z",
+      "evidence_id": "ev-cc61c8182013325d90df9359",
+      "excerpt": null,
+      "fields": {
+       "action": "Delete",
+       "date": "2027-01-15",
+       "devid": "FGT-TEST",
+       "devname": "FGT-TEST",
+       "dst_ip": "10.99.0.1",
+       "dst_role": "lan",
+       "event_type": "event",
+       "level": "information",
+       "logid": "0100044547",
+       "message": "Delete system.admin temp1",
+       "proto": "6",
+       "src_ip": "203.0.113.9",
+       "src_role": "wan",
+       "subtype": "system",
+       "time": "08:10:00",
+       "tz": "+0530",
+       "user": "ops.user",
+       "vd": "root"
+      },
+      "incidents": [
+       {
+        "incident_id": "finc-ec918f810a84",
+        "status": "unconfirmed",
+        "title": "Account created, used, then removed"
+       }
+      ],
+      "label": "CANONICAL EVENT",
+      "line": 63,
+      "quarantine_reason": null,
+      "raw_sha256": "6506599b5c2a49754def17740143bd0a",
+      "raw_status": "verified",
+      "state": "canonical",
+      "truncated": false
+     }
+    ],
+    "complete": true,
+    "detections": [
+     {
+      "basis": "observed",
+      "detection_id": "fdet-1ab891ca6fa8c8ec",
+      "incident_id": "finc-ec918f810a84",
+      "reason": "Account temp1 was created, used to sign in and deleted within the configured window.",
+      "rule_id": "account_lifecycle",
+      "rule_version": "1.0",
+      "status": "unconfirmed",
+      "title": "Account created, used, then removed"
+     }
+    ],
+    "field": null,
+    "graph_relationships": [
+     {
+      "classification": "observed",
+      "element_id": "entity:account:ops.user",
+      "evidence_refs": [
+       "ev-3d0a75fe2e1a395939fed6fa"
+      ],
+      "incident_id": "finc-ec918f810a84",
+      "kind": "node",
+      "label": "account: ops.user",
+      "missing_evidence": false,
+      "on_selected_path": false,
+      "rule": null,
+      "rule_version": null
+     },
+     {
+      "classification": "observed",
+      "element_id": "entity:device:temp1",
+      "evidence_refs": [
+       "ev-3d0a75fe2e1a395939fed6fa"
+      ],
+      "incident_id": "finc-ec918f810a84",
+      "kind": "node",
+      "label": "critical_asset: temp1",
+      "missing_evidence": false,
+      "on_selected_path": false,
+      "rule": null,
+      "rule_version": null
+     },
+     {
+      "classification": "observed",
+      "element_id": "entity:account:temp1",
+      "evidence_refs": [
+       "ev-1c83125ba842c9a374d99ee4"
+      ],
+      "incident_id": "finc-ec918f810a84",
+      "kind": "node",
+      "label": "account: temp1",
+      "missing_evidence": false,
+      "on_selected_path": false,
+      "rule": null,
+      "rule_version": null
+     },
+     {
+      "classification": "observed",
+      "element_id": "entity:device:FGT-TEST",
+      "evidence_refs": [
+       "ev-1c83125ba842c9a374d99ee4"
+      ],
+      "incident_id": "finc-ec918f810a84",
+      "kind": "node",
+      "label": "critical_asset: FGT-TEST",
+      "missing_evidence": false,
+      "on_selected_path": false,
+      "rule": null,
+      "rule_version": null
+     },
+     {
+      "classification": "observed",
+      "element_id": "context:9a54abc4b93702c5",
+      "evidence_refs": [
+       "ev-3d0a75fe2e1a395939fed6fa"
+      ],
+      "incident_id": "finc-ec918f810a84",
+      "kind": "node",
+      "label": "event: 1 event/system Add to 10.99.0.1",
+      "missing_evidence": false,
+      "on_selected_path": false,
+      "rule": null,
+      "rule_version": null
+     },
+     {
+      "classification": "observed",
+      "element_id": "context:c996296ea2cbc0bc",
+      "evidence_refs": [
+       "ev-1c83125ba842c9a374d99ee4"
+      ],
+      "incident_id": "finc-ec918f810a84",
+      "kind": "node",
+      "label": "event: 1 event/system login to 10.99.0.1",
+      "missing_evidence": false,
+      "on_selected_path": false,
+      "rule": null,
+      "rule_version": null
+     },
+     {
+      "classification": "observed",
+      "element_id": "entity:ip:203.0.113.9",
+      "evidence_refs": [
+       "ev-3d0a75fe2e1a395939fed6fa"
+      ],
+      "incident_id": "finc-ec918f810a84",
+      "kind": "node",
+      "label": "ip: 203.0.113.9",
+      "missing_evidence": false,
+      "on_selected_path": false,
+      "rule": null,
+      "rule_version": null
+     },
+     {
+      "classification": "observed",
+      "element_id": "context:5a19c7b2a763ece8",
+      "evidence_refs": [
+       "ev-cc61c8182013325d90df9359"
+      ],
+      "incident_id": "finc-ec918f810a84",
+      "kind": "node",
+      "label": "event: 1 event/system Delete to 10.99.0.1",
+      "missing_evidence": false,
+      "on_selected_path": false,
+      "rule": null,
+      "rule_version": null
+     },
+     {
+      "classification": "observed",
+      "element_id": "fedge-1c9adb913675b015",
+      "evidence_refs": [
+       "ev-1c83125ba842c9a374d99ee4"
+      ],
+      "incident_id": "finc-ec918f810a84",
+      "kind": "edge",
+      "label": "step:fdet-1ab891ca6fa8c8ec:1 targets entity:device:FGT-TEST",
+      "missing_evidence": false,
+      "on_selected_path": false,
+      "rule": "targets",
+      "rule_version": "halt.firex.graph/1.0"
+     },
+     {
+      "classification": "observed",
+      "element_id": "fedge-30d5fbd2cdff72fa",
+      "evidence_refs": [
+       "ev-cc61c8182013325d90df9359"
+      ],
+      "incident_id": "finc-ec918f810a84",
+      "kind": "edge",
+      "label": "entity:ip:203.0.113.9 also recorded context:5a19c7b2a763ece8",
+      "missing_evidence": false,
+      "on_selected_path": false,
+      "rule": "also_recorded",
+      "rule_version": "halt.firex.graph/1.0"
+     },
+     {
+      "classification": "observed",
+      "element_id": "fedge-4759520abcba1505",
+      "evidence_refs": [
+       "ev-cc61c8182013325d90df9359"
+      ],
+      "incident_id": "finc-ec918f810a84",
+      "kind": "edge",
+      "label": "step:fdet-1ab891ca6fa8c8ec:2 targets entity:device:temp1",
+      "missing_evidence": false,
+      "on_selected_path": false,
+      "rule": "targets",
+      "rule_version": "halt.firex.graph/1.0"
+     },
+     {
+      "classification": "observed",
+      "element_id": "fedge-665bf7ca83c73020",
+      "evidence_refs": [
+       "ev-1c83125ba842c9a374d99ee4"
+      ],
+      "incident_id": "finc-ec918f810a84",
+      "kind": "edge",
+      "label": "entity:ip:203.0.113.9 also recorded context:c996296ea2cbc0bc",
+      "missing_evidence": false,
+      "on_selected_path": false,
+      "rule": "also_recorded",
+      "rule_version": "halt.firex.graph/1.0"
+     },
+     {
+      "classification": "observed",
+      "element_id": "fedge-6c7b6ca847cf8e15",
+      "evidence_refs": [
+       "ev-3d0a75fe2e1a395939fed6fa"
+      ],
+      "incident_id": "finc-ec918f810a84",
+      "kind": "edge",
+      "label": "entity:ip:203.0.113.9 also recorded context:9a54abc4b93702c5",
+      "missing_evidence": false,
+      "on_selected_path": false,
+      "rule": "also_recorded",
+      "rule_version": "halt.firex.graph/1.0"
+     },
+     {
+      "classification": "observed",
+      "element_id": "fedge-6ce4490cd33dbfd0",
+      "evidence_refs": [
+       "ev-3d0a75fe2e1a395939fed6fa"
+      ],
+      "incident_id": "finc-ec918f810a84",
+      "kind": "edge",
+      "label": "step:fdet-1ab891ca6fa8c8ec:0 targets entity:device:temp1",
+      "missing_evidence": false,
+      "on_selected_path": false,
+      "rule": "targets",
+      "rule_version": "halt.firex.graph/1.0"
+     },
+     {
+      "classification": "observed",
+      "element_id": "fedge-a3d6145da0ca2200",
+      "evidence_refs": [
+       "ev-cc61c8182013325d90df9359"
+      ],
+      "incident_id": "finc-ec918f810a84",
+      "kind": "edge",
+      "label": "step:fdet-1ab891ca6fa8c8ec:2 involves entity:account:ops.user",
+      "missing_evidence": false,
+      "on_selected_path": false,
+      "rule": "involves",
+      "rule_version": "halt.firex.graph/1.0"
+     },
+     {
+      "classification": "inferred",
+      "element_id": "fedge-dd50ab6639e0e116",
+      "evidence_refs": [
+       "ev-1c83125ba842c9a374d99ee4",
+       "ev-cc61c8182013325d90df9359"
+      ],
+      "incident_id": "finc-ec918f810a84",
+      "kind": "edge",
+      "label": "step:fdet-1ab891ca6fa8c8ec:1 next step step:fdet-1ab891ca6fa8c8ec:2",
+      "missing_evidence": false,
+      "on_selected_path": true,
+      "rule": "same_detection_sequence",
+      "rule_version": "halt.firex.graph/1.0"
+     },
+     {
+      "classification": "observed",
+      "element_id": "fedge-e0a9b4188a2fd1c6",
+      "evidence_refs": [
+       "ev-3d0a75fe2e1a395939fed6fa"
+      ],
+      "incident_id": "finc-ec918f810a84",
+      "kind": "edge",
+      "label": "step:fdet-1ab891ca6fa8c8ec:0 involves entity:account:ops.user",
+      "missing_evidence": false,
+      "on_selected_path": false,
+      "rule": "involves",
+      "rule_version": "halt.firex.graph/1.0"
+     },
+     {
+      "classification": "observed",
+      "element_id": "fedge-ea412e667dbf0153",
+      "evidence_refs": [
+       "ev-1c83125ba842c9a374d99ee4"
+      ],
+      "incident_id": "finc-ec918f810a84",
+      "kind": "edge",
+      "label": "step:fdet-1ab891ca6fa8c8ec:1 involves entity:account:temp1",
+      "missing_evidence": false,
+      "on_selected_path": false,
+      "rule": "involves",
+      "rule_version": "halt.firex.graph/1.0"
+     },
+     {
+      "classification": "inferred",
+      "element_id": "fedge-eca462f65ecb30a5",
+      "evidence_refs": [
+       "ev-1c83125ba842c9a374d99ee4",
+       "ev-3d0a75fe2e1a395939fed6fa"
+      ],
+      "incident_id": "finc-ec918f810a84",
+      "kind": "edge",
+      "label": "step:fdet-1ab891ca6fa8c8ec:0 next step step:fdet-1ab891ca6fa8c8ec:1",
+      "missing_evidence": false,
+      "on_selected_path": true,
+      "rule": "same_detection_sequence",
+      "rule_version": "halt.firex.graph/1.0"
+     }
+    ],
+    "incident_steps": [
+     {
+      "count": 1,
+      "evidence_refs": [
+       "ev-3d0a75fe2e1a395939fed6fa"
+      ],
+      "incident_id": "finc-ec918f810a84",
+      "incident_title": "Account created, used, then removed",
+      "label": "Account temp1 created by ops.user",
+      "node_id": "step:fdet-1ab891ca6fa8c8ec:0",
+      "stage": "installation"
+     },
+     {
+      "count": 1,
+      "evidence_refs": [
+       "ev-1c83125ba842c9a374d99ee4"
+      ],
+      "incident_id": "finc-ec918f810a84",
+      "incident_title": "Account created, used, then removed",
+      "label": "New account temp1 signed in from 203.0.113.9",
+      "node_id": "step:fdet-1ab891ca6fa8c8ec:1",
+      "stage": "actions_on_objectives"
+     },
+     {
+      "count": 1,
+      "evidence_refs": [
+       "ev-cc61c8182013325d90df9359"
+      ],
+      "incident_id": "finc-ec918f810a84",
+      "incident_title": "Account created, used, then removed",
+      "label": "Account temp1 deleted by ops.user",
+      "node_id": "step:fdet-1ab891ca6fa8c8ec:2",
+      "stage": "defense_evasion"
+     }
+    ],
+    "next_cursor": null,
+    "not_found": null,
+    "proof_receipts": [
+     {
+      "graph_hash": "7246cf94f64e19f607e6171a0a59faccc8f316f6becf98e58d2e3be81215ac72",
+      "incident_id": "finc-ec918f810a84",
+      "kind": "incident",
+      "receipt_id": "fixture",
+      "seal_valid": true
+     }
+    ],
+    "query": "temp1",
+    "read_as": "text",
+    "run": {
+     "dataset_id": "fixture",
+     "health_state": "Unconfirmed",
+     "narrative": "Reconstructed, unconfirmed incidents",
+     "run_id": "frun-370ac3a914901431",
+     "source_available": true,
+     "source_filename": "fixture.log",
+     "source_hash_verified": true,
+     "source_sha256": "5246c5d53f02b0c36b06df4cd7888bbd064213050995cf4304abcc462d3e7c73"
+    },
+    "scanned_parts": 1,
+    "source_records": [
+     {
+      "bursts": [],
+      "byte_offset": 20852,
+      "canonical_sha256": "c2aa21c3de832cae09349fa698e08c0a",
+      "detections": [
+       "fdet-1ab891ca6fa8c8ec"
+      ],
+      "duplicate": false,
+      "event_utc": "2027-01-15T08:00:00Z",
+      "evidence_id": "ev-3d0a75fe2e1a395939fed6fa",
+      "excerpt": "date=2027-01-15 time=08:00:00 eventtime=1800000000000000000 tz=\"+0530\" devname=\"FGT-TEST\" devid=\"FGT-TEST\" logid=\"0100044547\" type=\"event\" subtype=\"system\" level=\"information\" vd=\"root\" user=\"ops.user\" srcip=203.0.113.9 srcintfrole=\"wan\" dstip=10.99.0.1 dstintfrole=\"lan\" proto=6 action=\"Add\" msg=\"Add system.admin temp1\"",
+      "fields": {},
+      "incidents": [
+       {
+        "incident_id": "finc-ec918f810a84",
+        "status": "unconfirmed",
+        "title": "Account created, used, then removed"
+       }
+      ],
+      "label": "RAW RECORD",
+      "line": 61,
+      "quarantine_reason": null,
+      "raw_sha256": "30344513f6aadb222e7ceb0b66228f7e",
+      "raw_status": "verified",
+      "state": "canonical",
+      "truncated": false
+     },
+     {
+      "bursts": [],
+      "byte_offset": 21174,
+      "canonical_sha256": "762eff77f4e35580cf4abe4f52f90a43",
+      "detections": [
+       "fdet-1ab891ca6fa8c8ec"
+      ],
+      "duplicate": false,
+      "event_utc": "2027-01-15T08:05:00Z",
+      "evidence_id": "ev-1c83125ba842c9a374d99ee4",
+      "excerpt": "date=2027-01-15 time=08:05:00 eventtime=1800000300000000000 tz=\"+0530\" devname=\"FGT-TEST\" devid=\"FGT-TEST\" logid=\"0100032001\" type=\"event\" subtype=\"system\" level=\"information\" vd=\"root\" user=\"temp1\" srcip=203.0.113.9 srcintfrole=\"wan\" dstip=10.99.0.1 dstintfrole=\"lan\" proto=6 action=\"login\" msg=\"m\" status=\"success\"",
+      "fields": {},
+      "incidents": [
+       {
+        "incident_id": "finc-ec918f810a84",
+        "status": "unconfirmed",
+        "title": "Account created, used, then removed"
+       }
+      ],
+      "label": "RAW RECORD",
+      "line": 62,
+      "quarantine_reason": null,
+      "raw_sha256": "1c626eae014ed3e05e752b637b128369",
+      "raw_status": "verified",
+      "state": "canonical",
+      "truncated": false
+     },
+     {
+      "bursts": [],
+      "byte_offset": 21491,
+      "canonical_sha256": "e26c738943d9eaece50f300ded052890",
+      "detections": [
+       "fdet-1ab891ca6fa8c8ec"
+      ],
+      "duplicate": false,
+      "event_utc": "2027-01-15T08:10:00Z",
+      "evidence_id": "ev-cc61c8182013325d90df9359",
+      "excerpt": "date=2027-01-15 time=08:10:00 eventtime=1800000600000000000 tz=\"+0530\" devname=\"FGT-TEST\" devid=\"FGT-TEST\" logid=\"0100044547\" type=\"event\" subtype=\"system\" level=\"information\" vd=\"root\" user=\"ops.user\" srcip=203.0.113.9 srcintfrole=\"wan\" dstip=10.99.0.1 dstintfrole=\"lan\" proto=6 action=\"Delete\" msg=\"Delete system.admin temp1\"",
+      "fields": {},
+      "incidents": [
+       {
+        "incident_id": "finc-ec918f810a84",
+        "status": "unconfirmed",
+        "title": "Account created, used, then removed"
+       }
+      ],
+      "label": "RAW RECORD",
+      "line": 63,
+      "quarantine_reason": null,
+      "raw_sha256": "6506599b5c2a49754def17740143bd0a",
+      "raw_status": "verified",
+      "state": "canonical",
+      "truncated": false
+     }
+    ],
+    "total_parts": 1,
+    "value_kind": "account",
+    "value_note": "This is an account or object name, held in the user field of a stored record. It is not a file."
    },
    "status": 200
   },
@@ -6013,7 +8742,7 @@
          "is_hash": true,
          "label": "Git commit",
          "status": null,
-         "value": "2ef8c063faa4e93c370b3465473ad176560105bd"
+         "value": "4f9a572431bf763f562baa720a1f163ebfe80846"
         },
         {
          "is_hash": false,

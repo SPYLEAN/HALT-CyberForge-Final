@@ -20,12 +20,14 @@ import {
 } from "@/lib/firex/api";
 import { nodeForEvidence } from "@/lib/firex/lens";
 import { stageLabel } from "@/lib/firex/scene";
+import { presentTitle } from "@/lib/firex/wording";
 import { classify } from "@/lib/ps2/api";
 import { ps2Vars } from "@/styles/ps2-palette";
 
 import { AttackWorldView } from "./AttackWorldView";
 import { EvidenceLens } from "./EvidenceLens";
 import s from "./firex.module.css";
+import { SearchEvidence, WhyHere } from "./SourceTrace";
 import { StatusBadge } from "./Verdict";
 
 interface Loaded {
@@ -116,6 +118,18 @@ function Workspace({ data, incidentId, runId }: { data: Loaded; incidentId: stri
     if (target?.isConnected) target.focus();
   };
 
+  // A link from SourceTrace can open a tab or select a graph element.
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const wanted = params.get("tab");
+    const element = params.get("select");
+    const timer = setTimeout(() => {
+      if (wanted && (PRIMARY as readonly string[]).includes(wanted)) setTab(wanted as Tab);
+      if (element) setSelected(element);
+    }, 0);
+    return () => clearTimeout(timer);
+  }, []);
+
   const tabs: readonly Tab[] = analyst ? [...PRIMARY, ...ANALYST] : PRIMARY;
   const lensBeside = tab !== "Attack World";
   return (
@@ -125,13 +139,19 @@ function Workspace({ data, incidentId, runId }: { data: Loaded; incidentId: stri
           <p className={s.crumbs}>
             <Link href="/firex">Log analysis</Link> / <Link href={`/firex/runs/${summary.run_id}`}>{health?.dataset_id ?? "Run"}</Link>
           </p>
-          <h1>{summary.title}</h1>
+          <h1>{presentTitle(summary.title)}</h1>
+          {presentTitle(summary.title) !== summary.title ? (
+            <p className={s.meta} style={{ marginTop: "var(--space-1)" }}>
+              Stored as: {summary.title}. This is a hypothesis until an analyst confirms it.
+            </p>
+          ) : null}
           <p className={s.meta} style={{ marginTop: "var(--space-2)" }}>
             <span className={s.mono}>{summary.first_utc}</span> to <span className={s.mono}>{summary.last_utc}</span> UTC
           </p>
         </div>
         <div className={s.actions}>
           <StatusBadge status="Unconfirmed" large />
+          <SearchEvidence runId={summary.run_id} advanced={analyst} />
           <label className={s.toggle}>
             <input
               type="checkbox"
@@ -233,6 +253,7 @@ function Overview({ data, incidentId, runId, onCite }: { data: Loaded; incidentI
                 <button type="button" className={s.statement} onClick={() => node && onCite(node)} disabled={!node}>
                   {st.text} <span className={s.meta}>{st.kind}, {st.evidence_ids.length} citation(s)</span>
                 </button>
+                <WhyHere runId={data.detail.summary.run_id} query={{ incident_id: incidentId, statement_id: st.statement_id }} />
               </li>
             );
           })}

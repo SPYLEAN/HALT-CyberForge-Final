@@ -5,6 +5,7 @@ import { useEffect, useRef, useState } from "react";
 
 import { firex, type IncidentGraph, type RecordedFact } from "@/lib/firex/api";
 import { pathSteps } from "@/lib/firex/scene";
+import { presentTitle } from "@/lib/firex/wording";
 import { buildWorld } from "@/lib/firex/world";
 import { ps2Vars } from "@/styles/ps2-palette";
 
@@ -71,7 +72,7 @@ export function ProductLanding() {
           const stored = await firex.graph(best.incident_id, reconstructed.run_id);
           if (!live) return;
           setGraph(stored);
-          setTitle(best.title);
+          setTitle(presentTitle(best.title));
           handle.current?.setPath(toPath(stored));
         } catch {
           /* no path to show */

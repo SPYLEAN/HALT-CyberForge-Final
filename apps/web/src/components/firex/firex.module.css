@@ -141,7 +141,7 @@
 @media (max-width: 639px) { .timeline li { grid-template-columns: minmax(0, 1fr); } }
 .graph2d { width: 100%; height: auto; display: block; background: var(--v2-page); border: var(--border-hairline) solid var(--v2-border); border-radius: var(--v2-radius-l); }
 .pre { margin: 0; font-family: var(--font-mono); font-size: 12px; white-space: pre-wrap; overflow-wrap: anywhere; max-height: 320px; overflow: auto; }
-.card summary, .lens summary { cursor: pointer; min-height: 44px; display: flex; align-items: center; color: var(--v2-text-2); font-size: 14px; }
+.card summary, .lens summary, .trace summary, .why summary { cursor: pointer; min-height: 44px; display: flex; align-items: center; color: var(--v2-text-2); font-size: 14px; }
 
 /* Byte map: real proportions of the source. */
 .byteMap { display: flex; width: 100%; height: 64px; border-radius: var(--v2-radius-m); overflow: hidden; border: var(--border-hairline) solid var(--v2-border-strong); }
@@ -190,3 +190,37 @@
 .bigBytes { width: 100%; max-width: 760px; display: flex; flex-direction: column; gap: var(--space-4); }
 .bigBytes .byteMap { height: clamp(90px, 18vh, 180px); }
 .withheld { width: 100%; max-width: 620px; border: 1px dashed var(--v2-border-strong); border-radius: var(--v2-radius-l); padding: var(--space-6); text-align: center; color: var(--v2-text-2); font-size: clamp(16px, 1.6vw, 22px); }
+
+/* SourceTrace: a drawer over the workspace, built from the Evidence Lens's language. */
+.trace { width: min(100vw, 760px); max-width: 100vw; height: 100svh; max-height: 100svh; margin: 0 0 0 auto; padding: 0; border: 0; border-left: var(--border-hairline) solid var(--v2-border-strong); background: var(--v2-page); color: var(--v2-text); font-family: var(--font-display); }
+.trace::backdrop { background: rgb(0 0 0 / 0.55); }
+.traceBody { display: flex; flex-direction: column; gap: var(--space-4); padding: var(--space-5); }
+.traceForm { display: flex; flex-wrap: wrap; align-items: flex-end; gap: var(--space-3); }
+.traceForm input { width: 100%; min-height: 44px; background: var(--v2-command); color: var(--v2-text); border: var(--border-hairline) solid var(--v2-border-strong); border-radius: var(--v2-radius-m); padding: 0 var(--space-3); font: inherit; }
+.traceForm input:focus-visible { outline: none; box-shadow: var(--v2-focus); }
+.traceFilters { display: flex; flex-direction: column; gap: var(--space-2); }
+.traceContext { display: flex; flex-direction: column; gap: var(--space-2); }
+.traceContext p { margin: 0; overflow-wrap: anywhere; }
+.traceGroup { display: flex; flex-direction: column; gap: var(--space-2); }
+.traceGroup h3 { margin: 0; font-size: 16px; font-weight: 600; }
+.traceList { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: var(--space-2); }
+.traceRow { display: flex; flex-direction: column; gap: var(--space-2); padding: var(--space-3); border: var(--border-hairline) solid var(--v2-border); border-radius: var(--v2-radius-m); min-width: 0; }
+.traceRow p { margin: 0; overflow-wrap: anywhere; }
+.traceLabel { overflow-wrap: anywhere; }
+.traceBadge { margin: 0 0 var(--space-1); font-size: 12px; font-weight: 600; letter-spacing: 0.06em; color: var(--v2-text-2); }
+.traceRaw { margin: 0; padding: var(--space-3); max-height: 220px; overflow: auto; white-space: pre-wrap; overflow-wrap: anywhere; font-family: var(--font-mono); font-size: 12.5px; line-height: 1.5; background: var(--v2-command); border-radius: var(--v2-radius-m); }
+.traceFields { margin: var(--space-2) 0 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 200px), 1fr)); gap: var(--space-2); }
+.traceFields dt { font-size: 12px; color: var(--v2-text-2); }
+.traceFields dd { margin: 0; font-size: 13.5px; overflow-wrap: anywhere; }
+.why { display: flex; flex-direction: column; gap: var(--space-2); min-width: 0; }
+.prov { display: flex; flex-direction: column; gap: var(--space-3); padding: var(--space-3); border-left: 2px solid var(--v2-border-strong); min-width: 0; }
+.prov p { margin: 0; overflow-wrap: anywhere; }
+.provStatus { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: var(--space-2); }
+.provChain { margin: 0; padding: 0 0 0 var(--space-4); display: flex; flex-direction: column; gap: var(--space-3); }
+.provChain h4 { margin: 0; font-size: 14px; font-weight: 600; }
+.provChain li { display: flex; flex-direction: column; gap: var(--space-1); }
+.provChain li[data-status="failed"] h4 { color: var(--ps2-threat); }
+.reviewForm { display: flex; flex-direction: column; gap: var(--space-2); margin-top: var(--space-2); }
+.reviewForm textarea, .reviewForm input { width: 100%; background: var(--v2-command); color: var(--v2-text); border: var(--border-hairline) solid var(--v2-border-strong); border-radius: var(--v2-radius-m); padding: var(--space-2) var(--space-3); font: inherit; min-height: 44px; }
+.reviewForm textarea:focus-visible, .reviewForm input:focus-visible { outline: none; box-shadow: var(--v2-focus); }
+@media (max-width: 639px) { .traceBody { padding: var(--space-4); } }

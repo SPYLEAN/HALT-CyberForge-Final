@@ -17,11 +17,13 @@ import {
   type IncidentList,
   type QuarantineSegment,
 } from "@/lib/firex/api";
+import { presentTitle } from "@/lib/firex/wording";
 import { classify } from "@/lib/ps2/api";
 import { ps2Vars } from "@/styles/ps2-palette";
 
 import { CaseBuilder } from "./CaseBuilder";
 import s from "./firex.module.css";
+import { SearchEvidence } from "./SourceTrace";
 import { TimeRegionMap } from "./QualityCaseView";
 import { HealthVerdict, StatusBadge } from "./Verdict";
 
@@ -128,6 +130,11 @@ export function RunView({ runId }: { runId: string }) {
         </p>
         {finished && health ? null : <h1 className={s.title}>{STATUS_TEXT[run.status]}</h1>}
         {finished && health ? <span className={s.meta}>Result for {run.dataset_id}</span> : null}
+        {finished ? (
+          <div style={{ marginTop: "var(--space-3)" }}>
+            <SearchEvidence runId={run.run_id} advanced />
+          </div>
+        ) : null}
         {!finished && run.detail !== STATUS_TEXT[run.status] ? (
           <p className={s.lede} role="status">
             {run.detail}
@@ -268,7 +275,7 @@ function Incidents({ list }: { list: IncidentList }) {
         {list.items.map((i) => (
           <li key={i.incident_id} className={s.incidentRow}>
             <div>
-              <h3>{i.title}</h3>
+              <h3>{presentTitle(i.title)}</h3>
               <ul className={s.incidentFacts}>
                 <li>
                   Begins at <span className={s.mono}>{i.entry_point}</span>

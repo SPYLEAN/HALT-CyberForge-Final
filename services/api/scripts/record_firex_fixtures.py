@@ -143,6 +143,10 @@ def record() -> dict[str, Any]:
                 get(f"{B}/runs/{run_id}{part}")
             get(f"{B}/runs/{run_id}/case-candidates")
             get(f"{B}/facts")
+            get(f"{B}/runs/{run_id}/provenance-summary")
+            get(f"{B}/runs/{run_id}/search?q=temp1")
+            get(f"{B}/runs/{run_id}/search?q=no-such-value")
+            get(f"{B}/runs/{run_id}/search/suggestions?q=temp1")
             items = get(f"{B}/runs/{run_id}/incidents")["items"]
             for item in items:
                 iid = item["incident_id"]
@@ -150,6 +154,7 @@ def record() -> dict[str, Any]:
                 get(f"{B}/incidents/{iid}{suffix}")
                 for part in ("graph", "story", "hypotheses", "reachability", "proof", "guide"):
                     get(f"{B}/incidents/{iid}/{part}{suffix}")
+                get(f"{B}/runs/{run_id}/provenance?incident_id={iid}")
                 post(f"{B}/incidents/{iid}/narrative{suffix}", {"audience": "analyst", "question": None})
             made = post(
                 f"{B}/cases",

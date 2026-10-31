@@ -7,6 +7,7 @@ import { edgeMeaning, nodeMeaning } from "@/lib/firex/lens";
 import { LAYER_LABEL, stageLabel } from "@/lib/firex/scene";
 
 import s from "./firex.module.css";
+import { WhyHere } from "./SourceTrace";
 
 const SOURCE_FIELDS: Array<[keyof EvidenceEvent, string]> = [
   ["user", "User"],
@@ -90,6 +91,7 @@ export function EvidenceLens({
         </ul>
       ) : null}
       {edge?.missing_evidence ? <p className={s.meta}>Missing evidence: no shared entity connects these steps.</p> : null}
+      {node || edge ? <WhyHere runId={detail.summary.run_id} query={edge ? { incident_id: detail.summary.incident_id, edge_id: edge.edge_id } : { incident_id: detail.summary.incident_id, node_id: node!.node_id }} /> : null}
       <details open={events.length <= 2}>
         <summary>
           {refs.length} source record{refs.length === 1 ? "" : "s"} cited

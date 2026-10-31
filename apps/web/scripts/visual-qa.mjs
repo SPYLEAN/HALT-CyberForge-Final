@@ -87,6 +87,27 @@ for (const [w, h] of SIZES) {
     await shot("trust-50g", w, h, `/trust/${fifty}`);
   }
 }
+if (ten) {
+  for (const [w, h] of [[1440, 900], [768, 1024], [390, 844]]) {
+    await shot("sourcetrace-results", w, h, `/firex/runs/${ten}`, async (p) => {
+      await p.getByRole("button", { name: "Search evidence" }).click({ timeout: 60000 });
+      await p.keyboard.type("svc_backup30");
+      await p.keyboard.press("Enter");
+      await p.getByRole("region", { name: "Source records" }).waitFor({ timeout: 60000 });
+      await p.waitForTimeout(400);
+    }, { full: false });
+    await shot("sourcetrace-why", w, h, `/firex/runs/${ten}`, async (p) => {
+      await p.getByRole("button", { name: "Search evidence" }).click({ timeout: 60000 });
+      await p.keyboard.type("svc_backup30");
+      await p.keyboard.press("Enter");
+      const records = p.getByRole("region", { name: "Source records" });
+      await records.getByRole("button", { name: "Why is this here?" }).first().click({ timeout: 60000 });
+      await p.getByTestId("provenance").first().waitFor({ timeout: 60000 });
+      await p.getByTestId("provenance").first().scrollIntoViewIfNeeded();
+      await p.waitForTimeout(400);
+    }, { full: false });
+  }
+}
 for (const [w, h] of [[1440, 900], [390, 844]]) {
   for (let scene = 1; scene <= 8; scene += 1) {
     await shot(`landing-scene-${scene}`, w, h, `/#scene-${scene}`, async (p) => {

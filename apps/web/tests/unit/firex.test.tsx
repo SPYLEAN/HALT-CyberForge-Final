@@ -5,12 +5,14 @@ import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 import { Datasets } from "@/components/firex/Datasets";
 import { Graph2D } from "@/components/firex/Graph2D";
+import { SearchEvidence, WhyHere } from "@/components/firex/SourceTrace";
 import { IncidentWorkspace } from "@/components/firex/IncidentWorkspace";
 import { RunView } from "@/components/firex/RunView";
 import { TheatreView } from "@/components/firex/TheatreView";
 import { TrustIndex, TrustRun } from "@/components/firex/TrustCentre";
-import { stageState, type CaseManifest, type DatasetHealth, type DatasetRun, type IncidentDetail, type IncidentGraph, type IncidentList, type Hypotheses, type TrustReport } from "@/lib/firex/api";
+import { stageState, type CaseManifest, type DatasetHealth, type DatasetRun, type IncidentDetail, type ProvenanceChain, type IncidentGraph, type IncidentList, type Hypotheses, type TrustReport } from "@/lib/firex/api";
 import { ALL_ON, CAMERA_PRESETS, edgeState, frameOf, layoutGraph, nodeState, pathSteps, presetNodes, replayedNode, visibleEdge, visibleNode } from "@/lib/firex/scene";
+import { presentTitle } from "@/lib/firex/wording";
 import { buildWorld, formOf } from "@/lib/firex/world";
 import { edgeMeaning, graphSummary, nodeMeaning } from "@/lib/firex/lens";
 
@@ -217,7 +219,7 @@ describe("run screen", () => {
     expect(await screen.findByRole("heading", { level: 1 })).toBeInTheDocument();
     const first = list().items[0]!;
     await waitFor(() => expect(document.querySelector(`a[href="/firex/incidents/${first.incident_id}?run=${RUN}"]`)).not.toBeNull());
-    expect(screen.getAllByText(first.title).length).toBeGreaterThan(0);
+    expect(screen.getAllByText(presentTitle(first.title)).length).toBeGreaterThan(0);
     expect(document.body.textContent).not.toMatch(/no threats found/i);
   });
 
@@ -256,7 +258,8 @@ describe("incident workspace", () => {
   it("loads the requested incident, never the authored demo", async () => {
     const id = topId();
     await open(id);
-    expect(screen.getByRole("heading", { level: 1 })).toHaveTextContent(detailOf(id).summary.title);
+    expect(screen.getByRole("heading", { level: 1 })).toHaveTextContent(presentTitle(detailOf(id).summary.title));
+    expect(screen.getByText(new RegExp(`Stored as: ${detailOf(id).summary.title}`))).toBeInTheDocument();
     expect(calls.every((c) => !c.includes("INC-2417"))).toBe(true);
     expect(calls.some((c) => c.includes(`/incidents/${id}`))).toBe(true);
     expect(document.body.textContent).not.toContain("INC-2417");
@@ -441,5 +444,76 @@ describe("the three reconstruction outcomes stay apart", () => {
     expect(within(table).getByText("0 of 5")).toBeInTheDocument();
     expect(within(table).getByText("Unconfirmed")).toBeInTheDocument();
     expect(screen.getByText(/rest only on the trustworthy time region/)).toBeInTheDocument();
+  });
+});
+
+describe("SourceTrace", () => {
+  const openSearch = async () => {
+    stub();
+    const user = userEvent.setup();
+    render(<SearchEvidence runId={RUN} advanced />);
+    await user.click(screen.getByRole("button", { name: "Search evidence" }));
+    return user;
+  };
+
+  it("finds an account by keyboard, names it, and connects it to its incident without calling it a file", async () => {
+    const user = await openSearch();
+    await user.keyboard("temp1{Enter}");
+    const records = await screen.findByRole("region", { name: "Source records" });
+    expect(within(records).getAllByText("RAW RECORD").length).toBeGreaterThan(0);
+    expect(screen.getByText(/It is not a file/)).toBeInTheDocument();
+    for (const group of ["Canonical events", "Detections", "Incident steps", "Graph relationships", "Proof receipts"]) expect(screen.getByRole("region", { name: group })).toBeInTheDocument();
+    expect(within(records).getAllByRole("link").some((a) => a.textContent?.startsWith("Possible"))).toBe(true);
+    expect(calls.every((c) => !c.includes("/runs/") || c.includes(RUN))).toBe(true);
+  });
+
+  it("says plainly when nothing was found and that nothing was substituted", async () => {
+    const user = await openSearch();
+    await user.keyboard("no-such-value{Enter}");
+    expect(await screen.findByText(/has not substituted data from another dataset/)).toBeInTheDocument();
+  });
+
+  it("shows filters only where advanced search is offered", async () => {
+    await openSearch();
+    expect(screen.getByLabelText("Field")).toBeInTheDocument();
+    expect(screen.getByLabelText("Relationship")).toBeInTheDocument();
+  });
+
+  it("why-is-this-here shows the plain explanation, the nine stages and the statuses", async () => {
+    stub();
+    const user = userEvent.setup();
+    render(<WhyHere runId={RUN} query={{ incident_id: topId() }} />);
+    const button = screen.getByRole("button", { name: "Why is this here?" });
+    await user.click(button);
+    expect(button).toHaveAttribute("aria-expanded", "true");
+    const panel = await screen.findByTestId("provenance");
+    expect(within(panel).getByText("INCIDENT UNCONFIRMED")).toBeInTheDocument();
+    expect(within(screen.getByRole("list", { name: "Provenance chain" })).getAllByRole("heading").map((h) => h.textContent)).toEqual(["Source record", "Parser mapping", "Canonical event", "Duplicate and burst handling", "Detection rule", "Evidence relationship", "Hypothesis", "Incident statement", "Proof receipt"]);
+  });
+
+  it("a failed claim names its link and is not presented as verified", async () => {
+    const key = `GET ${B}/runs/${RUN}/provenance?incident_id=${topId()}`;
+    const base = body<ProvenanceChain>(key);
+    stub({ [key]: { status: 200, body: { ...base, statuses: ["PROVENANCE FAILED"], source_status: "PROVENANCE FAILED", failed_link: "The cited line resolves", plain: "This claim is not verified." } } });
+    const user = userEvent.setup();
+    render(<WhyHere runId={RUN} query={{ incident_id: topId() }} />);
+    await user.click(screen.getByRole("button", { name: "Why is this here?" }));
+    expect(await screen.findByRole("alert")).toHaveTextContent("PROVENANCE FAILED at: The cited line resolves");
+    expect(screen.queryByText("SOURCE VERIFIED")).toBeNull();
+  });
+
+  it("presents any stored title as a hypothesis, leaving safe wording alone", () => {
+    expect(presentTitle("Account created, used, then removed")).toBe("Possible short-lived administrator-account activity");
+    expect(presentTitle("Denied-traffic flood against one target")).toBe("Possible denied-traffic flood against one target");
+    expect(presentTitle("VPN identity alternating between source addresses")).toBe("Possible VPN identity alternating between source addresses");
+    expect(presentTitle("Possible thing")).toBe("Possible thing");
+  });
+
+  it("the Trust Centre records provenance for each incident", async () => {
+    stub();
+    render(<TrustRun runId={RUN} />);
+    const rows = await screen.findByRole("list", { name: "Provenance of each incident" });
+    expect(within(rows).getAllByRole("listitem").length).toBeGreaterThanOrEqual(list().items.length);
+    expect(within(rows).getAllByRole("button", { name: "Why is this here?" }).length).toBe(list().items.length);
   });
 });

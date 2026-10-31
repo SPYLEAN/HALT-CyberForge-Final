@@ -195,6 +195,51 @@ test("the Trust Centre leads with the verdict and keeps ground truth unmeasured"
   expect(await axe(page)).toEqual([]);
 });
 
+test("SourceTrace finds an account, traces it to its source and records a review without changing the result", async ({ page, request }) => {
+  const { runId } = await finishedRun(request);
+  const list = await (await request.get(`${PS2}/runs/${runId}/incidents`)).json();
+  const account = list.items.find((i: { title: string }) => i.title.startsWith("Account")).incident_id;
+  const before = await (await request.get(`${PS2}/incidents/${account}/proof?run_id=${runId}`)).json();
+
+  await page.goto(`/firex/incidents/${account}?run=${runId}`);
+  await page.getByRole("button", { name: "Search evidence" }).click();
+  await page.keyboard.type("temp1");
+  await page.keyboard.press("Enter");
+  const records = page.getByRole("region", { name: "Source records" });
+  await expect(records.getByText("RAW RECORD").first()).toBeVisible();
+  await expect(page.getByText(/It is not a file/)).toBeVisible();
+  await expect(page.getByRole("region", { name: "Proof receipts" })).toBeVisible();
+  expect(await axe(page)).toEqual([]);
+
+  await records.getByRole("button", { name: "Why is this here?" }).first().click();
+  const panel = page.getByTestId("provenance").first();
+  await expect(panel.getByText("SOURCE VERIFIED")).toBeVisible();
+  await expect(panel.getByText("INCIDENT UNCONFIRMED")).toBeVisible();
+  await expect(panel.getByRole("list", { name: "Provenance chain" }).locator("> li")).toHaveCount(9);
+
+  await panel.getByText(/^Analyst review/).click();
+  await panel.getByLabel("Reason").fill("The owner should confirm this account.");
+  await panel.getByRole("button", { name: "Record review" }).click();
+  await expect(panel.getByText(/The owner should confirm this account/).first()).toBeVisible();
+  expect((await (await request.get(`${PS2}/incidents/${account}/proof?run_id=${runId}`)).json()).receipt).toEqual(before.receipt);
+
+  await page.keyboard.press("Escape");
+  await expect(page.getByRole("button", { name: "Search evidence" })).toBeVisible();
+});
+
+test("SourceTrace works at phone width and says when nothing is found", async ({ page, request }) => {
+  const { runId } = await finishedRun(request);
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.goto(`/firex/runs/${runId}`);
+  await page.getByRole("button", { name: "Search evidence" }).click();
+  await page.keyboard.type("no-such-value");
+  await page.keyboard.press("Enter");
+  await expect(page.getByText(/has not substituted data from another dataset/)).toBeVisible();
+  const overflow = await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth);
+  expect(overflow).toBeLessThanOrEqual(1);
+  expect(await axe(page)).toEqual([]);
+});
+
 test("API failure shows an explicit error, not substituted data", async ({ page }) => {
   await page.route("**/api/v1/ps2/incidents/**", (route) => route.abort());
   await page.goto("/firex/incidents/finc-000000000000");

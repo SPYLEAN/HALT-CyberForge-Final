@@ -5,7 +5,7 @@ can supply a path. Every figure comes from a run's stored files."""
 from __future__ import annotations
 
 from pathlib import Path
-from typing import Annotated, Any
+from typing import Annotated, Any, Literal
 
 from fastapi import APIRouter, Query
 
@@ -13,6 +13,7 @@ from halt.contracts.common import Contract
 from halt.firex import jobs
 from halt.firex.cases import create_case, list_candidates, read_case
 from halt.firex.contracts import (
+    AnalystReview,
     BenchmarkReceipt,
     CaseCandidates,
     CaseManifest,
@@ -31,16 +32,24 @@ from halt.firex.contracts import (
     NarrativeRequest,
     NarrativeResult,
     ProofReceipt,
+    ProvenanceChain,
+    ProvenanceSummary,
     QualityCase,
     QuarantineSegment,
     ReachabilityResult,
+    ReviewList,
+    ReviewRequest,
     RunRequest,
     SealVerification,
+    SearchResponse,
+    SearchSuggestions,
     TrustReport,
 )
 from halt.firex.guide import build_guide
 from halt.firex.llm import explain
 from halt.firex.receipts import verify_seal
+from halt.firex.reviews import add_review, review_list
+from halt.firex.trace import build_provenance, build_summary, search, suggest
 from halt.firex.trust import build_facts, build_health, build_quality_case, build_trust
 from halt.firex.util import read_json
 
@@ -164,6 +173,79 @@ def post_case(body: CaseRequest) -> CaseManifest:
 @router.get("/cases/{case_id}", response_model=CaseManifest)
 def get_case(case_id: str) -> CaseManifest:
     return read_case(case_id)
+
+
+SearchField = Literal[
+    "user",
+    "ip",
+    "host",
+    "device",
+    "destination",
+    "service",
+    "action",
+    "message",
+    "event_id",
+    "line",
+    "timestamp",
+    "incident",
+    "detection",
+    "node",
+    "edge",
+    "receipt",
+]
+
+
+@router.get("/runs/{run_id}/search", response_model=SearchResponse)
+def get_search(
+    run_id: str,
+    q: Annotated[str, Query(min_length=2, max_length=200)],
+    field: SearchField | None = None,
+    relationship: Literal["observed", "inferred"] | None = None,
+    cursor: Annotated[str | None, Query(max_length=40)] = None,
+    limit: Annotated[int, Query(ge=1, le=50)] = 20,
+) -> SearchResponse:
+    return search(run_id, q, field_name=field, relationship=relationship, cursor=cursor, limit=limit)
+
+
+@router.get("/runs/{run_id}/search/suggestions", response_model=SearchSuggestions)
+def get_search_suggestions(
+    run_id: str, q: Annotated[str, Query(min_length=1, max_length=200)]
+) -> SearchSuggestions:
+    return suggest(run_id, q)
+
+
+@router.get("/runs/{run_id}/provenance", response_model=ProvenanceChain)
+def get_provenance(
+    run_id: str,
+    incident_id: Annotated[str | None, Query(pattern=r"^finc-[0-9a-f]{12}$")] = None,
+    evidence_id: Annotated[str | None, Query(max_length=80)] = None,
+    statement_id: Annotated[str | None, Query(max_length=40)] = None,
+    node_id: Annotated[str | None, Query(max_length=300)] = None,
+    edge_id: Annotated[str | None, Query(max_length=80)] = None,
+) -> ProvenanceChain:
+    return build_provenance(
+        run_id,
+        incident_id=incident_id,
+        evidence_id=evidence_id,
+        statement_id=statement_id,
+        node_id=node_id,
+        edge_id=edge_id,
+    )
+
+
+@router.get("/runs/{run_id}/provenance-summary", response_model=ProvenanceSummary)
+def get_provenance_summary(run_id: str) -> ProvenanceSummary:
+    return build_summary(run_id)
+
+
+@router.get("/runs/{run_id}/reviews", response_model=ReviewList)
+def get_reviews(run_id: str) -> ReviewList:
+    return review_list(run_id)
+
+
+@router.post("/runs/{run_id}/reviews", response_model=AnalystReview, status_code=201)
+def post_review(run_id: str, body: ReviewRequest) -> AnalystReview:
+    return add_review(run_id, body)
 
 
 @router.get("/facts", response_model=FactsResponse)
