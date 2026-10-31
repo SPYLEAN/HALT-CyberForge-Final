@@ -151,6 +151,22 @@ test("upload with partial rejection; the secret never reaches the page", async (
   expect(await page.content()).not.toContain("hunter2");
 });
 
+test("operator file: demo-inputs/ps2-small-demo.jsonl uploads and reconstructs as its README documents", async ({ page }) => {
+  await page.goto("/reconstruct");
+  await page.getByRole("radio", { name: "UPLOAD FILES" }).click();
+  await page.getByLabel(/^Log files/).setInputFiles(join(__dirname, "../../../demo-inputs/ps2-small-demo.jsonl"));
+  await page.getByRole("combobox", { name: "Log source for ps2-small-demo.jsonl" }).selectOption("api_activity");
+  await page.getByRole("checkbox", { name: /synthetic or public-demo data only/ }).check();
+  await page.getByRole("button", { name: /UPLOAD 1 FILE/ }).click();
+  await expect(page.getByLabel("Ingestion totals")).toContainText("Accepted19");
+  await expect(page.getByLabel("Ingestion totals")).toContainText("Rejected1");
+  await page.getByRole("button", { name: /RECONSTRUCT ATTACK PATH/ }).click();
+  await expect(page).toHaveURL(/\/reconstructions\/run-07fc183c9b2f9ddb$/);
+  await expect(stage(page, "Receipt sealed")).toHaveAttribute("data-state", "done");
+  await page.getByRole("tab", { name: "HYPOTHESES" }).click();
+  await expect(page.getByTestId("ambiguity")).toContainText("leads the next alternate by 0.0099");
+});
+
 test("synthetic evaluation: disclosure, and every value is the API's own", async ({ page, request }) => {
   const run = await runFor(request, "scenario-a");
   const response = page.waitForResponse((r) => r.url().endsWith(`/reconstructions/${run}/evaluation`));
@@ -248,12 +264,20 @@ test("phone 390: guided sequence, readable evidence, 44px controls, no horizonta
   expect(await overflow(page)).toBeLessThanOrEqual(0);
 });
 
-/** Click where Cytoscape drew an element (node centre or edge midpoint), with a real mouse. */
+/** Click where Cytoscape drew an element (node centre or edge midpoint), with a real mouse, once the drawing has
+ *  stopped moving (a toggle or the path reveal can still be re-fitting the view). */
 async function clickGraphElement(page: Page, id: string): Promise<void> {
   const graph = page.getByTestId("ps2-graph");
   await graph.scrollIntoViewIfNeeded();
-  const p = await graph.evaluate((el, target) => (el as HTMLElement & { ps2RenderedPosition: (i: string) => { x: number; y: number } | null }).ps2RenderedPosition(target), id);
-  expect(p, `${id} is drawn`).not.toBeNull();
+  const at = () => graph.evaluate((el, target) => (el as HTMLElement & { ps2RenderedPosition: (i: string) => { x: number; y: number } | null }).ps2RenderedPosition(target), id);
+  let p = await at();
+  await expect
+    .poll(async () => {
+      const prev = p;
+      p = await at();
+      return Boolean(p && prev && Math.abs(p.x - prev.x) < 0.5 && Math.abs(p.y - prev.y) < 0.5);
+    }, { message: `${id} is drawn and settled`, intervals: [250] })
+    .toBe(true);
   await page.mouse.click(p!.x, p!.y);
 }
 

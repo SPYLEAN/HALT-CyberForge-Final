@@ -26,6 +26,9 @@ class Settings(BaseSettings):
     seed: int = 2417
     signing_key_path: str = "./secrets/demo-signing-key.pem"
     llm_enabled: bool = False
+    # Enables demo-only operator endpoints (POST /api/v1/ps2/demo/reset). Off unless set; `npm run dev` and
+    # `npm run demo` turn it on for the local API only.
+    demo_mode: bool = False
     cors_origins: list[str] = ["http://localhost:3000"]
     log_level: Literal["DEBUG", "INFO", "WARNING", "ERROR"] = "INFO"
     scenario_dir: Path = DEFAULT_SCENARIO_DIR

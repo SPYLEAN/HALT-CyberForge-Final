@@ -21,6 +21,7 @@
 | `HALT_CORS_ORIGINS` | `["http://localhost:3000"]` | the web origin |
 | `NEXT_PUBLIC_API_ORIGIN` | `http://localhost:8000` | where the browser calls the API |
 | `HALT_API_ORIGIN` | `http://localhost:8000` | where `npm run demo:reset` sends its requests |
+| `HALT_DEMO_MODE` | `false` in the API; `npm run dev` and `npm run demo` set `true` for their own API | enables the demo-only `POST /api/v1/ps2/demo/reset`; when off it answers 404. Not a secret. Never set it on a shared or production API |
 
 ## Start
 
@@ -63,6 +64,12 @@ the incident demo and the PS2 bundled demo.
    - **Proof:** not signed; content hashes only.
    - **Evaluation:** read the synthetic disclosure aloud.
 
+## Manual upload
+
+Use `demo-inputs/ps2-small-demo.jsonl` with log source `api_activity`. Expected values (19 accepted / 1 rejected,
+run `run-07fc183c9b2f9ddb`, ambiguous at 0.0099) are in `demo-inputs/README.md`. The operator card,
+`PS2_OPERATOR_CARD.md`, and the script, `PS2_FIVE_MINUTE_DEMO.md`, are the one-page versions of this runbook.
+
 ## Scenario B: service-account abuse, an ambiguous result (about 1 minute)
 
 1. Choose **Service-account abuse in a cloud data platform**, ingest, then reconstruct. The URL becomes
@@ -101,7 +108,9 @@ were identical, and an uploaded run returned 404.
 npm run demo:reset
 ```
 
-This resets the incident demo to its seed and calls `POST /api/v1/ps2/demo/reset`. The PS2 reset only drops
+This resets the incident demo to its seed and calls `POST /api/v1/ps2/demo/reset`. That endpoint exists only
+while `HALT_DEMO_MODE` is on (`npm run demo` turns it on locally); otherwise it answers 404 "demo reset is not
+enabled on this API" and changes nothing. The PS2 reset only drops
 bundled-dataset batches and runs from the API's memory. Uploaded batches and runs are never touched, and the
 response counts what it kept. Bundled runs come back identical the next time they are opened. To start the
 browser flow from step 1, open `/reconstruct` and press **Start over** if an earlier ingestion is shown.
@@ -124,7 +133,8 @@ with the network disconnected.
 | "This demo-session reconstruction has expired" on an uploaded run | Expected after a restart. Re-upload, or switch to a bundled dataset |
 | Web app not answering | `npm run build` then `npm run start -w @halt/web -- -p 3000` (API still on :8000) |
 | Graph hard to read on the projector | Use **Focus selected path** and **Fit to view**, or narrow the window to the phone layout, which shows the path as an ordered list |
-| Everything fails | Show the committed screenshots in `artifacts/ps2-workspace/` (real output of this engine, labelled synthetic) |
+| `npm run demo:reset` fails with 404 | The API was started without `HALT_DEMO_MODE=true`. Restart it through `npm run demo -- --keep` |
+| Everything fails | Show the committed screenshots in `artifacts/ps2-final/` (real production-build output, labelled synthetic) |
 
 ## Known limitations
 

@@ -4,7 +4,8 @@ bounded in-memory store (a restart clears them; bundled datasets reproduce ident
 Demo recovery: batches and runs of the bundled synthetic datasets are deterministic (same files, context,
 config and engine → same batch id, run id, graph hash and receipt hashes), so after an API restart or an
 eviction they are regenerated on request from the bundled files. Uploaded batches are never regenerated: a
-missing upload stays a 404. `POST /ps2/demo/reset` drops only bundled-dataset entries (demo-only).
+missing upload stays a 404. `POST /ps2/demo/reset` drops only bundled-dataset entries; it is
+demo-only and answers 404 unless HALT_DEMO_MODE is on.
 
 Security: JSON bodies only (no multipart, no URL fetching), a request-size guard before parsing, allow-listed
 adapters and content types, filename pattern (no path separators), per-file and per-batch size limits, record
@@ -170,6 +171,12 @@ def size_guard(request: Request) -> None:
 
 
 Store = Annotated[_Store, Depends(store_of)]
+
+
+def demo_only(request: Request) -> None:
+    """Demo-only endpoints answer 404 unless HALT_DEMO_MODE is on (off by default)."""
+    if not request.app.state.settings.demo_mode:
+        raise NotFound("demo reset is not enabled on this API (HALT_DEMO_MODE is off)")
 
 
 def _ingest_dataset(dataset_id: str) -> Ingestion:
@@ -386,10 +393,11 @@ def get_evaluation(run_id: str, store: Store) -> EvaluationReport:
     return evaluate_dataset(dataset)
 
 
-@router.post("/demo/reset", response_model=DemoReset)
+@router.post("/demo/reset", response_model=DemoReset, dependencies=[Depends(demo_only)])
 def demo_reset(store: Store) -> DemoReset:
     """Demo-only: return the bundled demo to its initial state by dropping bundled-dataset batches and runs.
-    They are regenerated identically when next requested. Uploaded batches and runs are left untouched."""
+    They are regenerated identically when next requested. Uploaded batches and runs are left untouched.
+    Answers 404 unless HALT_DEMO_MODE is on (off by default; `npm run demo` enables it locally)."""
     bundled = bundled_ids()
     with store.lock:
         batches = sorted(k for k in store.batches if bundled.get(k, ("", ""))[0] == "batch")

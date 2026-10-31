@@ -32,6 +32,7 @@ export default defineConfig({
         HALT_DB_URL: "sqlite+pysqlite:///:memory:",
         HALT_SIGNING_KEY_PATH: join(tmpdir(), "halt-e2e-key.pem"),
         HALT_LOG_LEVEL: "WARNING",
+        HALT_DEMO_MODE: "true",
       },
     },
     {

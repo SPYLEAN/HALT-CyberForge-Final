@@ -8155,7 +8155,7 @@
     },
     "/api/v1/ps2/demo/reset": {
       "post": {
-        "description": "Demo-only: return the bundled demo to its initial state by dropping bundled-dataset batches and runs.\nThey are regenerated identically when next requested. Uploaded batches and runs are left untouched.",
+        "description": "Demo-only: return the bundled demo to its initial state by dropping bundled-dataset batches and runs.\nThey are regenerated identically when next requested. Uploaded batches and runs are left untouched.\nAnswers 404 unless HALT_DEMO_MODE is on (off by default; `npm run demo` enables it locally).",
         "operationId": "demo_reset_api_v1_ps2_demo_reset_post",
         "responses": {
           "200": {

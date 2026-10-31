@@ -10,7 +10,7 @@
 //   npm run check        every static check, unit test and contract-drift check (no browser)
 //   npm run test:e2e     Playwright + axe against a production build and a real API
 //
-// Environment: HALT_DB_URL overrides the SQLite file; HALT_API_ORIGIN (default http://localhost:8000) is
+// Environment: HALT_DB_URL overrides the SQLite file; HALT_DEMO_MODE defaults to true here (local only); HALT_API_ORIGIN (default http://localhost:8000) is
 // where demo:reset sends its request. All data is synthetic (SIMULATED).
 import { spawn, spawnSync } from "node:child_process";
 import { createHash } from "node:crypto";
@@ -50,6 +50,8 @@ function apiEnv(name) {
     HALT_DB_URL: process.env.HALT_DB_URL ?? `sqlite+pysqlite:///${db}`,
     HALT_SIGNING_KEY_PATH: process.env.HALT_SIGNING_KEY_PATH ?? join(STATE_DIR, "demo-signing-key.pem"),
     HALT_LOG_LEVEL: process.env.HALT_LOG_LEVEL ?? "INFO",
+    // Local dev/demo only: enables the demo reset endpoint. The API default (and Docker) leaves it off.
+    HALT_DEMO_MODE: process.env.HALT_DEMO_MODE ?? "true",
   };
 }
 

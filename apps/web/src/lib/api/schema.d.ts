@@ -507,6 +507,7 @@ export interface paths {
          * Demo Reset
          * @description Demo-only: return the bundled demo to its initial state by dropping bundled-dataset batches and runs.
          *     They are regenerated identically when next requested. Uploaded batches and runs are left untouched.
+         *     Answers 404 unless HALT_DEMO_MODE is on (off by default; `npm run demo` enables it locally).
          */
         post: operations["demo_reset_api_v1_ps2_demo_reset_post"];
         delete?: never;

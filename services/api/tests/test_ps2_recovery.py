@@ -1,11 +1,12 @@
 """PS2 demo recovery: bundled-dataset runs are regenerated identically after an API restart; uploaded runs are
-never regenerated; the demo reset touches bundled data only."""
+never regenerated; the demo reset touches bundled data only and is off unless HALT_DEMO_MODE is on."""
 
 from __future__ import annotations
 
 from pathlib import Path
 from typing import Any
 
+import pytest
 from fastapi.testclient import TestClient
 
 from halt.config import Settings
@@ -15,11 +16,15 @@ from tests.ps2_support import api_record, jsonl
 BASE = "/api/v1/ps2"
 
 
-def fresh(tmp_path: Path, name: str) -> TestClient:
+def fresh(tmp_path: Path, name: str, demo_mode: bool = False) -> TestClient:
     """A new app instance: its PS2 store starts empty, exactly as after an API restart."""
     return TestClient(
         create_app(
-            Settings(db_url="sqlite+pysqlite:///:memory:", signing_key_path=str(tmp_path / f"{name}.pem"))
+            Settings(
+                db_url="sqlite+pysqlite:///:memory:",
+                signing_key_path=str(tmp_path / f"{name}.pem"),
+                demo_mode=demo_mode,
+            )
         )
     )
 
@@ -105,7 +110,31 @@ def test_unknown_ids_stay_404(client: TestClient) -> None:
     assert client.get(f"{BASE}/ingestions/batch-0000000000000000").status_code == 404
 
 
-def test_demo_reset_drops_only_bundled_entries_and_they_come_back_identical(client: TestClient) -> None:
+def test_demo_mode_is_off_by_default_and_read_from_the_environment(monkeypatch: pytest.MonkeyPatch) -> None:
+    monkeypatch.delenv("HALT_DEMO_MODE", raising=False)
+    assert Settings(db_url="sqlite+pysqlite:///:memory:", _env_file=None).demo_mode is False
+    monkeypatch.setenv("HALT_DEMO_MODE", "true")
+    assert Settings(db_url="sqlite+pysqlite:///:memory:", _env_file=None).demo_mode is True
+
+
+def test_demo_reset_is_404_and_changes_nothing_when_demo_mode_is_off(tmp_path: Path) -> None:
+    with fresh(tmp_path, "off") as client:
+        batch_a, run_a = bundled_run(client, "scenario-a")
+        up_batch, up_run = upload(client)
+        r = client.post(f"{BASE}/demo/reset")
+        assert r.status_code == 404
+        assert "HALT_DEMO_MODE" in r.json()["message"]
+        store = client.app.state.ps2  # type: ignore[attr-defined]
+        assert set(store.batches) == {batch_a, up_batch}
+        assert set(store.runs) == {run_a, up_run}
+
+
+def test_demo_reset_drops_only_bundled_entries_and_they_come_back_identical(tmp_path: Path) -> None:
+    with fresh(tmp_path, "on", demo_mode=True) as client:
+        _demo_reset_round_trip(client)
+
+
+def _demo_reset_round_trip(client: TestClient) -> None:
     batch_a, run_a = bundled_run(client, "scenario-a")
     expected = snapshot(client, run_a)
     up_batch, up_run = upload(client)
