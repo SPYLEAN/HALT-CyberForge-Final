@@ -14,6 +14,7 @@ const ITEMS: Array<{ href: string; label: string; icon: IconName }> = [
   { href: "/mission", label: "Mission Control", icon: "mission" },
   { href: "/incidents", label: "Incident Rooms", icon: "rooms" },
   { href: "/reconstruct", label: "Reconstruct", icon: "reconstruct" },
+  { href: "/firex", label: "Log Analysis", icon: "reconstruct" },
   { href: "/architecture", label: "System Architecture", icon: "architecture" },
 ];
 
@@ -29,18 +30,23 @@ export function PlatformShell({ children }: { children: ReactNode }) {
         </Link>
         <nav aria-label="Platform">
           {ITEMS.map((i) => (
-            <Link key={i.href} href={i.href} aria-label={i.label} aria-current={path === i.href || (i.href === "/reconstruct" && path.startsWith("/reconstructions/")) ? "page" : undefined}>
+            <Link key={i.href} href={i.href} aria-label={i.label} aria-current={path === i.href || (i.href === "/reconstruct" && path.startsWith("/reconstructions/")) || (i.href === "/firex" && path.startsWith("/firex/")) ? "page" : undefined}>
               <Icon name={i.icon} size={18} />
               <span>{i.label}</span>
             </Link>
           ))}
         </nav>
         <span style={{ marginLeft: "auto", display: "flex", gap: "var(--space-3)", alignItems: "center" }}>
-          <SimulatedChip simulated={state.simulated} />
-          <Link className="halt-btn halt-btn-primary" href={`/incidents/${state.incidentId}?view=overview`}>
-            <span>OPEN INCIDENT</span>
-            <span aria-hidden>→</span>
-          </Link>
+          {/* FireX pages open their own reconstructed incidents; the authored demo incident never stands in. */}
+          {path.startsWith("/firex") ? null : (
+            <>
+              <SimulatedChip simulated={state.simulated} />
+              <Link className="halt-btn halt-btn-primary" href={`/incidents/${state.incidentId}?view=overview`}>
+                <span>OPEN INCIDENT</span>
+                <span aria-hidden>→</span>
+              </Link>
+            </>
+          )}
         </span>
       </header>
       <main className="v2-platform-main" id="platform-main">
