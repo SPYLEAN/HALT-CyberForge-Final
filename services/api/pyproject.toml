@@ -16,6 +16,8 @@ dependencies = [
   "scikit-learn>=1.5",
   "ortools>=9.10",
   "cryptography>=43",
+  "duckdb>=1.1",
+  "pyarrow>=17",
 ]
 
 [project.optional-dependencies]
@@ -39,6 +41,7 @@ include = ["halt*"]
 "halt.scenario" = ["inc_2417/*.json"]
 "halt.r1" = ["r1_model.json"]
 "halt.ps2" = ["*.json", "datasets/*/*.json", "datasets/*/raw/*", "ground_truth/*.json"]
+"halt.firex" = ["*.json"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
@@ -58,5 +61,5 @@ plugins = ["pydantic.mypy"]
 packages = ["halt"]
 
 [[tool.mypy.overrides]]
-module = ["sklearn.*", "ortools.*"]
+module = ["sklearn.*", "ortools.*", "pyarrow.*", "duckdb.*"]
 ignore_missing_imports = true
