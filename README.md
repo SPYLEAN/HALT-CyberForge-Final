@@ -1,93 +1,324 @@
-# HALT — Proof-Carrying Cyber Response
+# HALT — Proof-Carrying Kill Chain Intelligence
 
-> Stop the attack. Not the business.
+> From fragmented security logs to a defensible attack story.
 
-HALT calculates and proves the smallest reversible response that blocks every high-risk attack path while preserving critical business operations.
+HALT reconstructs cyberattacks from disconnected security events. It correlates evidence across users, devices, IP addresses, sessions, tokens, services and time; maps suspicious activity to MITRE ATT&CK and kill-chain stages; and presents the result as an inspectable attack graph, timeline and plain-language story.
 
-**All data in this repository is synthetic and labelled SIMULATED.** HALT does not connect to any real organisational system: every response action runs against a simulated copy of the graph.
+HALT is designed to answer four questions:
 
-## What it does
+1. **Where did the attacker enter?**
+2. **Which actions and systems are part of the same incident?**
+3. **What is observed, what is inferred and how confident are we?**
+4. **Which systems could the attacker reach next?**
 
-One synthetic incident, **INC-2417** (OAuth consent phishing against Finance Ops), end to end:
+## CyberForge 2026
 
-| System | Role | Where |
-|---|---|---|
-| HALT-R1 | Correlates 6 incident events out of 405 benign ones; findings cite `EV-` ids and ATT&CK | `services/api/halt/r1` |
-| ThreadGraph | Users, sessions, tokens, apps, APIs, processes, the ledger; enumerates attack paths | `services/api/halt/threadgraph` |
-| EchoLab | Seeded simulation (seed 2417, 6,000 rollouts) ranks paths and compares three futures | `services/api/halt/echolab` |
-| SafeCut | OR-Tools CP-SAT derives the minimum safe containment envelope | `services/api/halt/safecut` |
-| ProofSeal | Independently re-checks the plan (all 4,096 subsets), seals it with a certificate | `services/api/halt/proofseal` |
-| Action Gate | Two human approvals, simulated execution, exact rollback, hash-chained audit | `services/api/halt/gate`, `halt/audit` |
+HALT is being developed for **CyberForge 2026**, organised by HackCulture and Mitigata, under the official challenge **Kill Chain and Attack Path Analysis**.
 
-The plan is derived, not scripted: SafeCut picks revoke the OAuth grant + revoke sessions S-1 and S-2 + phishing-resistant step-up, and changing one input (`verma_not_releaser`) changes the answer. See [docs/DEMO_SCENARIO.md](docs/DEMO_SCENARIO.md).
+The official challenge requires teams to process large security-log datasets without loading them entirely into memory, detect and label suspicious events, connect related activity into attack paths, explain those paths clearly and show what an attacker could reach next.
 
-## Layout
+## Current status
 
-| Path | What |
-|---|---|
-| `apps/web` | Next.js + TypeScript + Tailwind: landing story and Command Center |
-| `services/api` | Python 3.12, FastAPI: every engine above, REST + WebSocket replay |
-| `assets/halt-package` | The supplied brand and design package, vendored unmodified (`scripts/verify_repo.py` checks it) |
-| `docs` | RFC, architecture, data contracts, scenario, design system, acceptance tests, ledger, [demo script](docs/DEMO_SCRIPT.md) |
+The repository currently contains a complete, deterministic reconstruction workflow for bundled synthetic scenarios and small manual JSON/JSONL/CSV inputs.
 
-## Run it locally (no Docker)
+The official FireX datasets have since been received and identified as FortiGate-style `key=value` telemetry. A bounded-memory streaming parser and disk-backed processing path for the 10 GB, 30 GB and 50 GB tiers are the next production retrofit. **This README does not claim that the complete FireX tiers have already been processed or evaluated.**
 
-Prerequisites: Python 3.12 and Node 22+. Every command runs from the repository root, on Windows, macOS or Linux.
+| Area | Current position |
+| --- | --- |
+| Synthetic reconstruction | Implemented and tested |
+| JSON, JSONL and CSV ingestion | Implemented |
+| Canonical event model | Implemented |
+| Evidence graph and hypotheses | Implemented |
+| ATT&CK mapping | Implemented with basis disclosure |
+| Explicit kill-chain stage output | Being verified/extended |
+| Reachable-next analysis | Planned production addition |
+| Official FireX streaming pipeline | In progress |
+| Official-dataset accuracy and performance | Not yet measured |
 
-| Task | Command | What it does |
-|---|---|---|
-| Install | `npm run setup` | Creates `services/api/.venv` (Python 3.12), installs the API with its dev tools, then `npm install` |
-| Develop | `npm run dev` | API (hot reload) + Next dev server. State lives in `.halt/halt-dev.db`, so an API restart restores the incident |
-| Deterministic demo | `npm run demo` | Production build + API on `.halt/halt-demo.db`, waits for `/api/v1/ready`, resets INC-2417 to its seed, prints the URL. `npm run demo -- --keep` restores the last state instead of resetting |
-| Reset | `npm run demo:reset` | Resets the running API's incident to its seed (same plan, proof and certificate every time) |
-| Tests | `npm run check` | Repository checksums, ruff, ruff format, mypy, pytest, web lint, typecheck, vitest, token drift, and the contract-drift regeneration from [docs/HANDOFF.md](docs/HANDOFF.md) |
-| End-to-end | `npm run test:e2e` | Playwright + axe against a production build and a real API |
-| Production build | `npm run build` | Next.js production build of the web app |
+## Why HALT is different
 
-Open http://localhost:3000. The API docs are at http://localhost:8000/api/v1/docs; liveness is `/api/v1/health` and readiness `/api/v1/ready`. With SQLite the audit log is append-only by application code, and `/health` reports `audit_enforcement: "app"`.
+Traditional alert dashboards show isolated warnings. HALT focuses on the investigation that comes after an alert:
 
-The PostgreSQL tests run when `HALT_TEST_PG_URL` names a disposable server where the user may create roles and databases. Without Docker, one way is the pip package `pgserver` (embedded PostgreSQL 16) in a separate virtualenv.
+- It reconstructs a connected incident instead of treating every alert as a separate attack.
+- It distinguishes **observed evidence** from **inferred relationships**.
+- It retains competing hypotheses when the evidence is ambiguous.
+- It cites the events and edges supporting every story statement.
+- It records the configuration, versions and hashes needed to reproduce a result.
+- It keeps planted ground truth out of the production reconstruction path.
+- It does not allow a language model to invent observations or select the attack path.
 
-## Run it with Docker
+## End-to-end workflow
 
-Requires Docker Desktop (WSL2 on Windows). PostgreSQL enforces the append-only audit log and operation journal with triggers, and the API connects as `halt_app`, a role that may only read and append to them (demo credentials, created by `services/api/db-init/`). **Not yet run:** Docker is not installed on the development machine.
-
-```bash
-docker compose up --build -d --wait
+```text
+Raw security logs
+  → streaming ingestion
+  → parsing and canonical normalisation
+  → exact-duplicate removal and behavioural grouping
+  → suspicious-event detection
+  → ATT&CK technique and kill-chain labelling
+  → entity and temporal correlation
+  → evidence-backed attack graph
+  → primary and alternate hypotheses
+  → timeline, Attack Story and reachable-next analysis
+  → proof receipt and deterministic replay
 ```
 
-- Web: http://localhost:3000 · API docs: http://localhost:8000/api/v1/docs · health: http://localhost:8000/api/v1/health
-- `NEXT_PUBLIC_*` values are build arguments (inlined into the browser bundle); change them under `web.build.args`.
+## Architecture
 
-## Checks
+```mermaid
+flowchart TD
+    A["Raw security logs"] --> B["Streaming ingestion"]
+    B --> C["Canonical events"]
+    C --> D["Detection and labelling"]
+    D --> E["Evidence correlation"]
+    E --> F["Attack graph and hypotheses"]
+    F --> G["Story and reachability"]
+    G --> H["Proof receipt and API"]
+    H --> I["Investigation workspace"]
+```
 
-| Command | What |
-|---|---|
-| `npm run check` | Everything below except E2E, plus contract drift |
-| `npm run verify:repo` | Vendored package and the legacy file are unchanged |
-| `cd services/api && .venv/Scripts/python -m pytest` | API tests: AT-1 to AT-6, restart safety and dependency failures. The PostgreSQL tests (AT-6.7, app role, restore) run when `HALT_TEST_PG_URL` is set |
-| `npm run lint`, `npm run typecheck`, `npm test` | Web lint, types, unit tests |
-| `npm run test:e2e` | Playwright: full demo, reload, replay, landing hand-off, axe on every view (starts its own API and a production build) |
+For the official large-data path, canonical and suspicious-event records will be stored in a compact disk-backed representation. Only incident-level subgraphs will be materialised in memory.
 
-## Verification status
+## Implemented capabilities
 
-What has actually been run, and what has not (2026-10-29, branch `stabilization/god-mode`; see [docs/FINALIZATION_AUDIT.md](docs/FINALIZATION_AUDIT.md)):
+- Raw JSON, JSONL and CSV ingestion.
+- Seven vendor-like source adapters.
+- Canonical security-event schema with evidence hashes.
+- Entity resolution across users, devices, sessions, tokens, services and IP addresses.
+- Evidence-weighted graph reconstruction.
+- Primary and alternate attack hypotheses.
+- Observed versus inferred edge classification.
+- ATT&CK mapping with mapping-basis disclosure.
+- Evidence-linked deterministic Attack Story.
+- Reconstruction receipt with input, configuration, context and graph hashes.
+- Deterministic replay for bundled scenarios.
+- API restart recovery for bundled runs.
+- Responsive desktop, tablet and mobile investigation views.
+- Explicit API-unavailable and expired-upload states.
+- Demo reset guarded by `HALT_DEMO_MODE` and disabled by default.
 
-| Check | Status |
-|---|---|
-| API tests | 148 passed locally with PostgreSQL 16 (pgserver); 145 passed and 3 skipped without it |
-| Web unit tests | 91 passed locally |
-| E2E + accessibility | 41 passed locally against a production build (Chromium) |
-| `npm run check` | Passed (exit 0): checksums, ruff, format, mypy, pytest, lint, typecheck, vitest, tokens, contract drift |
-| Restart safety | Tested (AT-S.1–7), and checked live: the API restarted under an open Command Center restored INC-2417; the page reconnected and refetched without a reload |
-| Dependency failure | Tested, and checked live with PostgreSQL unreachable: `/health` degraded in 0.2 s, `/ready` 503, routes 503 `dependency_unavailable`, the UI shows the reason and no figures |
-| CI workflow and compose file | Validated against the GitHub workflow and Compose specification schemas (`check-jsonschema`); never executed |
-| Determinism | Plan, simulation, proof certificate and audit hashes identical across runs (tested) |
-| Measured | SafeCut solve p95 ≈ 22 ms; 3 futures × 6,000 rollouts ≈ 15 ms; landing LCP 152–560 ms |
-| Docker Compose stack (AT-0.4, AT-10.3) | **Not run**: Docker is not installed on the development machine. The web image's runtime layout was checked by running the standalone server with the same copy steps |
-| PostgreSQL append-only triggers and app role (AT-6.7, AT-S.8–9) | **Passed locally** on 2026-10-29 against PostgreSQL 16 (pgserver). The audit log is described as append-only on PostgreSQL on the strength of these tests; on SQLite it is application-enforced only |
-| GitHub Actions CI | **Not run**: no remote repository yet |
+## Investigation workspace
 
-## Attribution
+The PS2 workflow begins at `/reconstruct`. A completed reconstruction opens at `/reconstructions/[reconstructionId]`.
 
-MITRE ATT&CK® technique identifiers and names are used under the [ATT&CK Terms of Use](https://attack.mitre.org/resources/legal-and-branding/terms-of-use/). © The MITRE Corporation.
+| View | Purpose |
+| --- | --- |
+| Attack Graph | Visualises events, entities and evidence-backed relationships. |
+| Evidence Inspector | Shows the rule, supporting records, confidence components and contradictions for a selected node or edge. |
+| Attack Story | Presents the reconstructed incident in chronological, analyst-readable form with citations. |
+| ATT&CK | Shows mapped tactics and techniques, their basis and their position in the selected path. |
+| Hypotheses | Compares the primary path with credible alternatives and exposes close score margins. |
+| Proof | Records inputs, versions, hashes, evidence coverage and deterministic replay information. |
+| Evaluation | Compares a bundled reconstruction against isolated synthetic ground truth. It is not available for ordinary uploads. |
+
+## Evidence model
+
+HALT does not present every graph connection as fact.
+
+### Observed
+
+An observed relationship is directly supported by shared identifiers or explicit telemetry, such as a common session, token lineage or source record.
+
+### Inferred
+
+An inferred relationship is supported by a declared correlation rule, such as entity continuity, temporal proximity or attack-stage progression. The interface displays its confidence, supporting events and rule version.
+
+### Uncertain
+
+When two paths have similar scores, HALT retains both as competing explanations and identifies the evidence an analyst should examine. A shortest or highest-scoring path is never presented as an observed attack merely because it is mathematically convenient.
+
+## Duplicate handling and data reduction
+
+HALT separates **exact duplication** from **repeated behaviour**:
+
+- Exact duplicate records can be removed using deterministic canonical/evidence hashes.
+- Repeated failed logins, scans or access attempts are not silently discarded; repetition may itself be the attack signal.
+- Repeated records can be grouped into bounded behavioural bursts while preserving their counts and original evidence references.
+- Any alert-merging result must retain the number of contributing records.
+
+The FireX production path will perform this reduction incrementally and persist compact intermediate results rather than retaining the full dataset in Python memory.
+
+## Demonstration scenarios
+
+### Scenario A — OAuth consent phishing against Finance Operations
+
+The primary demonstration reconstructs a sequence containing email delivery, suspicious authentication, MFA modification, malicious application consent, token use and finance-resource discovery.
+
+### Scenario B — Service-account abuse in a cloud data platform
+
+The secondary scenario demonstrates ambiguity. Multiple plausible paths are retained so an analyst can compare the evidence instead of receiving false certainty.
+
+Both bundled scenarios are synthetic and labelled as such in the application.
+
+## Official FireX data strategy
+
+The official datasets remain outside Git and outside the web application's upload flow. The production retrofit is designed to:
+
+1. Read the source line-by-line in bounded chunks.
+2. Parse FortiGate-style `key=value` records, including quoted values and malformed-line reporting.
+3. Normalise timestamps while preserving the original timezone and source value.
+4. Generate deterministic evidence IDs from source identity and record position.
+5. Persist canonical and suspicious events to a disk-backed store.
+6. Index by user, host, IP, account, session, token and time bucket.
+7. Correlate within bounded windows.
+8. Materialise only incident-level graphs.
+9. Measure throughput, peak memory, processing time and incident-open latency.
+
+No official-dataset metric will be published until it has been measured against organiser ground truth.
+
+## Technology
+
+### Frontend
+
+- Next.js 16
+- React 19
+- TypeScript
+- Tailwind CSS 4
+- Cytoscape.js
+- Three.js / React Three Fiber for spatial presentation work
+
+### Backend and analysis
+
+- Python 3.12
+- FastAPI
+- Pydantic
+- NetworkX-based incident graph analysis
+- PostgreSQL for supported persistence and audit workflows
+
+### Engineering
+
+- REST APIs and WebSocket-based replay/progress foundations
+- Strict TypeScript
+- Ruff and mypy
+- Pytest and Playwright
+- Contract and recorded-fixture drift checks
+
+## Repository structure
+
+```text
+apps/web/                 Next.js product interface
+services/api/             FastAPI services and reconstruction engine
+demo-inputs/              Small synthetic/manual demonstration inputs
+docs/                     Product, architecture, runbook and evaluation documentation
+artifacts/ps2-final/      Verified demonstration screenshots and provenance notes
+```
+
+Large FireX files are intentionally excluded from this repository.
+
+## Run locally
+
+### Prerequisites
+
+- Node.js 24.x
+- npm
+- Python 3.12
+- The repository's documented Python environment and dependencies
+
+From the repository root:
+
+```powershell
+npm install
+$env:HALT_DEMO_MODE="true"
+npm run dev
+```
+
+Open:
+
+```text
+http://localhost:3000/reconstruct
+```
+
+The web application and API normally use ports `3000` and `8000`. Keep the development process running while using the application.
+
+`HALT_DEMO_MODE` enables local demo-only operations such as the protected reset endpoint. It is disabled by default and is not a secret.
+
+## Three-minute demo
+
+1. Open `/reconstruct`.
+2. Select **OAuth consent phishing against Finance Operations**.
+3. Start ingestion and observe the eight processing stages.
+4. Inspect a graph node and edge to show supporting evidence.
+5. Open **Attack Story** to compare observed and inferred steps.
+6. Open **ATT&CK** to show technique mapping and its basis.
+7. Open **Hypotheses** to show uncertainty and alternate explanations.
+8. Finish in **Proof** with evidence coverage, hashes and replay information.
+
+Do not upload the official multi-gigabyte FireX files through the browser. They require the dedicated streaming pipeline.
+
+## Verification checkpoint
+
+The latest verified PS2 checkpoint is commit `56123a1` on branch `ps2/kill-chain-intelligence`.
+
+| Suite | Latest verified result |
+| --- | ---: |
+| Backend tests | 204 passed |
+| Web unit tests | 115 passed |
+| Focused PS2 browser tests | 17 passed |
+| Previous complete browser suite | 57 passed |
+| Production build | Passed |
+| Contract and fixture drift | Passed |
+
+These results verify the current repository workflow. They are not official FireX accuracy or scale measurements.
+
+## Official requirement alignment
+
+| Requirement | Status |
+| --- | --- |
+| Stream the full dataset without loading it entirely into memory | Production FireX retrofit in progress |
+| Detect suspicious events | Implemented on synthetic inputs; FireX validation pending |
+| Map detections to ATT&CK and kill-chain stages | ATT&CK implemented; explicit kill-chain output being completed |
+| Link events across host, user, IP and time | Implemented foundation; bounded large-data correlation pending |
+| Show timeline and attack graph | Implemented |
+| Show reachable-next systems | Planned production addition |
+| Provide an API/page and README | Implemented |
+
+## Evaluation policy
+
+HALT keeps validation separate from reconstruction:
+
+- The application receives raw logs, not planted answers.
+- Ground truth remains validator-only.
+- Expected paths are not imported into production code.
+- Metrics must report both numerator and denominator.
+- Targets are not displayed as achieved results.
+
+The official Great targets include over 90% detection, over 85% correct labels, recovery of every planted path, under 10% false-positive incidents, under one hour of processing, under 8 GB peak memory and under 500 ms to open an indexed incident. These are **evaluation targets, not current claims**.
+
+## Current limitations
+
+- The official multi-gigabyte FireX pipeline is not yet complete or benchmarked.
+- Official attack-detection accuracy is currently unknown.
+- Upload-based runs are process-memory scoped.
+- Entity resolution is primarily exact-match based.
+- Explicit reachable-next results are not yet exposed as a PS2 output.
+- Current browser upload limits are intentionally unsuitable for official datasets.
+- Authentication, tenant management, cloud deployment and active blocking are outside the official challenge scope.
+
+## Roadmap
+
+1. Complete and validate the streaming FireX parser.
+2. Add disk-backed canonical storage and bounded-memory reduction.
+3. Implement configuration-driven detections and explicit kill-chain labels.
+4. Scale entity/time correlation and materialise incident-level graphs only.
+5. Add authorised reachable-next analysis.
+6. Benchmark the smallest official tier before attempting 30 GB and 50 GB.
+7. Connect measured official results to the investigation workspace.
+8. Complete the cinematic landing and Theatre presentation mode after the working pipeline is verified.
+
+## Responsible use
+
+HALT is an investigation and explanation system. It must be used only with logs, systems and data that the operator is authorised to analyse. It does not exploit, disrupt or attack external systems, and active blocking is not part of the official challenge.
+
+## Open-source and AI assistance disclosure
+
+HALT uses established open-source frameworks and libraries, including Next.js, React, FastAPI, Pydantic, Cytoscape.js, NetworkX and the Python/TypeScript testing ecosystem. Third-party components and datasets must retain their original licences and attribution.
+
+AI coding assistants were used during development for planning, implementation support, review and documentation. All generated work remains subject to human review, repository tests and evidence-based validation. AI-generated text is not treated as security evidence, and no language model independently determines the final attack path.
+
+## Team
+
+- **Tanvir Aditya Bayi**
+- **Shaik Farhana**
+
+Built for **CyberForge 2026 — HackCulture × Mitigata**.
+
