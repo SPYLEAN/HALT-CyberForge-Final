@@ -253,7 +253,7 @@ export function ProductLanding() {
               </Link>
             </div>
             <p className={s.note}>
-              The earlier response demonstration is at <Link href="/response-demo">the response demo</Link>.
+              The <Link href="/response-demo">Synthetic Response Lab</Link> is a separate demonstration, not derived from these logs.
             </p>
           </div>
         </section>

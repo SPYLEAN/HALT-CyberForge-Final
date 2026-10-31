@@ -923,6 +923,89 @@
    },
    "status": 200
   },
+  "GET /api/v1/ps2/incidents/finc-0526ba4f57ac/handoff?run_id=frun-370ac3a914901431": {
+   "body": {
+    "approvals": [
+     {
+      "requirement": "An analyst confirms the incident",
+      "state": "Not met"
+     },
+     {
+      "requirement": "The system owner approves any change",
+      "state": "Not recorded: HALT has no record of owners or approvals for this log"
+     },
+     {
+      "requirement": "A response system accepts this incident",
+      "state": "Not available"
+     }
+    ],
+    "assets_to_validate": [],
+    "containment_considerations": [
+     {
+      "consideration": "Review the exposure and edge filtering of 10.20.0.200.",
+      "evidence_refs": [
+       "ev-7090074172dcdc0cdd5309f1",
+       "ev-81083a6b2db6fcccb7568553",
+       "ev-8e745ade9716e31b43fde7af",
+       "ev-ab9bbafce5157b79fbe33a32",
+       "ev-0a31a9bad83f113f064bd0da"
+      ],
+      "requires": "Analyst confirmation and the system owner's approval",
+      "supported_by": "web_attack_concentration 1.0: 60 IPS events using 3 attack signatures from 3 source(s) targeted 10.20.0.200."
+     }
+    ],
+    "containment_note": "Considerations only. HALT does not recommend or perform any of them while the incident is unconfirmed.",
+    "execution_state": "NOT EXECUTED",
+    "identities_to_validate": [],
+    "incident_id": "finc-0526ba4f57ac",
+    "incident_status": "unconfirmed",
+    "integration_boundary": "SafeCut and Action Gate work on the synthetic response contract only. No converter from a FireX incident to that contract exists, so nothing here is sent to them.",
+    "investigation_actions": [
+     {
+      "action": "Inspect the cited source records",
+      "evidence_refs": [
+       "ev-7090074172dcdc0cdd5309f1",
+       "ev-81083a6b2db6fcccb7568553",
+       "ev-8e745ade9716e31b43fde7af",
+       "ev-ab9bbafce5157b79fbe33a32",
+       "ev-0a31a9bad83f113f064bd0da"
+      ],
+      "reason": "15 stored records support this incident. Reading them is the fastest way to test it."
+     },
+     {
+      "action": "Test the alternative: Benign explanation",
+      "evidence_refs": [],
+      "reason": "Internet scanning of an exposed service that had no effect on it."
+     }
+    ],
+    "missing_evidence": [
+     {
+      "action": "Merged activity is cited by a sample of its evidence, not every record.",
+      "evidence_refs": [],
+      "reason": "Recorded as a gap in this incident."
+     },
+     {
+      "action": "These logs have no payload or endpoint data, so success of an action cannot be proven from them.",
+      "evidence_refs": [],
+      "reason": "Recorded as a gap in this incident."
+     },
+     {
+      "action": "Collect endpoint or payload records for the same period",
+      "evidence_refs": [],
+      "reason": "These logs cannot show whether an attempted action succeeded."
+     }
+    ],
+    "missing_response_context": [
+     "Business service map for the affected systems",
+     "Available response controls for these systems",
+     "Asset ownership and criticality context"
+    ],
+    "reachable_to_monitor": [],
+    "run_id": "frun-370ac3a914901431",
+    "statement": "HALT has not executed, simulated or scheduled any response. These are items for people to review, derived from this incident's stored evidence."
+   },
+   "status": 200
+  },
   "GET /api/v1/ps2/incidents/finc-0526ba4f57ac/hypotheses?run_id=frun-370ac3a914901431": {
    "body": {
     "alternates": [
@@ -2911,6 +2994,108 @@
    },
    "status": 200
   },
+  "GET /api/v1/ps2/incidents/finc-06dbcd7d8183/handoff?run_id=frun-370ac3a914901431": {
+   "body": {
+    "approvals": [
+     {
+      "requirement": "An analyst confirms the incident",
+      "state": "Not met"
+     },
+     {
+      "requirement": "The system owner approves any change",
+      "state": "Not recorded: HALT has no record of owners or approvals for this log"
+     },
+     {
+      "requirement": "A response system accepts this incident",
+      "state": "Not available"
+     }
+    ],
+    "assets_to_validate": [],
+    "containment_considerations": [
+     {
+      "consideration": "Discuss whether 10.1.0.44 needs isolating while it is reviewed.",
+      "evidence_refs": [
+       "ev-bb823635a9601ec680373185",
+       "ev-aaa3231fe09530c448e237e4",
+       "ev-1801e9a6f8d9db3a55dc968f",
+       "ev-54c6fb3a83c36603f5a105ec",
+       "ev-3ff104bbd6022e023495abb5"
+      ],
+      "requires": "Analyst confirmation and the system owner's approval",
+      "supported_by": "internal_fanout 1.0: 10.1.0.44 opened 15 SMB or RDP connections to 15 internal hosts."
+     },
+     {
+      "consideration": "Discuss whether 10.1.0.44 needs isolating while it is scanned.",
+      "evidence_refs": [
+       "ev-cc6555c6c13d9a75ee5655e0",
+       "ev-08eaca15da4c7f49df43ddcc",
+       "ev-b4f14b8600219e7e590bbcd5",
+       "ev-b56338cb340e4c85d30abdd3"
+      ],
+      "requires": "Analyst confirmation and the system owner's approval",
+      "supported_by": "repeated_malware 1.0: 4 malware detections (4 name(s)) between 10.1.0.44 and 198.51.100.34, host bad.example."
+     }
+    ],
+    "containment_note": "Considerations only. HALT does not recommend or perform any of them while the incident is unconfirmed.",
+    "execution_state": "NOT EXECUTED",
+    "identities_to_validate": [],
+    "incident_id": "finc-06dbcd7d8183",
+    "incident_status": "unconfirmed",
+    "integration_boundary": "SafeCut and Action Gate work on the synthetic response contract only. No converter from a FireX incident to that contract exists, so nothing here is sent to them.",
+    "investigation_actions": [
+     {
+      "action": "Inspect the cited source records",
+      "evidence_refs": [
+       "ev-bb823635a9601ec680373185",
+       "ev-aaa3231fe09530c448e237e4",
+       "ev-1801e9a6f8d9db3a55dc968f",
+       "ev-54c6fb3a83c36603f5a105ec",
+       "ev-3ff104bbd6022e023495abb5"
+      ],
+      "reason": "21 stored records support this incident. Reading them is the fastest way to test it."
+     },
+     {
+      "action": "Test the alternative: Unrelated activity sharing an entity",
+      "evidence_refs": [],
+      "reason": "Only “Internal SMB or RDP fan-out from one host” is one sequence. The others share an address or account by coincidence."
+     }
+    ],
+    "missing_evidence": [
+     {
+      "action": "Merged activity is cited by a sample of its evidence, not every record.",
+      "evidence_refs": [],
+      "reason": "Recorded as a gap in this incident."
+     },
+     {
+      "action": "These logs have no payload or endpoint data, so success of an action cannot be proven from them.",
+      "evidence_refs": [],
+      "reason": "Recorded as a gap in this incident."
+     },
+     {
+      "action": "Collect endpoint or payload records for the same period",
+      "evidence_refs": [],
+      "reason": "These logs cannot show whether an attempted action succeeded."
+     }
+    ],
+    "missing_response_context": [
+     "Business service map for the affected systems",
+     "Available response controls for these systems",
+     "Asset ownership and criticality context"
+    ],
+    "reachable_to_monitor": [
+     {
+      "action": "Consider monitoring 10.30.0.9",
+      "evidence_refs": [
+       "ev-77cffd3cdda4fad97b6afc6a"
+      ],
+      "reason": "Hypothetical: what could be reached next. This is not observed attacker activity. Hypothetical: a path seen in the log, not activity."
+     }
+    ],
+    "run_id": "frun-370ac3a914901431",
+    "statement": "HALT has not executed, simulated or scheduled any response. These are items for people to review, derived from this incident's stored evidence."
+   },
+   "status": 200
+  },
   "GET /api/v1/ps2/incidents/finc-06dbcd7d8183/hypotheses?run_id=frun-370ac3a914901431": {
    "body": {
     "alternates": [
@@ -4744,6 +4929,106 @@
    },
    "status": 200
   },
+  "GET /api/v1/ps2/incidents/finc-ec918f810a84/handoff?run_id=frun-370ac3a914901431": {
+   "body": {
+    "approvals": [
+     {
+      "requirement": "An analyst confirms the incident",
+      "state": "Not met"
+     },
+     {
+      "requirement": "The system owner approves any change",
+      "state": "Not recorded: HALT has no record of owners or approvals for this log"
+     },
+     {
+      "requirement": "A response system accepts this incident",
+      "state": "Not available"
+     }
+    ],
+    "assets_to_validate": [
+     {
+      "action": "Confirm the owner and importance of FGT-TEST",
+      "evidence_refs": [
+       "ev-3d0a75fe2e1a395939fed6fa"
+      ],
+      "reason": "The log has no asset inventory."
+     }
+    ],
+    "containment_considerations": [
+     {
+      "consideration": "Review who may create administrator accounts on FGT-TEST.",
+      "evidence_refs": [
+       "ev-3d0a75fe2e1a395939fed6fa",
+       "ev-1c83125ba842c9a374d99ee4",
+       "ev-cc61c8182013325d90df9359"
+      ],
+      "requires": "Analyst confirmation and the system owner's approval",
+      "supported_by": "account_lifecycle 1.0: Account temp1 was created, used to sign in and deleted within the configured window."
+     }
+    ],
+    "containment_note": "Considerations only. HALT does not recommend or perform any of them while the incident is unconfirmed.",
+    "execution_state": "NOT EXECUTED",
+    "identities_to_validate": [
+     {
+      "action": "Confirm who owns ops.user, and whether this activity was expected",
+      "evidence_refs": [
+       "ev-3d0a75fe2e1a395939fed6fa"
+      ],
+      "reason": "These logs name the account but cannot show who was using it."
+     },
+     {
+      "action": "Confirm who owns temp1, and whether this activity was expected",
+      "evidence_refs": [
+       "ev-3d0a75fe2e1a395939fed6fa"
+      ],
+      "reason": "These logs name the account but cannot show who was using it."
+     }
+    ],
+    "incident_id": "finc-ec918f810a84",
+    "incident_status": "unconfirmed",
+    "integration_boundary": "SafeCut and Action Gate work on the synthetic response contract only. No converter from a FireX incident to that contract exists, so nothing here is sent to them.",
+    "investigation_actions": [
+     {
+      "action": "Inspect the cited source records",
+      "evidence_refs": [
+       "ev-3d0a75fe2e1a395939fed6fa"
+      ],
+      "reason": "3 stored records support this incident. Reading them is the fastest way to test it."
+     },
+     {
+      "action": "Test the alternative: Benign explanation",
+      "evidence_refs": [],
+      "reason": "A legitimate temporary account used for maintenance and then removed."
+     }
+    ],
+    "missing_evidence": [
+     {
+      "action": "No internal host is named, so effect inside the network is not shown.",
+      "evidence_refs": [],
+      "reason": "Recorded as a gap in this incident."
+     },
+     {
+      "action": "These logs have no payload or endpoint data, so success of an action cannot be proven from them.",
+      "evidence_refs": [],
+      "reason": "Recorded as a gap in this incident."
+     },
+     {
+      "action": "Collect endpoint or payload records for the same period",
+      "evidence_refs": [],
+      "reason": "These logs cannot show whether an attempted action succeeded."
+     }
+    ],
+    "missing_response_context": [
+     "Business service map for the affected systems",
+     "Available response controls for these systems",
+     "Asset ownership and criticality context"
+    ],
+    "reachable_to_monitor": [],
+    "run_id": "frun-370ac3a914901431",
+    "statement": "HALT has not executed, simulated or scheduled any response. These are items for people to review, derived from this incident's stored evidence."
+   },
+   "status": 200
+  },
   "GET /api/v1/ps2/incidents/finc-ec918f810a84/hypotheses?run_id=frun-370ac3a914901431": {
    "body": {
     "alternates": [
@@ -5587,7 +5872,7 @@
         "is_hash": true,
         "label": "Git commit",
         "status": null,
-        "value": "7abf1988bfdd7c2088f3a8af131223a45483d5c9"
+        "value": "e838a8e6ab4c20c1ca126187f74dcd73ad38b2a7"
        },
        {
         "is_hash": false,
@@ -6782,7 +7067,7 @@
       "evidence_refs": [],
       "id": "proof",
       "input": "The graph, the cited evidence and the versions.",
-      "output": "Graph hash a96998c8faf70ebebbd5677566c5e785624a4e2945486a9661cb7becc33e1793, seal c4372d8067967336bef78d1f75fff7dbbe2b192c922d7e66c987674240cb4447",
+      "output": "Graph hash a96998c8faf70ebebbd5677566c5e785624a4e2945486a9661cb7becc33e1793, seal 62bada86da9983784c58a7ac4edd44a21e3cba266cb57ef0d82355938fbfb0d0",
       "plain": "Receipt fprf-89042af3d73bdf39 seals this incident. A seal shows the receipt has not changed. It does not show the conclusion is true.",
       "rule": "sha256-canonical-json",
       "state": "observed",
@@ -7612,7 +7897,7 @@
       "evidence_refs": [],
       "id": "proof",
       "input": "The graph, the cited evidence and the versions.",
-      "output": "Graph hash 01abc3fdccd2dbff919e23c934ff9800e80869ee6fa9fec824fd0e12b829f644, seal 0ce3a2247ce920e3f3ae90c6732451fe4661029602414869b18e9317363dad16",
+      "output": "Graph hash 01abc3fdccd2dbff919e23c934ff9800e80869ee6fa9fec824fd0e12b829f644, seal 529736f396b5ddc9da43fcd7720ee2ca89aff1d2b725f7024164996730932bd8",
       "plain": "Receipt fprf-43e6554c3b6a527f seals this incident. A seal shows the receipt has not changed. It does not show the conclusion is true.",
       "rule": "sha256-canonical-json",
       "state": "observed",
@@ -7990,7 +8275,7 @@
       "evidence_refs": [],
       "id": "proof",
       "input": "The graph, the cited evidence and the versions.",
-      "output": "Graph hash 7246cf94f64e19f607e6171a0a59faccc8f316f6becf98e58d2e3be81215ac72, seal 84bb38314d602cf9206ded78facd4ce5277bde55d46b6e3eb273196ed83fc197",
+      "output": "Graph hash 7246cf94f64e19f607e6171a0a59faccc8f316f6becf98e58d2e3be81215ac72, seal f54f4e4843c64aadfb534abce7790b446b2021bcef1a2654b757239befa4b76e",
       "plain": "Receipt fprf-99fbc300bcf1939a seals this incident. A seal shows the receipt has not changed. It does not show the conclusion is true.",
       "rule": "sha256-canonical-json",
       "state": "observed",
@@ -8753,7 +9038,7 @@
          "is_hash": true,
          "label": "Git commit",
          "status": null,
-         "value": "7abf1988bfdd7c2088f3a8af131223a45483d5c9"
+         "value": "e838a8e6ab4c20c1ca126187f74dcd73ad38b2a7"
         },
         {
          "is_hash": false,

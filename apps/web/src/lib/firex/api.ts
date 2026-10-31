@@ -27,6 +27,7 @@ export type QuarantineSegment = S["QuarantineSegment"];
 export type DatasetHealth = S["DatasetHealth"];
 export type TrustReport = S["TrustReport"];
 export type TimeQuality = S["TimeQuality"];
+export type ResponseHandoff = S["ResponseHandoff"];
 export type LiveFile = S["LiveFile"];
 export type LiveFileList = S["LiveFileList"];
 export type LivePreflight = S["LivePreflight"];
@@ -76,6 +77,7 @@ export const firex = {
     unwrap(await api.POST("/api/v1/ps2/cases", { body: { run_id, subject, incident_id } })),
   getCase: async (case_id: string) => unwrap(await api.GET("/api/v1/ps2/cases/{case_id}", { params: { path: { case_id } } })),
   facts: async () => unwrap(await api.GET("/api/v1/ps2/facts")),
+  handoff: async (id: string, run?: string) => unwrap(await api.GET("/api/v1/ps2/incidents/{incident_id}/handoff", incidentPath(id, run))),
   liveFiles: async () => unwrap(await api.GET("/api/v1/ps2/live/files")),
   livePreflight: async (name: string) => unwrap(await api.GET("/api/v1/ps2/live/files/{name}/preflight", { params: { path: { name } } })),
   liveStart: async (name: string, confirm_duplicate = false) => unwrap(await api.POST("/api/v1/ps2/live/files/{name}/start", { params: { path: { name } }, body: { confirm_duplicate } })),

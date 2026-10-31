@@ -75,11 +75,17 @@ const post = async (body) => (await (await fetch(`${API}/cases`, { method: "POST
 for (const [w, h] of SIZES) {
   await shot("landing", w, h, "/", async (p) => p.waitForTimeout(3000), { full: false });
   await shot("log-analysis", w, h, "/firex");
+  await shot("incident-rooms", w, h, "/firex/incidents", async (p) => p.waitForSelector("[data-testid=firex-rooms] h3", { timeout: 60000 }));
+  await shot("mission", w, h, "/mission", async (p) => p.waitForTimeout(4000));
   if (ten) {
     await shot("run-10g", w, h, `/firex/runs/${ten}`);
     await shot("trust-10g", w, h, `/trust/${ten}`);
     await shot("incident-overview", w, h, inc(find("web attack")), async (p) => p.waitForSelector("text=What happened?", { timeout: 60000 }));
     await shot("world-web-attack", w, h, inc(find("web attack")), worldTab(), { full: false });
+    await shot("response-handoff", w, h, inc(find("account")), async (p) => {
+      await p.getByRole("tab", { name: "Response Handoff" }).click({ timeout: 60000 });
+      await p.getByTestId("response-handoff").waitFor({ timeout: 60000 });
+    });
   }
   if (thirty) await shot("quality-30g", w, h, `/firex/runs/${thirty}/quality`);
   if (fifty) {

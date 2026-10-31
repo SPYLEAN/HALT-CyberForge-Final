@@ -155,7 +155,7 @@ def record() -> dict[str, Any]:
                 iid = item["incident_id"]
                 suffix = f"?run_id={run_id}"
                 get(f"{B}/incidents/{iid}{suffix}")
-                for part in ("graph", "story", "hypotheses", "reachability", "proof", "guide"):
+                for part in ("graph", "story", "hypotheses", "reachability", "proof", "guide", "handoff"):
                     get(f"{B}/incidents/{iid}/{part}{suffix}")
                 get(f"{B}/runs/{run_id}/provenance?incident_id={iid}")
                 post(f"{B}/incidents/{iid}/narrative{suffix}", {"audience": "analyst", "question": None})

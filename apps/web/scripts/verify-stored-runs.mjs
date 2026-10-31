@@ -50,6 +50,7 @@ const text = (p) => p.locator("body").innerText();
   const p = await page();
   await p.goto(`${WEB}/firex`);
   await p.getByRole("article", { name: "FireX 50G" }).waitFor();
+  await p.getByRole("article", { name: "FireX 50G" }).getByText("Partial reconstruction", { exact: false }).first().waitFor({ timeout: 60000 });
   const card = await p.getByRole("article", { name: "FireX 50G" }).innerText();
   check("Log Analysis shows the 50G verdict and benchmark", card.includes("Degraded") && card.includes("Partial reconstruction") && card.includes("61,970,767") && card.includes("29.51%"));
   check("Log Analysis axe", (await axe(p)).length === 0);
@@ -135,6 +136,43 @@ for (const f of [ten, fifty]) {
   await phone.getByText(/Guided view for small screens/).waitFor();
   check(`${f.dataset_id}: phone guided view, no overflow`, (await overflow(phone)) <= 1);
   await phone.context().close();
+}
+
+{
+  // The mentor workflow: search the account, open its source line, follow the chain, reach the proof.
+  const p = await page();
+  await p.goto(`${WEB}/firex/runs/${ten.run_id}`);
+  await p.getByRole("button", { name: "Search evidence" }).click({ timeout: 60000 });
+  await p.keyboard.type("svc_backup30");
+  await p.keyboard.press("Enter");
+  const records = p.getByRole("region", { name: "Source records" });
+  await records.waitFor({ timeout: 60000 });
+  const text1 = await p.getByRole("dialog").innerText();
+  check("svc_backup30 is an account, not a file", text1.includes("is an account") && text1.includes("It is not a file"));
+  check("source line 3,226,313 with its original message", text1.includes("Line 3,226,313") && text1.includes("RAW RECORD") && text1.includes('msg="Add system.admin svc_backup30"'));
+  check("sign-in and deletion records resolve", text1.includes("Line 3,227,163") && text1.includes("logged in successfully") && text1.includes("Delete system.admin svc_backup30"));
+  check("the incident is hypothesis-safe", text1.includes("Possible short-lived administrator-account activity") && text1.includes("unconfirmed"));
+  await records.getByRole("button", { name: "Why is this here?" }).first().click();
+  const chain = p.getByTestId("provenance").first();
+  await chain.waitFor({ timeout: 60000 });
+  const text2 = await chain.innerText();
+  check("the chain shows rule, relationship and status", text2.includes("account_lifecycle") && text2.includes("SOURCE VERIFIED") && text2.includes("RELATIONSHIP INFERRED") && text2.includes("INCIDENT UNCONFIRMED"));
+  check("SourceTrace axe", (await axe(p)).length === 0);
+  check("the proof can be opened", (await p.getByRole("region", { name: "Proof receipts" }).getByRole("link", { name: "Open proof" }).first().getAttribute("href"))?.includes("tab=Verification") === true);
+  await p.keyboard.press("Escape");
+  check("Escape closes the search", (await p.getByRole("dialog").count()) === 0);
+  await p.context().close();
+
+  const otherRun = await get(`/runs/${thirty.run_id}/search?q=svc_backup30`);
+  check("30G returns no other run's evidence", !otherRun.canonical_events.length && !otherRun.incident_steps.length && otherRun.run.run_id === thirty.run_id, otherRun.run.narrative);
+  const summary = await get(`/runs/${ten.run_id}/provenance-summary`);
+  check("every cited 10G record verifies to its source", summary.status === "SOURCE VERIFIED" && summary.verified_records === summary.cited_records, `${summary.verified_records} of ${summary.cited_records}`);
+  const fiftySummary = await get(`/runs/${fifty.run_id}/provenance-summary`);
+  check("every cited 50G record verifies to its source", fiftySummary.status === "SOURCE VERIFIED" && fiftySummary.verified_records === fiftySummary.cited_records, `${fiftySummary.verified_records} of ${fiftySummary.cited_records}`);
+  const hand = await get(`/incidents/${(await get(`/runs/${ten.run_id}/case-candidates`)).items[0].incident_id}/handoff?run_id=${ten.run_id}`);
+  check("Response Handoff is not executed and stays in its run", hand.execution_state === "NOT EXECUTED" && hand.run_id === ten.run_id && !JSON.stringify(hand).includes("INC-2417"));
+  const files = await get("/live/files");
+  check("the incoming folder is discoverable", typeof files.incoming_path === "string" && Array.isArray(files.items), files.incoming_path);
 }
 
 {

@@ -294,7 +294,8 @@ The official Great targets include over 90% detection, over 85% correct labels, 
 - Response simulation is disabled for FireX incidents, because the log has no business topology or control context.
 - Peak memory in receipts is an upper bound (highest worker peak × workers + driver peak), not a sampled total.
 - The Groq and xAI paths are tested against a stub, not a live provider.
-- The earlier authored incident landing is preserved at `/response-demo`. The home page presents log analysis from recorded results.
+- INC-2417, SafeCut, EchoLab and Action Gate form the Synthetic Response Lab at `/incidents` and `/response-demo`: a separate demonstration, labelled wherever it opens. It is not derived from any FireX run, and no converter connects a FireX incident to it. FireX incidents end in a [Response Handoff](docs/RESPONSE_HANDOFF.md), which executes nothing.
+- [SourceTrace](docs/SOURCETRACE.md) and [Live Intake](docs/LIVE_INTAKE.md) describe evidence search and adding new logs. Only FortiGate key-value logs reach this pipeline.
 - The official sources differ: FireX 10G gave reconstructed, unconfirmed incidents; FireX 30G had reconstruction withheld; FireX 50G gave a partial reconstruction from a degraded source, whose 11 incidents do not cover the complete file. See the [benchmark report](docs/FIREX_BENCHMARK_REPORT.md).
 - Authentication, tenant management, cloud deployment and active blocking are outside the challenge scope.
 

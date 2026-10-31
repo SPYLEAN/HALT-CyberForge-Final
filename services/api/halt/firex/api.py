@@ -41,6 +41,7 @@ from halt.firex.contracts import (
     QualityCase,
     QuarantineSegment,
     ReachabilityResult,
+    ResponseHandoff,
     ReviewList,
     ReviewRequest,
     RunRequest,
@@ -52,6 +53,7 @@ from halt.firex.contracts import (
     UploadState,
 )
 from halt.firex.guide import build_guide
+from halt.firex.handoff import build_handoff
 from halt.firex.llm import explain
 from halt.firex.receipts import verify_seal
 from halt.firex.reviews import add_review, review_list
@@ -319,6 +321,11 @@ def get_incident(incident_id: str, run_id: RunQuery = None) -> IncidentDetail:
 @router.get("/incidents/{incident_id}/guide", response_model=IncidentGuide)
 def get_incident_guide(incident_id: str, run_id: RunQuery = None) -> IncidentGuide:
     return build_guide(jobs.find_incident(incident_id, run_id))
+
+
+@router.get("/incidents/{incident_id}/handoff", response_model=ResponseHandoff)
+def get_incident_handoff(incident_id: str, run_id: RunQuery = None) -> ResponseHandoff:
+    return build_handoff(jobs.find_incident(incident_id, run_id))
 
 
 @router.get("/incidents/{incident_id}/graph", response_model=IncidentGraph)

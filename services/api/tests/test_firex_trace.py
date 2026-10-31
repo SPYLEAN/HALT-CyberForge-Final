@@ -13,6 +13,7 @@ from fastapi.testclient import TestClient
 
 from halt.config import Settings
 from halt.firex.contracts import ReviewRequest
+from halt.firex.handoff import build_handoff
 from halt.firex.jobs import RunError, run_dir
 from halt.firex.pipeline import Runner
 from halt.firex.registry import source_path
@@ -390,3 +391,41 @@ def test_real_10g_svc_backup30(monkeypatch: pytest.MonkeyPatch) -> None:
     assert chain.failed_link is None and chain.proof_receipt_id
     rule = next(s for s in chain.stages if s.id == "detection")
     assert rule.rule == "account_lifecycle"
+
+
+def test_handoff_comes_only_from_this_incident_and_executes_nothing(run: Runner) -> None:
+    iid = incident_of(run)
+    folder = run_dir(run.run_id) / "incidents" / iid
+    before = snapshot(run_dir(run.run_id))
+    handoff = build_handoff(folder)
+    assert handoff.execution_state == "NOT EXECUTED" and handoff.incident_status == "unconfirmed"
+    assert handoff.run_id == run.run_id and handoff.incident_id == iid
+    assert handoff.investigation_actions and handoff.missing_evidence
+    assert {"temp1", "ops"} <= {
+        u for i in handoff.identities_to_validate for u in ("temp1", "ops") if u in i.action
+    }
+    assert handoff.approvals[0].state == "Not met"
+    assert "No converter" in handoff.integration_boundary
+    text = handoff.model_dump_json()
+    assert "INC-2417" not in text and "SafeCut" in handoff.integration_boundary
+    for item in handoff.containment_considerations:
+        assert item.evidence_refs and "approval" in item.requires
+    assert snapshot(run_dir(run.run_id)) == before
+
+
+def test_handoff_shows_no_containment_without_a_supporting_entity(run: Runner) -> None:
+    iid = incident_of(run)
+    folder = run_dir(run.run_id) / "incidents" / iid
+    tamper(folder / "detail.json", lambda d: [x["entities"].clear() for x in d["detections"]])
+    assert build_handoff(folder).containment_considerations == []
+
+
+def test_handoff_records_only_an_analyst_confirmation_as_met(run: Runner) -> None:
+    iid = incident_of(run)
+    folder = run_dir(run.run_id) / "incidents" / iid
+    add_review(run.run_id, ReviewRequest(incident_id=iid, decision="False positive", reason="A"))
+    assert build_handoff(folder).approvals[0].state == "Not met"
+    add_review(run.run_id, ReviewRequest(incident_id=iid, decision="Confirmed", reason="B"))
+    handoff = build_handoff(folder)
+    assert handoff.approvals[0].state == "Recorded in an analyst review"
+    assert handoff.execution_state == "NOT EXECUTED" and handoff.incident_status == "unconfirmed"

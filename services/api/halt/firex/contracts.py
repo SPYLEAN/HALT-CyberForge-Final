@@ -1076,3 +1076,41 @@ class UploadState(Contract):
     received_chunks: list[int]
     received_bytes: int
     complete: bool
+
+
+class HandoffItem(Contract):
+    action: str
+    reason: str
+    evidence_refs: list[str]
+
+
+class ContainmentConsideration(Contract):
+    consideration: str
+    supported_by: str
+    requires: str
+    evidence_refs: list[str]
+
+
+class ApprovalRequirement(Contract):
+    requirement: str
+    state: str
+
+
+class ResponseHandoff(Contract):
+    """Items for people to review, from one stored incident. `execution_state` has one possible value."""
+
+    incident_id: str
+    run_id: str
+    execution_state: Literal["NOT EXECUTED"]
+    incident_status: str
+    statement: str
+    investigation_actions: list[HandoffItem]
+    missing_evidence: list[HandoffItem]
+    identities_to_validate: list[HandoffItem]
+    assets_to_validate: list[HandoffItem]
+    reachable_to_monitor: list[HandoffItem]
+    containment_considerations: list[ContainmentConsideration]
+    containment_note: str
+    approvals: list[ApprovalRequirement]
+    integration_boundary: str
+    missing_response_context: list[str]

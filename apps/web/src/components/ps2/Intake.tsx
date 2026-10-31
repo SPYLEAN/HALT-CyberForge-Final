@@ -271,7 +271,7 @@ export function Intake() {
         </div>
       )}
       <p className="v2-meta" style={{ marginTop: "var(--space-6)" }}>
-        Looking for the authored incident instead? <Link href="/incidents">Incident Rooms</Link> is separate: a reconstruction is never linked to it.
+        Looking for the authored incident instead? <Link href="/incidents">Synthetic Response Lab</Link> is separate: a reconstruction is never linked to it.
       </p>
     </div>
   );

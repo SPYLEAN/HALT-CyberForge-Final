@@ -13,13 +13,14 @@ import { Icon, type IconName } from "../icons";
 const ITEMS: Array<{ href: string; label: string; icon: IconName }> = [
   { href: "/mission", label: "Mission Control", icon: "mission" },
   { href: "/firex", label: "Log Analysis", icon: "reconstruct" },
-  { href: "/incidents", label: "Incident Rooms", icon: "rooms" },
+  { href: "/firex/incidents", label: "Incident Rooms", icon: "rooms" },
   { href: "/trust", label: "Trust Centre", icon: "proofseal" },
   { href: "/architecture", label: "System Architecture", icon: "architecture" },
 ];
 
 function currentFor(path: string, href: string): boolean {
   if (path === href) return true;
+  if (href === "/firex/incidents") return path.startsWith("/firex/incidents/");
   if (href === "/firex") return path.startsWith("/firex/") || path === "/reconstruct" || path.startsWith("/reconstructions/");
   return href === "/trust" && path.startsWith("/trust/");
 }
@@ -57,16 +58,16 @@ export function PlatformShell({ children }: { children: ReactNode }) {
           </nav>
         </details>
         <span style={{ marginLeft: "auto", display: "flex", gap: "var(--space-3)", alignItems: "center" }}>
-          {/* FireX pages open their own reconstructed incidents; the authored demo incident never stands in. */}
-          {path.startsWith("/firex") || path.startsWith("/trust") ? null : (
+          {/* The authored incident belongs to the Synthetic Response Lab and is offered only inside it. */}
+          {path === "/incidents" ? (
             <>
               <SimulatedChip simulated={state.simulated} />
               <Link className="halt-btn halt-btn-primary" href={`/incidents/${state.incidentId}?view=overview`}>
-                <span>OPEN INCIDENT</span>
+                <span>OPEN LAB INCIDENT</span>
                 <span aria-hidden>→</span>
               </Link>
             </>
-          )}
+          ) : null}
         </span>
       </header>
       <main className="v2-platform-main" id="platform-main">

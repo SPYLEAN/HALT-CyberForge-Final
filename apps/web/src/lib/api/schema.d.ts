@@ -618,6 +618,23 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/v1/ps2/incidents/{incident_id}/handoff": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get Incident Handoff */
+        get: operations["get_incident_handoff_api_v1_ps2_incidents__incident_id__handoff_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/v1/ps2/incidents/{incident_id}/hypotheses": {
         parameters: {
             query?: never;
@@ -1512,6 +1529,13 @@ export interface components {
             /** Policy Id */
             policy_id: string;
         };
+        /** ApprovalRequirement */
+        ApprovalRequirement: {
+            /** Requirement */
+            requirement: string;
+            /** State */
+            state: string;
+        };
         /** ApprovalResult */
         ApprovalResult: {
             approval: components["schemas"]["Approval"];
@@ -2197,6 +2221,17 @@ export interface components {
             state: "met" | "binding" | "violated";
             /** Value */
             value: string;
+        };
+        /** ContainmentConsideration */
+        ContainmentConsideration: {
+            /** Consideration */
+            consideration: string;
+            /** Evidence Refs */
+            evidence_refs: string[];
+            /** Requires */
+            requires: string;
+            /** Supported By */
+            supported_by: string;
         };
         /** Contradiction */
         Contradiction: {
@@ -3257,6 +3292,15 @@ export interface components {
         HTTPValidationError: {
             /** Detail */
             detail?: components["schemas"]["ValidationError"][];
+        };
+        /** HandoffItem */
+        HandoffItem: {
+            /** Action */
+            action: string;
+            /** Evidence Refs */
+            evidence_refs: string[];
+            /** Reason */
+            reason: string;
         };
         /** Health */
         Health: {
@@ -4854,6 +4898,45 @@ export interface components {
             label: string;
             /** Missing */
             missing: string[];
+        };
+        /**
+         * ResponseHandoff
+         * @description Items for people to review, from one stored incident. `execution_state` has one possible value.
+         */
+        ResponseHandoff: {
+            /** Approvals */
+            approvals: components["schemas"]["ApprovalRequirement"][];
+            /** Assets To Validate */
+            assets_to_validate: components["schemas"]["HandoffItem"][];
+            /** Containment Considerations */
+            containment_considerations: components["schemas"]["ContainmentConsideration"][];
+            /** Containment Note */
+            containment_note: string;
+            /**
+             * Execution State
+             * @constant
+             */
+            execution_state: "NOT EXECUTED";
+            /** Identities To Validate */
+            identities_to_validate: components["schemas"]["HandoffItem"][];
+            /** Incident Id */
+            incident_id: string;
+            /** Incident Status */
+            incident_status: string;
+            /** Integration Boundary */
+            integration_boundary: string;
+            /** Investigation Actions */
+            investigation_actions: components["schemas"]["HandoffItem"][];
+            /** Missing Evidence */
+            missing_evidence: components["schemas"]["HandoffItem"][];
+            /** Missing Response Context */
+            missing_response_context: string[];
+            /** Reachable To Monitor */
+            reachable_to_monitor: components["schemas"]["HandoffItem"][];
+            /** Run Id */
+            run_id: string;
+            /** Statement */
+            statement: string;
         };
         /** Reversibility */
         Reversibility: {
@@ -6813,6 +6896,39 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["IncidentGuide"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    get_incident_handoff_api_v1_ps2_incidents__incident_id__handoff_get: {
+        parameters: {
+            query?: {
+                run_id?: string | null;
+            };
+            header?: never;
+            path: {
+                incident_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ResponseHandoff"];
                 };
             };
             /** @description Validation Error */

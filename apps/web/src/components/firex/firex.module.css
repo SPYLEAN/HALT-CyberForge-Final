@@ -239,3 +239,7 @@
 .checks10 { list-style: none; margin: var(--space-2) 0 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 200px), 1fr)); gap: var(--space-1) var(--space-3); font-size: 13.5px; }
 .checks10 li[data-state="active"] { font-weight: 600; }
 .checks10 li[data-state="waiting"] { color: var(--v2-text-2); }
+
+/* Response Handoff */
+.handoff { display: flex; flex-direction: column; gap: var(--space-4); }
+.handoff p { margin: 0; overflow-wrap: anywhere; }

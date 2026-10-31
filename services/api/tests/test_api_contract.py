@@ -64,6 +64,7 @@ DOCUMENTED = {
     ("get", "/ps2/reconstructions/{run_id}/attack-flow"),
     ("get", "/ps2/reconstructions/{run_id}/evaluation"),
     ("get", "/ps2/facts"),
+    ("get", "/ps2/incidents/{incident_id}/handoff"),
     ("get", "/ps2/live/files"),
     ("get", "/ps2/live/files/{name}/preflight"),
     ("post", "/ps2/live/files/{name}/start"),

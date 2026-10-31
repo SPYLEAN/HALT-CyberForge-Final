@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 
 import { FirexMissionPanel } from "@/components/firex/FirexMissionPanel";
 import { StatusChip } from "@/components/halt";
+import { SyntheticLabNotice } from "./SyntheticLabNotice";
 import { STAGE_LABEL } from "@/components/shell/stages";
 import { api, unwrap } from "@/lib/api/client";
 import { useOps } from "@/lib/api/ops";
@@ -123,11 +124,13 @@ export function MissionControl() {
   const services = nodes.filter((n) => n.kind === "process" && n.criticality === "critical");
   return (
     <>
+      <h1 className="v2-title" style={{ fontSize: "clamp(32px, 3.4vw, 46px)", margin: "0 0 var(--space-5)" }}>Mission Control</h1>
       <FirexMissionPanel />
+      <SyntheticLabNotice />
       <div style={{ display: "grid", gridTemplateColumns: "minmax(0, 5fr) minmax(0, 7fr)", gap: "var(--space-7)", alignItems: "center" }} className="v2-mission-hero">
         <div>
-          <p className="v2-kicker">Mission Control · 1 active incident</p>
-          <h1 className="v2-title" style={{ fontSize: "clamp(32px, 3.4vw, 46px)", margin: "var(--space-3) 0" }}>{incident?.title ?? "Connecting to the HALT API"}</h1>
+          <p className="v2-kicker">Synthetic Response Lab · 1 demonstration incident</p>
+          <h2 className="v2-title" style={{ fontSize: "clamp(24px, 2.6vw, 34px)", margin: "var(--space-3) 0" }}>{incident?.title ?? "Connecting to the HALT API"}</h2>
           <div className="v2-btn-row" style={{ marginBottom: "var(--space-4)" }}>
             {stage ? <StatusChip kind={stage[1]}>{stage[0]}</StatusChip> : null}
             {incident ? <span className="v2-tag">severity {incident.severity}</span> : null}
@@ -136,11 +139,11 @@ export function MissionControl() {
           <p className="v2-decision" style={{ color: "var(--v2-text-2)" }}>{incident?.summary}</p>
           <div className="v2-btn-row" style={{ marginTop: "var(--space-5)" }}>
             <Link className="halt-btn halt-btn-primary" href="/response-demo">
-              <span>WATCH THE INCIDENT</span>
+              <span>WATCH THE DEMONSTRATION</span>
               <span aria-hidden>→</span>
             </Link>
             <Link className="halt-btn" href={`/incidents/${state.incidentId}?view=overview`}>
-              <span>OPEN COMMAND CENTER</span>
+              <span>OPEN THE LAB</span>
               <span aria-hidden>→</span>
             </Link>
           </div>

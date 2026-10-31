@@ -303,6 +303,23 @@ test("Live Intake refuses an unsupported upload with a clear reason, at phone wi
   expect(await axe(page)).toEqual([]);
 });
 
+test("Response Handoff uses the selected incident only, states NOT EXECUTED and offers no action", async ({ page, request }) => {
+  const { runId, top } = await finishedRun(request);
+  await page.goto("/firex/incidents");
+  await page.locator(`a[href="/firex/incidents/${top}?run=${runId}"]`).first().click();
+  await page.getByRole("tab", { name: "Response Handoff" }).click();
+  const panel = page.getByTestId("response-handoff");
+  await expect(panel.getByText("NOT EXECUTED").first()).toBeVisible();
+  await expect(panel.getByRole("heading", { name: "Approval requirements" })).toBeVisible();
+  await expect(panel.getByText(/No converter from a FireX incident/)).toBeVisible();
+  await expect(panel.getByRole("button", { name: /execute|simulate|contain|approve/i })).toHaveCount(0);
+  await expect(page.locator("body")).not.toContainText("INC-2417");
+  expect(await axe(page)).toEqual([]);
+  await page.setViewportSize({ width: 390, height: 844 });
+  const overflow = await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth);
+  expect(overflow).toBeLessThanOrEqual(1);
+});
+
 test("API failure shows an explicit error, not substituted data", async ({ page }) => {
   await page.route("**/api/v1/ps2/incidents/**", (route) => route.abort());
   await page.goto("/firex/incidents/finc-000000000000");

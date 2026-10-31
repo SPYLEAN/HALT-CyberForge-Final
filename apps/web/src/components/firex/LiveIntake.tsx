@@ -11,7 +11,7 @@ import { classify } from "@/lib/ps2/api";
 import s from "./firex.module.css";
 import { StatusBadge } from "./Verdict";
 
-const JOURNEY = ["Add logs", "Analyse", "Understand", "Verify", "Present"];
+const JOURNEY = ["Add logs", "Analyse", "Investigate", "SourceTrace", "Verify", "Response Handoff", "Theatre"];
 const HASH_POLL_MS = 1500;
 
 async function chunkChecksum(blob: Blob): Promise<string | undefined> {

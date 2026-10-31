@@ -23,6 +23,7 @@ const STATUS: Record<string, { glyph: string; tone: Tone }> = {
   "PROVENANCE FAILED": { glyph: "✕", tone: "threat" },
   "SOURCE UNAVAILABLE": { glyph: "–", tone: "quiet" },
   "NOT APPLICABLE": { glyph: "∅", tone: "quiet" },
+  "NOT EXECUTED": { glyph: "■", tone: "quiet" },
 };
 
 export function StatusBadge({ status, large }: { status: string; large?: boolean }) {

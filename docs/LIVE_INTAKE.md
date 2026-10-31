@@ -1,6 +1,6 @@
 # Live Intake
 
-Add logs, analyse, understand, verify, present, with no terminal once a file is in place.
+Add logs, analyse, investigate, SourceTrace, verify, Response Handoff, Theatre, with no terminal once a file is in place.
 
 ## Adding a file
 

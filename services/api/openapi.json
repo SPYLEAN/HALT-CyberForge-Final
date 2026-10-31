@@ -332,6 +332,25 @@
         "title": "ApprovalRequest",
         "type": "object"
       },
+      "ApprovalRequirement": {
+        "additionalProperties": false,
+        "properties": {
+          "requirement": {
+            "title": "Requirement",
+            "type": "string"
+          },
+          "state": {
+            "title": "State",
+            "type": "string"
+          }
+        },
+        "required": [
+          "requirement",
+          "state"
+        ],
+        "title": "ApprovalRequirement",
+        "type": "object"
+      },
       "ApprovalResult": {
         "additionalProperties": false,
         "properties": {
@@ -2521,6 +2540,38 @@
           "derivation"
         ],
         "title": "ConstraintResult",
+        "type": "object"
+      },
+      "ContainmentConsideration": {
+        "additionalProperties": false,
+        "properties": {
+          "consideration": {
+            "title": "Consideration",
+            "type": "string"
+          },
+          "evidence_refs": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Evidence Refs",
+            "type": "array"
+          },
+          "requires": {
+            "title": "Requires",
+            "type": "string"
+          },
+          "supported_by": {
+            "title": "Supported By",
+            "type": "string"
+          }
+        },
+        "required": [
+          "consideration",
+          "supported_by",
+          "requires",
+          "evidence_refs"
+        ],
+        "title": "ContainmentConsideration",
         "type": "object"
       },
       "Contradiction": {
@@ -5796,6 +5847,33 @@
           }
         },
         "title": "HTTPValidationError",
+        "type": "object"
+      },
+      "HandoffItem": {
+        "additionalProperties": false,
+        "properties": {
+          "action": {
+            "title": "Action",
+            "type": "string"
+          },
+          "evidence_refs": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Evidence Refs",
+            "type": "array"
+          },
+          "reason": {
+            "title": "Reason",
+            "type": "string"
+          }
+        },
+        "required": [
+          "action",
+          "reason",
+          "evidence_refs"
+        ],
+        "title": "HandoffItem",
         "type": "object"
       },
       "Health": {
@@ -10452,6 +10530,116 @@
         "title": "ResponseEligibility",
         "type": "object"
       },
+      "ResponseHandoff": {
+        "additionalProperties": false,
+        "description": "Items for people to review, from one stored incident. `execution_state` has one possible value.",
+        "properties": {
+          "approvals": {
+            "items": {
+              "$ref": "#/components/schemas/ApprovalRequirement"
+            },
+            "title": "Approvals",
+            "type": "array"
+          },
+          "assets_to_validate": {
+            "items": {
+              "$ref": "#/components/schemas/HandoffItem"
+            },
+            "title": "Assets To Validate",
+            "type": "array"
+          },
+          "containment_considerations": {
+            "items": {
+              "$ref": "#/components/schemas/ContainmentConsideration"
+            },
+            "title": "Containment Considerations",
+            "type": "array"
+          },
+          "containment_note": {
+            "title": "Containment Note",
+            "type": "string"
+          },
+          "execution_state": {
+            "const": "NOT EXECUTED",
+            "title": "Execution State",
+            "type": "string"
+          },
+          "identities_to_validate": {
+            "items": {
+              "$ref": "#/components/schemas/HandoffItem"
+            },
+            "title": "Identities To Validate",
+            "type": "array"
+          },
+          "incident_id": {
+            "title": "Incident Id",
+            "type": "string"
+          },
+          "incident_status": {
+            "title": "Incident Status",
+            "type": "string"
+          },
+          "integration_boundary": {
+            "title": "Integration Boundary",
+            "type": "string"
+          },
+          "investigation_actions": {
+            "items": {
+              "$ref": "#/components/schemas/HandoffItem"
+            },
+            "title": "Investigation Actions",
+            "type": "array"
+          },
+          "missing_evidence": {
+            "items": {
+              "$ref": "#/components/schemas/HandoffItem"
+            },
+            "title": "Missing Evidence",
+            "type": "array"
+          },
+          "missing_response_context": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Missing Response Context",
+            "type": "array"
+          },
+          "reachable_to_monitor": {
+            "items": {
+              "$ref": "#/components/schemas/HandoffItem"
+            },
+            "title": "Reachable To Monitor",
+            "type": "array"
+          },
+          "run_id": {
+            "title": "Run Id",
+            "type": "string"
+          },
+          "statement": {
+            "title": "Statement",
+            "type": "string"
+          }
+        },
+        "required": [
+          "incident_id",
+          "run_id",
+          "execution_state",
+          "incident_status",
+          "statement",
+          "investigation_actions",
+          "missing_evidence",
+          "identities_to_validate",
+          "assets_to_validate",
+          "reachable_to_monitor",
+          "containment_considerations",
+          "containment_note",
+          "approvals",
+          "integration_boundary",
+          "missing_response_context"
+        ],
+        "title": "ResponseHandoff",
+        "type": "object"
+      },
       "Reversibility": {
         "additionalProperties": false,
         "properties": {
@@ -14487,6 +14675,65 @@
           }
         },
         "summary": "Get Incident Guide",
+        "tags": [
+          "firex"
+        ]
+      }
+    },
+    "/api/v1/ps2/incidents/{incident_id}/handoff": {
+      "get": {
+        "operationId": "get_incident_handoff_api_v1_ps2_incidents__incident_id__handoff_get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "incident_id",
+            "required": true,
+            "schema": {
+              "title": "Incident Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "run_id",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "pattern": "^frun-[0-9a-f]{16}$",
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Run Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResponseHandoff"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Get Incident Handoff",
         "tags": [
           "firex"
         ]

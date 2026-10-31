@@ -27,6 +27,7 @@ import { ps2Vars } from "@/styles/ps2-palette";
 import { AttackWorldView } from "./AttackWorldView";
 import { EvidenceLens } from "./EvidenceLens";
 import s from "./firex.module.css";
+import { HandoffView } from "./ResponseHandoff";
 import { SearchEvidence, WhyHere } from "./SourceTrace";
 import { StatusBadge } from "./Verdict";
 
@@ -41,7 +42,7 @@ interface Loaded {
   guide: IncidentGuide;
 }
 
-const PRIMARY = ["Overview", "Attack World", "Timeline", "Evidence", "Reachable Next", "Verification", "Theatre"] as const;
+const PRIMARY = ["Overview", "Attack World", "Timeline", "Evidence", "Reachable Next", "Verification", "Response Handoff", "Theatre"] as const;
 const ANALYST = ["ATT&CK", "Hypotheses", "Confidence", "Raw Fields"] as const;
 type Tab = (typeof PRIMARY)[number] | (typeof ANALYST)[number];
 
@@ -198,7 +199,8 @@ function Workspace({ data, incidentId, runId }: { data: Loaded; incidentId: stri
         ) : null}
         {tab === "Timeline" ? <TimelineView detail={detail} graph={graph} onSelect={openLens} /> : null}
         {tab === "Evidence" ? <EvidenceView detail={detail} graph={graph} onSelect={openLens} /> : null}
-        {tab === "Reachable Next" ? <ReachableView reach={reach} detail={detail} onReplay={() => setTab("Attack World")} /> : null}
+        {tab === "Reachable Next" ? <ReachableView reach={reach} onReplay={() => setTab("Attack World")} onHandoff={() => setTab("Response Handoff")} /> : null}
+        {tab === "Response Handoff" ? <HandoffView incidentId={incidentId} runId={summary.run_id} /> : null}
         {tab === "Verification" ? <VerificationView proof={proof} health={health} /> : null}
         {tab === "Theatre" ? <TheatreTab runId={summary.run_id} incidentId={incidentId} /> : null}
         {tab === "ATT&CK" ? <AttackView detail={detail} /> : null}
@@ -390,8 +392,7 @@ function EvidenceView({ detail, graph, onSelect }: { detail: IncidentDetail; gra
   );
 }
 
-function ReachableView({ reach, detail, onReplay }: { reach: ReachabilityResult; detail: IncidentDetail; onReplay: () => void }) {
-  const response = detail.response_simulation;
+function ReachableView({ reach, onReplay, onHandoff }: { reach: ReachabilityResult; onReplay: () => void; onHandoff: () => void }) {
   return (
     <div className={s.grid}>
       <section className={s.card} aria-labelledby="reach-heading">
@@ -423,24 +424,14 @@ function ReachableView({ reach, detail, onReplay }: { reach: ReachabilityResult;
           </button>
         </div>
       </section>
-      <section className={s.card} aria-labelledby="simulate-heading">
-        <h2 id="simulate-heading">Simulate response</h2>
-        <p className={s.simulated}>{response.label}</p>
-        {response.available ? null : (
-          <>
-            <div>
-              <button type="button" className={s.btn} disabled>
-                Not available
-              </button>
-            </div>
-            <p>This incident needs context that the log does not contain:</p>
-            <ul style={{ margin: 0 }}>
-              {response.missing.map((m) => (
-                <li key={m}>{m}</li>
-              ))}
-            </ul>
-          </>
-        )}
+      <section className={s.card} aria-labelledby="response-heading">
+        <h2 id="response-heading">What happens next</h2>
+        <p>Nothing is simulated or executed from an unconfirmed incident. The Response Handoff lists what people can check.</p>
+        <div>
+          <button type="button" className={s.btn} onClick={onHandoff}>
+            Open Response Handoff
+          </button>
+        </div>
       </section>
     </div>
   );

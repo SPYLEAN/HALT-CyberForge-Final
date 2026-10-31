@@ -273,10 +273,10 @@ describe("incident workspace", () => {
     expect(screen.getAllByText("Unconfirmed").length).toBeGreaterThan(0);
   });
 
-  it("has the seven investigator tabs, and analyst detail only in analyst mode", async () => {
+  it("has the eight investigator tabs, and analyst detail only in analyst mode", async () => {
     const user = await open();
     const names = () => screen.getAllByRole("tab").map((t) => t.textContent);
-    expect(names()).toEqual(["Overview", "Attack World", "Timeline", "Evidence", "Reachable Next", "Verification", "Theatre"]);
+    expect(names()).toEqual(["Overview", "Attack World", "Timeline", "Evidence", "Reachable Next", "Verification", "Response Handoff", "Theatre"]);
     await user.click(screen.getByRole("checkbox", { name: "Analyst mode" }));
     expect(names()).toEqual(expect.arrayContaining(["ATT&CK", "Hypotheses", "Confidence", "Raw Fields"]));
     await user.click(screen.getByRole("tab", { name: "Raw Fields" }));
@@ -534,7 +534,7 @@ describe("Live Intake", () => {
     render(<LiveIntake />);
     expect(await screen.findByRole("heading", { name: "Add data" })).toBeInTheDocument();
     expect(screen.getByText("C:\\HALT-DATA\\incoming")).toBeInTheDocument();
-    expect(within(screen.getByRole("list", { name: "Journey" })).getAllByRole("listitem").map((l) => l.textContent)).toEqual(["Add logs", "Analyse", "Understand", "Verify", "Present"]);
+    expect(within(screen.getByRole("list", { name: "Journey" })).getAllByRole("listitem").map((l) => l.textContent)).toEqual(["Add logs", "Analyse", "Investigate", "SourceTrace", "Verify", "Response Handoff", "Theatre"]);
     const files = screen.getByRole("list", { name: "Files in the incoming folder" });
     expect(within(files).getAllByRole("button", { name: "Select" })).toHaveLength(1);
     expect(within(files).getByText(/No adapter here reads this format/)).toBeInTheDocument();
@@ -601,5 +601,40 @@ describe("Live Intake", () => {
     apiDown();
     render(<LiveIntake />);
     expect(await screen.findByRole("status")).toHaveTextContent("not available");
+  });
+});
+
+describe("Response Handoff", () => {
+  const openHandoff = async () => {
+    stub();
+    const user = userEvent.setup();
+    render(<IncidentWorkspace incidentId={topId()} runId={RUN} />);
+    await screen.findByRole("tablist");
+    await user.click(screen.getByRole("tab", { name: "Response Handoff" }));
+    return screen.findByTestId("response-handoff");
+  };
+
+  it("states NOT EXECUTED and draws only on the selected incident", async () => {
+    const panel = await openHandoff();
+    expect(within(panel).getAllByText("NOT EXECUTED").length).toBeGreaterThan(0);
+    for (const name of ["Investigation actions", "Missing evidence to collect", "Identities and assets to validate", "Reachable systems to monitor", "Possible containment considerations", "Approval requirements", "Response system boundary"]) expect(within(panel).getByRole("heading", { name })).toBeInTheDocument();
+    expect(document.body.textContent).not.toContain("INC-2417");
+    expect(calls.some((c) => c.includes(`/incidents/${topId()}/handoff?run_id=${RUN}`))).toBe(true);
+  });
+
+  it("offers no way to execute, simulate or send a response", async () => {
+    const panel = await openHandoff();
+    expect(within(panel).queryAllByRole("button").filter((b) => /execute|simulate|contain|approve|send/i.test(b.textContent ?? ""))).toEqual([]);
+    expect(within(panel).getByText(/No converter from a FireX incident/)).toBeInTheDocument();
+  });
+
+  it("says so when no containment is supported", async () => {
+    const key = `GET ${B}/incidents/${topId()}/handoff?run_id=${RUN}`;
+    stub({ [key]: { status: 200, body: { ...body<Record<string, unknown>>(key), containment_considerations: [] } } });
+    const user = userEvent.setup();
+    render(<IncidentWorkspace incidentId={topId()} runId={RUN} />);
+    await screen.findByRole("tablist");
+    await user.click(screen.getByRole("tab", { name: "Response Handoff" }));
+    expect(await screen.findByText(/supports no containment consideration/)).toBeInTheDocument();
   });
 });

@@ -24,7 +24,7 @@ export function IncidentRooms() {
 
   return (
     <>
-      <p className="v2-kicker">Incident Rooms</p>
+      <p className="v2-kicker">Synthetic Response Lab</p>
       <h1 className="v2-title" style={{ margin: "var(--space-2) 0 var(--space-6)" }}>One incident, replayable under controlled variants</h1>
 
       <section aria-label="Open incident" className="v2-stage" style={{ padding: "var(--space-6)", display: "grid", gridTemplateColumns: "minmax(0, 2fr) minmax(0, 1fr)", gap: "var(--space-6)" }}>
