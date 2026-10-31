@@ -66,6 +66,9 @@ export function Hero() {
             <span>EXPLORE THE COMMAND CENTER</span>
             <span aria-hidden>→</span>
           </Link>
+          <Link className="halt-btn" href="/firex/story">
+            <span>ANALYSE REAL LOGS</span>
+          </Link>
         </div>
         <p className="v2-meta" style={{ marginTop: "var(--space-5)" }}>
           <span className="v2-id">{ops.incident?.id ?? "INC-2417"}</span>
