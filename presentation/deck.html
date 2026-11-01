@@ -1,0 +1,473 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>HALT: Proof-Carrying Kill Chain Intelligence</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@75..125,100..900&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+<style>
+  /* HALT's own tokens. Cyan: observed or verified. Ember: selected path. Violet: inferred. Gold: hypothetical. */
+  :root {
+    --obsidian: #090c0e; --carbon: #14191c; --plate: #1b2125; --line: #2c343a; --steel: #8a969c; --dim: #a9b4b9; --bone: #eef0ea;
+    --proof: #4cc9d6; --ember: #e0603a; --violet: #9b87f5; --gold: #d8a73b;
+    --pad: 96px;
+  }
+  @page { size: 1920px 1080px; margin: 0; }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; background: var(--obsidian); color: var(--bone); font-family: "Archivo", sans-serif; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  .slide { position: relative; width: 1920px; height: 1080px; overflow: hidden; background: var(--obsidian); break-after: page; page-break-after: always; }
+  .slide:last-of-type { break-after: auto; page-break-after: auto; }
+  .bg { position: absolute; inset: 0; }
+  .content { position: absolute; inset: 0; padding: 84px var(--pad) 104px; display: flex; flex-direction: column; }
+  .foot { position: absolute; left: var(--pad); right: var(--pad); bottom: 40px; display: flex; justify-content: space-between; align-items: center; font-size: 19px; color: var(--steel); }
+  .foot img { height: 26px; display: block; }
+  .num { font-family: "IBM Plex Mono", monospace; font-size: 18px; letter-spacing: 0.04em; }
+  .kicker { margin: 0 0 22px; font-size: 22px; font-weight: 600; letter-spacing: 0.16em; text-transform: uppercase; color: var(--steel); }
+  h1, h2, p { margin: 0; }
+  h2 { font-size: 88px; line-height: 1.03; font-weight: 800; font-stretch: 112%; letter-spacing: -0.022em; }
+  .lede { font-size: 31px; line-height: 1.36; color: var(--dim); }
+  .mono { font-family: "IBM Plex Mono", monospace; }
+  .proof { color: var(--proof); } .ember { color: var(--ember); } .violet { color: var(--violet); } .gold { color: var(--gold); }
+  .chip { display: inline-flex; align-items: center; gap: 12px; padding: 9px 18px; font-size: 22px; font-weight: 600; letter-spacing: 0.02em; border: 2px solid currentColor; white-space: nowrap; }
+  .chip.steel { color: var(--dim); }
+  svg { display: block; }
+
+  /* 01 */
+  #s1 h1 { font-size: 90px; line-height: 1.05; font-weight: 800; font-stretch: 112%; letter-spacing: -0.024em; }
+  #s1 h1 span { display: block; }
+  #s1 h1 .quiet { color: var(--steel); margin-bottom: 18px; }
+  #s1 .logo { height: 76px; width: auto; margin-bottom: 64px; display: block; align-self: flex-start; }
+
+  /* 02 */
+  #s2 .giant { font-size: 134px; line-height: 0.98; font-weight: 900; font-stretch: 118%; letter-spacing: -0.03em; }
+  #s2 .refuse { margin-top: 44px; font-size: 56px; line-height: 1.14; font-weight: 500; max-width: 1400px; }
+  .rail { display: flex; align-items: stretch; margin-top: auto; border: 2px solid var(--line); background: var(--obsidian); }
+  .rail div { flex: 1; padding: 26px 24px; font-size: 25px; font-weight: 700; line-height: 1.15; border-right: 2px solid var(--line); }
+  .rail div:last-child { border-right: 0; }
+  .rail span { display: block; font: 500 18px "IBM Plex Mono", monospace; color: var(--steel); margin-bottom: 12px; }
+  .rail .mark { background: var(--plate); }
+
+  /* 03 */
+  .answers { flex: 1; display: grid; grid-template-columns: repeat(3, 1fr); grid-template-rows: minmax(0, 1fr); gap: 0; margin-top: 40px; border: 2px solid var(--line); min-height: 0; }
+  .answer { padding: 36px 40px 34px; display: flex; flex-direction: column; border-right: 2px solid var(--line); min-width: 0; }
+  .answer:last-child { border-right: 0; }
+  .answer .size { font-size: 124px; line-height: 0.92; font-weight: 900; font-stretch: 118%; letter-spacing: -0.03em; }
+  .answer .say { margin-top: 18px; min-height: 124px; font-size: 39px; line-height: 1.06; font-weight: 700; }
+  .answer svg { margin: 6px 0 20px; width: 100%; height: auto; }
+  .answer .fact { margin-top: auto; display: flex; justify-content: space-between; align-items: center; gap: 16px; font-size: 25px; color: var(--dim); }
+  .answer .fact b { font-size: 48px; color: var(--bone); font-weight: 800; }
+
+  /* 04 */
+  .engine { display: grid; grid-template-columns: repeat(5, 1fr); margin-top: 38px; border: 2px solid var(--line); }
+  .engine div { padding: 22px 24px; border-right: 2px solid var(--line); }
+  .engine div:last-child { border-right: 0; }
+  .engine b { display: block; font-size: 29px; font-weight: 800; margin-bottom: 8px; }
+  .engine span { display: block; font-size: 21px; line-height: 1.28; color: var(--dim); }
+  table { width: 100%; border-collapse: collapse; margin-top: 30px; font-variant-numeric: tabular-nums; }
+  th, td { padding: 13px 0; text-align: right; border-bottom: 2px solid var(--line); }
+  th:first-child, td:first-child { text-align: left; font-size: 25px; font-weight: 500; color: var(--dim); }
+  thead th { font-size: 50px; font-weight: 900; font-stretch: 115%; color: var(--bone) !important; border-bottom-color: var(--steel); padding-top: 0; }
+  td { font-size: 37px; font-weight: 700; }
+  td.na { font-size: 29px; color: var(--dim); font-weight: 500; }
+  .note { font-size: 22px; color: var(--steel); }
+
+  /* 05 */
+  #s5 .world { position: absolute; top: 0; right: 0; width: 1300px; height: 731px; object-fit: cover; }
+  #s5 .fadeL { position: absolute; top: 0; left: 620px; width: 260px; height: 780px; background: linear-gradient(90deg, var(--obsidian), rgba(9,12,14,0)); }
+  #s5 .fadeB { position: absolute; top: 610px; left: 620px; width: 1300px; height: 150px; background: linear-gradient(0deg, var(--obsidian), rgba(9,12,14,0)); }
+  #s5 .text { position: absolute; left: var(--pad); top: 84px; width: 590px; }
+  #s5 h2 { font-size: 80px; }
+  #s5 .axes { position: absolute; left: var(--pad); right: var(--pad); bottom: 106px; display: grid; grid-template-columns: repeat(3, 1fr) 1.42fr; border: 2px solid var(--line); background: var(--obsidian); }
+  #s5 .axes > div { padding: 22px 26px; border-right: 2px solid var(--line); }
+  #s5 .axes > div:last-child { border-right: 0; }
+  #s5 .axes b { display: block; font-size: 30px; font-weight: 800; margin-bottom: 4px; }
+  #s5 .axes span { font-size: 23px; color: var(--dim); line-height: 1.25; display: block; }
+
+  /* 06 */
+  .trace { flex: 1; display: grid; grid-template-columns: 1.26fr 0.74fr; gap: 56px; margin-top: 34px; min-height: 0; }
+  .search { display: flex; align-items: center; justify-content: space-between; padding: 17px 24px; border: 2px solid var(--proof); font: 500 37px "IBM Plex Mono", monospace; }
+  .search em { font: 700 25px "Archivo"; color: var(--bone); }
+  .raw { margin-top: 20px; padding: 20px 24px; background: var(--carbon); border-left: 6px solid var(--proof); font: 500 21px/1.48 "IBM Plex Mono", monospace; color: var(--bone); }
+  .raw small { display: block; font: 700 18px "Archivo"; letter-spacing: 0.14em; color: var(--proof); margin-bottom: 8px; }
+  .timeline { margin: 22px 0 0; padding: 0; list-style: none; }
+  .timeline li { position: relative; display: grid; grid-template-columns: 148px 1fr; gap: 20px; align-items: baseline; padding: 14px 0; border-bottom: 2px solid var(--line); }
+  .timeline time { font: 500 25px "IBM Plex Mono", monospace; color: var(--proof); }
+  .timeline b { display: block; font-size: 28px; font-weight: 700; line-height: 1.16; }
+  .timeline span { font-size: 21px; color: var(--dim); }
+  .link { padding: 8px 0 8px 168px; font-size: 22px; color: var(--violet); border-bottom: 2px solid var(--line); }
+  .verdict { margin-top: 18px; font-size: 32px; font-weight: 800; line-height: 1.15; }
+  .chain { margin: 0; padding: 0; list-style: none; counter-reset: c; }
+  .chain li { counter-increment: c; display: flex; align-items: center; gap: 18px; padding: 10px 0; font-size: 27px; font-weight: 600; border-bottom: 2px solid var(--line); }
+  .chain li::before { content: counter(c); font: 500 20px "IBM Plex Mono", monospace; color: var(--proof); width: 24px; }
+  .big606 { margin-top: 22px; font-size: 76px; line-height: 1; font-weight: 900; font-stretch: 112%; letter-spacing: -0.02em; color: var(--proof); white-space: nowrap; }
+
+  /* 07 */
+  .band { margin-top: 30px; padding-top: 26px; border-top: 2px solid var(--line); }
+  .band .row { display: flex; justify-content: space-between; align-items: baseline; gap: 40px; margin-bottom: 14px; }
+  .band .title { font-size: 44px; font-weight: 800; line-height: 1.08; letter-spacing: -0.012em; }
+  .legend { display: flex; justify-content: space-between; gap: 40px; margin-top: 14px; font-size: 25px; color: var(--dim); }
+  .legend b { color: var(--bone); font-size: 34px; font-weight: 800; margin-right: 10px; }
+  .legend .mono { font-size: 21px; }
+
+  /* 08 */
+  .split { flex: 1; display: grid; grid-template-columns: 1fr 1fr; gap: 72px; margin-top: 40px; min-height: 0; }
+  .dim { display: flex; justify-content: space-between; align-items: center; gap: 20px; min-height: 92px; font-size: 31px; font-weight: 600; border-bottom: 2px solid var(--line); }
+  .seal { display: flex; align-items: center; gap: 36px; margin-top: 30px; }
+  .seal p { font-size: 28px; line-height: 1.3; color: var(--dim); }
+  .executed { display: inline-flex; align-items: center; gap: 22px; padding: 18px 28px; border: 3px solid var(--bone); font-size: 62px; font-weight: 900; font-stretch: 112%; letter-spacing: -0.012em; white-space: nowrap; }
+  .list { margin: 24px 0 0; padding: 0; list-style: none; }
+  .list li { padding: 14px 0; font-size: 29px; font-weight: 600; line-height: 1.2; border-bottom: 2px solid var(--line); }
+  .list li span { display: block; margin-top: 3px; font-size: 22px; font-weight: 400; color: var(--dim); }
+
+  /* 09 */
+  .steps { display: grid; grid-template-columns: repeat(3, 1fr); margin-top: 24px; border: 2px solid var(--line); }
+  .steps div { padding: 24px 20px; font-size: 30px; font-weight: 800; line-height: 1.1; border-right: 2px solid var(--line); }
+  .steps div:last-child { border-right: 0; }
+  .steps span { display: block; font: 500 19px "IBM Plex Mono", monospace; color: var(--steel); margin-bottom: 12px; }
+  .col-head { font-size: 44px; font-weight: 800; letter-spacing: -0.012em; }
+  .claims { margin: 12px 0 0; padding: 0; list-style: none; }
+  .claims li { padding: 15px 0; font-size: 27px; line-height: 1.24; border-bottom: 2px solid var(--line); }
+
+  /* 10 */
+  #s10 .big { font-size: 134px; line-height: 0.98; font-weight: 900; font-stretch: 118%; letter-spacing: -0.032em; }
+</style>
+</head>
+<body>
+
+<section class="slide" id="s1">
+  <svg class="bg" id="helix" width="1920" height="1080" viewBox="0 0 1920 1080" aria-hidden="true"></svg>
+  <div class="content" style="justify-content:center;width:1230px;padding-bottom:84px">
+    <img class="logo" src="assets/halt-horizontal-bone.svg" alt="HALT" />
+    <h1><span class="quiet">Security teams do not lack alerts.</span><span>They lack a defensible explanation of how those alerts connect.</span></h1>
+    <p class="lede" style="margin-top:50px">Proof-Carrying Kill Chain Intelligence<br />CyberForge PS2: Kill Chain and Attack Path Analysis</p>
+    <p class="lede" id="team" style="margin-top:16px;color:var(--bone)"></p>
+  </div>
+</section>
+
+<section class="slide" id="s2">
+  <svg class="bg" id="rain" width="1920" height="1080" viewBox="0 0 1920 1080" aria-hidden="true"></svg>
+  <div class="content">
+    <p class="kicker">The promise</p>
+    <p class="giant">Turn noisy logs into defensible attack stories.</p>
+    <p class="refuse"><span class="ember" style="font-weight:800">And refuse to invent one</span> when the evidence cannot support it.</p>
+    <div class="rail">
+      <div><span>01</span>Add logs</div>
+      <div><span>02</span>Analyse</div>
+      <div><span>03</span>Investigate</div>
+      <div><span>04</span>SourceTrace</div>
+      <div><span>05</span>Verify</div>
+      <div><span>06</span>Response Handoff</div>
+      <div><span>07</span>Theatre</div>
+    </div>
+  </div>
+  <div class="foot"><img src="assets/halt-horizontal-bone.svg" alt="" /><span class="num">02 / 10</span></div>
+</section>
+
+<section class="slide" id="s3">
+  <div class="content">
+    <h2 style="font-size:78px">Three sources. Three honest answers.</h2>
+    <div class="answers">
+      <article class="answer">
+        <p class="size">10G</p>
+        <p class="say">Reconstructed, unconfirmed incidents</p>
+        <svg id="a10" width="512" height="290" viewBox="0 0 512 290" aria-label="An attack path with proof anchors"></svg>
+        <div class="fact"><span><b>11</b> incidents</span><span class="chip violet">? UNCONFIRMED</span></div>
+      </article>
+      <article class="answer">
+        <p class="size">30G</p>
+        <p class="say">Reconstruction withheld</p>
+        <svg id="a30" width="512" height="290" viewBox="0 0 512 290" aria-label="An empty hatched chamber with no attack path"></svg>
+        <div class="fact"><span><b>0</b> presented</span><span class="chip ember">▲ DEGRADED</span></div>
+      </article>
+      <article class="answer">
+        <p class="size">50G</p>
+        <p class="say">Partial reconstruction from a degraded source</p>
+        <svg id="a50" width="512" height="290" viewBox="0 0 512 290" aria-label="A path in the usable part of the source, the rest hatched"></svg>
+        <div class="fact"><span><b>11</b> incidents</span><span class="chip ember">▲ DEGRADED</span></div>
+      </article>
+    </div>
+  </div>
+  <div class="foot"><img src="assets/halt-horizontal-bone.svg" alt="" /><span class="num">03 / 10</span></div>
+</section>
+
+<section class="slide" id="s4">
+  <div class="content">
+    <h2>Measured, not promised.</h2>
+    <div class="engine">
+      <div><b>Plan</b><span>Whole-file SHA-256 and chunk boundaries</span></div>
+      <div><b>Parse</b><span>Workers write Parquet, and invalid data is quarantined</span></div>
+      <div><b>Prepare</b><span>DuckDB finds duplicates and time faults, with a memory limit</span></div>
+      <div><b>Reconstruct</b><span>Rules join candidates only through shared entities</span></div>
+      <div><b>Explain</b><span>Graphs, hypotheses, stories and sealed receipts</span></div>
+    </div>
+    <table>
+      <thead><tr><th></th><th>10G</th><th>30G</th><th>50G</th></tr></thead>
+      <tbody>
+        <tr><td>Source received</td><td>6.54 GB</td><td>19.62 GB</td><td>32.70 GB</td></tr>
+        <tr><td>Valid records</td><td>9,125,382</td><td>8,138,878</td><td>61,970,767</td></tr>
+        <tr><td>Exact duplicates found</td><td>812,235</td><td>1,310,857</td><td>7,645,803</td></tr>
+        <tr><td>Duration</td><td>497.45 s</td><td>543.53 s</td><td>4,216.33 s</td></tr>
+        <tr><td>Peak memory, upper bound</td><td>3.62 GB</td><td>2.56 GB</td><td>6.44 GB</td></tr>
+        <tr><td>Incident open, from receipt</td><td>87.3 ms</td><td class="na">Not applicable</td><td>79.52 ms</td></tr>
+      </tbody>
+    </table>
+    <p class="note" style="margin-top:auto">Recorded FireX results on the recorded machine. Not a performance guarantee.</p>
+  </div>
+  <div class="foot"><img src="assets/halt-horizontal-bone.svg" alt="" /><span class="num">04 / 10</span></div>
+</section>
+
+<section class="slide" id="s5">
+  <img class="world" src="assets/world-account.jpg" alt="The Attack World for a stored incident: an ember path through three steps, rising through kill-chain stages, with cyan anchors, account rings and asset towers" />
+  <div class="fadeL"></div><div class="fadeB"></div>
+  <div class="text">
+    <p class="kicker">Semantic 3D Attack World</p>
+    <h2>Step inside the incident.</h2>
+    <p class="lede" style="margin-top:30px">Every position means something.<br />Nothing is decoration.</p>
+    <p class="lede" style="margin-top:26px;font-size:26px">Rendered from the stored 10G incident on the next slide.</p>
+  </div>
+  <div class="axes">
+    <div><b>Left to right</b><span>Source order, not a clock</span></div>
+    <div><b>Height</b><span>Kill-chain stage</span></div>
+    <div><b>Depth</b><span>Organisation layer</span></div>
+    <div><span style="color:var(--bone);line-height:1.45"><b class="ember" style="display:inline;font-size:23px">Ember</b> selected path &nbsp; <b class="proof" style="display:inline;font-size:23px">Cyan</b> observed<br /><b class="violet" style="display:inline;font-size:23px">Violet</b> inferred &nbsp; <b class="gold" style="display:inline;font-size:23px">Gold</b> hypothetical</span></div>
+  </div>
+  <div class="foot"><img src="assets/halt-horizontal-bone.svg" alt="" /><span class="num">05 / 10</span></div>
+</section>
+
+<section class="slide" id="s6">
+  <div class="content" style="padding-top:64px">
+    <p class="kicker" style="margin-bottom:14px">SourceTrace, on the stored 10G run, times in UTC</p>
+    <h2 style="font-size:76px">One search. Back to the exact line.</h2>
+    <div class="trace">
+      <div>
+        <div class="search"><span>svc_backup30</span><em>An account, not a file</em></div>
+        <div class="raw"><small>RAW RECORD · LINE 3,226,313 · HASH MATCHES</small>date=2026-10-29 time=03:55:43 … logdesc="Object attribute configured" user="Rakes" … srcip=203.228.177.117 … dstip=10.10.99.1 … action="Add" … msg="Add system.admin svc_backup30"</div>
+        <ul class="timeline">
+          <li><time>03:55:43</time><div><b>Account added</b><span class="proof">Observed, line 3,226,313</span></div></li>
+          <li style="display:block;padding:0;border:0"><div class="link">↓ Connection inferred by a rule</div></li>
+          <li><time>04:02:01</time><div><b>The new account signs in</b><span class="proof">Observed, line 3,227,163</span></div></li>
+          <li style="display:block;padding:0;border:0"><div class="link">↓ Connection inferred by a rule</div></li>
+          <li><time>04:07:25</time><div><b>Account deleted</b><span class="proof">Observed, line 3,227,930</span></div></li>
+        </ul>
+      </div>
+      <div>
+        <ol class="chain">
+          <li>Source record</li><li>Parser mapping</li><li>Canonical event</li><li>Duplicate and burst handling</li><li>Detection rule</li><li>Evidence relationship</li><li>Hypothesis</li><li>Incident statement</li><li>Proof receipt</li>
+        </ol>
+        <p class="big606">606 of 606</p>
+        <p class="lede" style="font-size:24px;margin-top:8px">cited records resolve to their source line, in 10G and again in 50G</p>
+      </div>
+    </div>
+    <p class="verdict" style="margin-top:14px">The events exist. <span class="violet">Malicious intent is not established.</span></p>
+  </div>
+  <div class="foot"><img src="assets/halt-horizontal-bone.svg" alt="" /><span class="num">06 / 10</span></div>
+</section>
+
+<section class="slide" id="s7">
+  <div class="content" style="padding-top:64px">
+    <h2 style="font-size:96px">It knows when to stop.</h2>
+    <div class="band" style="border-top:0;padding-top:0">
+      <div class="row"><p class="title">30G: <span class="ember">Reconstruction withheld</span> because the source does not provide a trustworthy time axis.</p></div>
+      <svg id="m30" width="1728" height="80" viewBox="0 0 1728 80" aria-label="21.89 percent valid, 78.11 percent quarantined"></svg>
+      <div class="legend">
+        <span><b>21.89%</b>valid log records</span>
+        <span><b>8,138,878</b>records at one instant, <span class="mono">2026-10-30T08:48:36Z</span></span>
+        <span><b>78.11%</b>quarantined</span>
+      </div>
+      <p class="lede" style="margin-top:12px;color:var(--bone);font-weight:600">Zero incidents does not mean zero threats.</p>
+    </div>
+    <div class="band">
+      <div class="row"><p class="title">50G: <span class="ember">Partial</span>. Every incident rests on the part with usable time.</p></div>
+      <svg id="m50" width="1728" height="176" viewBox="0 0 1728 176" aria-label="Eleven incident spans, all inside the 29.51 percent of records with usable time order"></svg>
+      <div class="legend">
+        <span><b>29.51%</b>usable time order, 18,289,294 records</span>
+        <span><b>70.49%</b>collapsed time, 43,681,473 records</span>
+      </div>
+      <p class="lede" style="margin-top:12px;color:var(--bone);font-weight:600">Activity among the collapsed records is unknown, not absent.</p>
+    </div>
+  </div>
+  <div class="foot"><img src="assets/halt-horizontal-bone.svg" alt="" /><span style="font-size:19px">Ember lines: the span of each 50G incident's cited records, in source order.</span><span class="num">07 / 10</span></div>
+</section>
+
+<section class="slide" id="s8">
+  <div class="content">
+    <h2 style="font-size:78px">Verified file. Unconfirmed conclusion.</h2>
+    <div class="split">
+      <div>
+        <p class="kicker" style="margin-bottom:6px">Trust Centre</p>
+        <div class="dim"><span>Source integrity</span><span class="chip proof">✓ VERIFIED</span></div>
+        <div class="dim"><span>Processing integrity</span><span class="chip proof">✓ VERIFIED</span></div>
+        <div class="dim"><span>Reconstruction trust</span><span class="chip violet">! NEEDS REVIEW</span></div>
+        <div class="dim"><span>Ground-truth validation</span><span class="chip steel">– NOT MEASURED</span></div>
+        <div class="seal">
+          <svg id="ring" width="210" height="210" viewBox="0 0 210 210" aria-label="A closed proof seal: 11 of 11 receipts valid"></svg>
+          <p><span style="color:var(--bone);font-weight:700">Proof receipts valid in both 10G and 50G.</span><br />A seal shows that a receipt has not changed. It does not show that a conclusion is true.</p>
+        </div>
+      </div>
+      <div>
+        <p class="kicker" style="margin-bottom:14px">Response Handoff</p>
+        <div class="executed"><span aria-hidden="true">■</span> NOT EXECUTED</div>
+        <ul class="list">
+          <li>Investigation actions<span>From cited records and rival hypotheses</span></li>
+          <li>Missing evidence to collect<span>Gaps recorded in the incident</span></li>
+          <li>Identities and assets to validate<span>Named by the evidence</span></li>
+          <li><span class="gold" style="display:inline;font-size:29px;font-weight:600;color:var(--gold)">Reachable systems to monitor</span><span>Hypothetical, and labelled so</span></li>
+          <li>Approval requirements<span>No language model chooses a response</span></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="foot"><img src="assets/halt-horizontal-bone.svg" alt="" /><span class="num">08 / 10</span></div>
+</section>
+
+<section class="slide" id="s9">
+  <div class="content">
+    <h2 style="font-size:74px">Ready for the next log. Honest about the edge.</h2>
+    <div class="split" style="grid-template-columns:0.88fr 1.12fr;margin-top:38px">
+      <div>
+        <p class="col-head">Live Intake</p>
+        <div class="steps">
+          <div><span>01</span>Add data</div>
+          <div><span>02</span>Start analysis</div>
+          <div><span>03</span>Open results</div>
+        </div>
+        <ul class="claims" style="margin-top:14px">
+          <li>Allowlisted folder, or resumable upload</li>
+          <li>Source hash, format and sample records shown first</li>
+          <li>Each source gets its own isolated run</li>
+          <li>Recovers from interruption, on the same job system</li>
+          <li><span class="proof" style="font-weight:700">Analyses FortiGate key-value logs.</span> CSV and JSON are detected and refused with a clear reason.</li>
+        </ul>
+      </div>
+      <div>
+        <p class="col-head">What we do not claim</p>
+        <ul class="claims">
+          <li>Detection accuracy is not measured: no organiser ground truth was provided.</li>
+          <li>Every incident stays unconfirmed until an analyst reviews it.</li>
+          <li>These logs have no payload or endpoint data, so they cannot prove an action succeeded.</li>
+          <li>50G took about 70 minutes on the recorded machine, over the one-hour target.</li>
+          <li>Peak memory is an upper bound, not a sampled total.</li>
+          <li>The synthetic response lab is a separate demonstration, not derived from these logs.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="foot"><img src="assets/halt-horizontal-bone.svg" alt="" /><span class="num">09 / 10</span></div>
+</section>
+
+<section class="slide" id="s10">
+  <svg class="bg" id="closing" width="1920" height="1080" viewBox="0 0 1920 1080" aria-hidden="true"></svg>
+  <div class="content" style="justify-content:center">
+    <p class="big">Contain the threat.<br />Continue<br />the business.</p>
+    <p class="lede" style="margin-top:50px;font-size:40px;color:var(--bone)">From raw logs to evidence-backed attack paths.</p>
+    <p class="lede" id="link" style="margin-top:16px"></p>
+  </div>
+  <div class="foot"><img src="assets/halt-horizontal-bone.svg" alt="" /><span class="num">10 / 10</span></div>
+</section>
+
+<script>
+  // Fill these in to show them on the first and last slides. Empty values show nothing.
+  const TEAM = "";
+  const LINK = "";
+  document.getElementById("team").textContent = TEAM;
+  document.getElementById("link").textContent = LINK;
+
+  const COLOR = { bone: "#e2e6e4", steel: "#8a969c", line: "#2c343a", proof: "#4cc9d6", ember: "#e0603a", violet: "#9b87f5", gold: "#d8a73b", carbon: "#14191c", obsidian: "#090c0e" };
+  // A small deterministic generator, so that every export is identical.
+  const seeded = (seed) => () => {
+    seed = (seed + 0x6d2b79f5) >>> 0;
+    let t = Math.imul(seed ^ (seed >>> 15), 1 | seed);
+    t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+  };
+  const put = (id, markup) => { document.getElementById(id).innerHTML = markup; };
+  const hatch = (id, color = COLOR.steel, gap = 14) => `<pattern id="${id}" width="${gap}" height="${gap}" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="${gap}" height="${gap}" fill="${COLOR.carbon}"/><rect width="${gap * 0.34}" height="${gap}" fill="${color}" opacity="0.55"/></pattern>`;
+  const diamond = (x, y, r, fill) => `<path d="M${x} ${y - r * 1.4}L${x + r} ${y}L${x} ${y + r * 1.4}L${x - r} ${y}Z" fill="${fill}"/>`;
+
+  function helix(cx, top, bottom, radius, turns, count, scale = 1) {
+    let out = "";
+    for (let i = 0; i < count; i += 1) {
+      const u = i / count;
+      const strand = i % 3;
+      const a = u * Math.PI * 2 * turns + (strand * Math.PI * 2) / 3;
+      const r = radius * (0.88 + 0.12 * Math.sin(u * 37));
+      const depth = (Math.sin(a) + 1) / 2;
+      const x = cx + Math.cos(a) * r;
+      const y = top + (bottom - top) * u + Math.sin(a) * 18;
+      const size = (1.2 + depth * 2.6) * scale;
+      const fade = Math.min(1, Math.min(u, 1 - u) * 9);
+      out += `<rect x="${x.toFixed(1)}" y="${y.toFixed(1)}" width="${size.toFixed(1)}" height="${size.toFixed(1)}" fill="${strand === 0 ? COLOR.bone : COLOR.steel}" opacity="${((0.2 + depth * 0.8) * fade).toFixed(2)}"/>`;
+    }
+    return out;
+  }
+
+  put("helix", `<defs><radialGradient id="glow" cx="50%" cy="50%" r="50%"><stop offset="0" stop-color="${COLOR.proof}" stop-opacity="0.07"/><stop offset="1" stop-color="${COLOR.proof}" stop-opacity="0"/></radialGradient></defs><ellipse cx="1560" cy="540" rx="480" ry="620" fill="url(#glow)"/>` + helix(1560, -40, 1120, 170, 7.5, 2400, 1.25));
+
+  // The log deluge: records, read sideways, thickest at the right.
+  (() => {
+    const r = seeded(2417);
+    let out = "";
+    for (let i = 0; i < 1500; i += 1) {
+      const x = r() * 1960 - 20;
+      const y = r() * 690;
+      const near = r();
+      const w = 8 + near * near * 110;
+      const presence = Math.pow(Math.max(0, x) / 1920, 1.6);
+      out += `<rect x="${x.toFixed(0)}" y="${y.toFixed(0)}" width="${w.toFixed(0)}" height="${near > 0.8 ? 2 : 1}" fill="${i % 11 === 0 ? COLOR.bone : COLOR.steel}" opacity="${(presence * (0.1 + near * 0.3)).toFixed(2)}"/>`;
+    }
+    put("rain", out);
+  })();
+
+  // Three answers, drawn on one floor line.
+  const floor = `<rect x="0" y="0" width="512" height="290" fill="${COLOR.carbon}"/><path d="M0 240H512" stroke="${COLOR.line}" stroke-width="2"/>`;
+  const route = (pts) => {
+    let out = "";
+    pts.forEach(([x, y]) => { out += `<path d="M${x} ${y}V240" stroke="${COLOR.proof}" stroke-width="1.5" stroke-dasharray="5 6" opacity="0.8"/><ellipse cx="${x}" cy="244" rx="20" ry="6" fill="${COLOR.proof}" opacity="0.65"/>`; });
+    out += `<path d="M${pts.map((p) => p.join(" ")).join("L")}" fill="none" stroke="${COLOR.ember}" stroke-width="6" stroke-dasharray="20 9" stroke-linecap="butt"/>`;
+    pts.forEach(([x, y]) => { out += diamond(x, y, 13, COLOR.ember); });
+    return out;
+  };
+  put("a10", floor + route([[62, 176], [172, 124], [282, 142], [392, 78], [458, 66]]));
+  put("a30", `<defs>${hatch("h30")}</defs>${floor}<rect x="26" y="26" width="460" height="238" fill="url(#h30)" opacity="0.4"/><rect x="26" y="26" width="460" height="238" fill="none" stroke="${COLOR.bone}" stroke-width="2.5" stroke-dasharray="11 9"/><rect x="118" y="122" width="276" height="46" fill="${COLOR.obsidian}"/><text x="256" y="153" text-anchor="middle" fill="${COLOR.bone}" font-family="Archivo" font-size="25" font-weight="700">No attack path drawn</text>`);
+  put("a50", `<defs>${hatch("h50")}</defs>${floor}<rect x="151" y="0" width="361" height="290" fill="url(#h50)" opacity="0.6"/><rect x="0" y="282" width="151" height="8" fill="${COLOR.proof}"/>` + route([[28, 168], [80, 112], [130, 82]]));
+
+  // 30G's bytes in file proportion.
+  (() => {
+    const w = 1728;
+    const v = w * 0.2189;
+    put("m30", `<defs>${hatch("hm30", COLOR.steel, 18)}</defs><rect width="${v}" height="80" fill="${COLOR.proof}"/><rect x="${v}" width="${w - v}" height="80" fill="url(#hm30)"/>`);
+  })();
+
+  // 50G in source order. Each ember line runs from the first to the last record its incident cites, from the stored evidence.
+  (() => {
+    const total = 61970767;
+    const spans = [[10531867, 10542823], [147894, 590118], [294942, 14652804], [10806954, 15051270], [3270, 14772589], [3945, 3037562], [2592, 7129739], [426, 4851852], [8883, 270298], [12056718, 12056842], [26823, 13165154]];
+    const w = 1728;
+    const usable = (18289294 / total) * w;
+    let out = `<defs>${hatch("hm50", COLOR.steel, 18)}</defs>`;
+    spans.forEach(([a, b], i) => {
+      const x = (a / total) * w;
+      const end = Math.max(x + 5, (b / total) * w);
+      out += `<rect x="${x.toFixed(1)}" y="${i * 8}" width="${(end - x).toFixed(1)}" height="4" fill="${COLOR.ember}"/>`;
+    });
+    out += `<path d="M${usable} 0V176" stroke="${COLOR.bone}" stroke-width="2" stroke-dasharray="7 6"/>`;
+    out += `<rect y="96" width="${usable}" height="80" fill="${COLOR.proof}"/><rect x="${usable}" y="96" width="${w - usable}" height="80" fill="url(#hm50)"/>`;
+    put("m50", out);
+  })();
+
+  // A closed seal.
+  (() => {
+    let ticks = "";
+    for (let i = 0; i < 11; i += 1) {
+      const a = (i / 11) * Math.PI * 2 - Math.PI / 2;
+      ticks += `<path d="M${105 + Math.cos(a) * 88} ${105 + Math.sin(a) * 88}L${105 + Math.cos(a) * 100} ${105 + Math.sin(a) * 100}" stroke="${COLOR.proof}" stroke-width="5"/>`;
+    }
+    put("ring", `<circle cx="105" cy="105" r="80" fill="none" stroke="${COLOR.proof}" stroke-width="4"/>${ticks}<text x="105" y="102" text-anchor="middle" font-family="Archivo" font-weight="900" font-size="38" fill="${COLOR.bone}">11/11</text><text x="105" y="130" text-anchor="middle" font-family="Archivo" font-weight="600" font-size="19" fill="${COLOR.proof}">receipts</text>`);
+  })();
+
+  // The thread again, resolved into one line through a closed ring.
+  put("closing", helix(1712, -40, 960, 92, 5.5, 1300, 1) + `<circle cx="1712" cy="480" r="118" fill="${COLOR.obsidian}"/><circle cx="1712" cy="480" r="118" fill="none" stroke="${COLOR.proof}" stroke-width="5"/><path d="M1712 362V598" stroke="${COLOR.bone}" stroke-width="5"/>`);
+</script>
+</body>
+</html>
