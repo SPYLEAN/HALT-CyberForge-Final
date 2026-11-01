@@ -1,5 +1,67 @@
 # HALT — Proof-Carrying Kill Chain Intelligence
 
+<!-- HALT-JUDGE-OVERVIEW:START -->
+
+## HALT — Solution Overview
+
+**CyberForge 2026 | PS2: Kill Chain and Attack Path Analysis**
+
+### Problem
+Security teams receive millions of disconnected security events. Understanding which events are related, what may have happened, and which conclusions are supported by evidence is difficult.
+
+### Our Solution
+HALT is an evidence-backed cybersecurity investigation platform that transforms supported security logs into traceable candidate attack paths, investigation stories, and hypotheses.
+
+HALT separates observed evidence from inferred relationships. When the source data cannot support a reliable reconstruction, HALT explicitly withholds the conclusion.
+
+### What We Built
+
+- **FireX:** Scalable log ingestion, parsing, quality checks, and reconstruction.
+- **Live Intake:** New FortiGate log analysis with file validation and progress tracking.
+- **SourceTrace:** Search and trace investigation findings to original source records.
+- **Attack World:** Interactive 3D and 2D visualizations of evidence relationships.
+- **Attack Stories and Hypotheses:** Readable explanations of candidate incidents.
+- **Trust Centre:** Source integrity checks and verifiable proof receipts.
+- **Case Builder and Theatre:** Investigation organization and presentation.
+- **Response Handoff:** Suggested investigation and approval steps, without executing containment.
+- **Synthetic Scenario Lab:** Controlled OAuth phishing and ambiguous-reconstruction demonstrations.
+
+### How We Built It
+
+| Layer | Technology |
+|---|---|
+| Frontend | Next.js, React, TypeScript |
+| Backend | Python, FastAPI |
+| Data processing | DuckDB, Apache Parquet |
+| Reconstruction | Deterministic correlation rules |
+| Evidence verification | SHA-256 and proof receipts |
+| Visualization | Three.js |
+| Testing | Pytest, Playwright, frontend unit tests |
+
+**Pipeline:** Log Intake → Validation → Parsing → Quality Checks → Correlation → Reconstruction → Investigation → SourceTrace → Verification → Response Handoff.
+
+### Recorded Results
+
+| Dataset tier | Actual source size | Result |
+|---|---|---|
+| 10G | 6.54 GB | 11 unconfirmed candidate incidents |
+| 30G | 19.62 GB | Reconstruction withheld due to unreliable timestamps |
+| 50G | 32.70 GB | Partial reconstruction with 11 unconfirmed candidates |
+
+These are recorded processing results, not performance guarantees. Detection accuracy has not been measured against labelled ground truth.
+
+### Current Scope
+
+Full ingestion and analysis support FortiGate key-value logs with the required fields. Arbitrary CSV, JSON, and other log formats are not currently supported for full analysis.
+
+All reconstructed incidents remain unconfirmed until analyst review. The real-data response workflow does not execute containment.
+
+**Our difference:** HALT does not just produce a possible attack path. It explains the supporting evidence and knows when the evidence is insufficient.
+
+**Contain the threat. Continue the business.**
+
+<!-- HALT-JUDGE-OVERVIEW:END -->
+
 > From fragmented security logs to a defensible attack story.
 
 HALT reconstructs cyberattacks from disconnected security events. It correlates evidence across users, devices, IP addresses, sessions, tokens, services and time; maps suspicious activity to MITRE ATT&CK and kill-chain stages; and presents the result as an inspectable attack graph, timeline and plain-language story.
