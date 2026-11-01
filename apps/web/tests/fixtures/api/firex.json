@@ -954,7 +954,7 @@
       "supported_by": "web_attack_concentration 1.0: 60 IPS events using 3 attack signatures from 3 source(s) targeted 10.20.0.200."
      }
     ],
-    "containment_note": "Considerations only. HALT does not recommend or perform any of them while the incident is unconfirmed.",
+    "containment_note": "Considerations only. HALT does not recommend or perform them while the incident is unconfirmed.",
     "execution_state": "NOT EXECUTED",
     "identities_to_validate": [],
     "incident_id": "finc-0526ba4f57ac",
@@ -3036,7 +3036,7 @@
       "supported_by": "repeated_malware 1.0: 4 malware detections (4 name(s)) between 10.1.0.44 and 198.51.100.34, host bad.example."
      }
     ],
-    "containment_note": "Considerations only. HALT does not recommend or perform any of them while the incident is unconfirmed.",
+    "containment_note": "Considerations only. HALT does not recommend or perform them while the incident is unconfirmed.",
     "execution_state": "NOT EXECUTED",
     "identities_to_validate": [],
     "incident_id": "finc-06dbcd7d8183",
@@ -4966,7 +4966,7 @@
       "supported_by": "account_lifecycle 1.0: Account temp1 was created, used to sign in and deleted within the configured window."
      }
     ],
-    "containment_note": "Considerations only. HALT does not recommend or perform any of them while the incident is unconfirmed.",
+    "containment_note": "Considerations only. HALT does not recommend or perform them while the incident is unconfirmed.",
     "execution_state": "NOT EXECUTED",
     "identities_to_validate": [
      {
@@ -5524,6 +5524,7 @@
   },
   "GET /api/v1/ps2/live/files": {
    "body": {
+    "adaptive_enabled": false,
     "chunk_bytes": 8388608,
     "incoming_path": "fixture",
     "items": [],
@@ -5872,7 +5873,7 @@
         "is_hash": true,
         "label": "Git commit",
         "status": null,
-        "value": "e838a8e6ab4c20c1ca126187f74dcd73ad38b2a7"
+        "value": "a8d646a782ac8dbd4ac168cfc9242afb1ce5f20f"
        },
        {
         "is_hash": false,
@@ -7067,7 +7068,7 @@
       "evidence_refs": [],
       "id": "proof",
       "input": "The graph, the cited evidence and the versions.",
-      "output": "Graph hash a96998c8faf70ebebbd5677566c5e785624a4e2945486a9661cb7becc33e1793, seal 62bada86da9983784c58a7ac4edd44a21e3cba266cb57ef0d82355938fbfb0d0",
+      "output": "Graph hash a96998c8faf70ebebbd5677566c5e785624a4e2945486a9661cb7becc33e1793, seal a1cde708dca360e5eb051e0c3c3e1be98ba2af59e9f970e6989186b0024d6299",
       "plain": "Receipt fprf-89042af3d73bdf39 seals this incident. A seal shows the receipt has not changed. It does not show the conclusion is true.",
       "rule": "sha256-canonical-json",
       "state": "observed",
@@ -7897,7 +7898,7 @@
       "evidence_refs": [],
       "id": "proof",
       "input": "The graph, the cited evidence and the versions.",
-      "output": "Graph hash 01abc3fdccd2dbff919e23c934ff9800e80869ee6fa9fec824fd0e12b829f644, seal 529736f396b5ddc9da43fcd7720ee2ca89aff1d2b725f7024164996730932bd8",
+      "output": "Graph hash 01abc3fdccd2dbff919e23c934ff9800e80869ee6fa9fec824fd0e12b829f644, seal 2b6f633db1c72f2829b834d5e944252ce255757a35f9381a1ad0720f9547adf6",
       "plain": "Receipt fprf-43e6554c3b6a527f seals this incident. A seal shows the receipt has not changed. It does not show the conclusion is true.",
       "rule": "sha256-canonical-json",
       "state": "observed",
@@ -8275,7 +8276,7 @@
       "evidence_refs": [],
       "id": "proof",
       "input": "The graph, the cited evidence and the versions.",
-      "output": "Graph hash 7246cf94f64e19f607e6171a0a59faccc8f316f6becf98e58d2e3be81215ac72, seal f54f4e4843c64aadfb534abce7790b446b2021bcef1a2654b757239befa4b76e",
+      "output": "Graph hash 7246cf94f64e19f607e6171a0a59faccc8f316f6becf98e58d2e3be81215ac72, seal 57e2ea75ee91e5d89f5e0acd437b53ade2de85a1c59133be305ade6148ed108d",
       "plain": "Receipt fprf-99fbc300bcf1939a seals this incident. A seal shows the receipt has not changed. It does not show the conclusion is true.",
       "rule": "sha256-canonical-json",
       "state": "observed",
@@ -9038,7 +9039,7 @@
          "is_hash": true,
          "label": "Git commit",
          "status": null,
-         "value": "e838a8e6ab4c20c1ca126187f74dcd73ad38b2a7"
+         "value": "a8d646a782ac8dbd4ac168cfc9242afb1ce5f20f"
         },
         {
          "is_hash": false,

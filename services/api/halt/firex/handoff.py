@@ -23,8 +23,8 @@ from halt.firex.reviews import latest_reviews
 from halt.firex.util import read_json
 
 BOUNDARY = (
-    "SafeCut and Action Gate work on the synthetic response contract only. No converter from a FireX incident "
-    "to that contract exists, so nothing here is sent to them."
+    "SafeCut and Action Gate work on the synthetic response contract only. No converter from a FireX "
+    "incident to that contract exists, so nothing here is sent to them."
 )
 STATEMENT = (
     "HALT has not executed, simulated or scheduled any response. These are items for people to review, "

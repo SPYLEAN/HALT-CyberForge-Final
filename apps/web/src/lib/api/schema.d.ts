@@ -822,6 +822,23 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/v1/ps2/live/files/{name}/profile": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get Live Profile */
+        get: operations["get_live_profile_api_v1_ps2_live_files__name__profile_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/v1/ps2/live/files/{name}/start": {
         parameters: {
             query?: never;
@@ -1430,6 +1447,75 @@ export interface components {
             source_type: string;
             /** Version */
             version: string;
+        };
+        /** AdaptiveField */
+        AdaptiveField: {
+            /** Examples */
+            examples: string[];
+            /** Name */
+            name: string;
+            /** Presence Ratio */
+            presence_ratio: number;
+            /** Types */
+            types: string[];
+        };
+        /** AdaptiveMapping */
+        AdaptiveMapping: {
+            /** Confidence */
+            confidence: number;
+            /** Halt Field */
+            halt_field: string | null;
+            /** Proposed Field */
+            proposed_field: string;
+            /** Reasons */
+            reasons: string[];
+            /** Requires Confirmation */
+            requires_confirmation: boolean;
+            /** Source Field */
+            source_field: string;
+        };
+        /**
+         * AdaptiveProfile
+         * @description A profile from sampled lines. `can_analyse` says only whether the pipeline's parser reads it.
+         */
+        AdaptiveProfile: {
+            /** Can Analyse */
+            can_analyse: boolean;
+            /** Fields */
+            fields: components["schemas"]["AdaptiveField"][];
+            /** Format */
+            format: string;
+            /** Format Confidence */
+            format_confidence: number;
+            /** Format Reasons */
+            format_reasons: string[];
+            /** Mappings */
+            mappings: components["schemas"]["AdaptiveMapping"][];
+            /** Missing Requirements */
+            missing_requirements: string[];
+            /** Name */
+            name: string;
+            /** Parsed Records */
+            parsed_records: number;
+            /** Regions */
+            regions: {
+                [key: string]: number;
+            };
+            /** Requires Confirmation */
+            requires_confirmation: string[];
+            /** Sampled Lines */
+            sampled_lines: number;
+            /** Schema Fingerprint */
+            schema_fingerprint: string;
+            /** Size Bytes */
+            size_bytes: number;
+            /** Statement */
+            statement: string;
+            /**
+             * Structure State
+             * @enum {string}
+             */
+            structure_state: "supported" | "mapping_required" | "searchable_only" | "reconstruction_withheld" | "unsupported";
         };
         /** Alias */
         Alias: {
@@ -3737,6 +3823,11 @@ export interface components {
             name: string;
             /** Problem */
             problem: string | null;
+            /**
+             * Profilable
+             * @default false
+             */
+            profilable: boolean;
             /** Selectable */
             selectable: boolean;
             /** Size Bytes */
@@ -3744,6 +3835,11 @@ export interface components {
         };
         /** LiveFileList */
         LiveFileList: {
+            /**
+             * Adaptive Enabled
+             * @default false
+             */
+            adaptive_enabled: boolean;
             /** Chunk Bytes */
             chunk_bytes: number;
             /** Incoming Path */
@@ -7267,6 +7363,37 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["LivePreflight"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    get_live_profile_api_v1_ps2_live_files__name__profile_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                name: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["AdaptiveProfile"];
                 };
             };
             /** @description Validation Error */

@@ -64,6 +64,205 @@
         "title": "AdapterInfo",
         "type": "object"
       },
+      "AdaptiveField": {
+        "additionalProperties": false,
+        "properties": {
+          "examples": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Examples",
+            "type": "array"
+          },
+          "name": {
+            "title": "Name",
+            "type": "string"
+          },
+          "presence_ratio": {
+            "title": "Presence Ratio",
+            "type": "number"
+          },
+          "types": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Types",
+            "type": "array"
+          }
+        },
+        "required": [
+          "name",
+          "presence_ratio",
+          "types",
+          "examples"
+        ],
+        "title": "AdaptiveField",
+        "type": "object"
+      },
+      "AdaptiveMapping": {
+        "additionalProperties": false,
+        "properties": {
+          "confidence": {
+            "title": "Confidence",
+            "type": "number"
+          },
+          "halt_field": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Halt Field"
+          },
+          "proposed_field": {
+            "title": "Proposed Field",
+            "type": "string"
+          },
+          "reasons": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Reasons",
+            "type": "array"
+          },
+          "requires_confirmation": {
+            "title": "Requires Confirmation",
+            "type": "boolean"
+          },
+          "source_field": {
+            "title": "Source Field",
+            "type": "string"
+          }
+        },
+        "required": [
+          "source_field",
+          "proposed_field",
+          "halt_field",
+          "confidence",
+          "reasons",
+          "requires_confirmation"
+        ],
+        "title": "AdaptiveMapping",
+        "type": "object"
+      },
+      "AdaptiveProfile": {
+        "additionalProperties": false,
+        "description": "A profile from sampled lines. `can_analyse` says only whether the pipeline's parser reads it.",
+        "properties": {
+          "can_analyse": {
+            "title": "Can Analyse",
+            "type": "boolean"
+          },
+          "fields": {
+            "items": {
+              "$ref": "#/components/schemas/AdaptiveField"
+            },
+            "title": "Fields",
+            "type": "array"
+          },
+          "format": {
+            "title": "Format",
+            "type": "string"
+          },
+          "format_confidence": {
+            "title": "Format Confidence",
+            "type": "number"
+          },
+          "format_reasons": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Format Reasons",
+            "type": "array"
+          },
+          "mappings": {
+            "items": {
+              "$ref": "#/components/schemas/AdaptiveMapping"
+            },
+            "title": "Mappings",
+            "type": "array"
+          },
+          "missing_requirements": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Missing Requirements",
+            "type": "array"
+          },
+          "name": {
+            "title": "Name",
+            "type": "string"
+          },
+          "parsed_records": {
+            "title": "Parsed Records",
+            "type": "integer"
+          },
+          "regions": {
+            "additionalProperties": {
+              "type": "integer"
+            },
+            "title": "Regions",
+            "type": "object"
+          },
+          "requires_confirmation": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Requires Confirmation",
+            "type": "array"
+          },
+          "sampled_lines": {
+            "title": "Sampled Lines",
+            "type": "integer"
+          },
+          "schema_fingerprint": {
+            "title": "Schema Fingerprint",
+            "type": "string"
+          },
+          "size_bytes": {
+            "title": "Size Bytes",
+            "type": "integer"
+          },
+          "statement": {
+            "title": "Statement",
+            "type": "string"
+          },
+          "structure_state": {
+            "enum": [
+              "supported",
+              "mapping_required",
+              "searchable_only",
+              "reconstruction_withheld",
+              "unsupported"
+            ],
+            "title": "Structure State",
+            "type": "string"
+          }
+        },
+        "required": [
+          "name",
+          "size_bytes",
+          "format",
+          "format_confidence",
+          "format_reasons",
+          "sampled_lines",
+          "parsed_records",
+          "regions",
+          "schema_fingerprint",
+          "fields",
+          "mappings",
+          "structure_state",
+          "requires_confirmation",
+          "missing_requirements",
+          "can_analyse",
+          "statement"
+        ],
+        "title": "AdaptiveProfile",
+        "type": "object"
+      },
       "Alias": {
         "additionalProperties": false,
         "properties": {
@@ -7136,6 +7335,11 @@
             ],
             "title": "Problem"
           },
+          "profilable": {
+            "default": false,
+            "title": "Profilable",
+            "type": "boolean"
+          },
           "selectable": {
             "title": "Selectable",
             "type": "boolean"
@@ -7152,7 +7356,8 @@
           "detected_format",
           "format_label",
           "selectable",
-          "problem"
+          "problem",
+          "profilable"
         ],
         "title": "LiveFile",
         "type": "object"
@@ -7160,6 +7365,11 @@
       "LiveFileList": {
         "additionalProperties": false,
         "properties": {
+          "adaptive_enabled": {
+            "default": false,
+            "title": "Adaptive Enabled",
+            "type": "boolean"
+          },
           "chunk_bytes": {
             "title": "Chunk Bytes",
             "type": "integer"
@@ -7184,7 +7394,8 @@
           "incoming_path",
           "items",
           "max_upload_bytes",
-          "chunk_bytes"
+          "chunk_bytes",
+          "adaptive_enabled"
         ],
         "title": "LiveFileList",
         "type": "object"
@@ -15271,6 +15482,48 @@
           }
         },
         "summary": "Get Live Preflight",
+        "tags": [
+          "firex"
+        ]
+      }
+    },
+    "/api/v1/ps2/live/files/{name}/profile": {
+      "get": {
+        "operationId": "get_live_profile_api_v1_ps2_live_files__name__profile_get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "name",
+            "required": true,
+            "schema": {
+              "title": "Name",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AdaptiveProfile"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Get Live Profile",
         "tags": [
           "firex"
         ]

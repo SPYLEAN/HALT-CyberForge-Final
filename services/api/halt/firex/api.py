@@ -13,6 +13,7 @@ from halt.contracts.common import Contract
 from halt.firex import jobs, live
 from halt.firex.cases import create_case, list_candidates, read_case
 from halt.firex.contracts import (
+    AdaptiveProfile,
     AnalystReview,
     BenchmarkReceipt,
     CaseCandidates,
@@ -264,6 +265,11 @@ def get_live_files() -> LiveFileList:
 @router.get("/live/files/{name}/preflight", response_model=LivePreflight)
 def get_live_preflight(name: str) -> LivePreflight:
     return live.preflight(name)
+
+
+@router.get("/live/files/{name}/profile", response_model=AdaptiveProfile)
+def get_live_profile(name: str) -> AdaptiveProfile:
+    return live.profile(name)
 
 
 @router.post("/live/files/{name}/start", response_model=DatasetRun)

@@ -16,6 +16,13 @@ __pycache__/
 *.egg-info/
 
 # local data and secrets
+*.pem
+*.key
+/10 g/
+/30 G/
+/firex-*/
+/firex-*.zip
+/firex-*.log
 .halt/
 *.db
 .env

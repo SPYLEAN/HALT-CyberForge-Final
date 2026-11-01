@@ -18,7 +18,7 @@ ENV NEXT_PUBLIC_API_ORIGIN=$NEXT_PUBLIC_API_ORIGIN \
 COPY --from=deps /repo/node_modules ./node_modules
 COPY package.json package-lock.json ./
 COPY apps/web apps/web
-RUN npm run build -w @halt/web
+RUN HALT_STANDALONE_BUILD=1 npm run build -w @halt/web
 
 FROM node:24-slim AS run
 WORKDIR /app

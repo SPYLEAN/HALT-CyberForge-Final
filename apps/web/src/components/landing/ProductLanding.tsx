@@ -204,7 +204,7 @@ export function ProductLanding() {
           <div className={s.copy}>
             <p className={s.kicker}>Uncertainty</p>
             <h2 className={s.title}>HALT says what the evidence cannot support.</h2>
-            <p className={s.body}>Links a rule inferred stay marked as inferred. Missing evidence stays a visible gap. Three sources gave three different answers:</p>
+            <p className={s.body}>Links a rule inferred stay marked as inferred. Missing evidence stays a visible gap. Each source gets the answer its evidence supports:</p>
             <ul className={s.figures} aria-label="What each source supported">
               {facts?.map((f) => (
                 <li key={f.run_id}>

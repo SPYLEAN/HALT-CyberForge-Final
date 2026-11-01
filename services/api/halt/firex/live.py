@@ -13,6 +13,7 @@ import csv
 import hashlib
 import io
 import json
+import os
 import re
 import shutil
 import threading
@@ -21,8 +22,11 @@ from datetime import UTC, datetime
 from pathlib import Path
 from typing import Any
 
-from halt.firex import ENGINE_VERSION, PARSER_VERSION, jobs
+from halt.firex import ENGINE_VERSION, PARSER_VERSION, adaptive, jobs
 from halt.firex.contracts import (
+    AdaptiveField,
+    AdaptiveMapping,
+    AdaptiveProfile,
     LiveFile,
     LiveFileList,
     LivePreflight,
@@ -65,6 +69,11 @@ _hashes: dict[str, dict[str, Any]] = {}
 _hash_lock = threading.Lock()
 
 
+def adaptive_enabled() -> bool:
+    """Off unless an operator turns it on: Live Intake behaves exactly as before without it."""
+    return os.environ.get("HALT_ADAPTIVE_INTAKE", "").strip().lower() in ("1", "true", "yes", "on")
+
+
 def incoming_dir(root: Path | None = None) -> Path:
     return (root or data_root()) / "incoming"
 
@@ -104,13 +113,13 @@ def detect_format(sample: bytes) -> tuple[str, int, int]:
         try:
             json.loads(text)
             return "json", parsed, len(lines)
-        except ValueError:
+        except (ValueError, RecursionError):
             pass
         try:
             for line in lines[:50]:
                 json.loads(line)
             return "jsonl", parsed, len(lines)
-        except ValueError:
+        except (ValueError, RecursionError):
             return ("json" if text[:1] == "[" else "unknown"), parsed, len(lines)
     try:
         first = text.splitlines()[0]
@@ -176,10 +185,15 @@ def list_files(root: Path | None = None) -> LiveFileList:
                 format_label=FORMAT_LABEL[kind],
                 selectable=problem is None,
                 problem=problem,
+                profilable=adaptive_enabled() and kind != "empty" and bool(NAME_PATTERN.fullmatch(path.name)),
             )
         )
     return LiveFileList(
-        incoming_path=str(folder), items=items, max_upload_bytes=MAX_UPLOAD_BYTES, chunk_bytes=CHUNK_BYTES
+        incoming_path=str(folder),
+        items=items,
+        max_upload_bytes=MAX_UPLOAD_BYTES,
+        chunk_bytes=CHUNK_BYTES,
+        adaptive_enabled=adaptive_enabled(),
     )
 
 
@@ -334,6 +348,66 @@ def preflight(name: str, root: Path | None = None) -> LivePreflight:
         problems=problems,
         warnings=warnings,
         can_start=bool(sha256) and not problems,
+    )
+
+
+def profile(name: str, root: Path | None = None) -> AdaptiveProfile:
+    """Read-only. It proposes how an unfamiliar file's fields could map, and starts nothing."""
+    if not adaptive_enabled():
+        raise RunError(404, "adaptive_disabled", "adaptive intake is not enabled on this server")
+    path = _resolve(name, root)
+    size = path.stat().st_size
+    if not size:
+        raise RunError(422, "empty_file", "this file is empty, so there is nothing to profile")
+    try:
+        result = adaptive.analyse(path)
+        kind, _, _ = detect_format(_read_sample(path))
+    except OSError as exc:
+        raise RunError(403, "permission_denied", "HALT cannot read this file") from exc
+    can_analyse = kind == FORTIGATE
+    detection = result["detection"]
+    return AdaptiveProfile(
+        name=name,
+        size_bytes=size,
+        format=detection.format,
+        format_confidence=detection.confidence,
+        format_reasons=detection.reasons,
+        sampled_lines=result["sampled_lines"],
+        parsed_records=result["parsed_records"],
+        regions=result["regions"],
+        schema_fingerprint=result["fingerprint"],
+        fields=[
+            AdaptiveField(
+                name=p.name[:200],
+                presence_ratio=round(p.presence_ratio, 3),
+                types=sorted(p.type_counts),
+                examples=[e[:80] for e in p.examples[:2]],
+            )
+            for p in result["profiles"][:60]
+        ],
+        mappings=[
+            AdaptiveMapping(
+                source_field=m.source_field[:200],
+                proposed_field=m.canonical_field,
+                halt_field=adaptive.HALT_FIELD.get(m.canonical_field),
+                confidence=m.confidence,
+                reasons=m.reasons,
+                requires_confirmation=m.requires_confirmation,
+            )
+            for m in result["proposals"]
+        ],
+        structure_state=result["state"],
+        requires_confirmation=result["confirmations"],
+        missing_requirements=result["missing"],
+        can_analyse=can_analyse,
+        statement=(
+            "HALT can analyse this file with its FortiGate parser. "
+            "These proposals are not used by that parser."
+            if can_analyse
+            else "HALT cannot analyse this file yet: no parser here reads this format. "
+            "This profile comes from sampled lines. It is not an analysis, "
+            "and it creates no evidence or incident."
+        ),
     )
 
 

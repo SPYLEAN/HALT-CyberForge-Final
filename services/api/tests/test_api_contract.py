@@ -67,6 +67,7 @@ DOCUMENTED = {
     ("get", "/ps2/incidents/{incident_id}/handoff"),
     ("get", "/ps2/live/files"),
     ("get", "/ps2/live/files/{name}/preflight"),
+    ("get", "/ps2/live/files/{name}/profile"),
     ("post", "/ps2/live/files/{name}/start"),
     ("post", "/ps2/live/uploads"),
     ("get", "/ps2/live/uploads/{upload_id}"),

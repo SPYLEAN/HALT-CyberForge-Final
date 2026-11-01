@@ -26,14 +26,17 @@ export default defineConfig({
     {
       command: `"${python}" -m uvicorn halt.main:create_app --factory --app-dir ../../services/api --port 8000`,
       url: "http://localhost:8000/api/v1/health",
-      reuseExistingServer: !process.env.CI,
+      // Never reuse an API: one already on this port may be serving real evidence, and these tests write through it.
+      reuseExistingServer: false,
       timeout: 120_000,
       env: {
         HALT_DB_URL: "sqlite+pysqlite:///:memory:",
         HALT_SIGNING_KEY_PATH: join(tmpdir(), "halt-e2e-key.pem"),
         HALT_LOG_LEVEL: "WARNING",
         HALT_DEMO_MODE: "true",
-        HALT_FIREX_DATA_ROOT: process.env.HALT_FIREX_DATA_ROOT ?? join(tmpdir(), "halt-e2e-firex"),
+        // Never the operator's HALT_FIREX_DATA_ROOT: that may name real evidence, and these tests write to their root.
+        HALT_FIREX_DATA_ROOT: process.env.HALT_E2E_DATA_ROOT ?? join(tmpdir(), "halt-e2e-firex"),
+        HALT_ADAPTIVE_INTAKE: "1",
       },
     },
     {

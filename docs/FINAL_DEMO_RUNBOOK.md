@@ -1,29 +1,36 @@
 # Final demo runbook
 
-Before presenting, run the operator commands so a full-tier run exists: see `POWERSHELL_OPERATOR_COMMANDS.md`.
-**Only quote figures from that run's own benchmark receipt.** Do not quote the profiler's figures as HALT results, and
+**Only quote figures from a run's own benchmark receipt.** Do not quote the profiler's figures as HALT results, and
 do not call any incident a confirmed attack.
 
 ## Start
 
+Two terminals, from the repo root, after `npx next build` in `apps\web`:
+
 ```powershell
-$env:HALT_FIREX_DATA_ROOT = "C:\HALT-DATA"
-npm run dev
+$env:HALT_DB_URL = "sqlite+pysqlite:///:memory:"; $env:HALT_SIGNING_KEY_PATH = ".halt/demo-signing-key.pem"; $env:HALT_FIREX_DATA_ROOT = "C:\HALT-DATA"; .\services\api\.venv\Scripts\python.exe -m uvicorn halt.main:create_app --factory --app-dir services/api --port 8000
 ```
 
-## Flow
+```powershell
+npm run start -w "@halt/web" -- -p 3000
+```
 
-1. **`/firex/story`:** ten measured beats from the latest completed run.
-2. **`/firex`:** datasets. A controlled sample starts in minutes if a live start is needed.
-3. **A run page:** the four stages, measurements and the incident list. Refreshing reconnects to the same run.
-4. **OPEN INCIDENT** on the highest-risk row: the plain-language summary.
-5. **3D Attack Path:** camera preset Full Incident, then Replay. Toggle Reachable to show what is hypothetical.
-6. **Reachable Next:** replay, hypothetical reachability and simulation are separate. Simulation is disabled, and it says
-   what context is missing.
-7. **Analyst mode:** ATT&CK, Hypotheses, Confidence, then Proof with its seal.
-8. **Explain** (optional): with the LLM off, the deterministic story appears and says so.
+Add `$env:HALT_ADAPTIVE_INTAKE = "1"` to the API terminal to show the optional structural profile.
 
-Theatre mode is at `/firex/runs/<run_id>/theatre`: arrow keys or the buttons, then OPEN INCIDENT.
+## Judge flow, about five minutes
+
+1. **`/`:** the landing. Its figures come from the stored results.
+2. **`/firex`:** three sources, three answers: 10G reconstructed, 30G withheld, 50G partial.
+3. **The 30G result:** open the Quality Case. Say: zero incidents does not mean zero threats.
+4. **The 50G result, then its Trust Centre page:** 29.51% of records keep usable time order, and every incident rests on that part.
+5. **`/firex/incidents`:** open "Possible short-lived administrator-account activity" from 10G.
+6. **Attack World:** press Next through the steps, and read the plain sentence for each.
+7. **Search evidence:** search `svc_backup30`. It is an account, not a file. Open "Why is this here?" on line 3,226,313.
+8. **Verification, then Response Handoff:** the seal shows that the receipt has not changed, and the handoff states `NOT EXECUTED`.
+9. **Theatre:** present the incident, using the arrow keys.
+10. **Optional:** place a small FortiGate log in the incoming folder and press `START ANALYSIS`. Use a copied slice, and expect its run to be added to the results folder.
+
+The response lab at `/incidents` is a separate synthetic demonstration, labelled wherever it opens. Do not present it as derived from these logs.
 
 ## What to say about uncertainty
 

@@ -29,6 +29,7 @@ export type TrustReport = S["TrustReport"];
 export type TimeQuality = S["TimeQuality"];
 export type ResponseHandoff = S["ResponseHandoff"];
 export type LiveFile = S["LiveFile"];
+export type AdaptiveProfile = S["AdaptiveProfile"];
 export type LiveFileList = S["LiveFileList"];
 export type LivePreflight = S["LivePreflight"];
 export type UploadState = S["UploadState"];
@@ -80,6 +81,7 @@ export const firex = {
   handoff: async (id: string, run?: string) => unwrap(await api.GET("/api/v1/ps2/incidents/{incident_id}/handoff", incidentPath(id, run))),
   liveFiles: async () => unwrap(await api.GET("/api/v1/ps2/live/files")),
   livePreflight: async (name: string) => unwrap(await api.GET("/api/v1/ps2/live/files/{name}/preflight", { params: { path: { name } } })),
+  liveProfile: async (name: string) => unwrap(await api.GET("/api/v1/ps2/live/files/{name}/profile", { params: { path: { name } } })),
   liveStart: async (name: string, confirm_duplicate = false) => unwrap(await api.POST("/api/v1/ps2/live/files/{name}/start", { params: { path: { name } }, body: { confirm_duplicate } })),
   liveCreateUpload: async (body: S["UploadRequest"]) => unwrap(await api.POST("/api/v1/ps2/live/uploads", { body })),
   liveUpload: async (upload_id: string) => unwrap(await api.GET("/api/v1/ps2/live/uploads/{upload_id}", { params: { path: { upload_id } } })),

@@ -26,6 +26,7 @@ from halt.firex.live import (
     incoming_dir,
     list_files,
     preflight,
+    profile,
     start,
     upload_state,
     write_chunk,
@@ -404,3 +405,115 @@ def test_routes_answer_and_validate(root: Path) -> None:
         big = client.put(f"{base}/uploads/{over['upload_id']}/chunks/0", content=b"x" * (CHUNK_BYTES + 5))
         assert big.status_code in (413, 422)
         assert client.delete(f"{base}/uploads/{over['upload_id']}").status_code == 204
+
+
+VENDOR = (
+    b'{"occurred_at":"2026-11-01T08:00:00Z","client_ip":"203.0.113.21","server_ip":"10.0.0.12",'
+    b'"principal":"maya","operation":"login","result":"success"}\n'
+    b'{"occurred_at":"2026-11-01T08:02:10Z","client_ip":"203.0.113.21","server_ip":"10.0.0.12",'
+    b'"principal":"maya","operation":"download","result":"success"}\n'
+)
+
+
+@pytest.fixture
+def adaptive_on(monkeypatch: pytest.MonkeyPatch) -> None:
+    monkeypatch.setenv("HALT_ADAPTIVE_INTAKE", "1")
+
+
+def test_adaptive_is_off_by_default_and_changes_nothing(root: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+    monkeypatch.delenv("HALT_ADAPTIVE_INTAKE", raising=False)
+    place(root, "vendor.jsonl", VENDOR)
+    listing = list_files()
+    assert listing.adaptive_enabled is False and listing.items[0].profilable is False
+    assert not listing.items[0].selectable
+    with pytest.raises(RunError) as caught:
+        profile("vendor.jsonl")
+    assert caught.value.status == 404 and caught.value.code == "adaptive_disabled"
+
+
+def test_adaptive_profiles_an_unfamiliar_file_and_cannot_start_it(root: Path, adaptive_on: None) -> None:
+    source = place(root, "vendor.jsonl", VENDOR)
+    before = source.read_bytes()
+    listing = list_files()
+    assert listing.adaptive_enabled and listing.items[0].profilable
+    found = profile("vendor.jsonl")
+    assert found.format == "jsonl" and found.can_analyse is False and "cannot analyse" in found.statement
+    assert "not an analysis" in found.statement
+    mapped = {m.proposed_field: m for m in found.mappings}
+    assert mapped["source.ip"].source_field == "client_ip" and mapped["source.ip"].halt_field == "src_ip"
+    assert mapped["event.timestamp"].halt_field == "event_ns"
+    assert found.schema_fingerprint and found.parsed_records == 2
+    assert source.read_bytes() == before, "profiling does not change the file"
+    assert not (root / "results").exists() or not list(runs_dir_of(root).glob("*")), (
+        "profiling creates no run"
+    )
+    with pytest.raises(RunError) as caught:
+        start("vendor.jsonl")
+    assert caught.value.status == 415, "a good profile does not make a file analysable"
+
+
+def runs_dir_of(root: Path) -> Path:
+    return root / "results" / "firex-runs"
+
+
+def test_adaptive_never_guesses_for_a_fortigate_file(root: Path, adaptive_on: None) -> None:
+    place(root)
+    found = profile("new.log")
+    assert found.can_analyse is True and "not used by that parser" in found.statement
+    assert preflight("new.log").can_start is True
+
+
+def test_adaptive_withholds_without_time_and_says_why(root: Path, adaptive_on: None) -> None:
+    place(root, "notime.jsonl", b'{"client_ip":"203.0.113.3","username":"a","operation":"login"}\n')
+    found = profile("notime.jsonl")
+    assert found.structure_state == "reconstruction_withheld"
+    assert "trustworthy timestamp" in found.missing_requirements
+
+
+@pytest.mark.parametrize(
+    ("name", "content"),
+    [
+        ("deep.jsonl", b'{"a":' * 3000 + b"1" + b"}" * 3000 + b"\n"),
+        ("hugefield.csv", b"a,b,c\n" + b"x" * 300_000 + b",2,3\n" + b"4,5,6\n" + b"7,8,9\n"),
+        ("binary.dat", bytes(range(256)) * 200),
+        ("oneline.txt", b"just words\n"),
+    ],
+    ids=["deep-json", "huge-csv-field", "binary", "plain-text"],
+)
+def test_adaptive_survives_hostile_and_malformed_files(
+    root: Path, adaptive_on: None, name: str, content: bytes
+) -> None:
+    place(root, name, content)
+    found = profile(name)
+    assert found.can_analyse is False and found.structure_state in (
+        "unsupported",
+        "reconstruction_withheld",
+        "searchable_only",
+        "mapping_required",
+        "supported",
+    )
+
+
+@pytest.mark.parametrize("bad", ["../secret.log", "..", "a/b.log", "C:\\x.log", ".hidden"])
+def test_adaptive_refuses_paths(root: Path, adaptive_on: None, bad: str) -> None:
+    (root / "secret.log").write_bytes(log_bytes())
+    place(root)
+    with pytest.raises(RunError) as caught:
+        profile(bad)
+    assert caught.value.status in (404, 422)
+
+
+def test_adaptive_refuses_an_empty_file_and_exposes_no_server_path(root: Path, adaptive_on: None) -> None:
+    place(root, "empty.log", b"")
+    with pytest.raises(RunError):
+        profile("empty.log")
+    place(root, "vendor.jsonl", VENDOR)
+    assert str(root) not in profile("vendor.jsonl").model_dump_json()
+
+
+def test_adaptive_route(root: Path, adaptive_on: None) -> None:
+    place(root, "vendor.jsonl", VENDOR)
+    settings = Settings(db_url="sqlite+pysqlite:///:memory:", signing_key_path=str(root / "key.pem"))
+    with TestClient(create_app(settings)) as client:
+        answer = client.get("/api/v1/ps2/live/files/vendor.jsonl/profile")
+        assert answer.status_code == 200 and answer.json()["can_analyse"] is False

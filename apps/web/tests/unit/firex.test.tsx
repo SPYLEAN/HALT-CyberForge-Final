@@ -638,3 +638,37 @@ describe("Response Handoff", () => {
     expect(await screen.findByText(/supports no containment consideration/)).toBeInTheDocument();
   });
 });
+
+describe("Adaptive Intake", () => {
+  const vendor = { name: "vendor.jsonl", size_bytes: 200, modified_utc: "2026-11-01T00:00:00Z", detected_format: "jsonl", format_label: "JSON Lines", selectable: false, problem: "No adapter here reads this format.", profilable: true };
+  const report = { name: "vendor.jsonl", size_bytes: 200, format: "jsonl", format_confidence: 1, format_reasons: [], sampled_lines: 2, parsed_records: 2, regions: { start: 2 }, schema_fingerprint: "f", fields: [], mappings: [{ source_field: "client_ip", proposed_field: "source.ip", halt_field: "src_ip", confidence: 0.86, reasons: [], requires_confirmation: true }], structure_state: "mapping_required", requires_confirmation: ["source.ip"], missing_requirements: [], can_analyse: false, statement: "HALT cannot analyse this file yet: no parser here reads this format." };
+  const listing = (over = {}) => ({ incoming_path: "C:\\in", items: [{ ...vendor, ...over }], max_upload_bytes: 1, chunk_bytes: 1, adaptive_enabled: true });
+
+  it("is absent when the flag is off", async () => {
+    stub({ [`GET ${B}/live/files`]: { status: 200, body: { ...listing({ profilable: false }), adaptive_enabled: false } } });
+    render(<LiveIntake />);
+    await screen.findByRole("heading", { name: "Add data" });
+    expect(screen.queryByRole("button", { name: "Profile its structure" })).toBeNull();
+  });
+
+  it("shows proposals clearly labelled, and offers no way to start the file", async () => {
+    stub({ [`GET ${B}/live/files`]: { status: 200, body: listing() }, [`GET ${B}/live/files/vendor.jsonl/profile`]: { status: 200, body: report } });
+    const user = userEvent.setup();
+    render(<LiveIntake />);
+    await user.click(await screen.findByRole("button", { name: "Profile its structure" }));
+    const panel = await screen.findByTestId("adaptive-profile");
+    expect(within(panel).getByText("PROPOSAL ONLY")).toBeInTheDocument();
+    expect(within(panel).getByText(/cannot analyse this file yet/)).toBeInTheDocument();
+    expect(within(panel).getByText("src_ip")).toBeInTheDocument();
+    expect(screen.queryByRole("button", { name: "START ANALYSIS" })).toBeNull();
+    expect(screen.queryByRole("button", { name: "Select" })).toBeNull();
+  });
+
+  it("states a failure rather than showing an empty profile", async () => {
+    stub({ [`GET ${B}/live/files`]: { status: 200, body: listing() }, [`GET ${B}/live/files/vendor.jsonl/profile`]: { status: 404, body: { code: "not_found", message: "vendor.jsonl is not in the incoming folder", request_id: "x" } } });
+    const user = userEvent.setup();
+    render(<LiveIntake />);
+    await user.click(await screen.findByRole("button", { name: "Profile its structure" }));
+    expect(await screen.findByRole("alert")).toHaveTextContent("could not be profiled");
+  });
+});

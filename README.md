@@ -26,15 +26,19 @@ The repository contains two reconstruction paths: a deterministic workflow for b
 | Area | Position |
 | --- | --- |
 | Synthetic reconstruction | Implemented and tested |
-| FireX streaming parser, quarantine and byte accounting | Implemented and tested; measured on controlled ranges only |
-| Disk-backed storage (DuckDB + Parquet), duplicates, bursts | Implemented and tested; measured on controlled ranges only |
+| FireX streaming parser, quarantine and byte accounting | Implemented and tested; measured on whole 10G, 30G and 50G files |
+| Disk-backed storage (DuckDB + Parquet), duplicates, bursts | Implemented and tested; measured on whole 10G, 30G and 50G files |
 | Config-driven detection and ATT&CK/kill-chain labels | Implemented and tested; accuracy unmeasured |
 | Incident graphs, hypotheses and hypothetical reachable-next | Implemented and tested |
 | Benchmark and proof receipts (SHA-256 seal) | Implemented and tested |
 | Persistent run API with resume and recovery | Implemented and tested |
 | Evidence-grounded Groq/xAI explanation | Implemented and tested against a stub; never called against a live provider |
-| Simplified UI, real Open Incident, semantic 3D graph, Theatre | Implemented and tested |
-| Complete 10G and 30G runs | Not yet run |
+| Simplified UI, semantic 3D Attack World, Trust Centre, Case Builder, Theatre | Implemented and tested |
+| SourceTrace search and provenance, analyst reviews | Implemented and tested |
+| Live Intake for new FortiGate key-value logs | Implemented and tested |
+| Response Handoff from a FireX incident | Implemented; states `NOT EXECUTED`, with no control that acts |
+| Adaptive Intake structural profile (optional, read-only) | Implemented and tested; produces proposals only, and no analysis |
+| Complete 10G, 30G and 50G runs | Recorded: see the [benchmark report](docs/FIREX_BENCHMARK_REPORT.md) |
 | Official-dataset accuracy | Not measured |
 
 ## Why HALT is different
@@ -232,6 +236,19 @@ The web application and API normally use ports `3000` and `8000`. Keep the devel
 
 `HALT_DEMO_MODE` enables local demo-only operations such as the protected reset endpoint. It is disabled by default and is not a secret.
 
+### Environment
+
+No value is a secret, and `.env.example` lists them all. The ones that matter for log analysis:
+
+| Variable | Purpose | Default |
+|---|---|---|
+| `HALT_FIREX_DATA_ROOT` | Folder holding `raw/`, `incoming/` and `results/` | `.halt/firex-data` |
+| `HALT_ADAPTIVE_INTAKE` | Set to `1` to offer the read-only structural profile in Live Intake | Off |
+| `HALT_E2E_DATA_ROOT` | Data root for E2E tests, which never use `HALT_FIREX_DATA_ROOT` | A temporary folder |
+| `HALT_E2E_SHOTS` | Where the PS2 E2E tests save screenshots | `artifacts/ps2-workspace` |
+
+`npm run start -w @halt/web` serves the production build from `next build`. Only the Docker image builds Next's standalone output, through `HALT_STANDALONE_BUILD=1`.
+
 ## Three-minute demo
 
 1. Open `/reconstruct`.
@@ -301,11 +318,9 @@ The official Great targets include over 90% detection, over 85% correct labels, 
 
 ## Roadmap
 
-1. Run the full 10G tier, then 30G, and record their receipts.
-2. Validate candidates against organiser ground truth when it is provided.
-3. Add the 50G tier when it is available.
-4. Sample total process-tree memory during a run.
-5. Make the PS2 story the default landing narrative.
+1. Validate candidates against organiser ground truth when it is provided.
+2. Add a parser for formats that Adaptive Intake can already profile, with a reviewed mapping manifest.
+3. Sample total process-tree memory during a run.
 
 ## Responsible use
 

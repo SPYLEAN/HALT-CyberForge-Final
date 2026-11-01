@@ -12,7 +12,7 @@ import { API } from "./support";
 const PS2 = `${API}/ps2`;
 const SHOTS = join(__dirname, "../../../artifacts/immersive-product-rebirth");
 mkdirSync(SHOTS, { recursive: true });
-const ROOT = process.env.HALT_FIREX_DATA_ROOT ?? join(tmpdir(), "halt-e2e-firex");
+const ROOT = process.env.HALT_E2E_DATA_ROOT ?? join(tmpdir(), "halt-e2e-firex");
 
 const DAY = 1_800_000_000;
 function stamp(ts: number): string {
@@ -319,6 +319,23 @@ test("Response Handoff uses the selected incident only, states NOT EXECUTED and 
   await page.setViewportSize({ width: 390, height: 844 });
   const overflow = await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth);
   expect(overflow).toBeLessThanOrEqual(1);
+});
+
+test("Adaptive Intake profiles an unfamiliar file as a proposal and cannot start it", async ({ page }) => {
+  mkdirSync(join(ROOT, "incoming"), { recursive: true });
+  const name = `vendor-${Date.now()}.jsonl`;
+  writeFileSync(join(ROOT, "incoming", name), '{"occurred_at":"2026-11-01T08:00:00Z","client_ip":"203.0.113.21","principal":"maya","operation":"login"}\n{"occurred_at":"2026-11-01T08:02:10Z","client_ip":"203.0.113.21","principal":"maya","operation":"read"}\n');
+  await page.goto("/firex");
+  const row = page.getByTestId("live-intake").getByRole("listitem").filter({ hasText: name });
+  await expect(row).toContainText("JSON Lines");
+  await expect(row.getByRole("button", { name: "Select" })).toHaveCount(0);
+  await row.getByRole("button", { name: "Profile its structure" }).click();
+  const panel = row.getByTestId("adaptive-profile");
+  await expect(panel.getByText("PROPOSAL ONLY")).toBeVisible();
+  await expect(panel.getByText(/cannot analyse this file yet/)).toBeVisible();
+  await expect(panel.getByRole("table", { name: "Proposed field mappings" })).toContainText("client_ip");
+  await expect(page.getByRole("button", { name: "START ANALYSIS" })).toHaveCount(0);
+  expect(await axe(page)).toEqual([]);
 });
 
 test("API failure shows an explicit error, not substituted data", async ({ page }) => {

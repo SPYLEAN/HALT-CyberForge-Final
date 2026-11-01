@@ -18,6 +18,12 @@ The source is never copied into Git and is not moved or duplicated: the pipeline
 
 The FireX pipeline has one parser. The small adapters behind Reconstruct feed a different engine, so this path does not advertise them. A CSV or JSON file is named and refused with that reason. Supporting one here needs a new parser that maps to the canonical schema.
 
+## Adaptive Intake (optional)
+
+With `HALT_ADAPTIVE_INTAKE=1`, each non-empty incoming file with a valid name offers **Profile its structure**. It samples five regions of the file, proposes how fields could map to canonical fields, and states what a reconstruction would be missing. It comes from the Adaptive Intake Lab.
+
+It is read-only and labelled `PROPOSAL ONLY`. It writes nothing, creates no evidence, incident or run, and does not make a file analysable. The lab's confirm-and-ingest path is not integrated, because no parser can consume a mapping manifest yet, and adding one would be a new evidence path needing its own proof work. To roll back, leave the flag unset: the routes and controls then behave as before.
+
 ## Before analysis
 
 The preflight shows file, size, SHA-256, format, adapter, parsing confidence from sampled lines, time interpretation, sample records, expected destination and a privacy warning. Files above 64 MiB are hashed once in the background, with real progress. After an API restart, hashing starts again: it cannot resume partway. `START ANALYSIS` waits for the hash and for no standing problem.

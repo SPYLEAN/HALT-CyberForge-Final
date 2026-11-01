@@ -15,11 +15,11 @@ function check(name, ok, detail = "") {
 }
 
 const facts = (await get("/facts")).items;
-const fact = (reconstruction) => facts.find((f) => f.reconstruction === reconstruction);
-const ten = fact("ran");
-const thirty = fact("withheld");
-const fifty = fact("partial");
-check("three stored runs with three separate outcomes", Boolean(ten && thirty && fifty), facts.map((f) => `${f.dataset_id}: ${f.narrative}`).join("; "));
+const fact = (id) => facts.find((f) => f.dataset_id === id);
+const ten = fact("firex-10g");
+const thirty = fact("firex-30g");
+const fifty = fact("firex-50g");
+check("three stored runs with three separate outcomes", Boolean(ten && thirty && fifty), [ten, thirty, fifty].map((f) => `${f?.dataset_id}: ${f?.narrative}`).join("; "));
 check("10G is reconstructed and unconfirmed", ten?.state === "Unconfirmed" && ten?.incidents === 11);
 check("30G is withheld with no incidents", thirty?.state === "Degraded" && thirty?.incidents === 0);
 check("50G is partial, degraded, with 11 incidents", fifty?.state === "Degraded" && fifty?.incidents === 11);

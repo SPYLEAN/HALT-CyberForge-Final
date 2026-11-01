@@ -5,7 +5,7 @@ import { useCallback, useEffect, useRef, useState, type ChangeEvent } from "reac
 
 import Link from "next/link";
 
-import { firex, formatBytes, type LiveFile, type LiveFileList, type LivePreflight, type UploadState } from "@/lib/firex/api";
+import { firex, formatBytes, type AdaptiveProfile, type LiveFile, type LiveFileList, type LivePreflight, type UploadState } from "@/lib/firex/api";
 import { classify } from "@/lib/ps2/api";
 
 import s from "./firex.module.css";
@@ -124,7 +124,86 @@ function FileRow({ file, selected, onSelect }: { file: LiveFile; selected: boole
         ) : null}
       </div>
       {file.problem ? <p className={s.meta}>{file.problem}</p> : null}
+      {file.profilable ? <ProfilePanel name={file.name} /> : null}
     </li>
+  );
+}
+
+const STRUCTURE: Record<AdaptiveProfile["structure_state"], string> = {
+  supported: "The structure looks mappable",
+  mapping_required: "Some mappings need a person to confirm them",
+  searchable_only: "Missing fields a reconstruction would need",
+  reconstruction_withheld: "No trustworthy time field, so a reconstruction would be withheld",
+  unsupported: "No known structure matched",
+};
+
+/** Optional and read-only: how an unfamiliar file's fields could map. It starts nothing and creates no evidence. */
+function ProfilePanel({ name }: { name: string }) {
+  const [data, setData] = useState<AdaptiveProfile | null>(null);
+  const [failure, setFailure] = useState<string | null>(null);
+  const [busy, setBusy] = useState(false);
+  const load = async () => {
+    setBusy(true);
+    setFailure(null);
+    try {
+      setData(await firex.liveProfile(name));
+    } catch (e) {
+      setFailure(classify(e).message);
+    } finally {
+      setBusy(false);
+    }
+  };
+  if (failure) {
+    return (
+      <p className={s.alert} role="alert">
+        This file could not be profiled: {failure}
+      </p>
+    );
+  }
+  if (!data) {
+    return (
+      <div>
+        <button type="button" className={s.btnQuiet} disabled={busy} onClick={() => void load()}>
+          {busy ? "Profiling…" : "Profile its structure"}
+        </button>
+      </div>
+    );
+  }
+  return (
+    <section className={s.preflight} aria-label={`Structural profile of ${name}`} data-testid="adaptive-profile">
+      <p className={s.traceBadge}>PROPOSAL ONLY</p>
+      <p>{data.statement}</p>
+      <p className={s.meta}>
+        {STRUCTURE[data.structure_state]}. Format: {data.format}, from {data.sampled_lines} sampled lines.
+        {data.missing_requirements.length ? ` Missing: ${data.missing_requirements.join(", ")}.` : ""}
+      </p>
+      {data.mappings.length ? (
+        <div className={s.tableWrap}>
+          <table className={s.table} aria-label="Proposed field mappings">
+            <thead>
+              <tr>
+                <th>Field in this file</th>
+                <th>Could map to</th>
+                <th>Confidence</th>
+                <th>Needs confirming</th>
+              </tr>
+            </thead>
+            <tbody>
+              {data.mappings.map((m) => (
+                <tr key={m.proposed_field}>
+                  <td className={s.mono}>{m.source_field}</td>
+                  <td className={s.mono}>{m.halt_field ?? m.proposed_field}</td>
+                  <td>{Math.round(m.confidence * 100)}%</td>
+                  <td>{m.requires_confirmation ? "Yes" : "No"}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      ) : (
+        <p className={s.meta}>No field could be mapped with enough confidence.</p>
+      )}
+    </section>
   );
 }
 

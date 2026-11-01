@@ -1,28 +1,30 @@
-# Checkpoint status: work in progress
+# Release status
 
-Saved before a quota reset. The release sequence is not finished, and this is not a release sign-off.
+The evidence behind the release decision. This table describes the Adaptive Intake and release-hardening changes on top of `a8d646a`.
 
-## Evidence
+| Check | Result |
+|---|---|
+| Backend tests | 406 run: 402 passed, 4 skipped, 0 failed |
+| Web unit tests | 178 passed |
+| Strict TypeScript, ESLint, Ruff, mypy, design tokens | Clean |
+| OpenAPI and fixture drift | None |
+| Complete E2E on a production build, with an isolated data root | 80 of 80 passed |
+| Stored 10G, 30G, 50G routes on a production build | 61 of 61 passed |
+| 17 baseline hashes of sealed files | All match |
+| Repository check (`verify_repo.py`) | Passed |
+| Visual QA at 1440 x 900 and 390 x 844 | 58 screens, no page errors or overflow |
+| Visual QA at other sizes | Not rerun on this code |
+| Docker image build | Not run |
+| Python dependency audit | Not run: `pip-audit` is not installed |
+| npm production dependency audit | 0 vulnerabilities |
 
-| Check | Result | Code it ran on |
-|---|---|---|
-| Backend tests | 391 run, 387 passed, 4 skipped, 0 failed | `05d0d02`; later commits changed no backend code |
-| Web unit tests | 175 passed | `ce18ee6` |
-| Strict TypeScript, ESLint | Clean | `ce18ee6` |
-| Complete E2E | 79 of 79 passed | `da87d93` |
-| Complete E2E on the final navigation fix | Not finished: stopped at 38 of 79 at this checkpoint | `ce18ee6` |
-| Stored 10G, 30G, 50G routes | 61 of 61 passed | production build of `da87d93` |
-| Visual QA at five sizes | Partial: the last run was stopped at 17 screens, so the folder mixes two runs | `da87d93`, `ce18ee6` |
-| 17 baseline hashes of sealed files | All match | Checked at this checkpoint |
+## Known limitations
 
-## Known issues
-
-- `scripts/verify_repo.py` reports the deleted `SentinelRoute shield emblem.png` as missing. That deletion is user-owned and untouched.
-- Earlier complete E2E runs overwrote screenshots in `artifacts/ps2-workspace/`, against the instruction to leave them alone. Set `HALT_E2E_SHOTS` to redirect them, as the last runs did. The earlier versions of those screenshots were not restored.
-- The pass commits are split by file, so `2f87e43` and `2b71e10` do not build alone. `af66a64` completes them.
-- `PARTIAL_COLLAPSED_FRACTION` (two thirds) separates 50G (70.49%) from 10G (57.83%). It is a judgement call that needs review.
-- The stored 10G graph gives `svc_backup30` the id `entity:device:svc_backup30` and the kind `critical_asset`. SourceTrace reports an account from the field that holds the name. The sealed graph is unchanged.
-
-## Next step
-
-Run with `HALT_E2E_SHOTS` set: `npx playwright test`, then `node scripts/verify-stored-runs.mjs` and `node scripts/visual-qa.mjs` against a production build and an API on the real data root. Stop the API before E2E, because Playwright reuses a server already on port 8000. Then write the final report.
+- Detection accuracy is not measured, because no organiser ground truth was provided.
+- Every incident stays unconfirmed until an analyst reviews it.
+- FireX 50G took about 70 minutes on the recorded machine, over the one-hour target.
+- Only FortiGate key-value logs can be analysed. Adaptive Intake profiles other formats, but only as proposals.
+- `PARTIAL_COLLAPSED_FRACTION` (two thirds) separates 50G (70.49%) from 10G (57.83%). It is a judgement call.
+- The stored 10G graph gives `svc_backup30` the id `entity:device:svc_backup30` and the kind `critical_asset`. SourceTrace reports an account from the field that holds the name, and the sealed graph is unchanged.
+- There is no sign-in, so keep the API on a trusted machine or network.
+- Early pass commits are split by file: `2f87e43` and `2b71e10` do not build alone, and `af66a64` completes them.

@@ -1009,6 +1009,7 @@ class LiveFile(Contract):
     format_label: str
     selectable: bool
     problem: str | None
+    profilable: bool = False
 
 
 class LiveFileList(Contract):
@@ -1016,6 +1017,7 @@ class LiveFileList(Contract):
     items: list[LiveFile]
     max_upload_bytes: int
     chunk_bytes: int
+    adaptive_enabled: bool = False
 
 
 class LiveSample(Contract):
@@ -1056,6 +1058,45 @@ class LivePreflight(Contract):
     problems: list[LiveProblem]
     warnings: list[str]
     can_start: bool
+
+
+class AdaptiveField(Contract):
+    name: str
+    presence_ratio: float
+    types: list[str]
+    examples: list[str]
+
+
+class AdaptiveMapping(Contract):
+    source_field: str
+    proposed_field: str
+    halt_field: str | None
+    confidence: float
+    reasons: list[str]
+    requires_confirmation: bool
+
+
+class AdaptiveProfile(Contract):
+    """A profile from sampled lines. `can_analyse` says only whether the pipeline's parser reads it."""
+
+    name: str
+    size_bytes: int
+    format: str
+    format_confidence: float
+    format_reasons: list[str]
+    sampled_lines: int
+    parsed_records: int
+    regions: dict[str, int]
+    schema_fingerprint: str
+    fields: list[AdaptiveField]
+    mappings: list[AdaptiveMapping]
+    structure_state: Literal[
+        "supported", "mapping_required", "searchable_only", "reconstruction_withheld", "unsupported"
+    ]
+    requires_confirmation: list[str]
+    missing_requirements: list[str]
+    can_analyse: bool
+    statement: str
 
 
 class LiveStartRequest(Contract):
