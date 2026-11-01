@@ -299,7 +299,9 @@ class Runner:
         resumed = (self.dir / "chunks").is_dir()
         if previous["status"] == "completed" and (self.dir / "benchmark_receipt.json").is_file():
             return previous
-        (self.dir / "cancel").unlink(missing_ok=True)
+        # Launching clears the flag, so on a queued run a flag is a Stop pressed before this process began.
+        if previous["status"] not in ("queued", "cancelling"):
+            (self.dir / "cancel").unlink(missing_ok=True)
         self.update(
             status="running",
             pid=os.getpid(),
@@ -309,6 +311,7 @@ class Runner:
             workers=self.workers,
         )
         try:
+            self.check_cancel()
             mark = time.monotonic()
             plan = self.plan()
             self.stage_times["plan"] = round(time.monotonic() - mark, 2)
@@ -359,11 +362,8 @@ class Runner:
         processed = plan["end"] - plan["start"]
         parts = sum(m.get("part_bytes", 0) for m in manifests)
         peak = self.peak_memory()
+        # The seal comes first: a run must never read as completed while its receipt is still missing.
         self.update(
-            status="completed",
-            stage="done",
-            detail="Completed",
-            pid=None,
             completed_at=now_text(),
             metrics={
                 "bytes_processed": processed,
@@ -385,6 +385,7 @@ class Runner:
             },
         )
         write_benchmark(self, plan, quality, outcome, elapsed, peak, parts)
+        self.update(status="completed", stage="done", detail="Completed", pid=None)
 
     def peak_memory(self) -> float | None:
         """Upper bound on total use: the highest worker peak times the workers, plus this process's peak."""

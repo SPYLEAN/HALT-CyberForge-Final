@@ -517,3 +517,57 @@ def test_adaptive_route(root: Path, adaptive_on: None) -> None:
     with TestClient(create_app(settings)) as client:
         answer = client.get("/api/v1/ps2/live/files/vendor.jsonl/profile")
         assert answer.status_code == 200 and answer.json()["can_analyse"] is False
+
+
+def test_a_near_miss_log_says_what_is_missing_and_is_not_analysed(root: Path) -> None:
+    no_tz = log_bytes().replace(b'tz="+0530" ', b"")
+    place(root, "no-tz.log", no_tz)
+    item = next(f for f in list_files().items if f.name == "no-tz.log")
+    assert item.detected_format == "key_value_other" and not item.selectable
+    assert "missing: tz" in (item.problem or "")
+    check = preflight("no-tz.log")
+    assert not check.can_start and "missing: tz" in check.problems[0].message
+    with pytest.raises(RunError) as caught:
+        start("no-tz.log")
+    assert caught.value.status == 415
+
+
+def test_a_syslog_prefix_is_explained_and_not_guessed_around(root: Path) -> None:
+    prefixed = b"\n".join(b"<189>" + ln for ln in log_bytes().splitlines()) + b"\n"
+    place(root, "syslog.log", prefixed)
+    item = next(f for f in list_files().items if f.name == "syslog.log")
+    assert item.detected_format == "key_value_other" and "must start with date=" in (item.problem or "")
+
+
+def test_a_near_miss_upload_is_refused_with_the_same_reason(root: Path) -> None:
+    content = log_bytes().replace(b'tz="+0530" ', b"")
+    state = create_upload(UploadRequest(filename="no-tz.log", size_bytes=len(content)))
+    with pytest.raises(RunError) as caught:
+        write_chunk(state.upload_id, 0, content, None)
+    assert caught.value.status == 415 and "missing: tz" in str(caught.value)
+
+
+def test_a_run_is_never_completed_before_its_receipt_is_sealed(
+    root: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    """A page that reads the verdict the moment a run completes must not be told the seal is missing."""
+    from halt.firex import receipts
+
+    place(root)
+    real = receipts.write_benchmark
+    seen: dict[str, Any] = {}
+
+    def watched(runner: Any, *args: Any) -> dict[str, Any]:
+        state = runner.state()
+        seen.update(status=state["status"], completed_at=state.get("completed_at"), metrics=state["metrics"])
+        return real(runner, *args)
+
+    monkeypatch.setattr(receipts, "write_benchmark", watched)
+    runner = run_inline(root)
+    assert seen["status"] != "completed", "the run said completed before the receipt existed"
+    state = read_state(runner.run_id)
+    assert state["status"] == "completed" and state["stage"] == "done" and state["pid"] is None
+    receipt = json.loads((run_dir(runner.run_id) / "benchmark_receipt.json").read_text(encoding="utf-8"))
+    assert receipt["completed_at"] == seen["completed_at"] == state["completed_at"]
+    assert receipt["records_valid"] == seen["metrics"]["canonical_records"]
+    assert build_health(runner.run_id)[0].dimensions[1].status == "Verified"

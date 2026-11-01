@@ -36,7 +36,7 @@ from halt.firex.contracts import (
     UploadState,
 )
 from halt.firex.jobs import RunError
-from halt.firex.parser import event_ns, parse_text
+from halt.firex.parser import CORE_FIELDS, TOKEN, event_ns, parse_text
 from halt.firex.pipeline import load_rules, rules_hash, run_id_of
 from halt.firex.registry import NAME_PATTERN, RegisteredDataset, data_root, datasets, runs_dir
 from halt.firex.util import atomic_write_json, read_json
@@ -60,6 +60,7 @@ FORMAT_LABEL = {
     "csv": "CSV",
     "json": "JSON",
     "jsonl": "JSON Lines",
+    "key_value_other": "Key-value log in another shape",
     "empty": "Empty file",
     "unknown": "Unknown format",
 }
@@ -93,6 +94,23 @@ def _resolve(name: str, root: Path | None) -> Path:
     if not path.is_file():
         raise RunError(404, "not_found", f"{name} is not in the incoming folder")
     return path
+
+
+def _reject_reason(kind: str, sample: bytes) -> str:
+    """Why a file cannot be analysed, with what is missing when it is close. The parser is unchanged."""
+    if kind != "key_value_other":
+        return f"{FORMAT_LABEL[kind]}. {SUPPORT_NOTE}"
+    first = (
+        next((ln for ln in sample.split(b"\n") if ln.strip()), b"").decode("utf-8", errors="replace").strip()
+    )
+    fields = dict(TOKEN.findall(first))
+    missing = [name for name in CORE_FIELDS if not fields.get(name, "").strip('"')]
+    prefix = "" if first.startswith("date=") else "Each record must start with date=. "
+    needs = f"Its first record is missing: {', '.join(missing)}. " if missing else ""
+    return (
+        f"{FORMAT_LABEL[kind]}. {prefix}{needs}This parser reads FortiGate key-value records that carry "
+        f"{', '.join(CORE_FIELDS)}, and it does not guess the rest."
+    )
 
 
 def detect_format(sample: bytes) -> tuple[str, int, int]:
@@ -130,6 +148,10 @@ def detect_format(sample: bytes) -> tuple[str, int, int]:
                 return "csv", parsed, len(lines)
     except (csv.Error, IndexError):
         pass
+    # A log of key=value records that the parser refused: say what is missing, rather than "unknown".
+    decoded = [ln.decode("utf-8", errors="replace") for ln in lines[:50]]
+    if sum(len(TOKEN.findall(ln)) >= 3 for ln in decoded) / len(decoded) >= 0.5:
+        return "key_value_other", parsed, len(lines)
     return "unknown", parsed, len(lines)
 
 
@@ -175,7 +197,7 @@ def list_files(root: Path | None = None) -> LiveFileList:
         elif kind == "empty":
             problem = "This file is empty."
         elif kind != FORTIGATE:
-            problem = SUPPORT_NOTE
+            problem = _reject_reason(kind, _read_sample(path))
         items.append(
             LiveFile(
                 name=path.name,
@@ -286,9 +308,7 @@ def preflight(name: str, root: Path | None = None) -> LivePreflight:
             LiveProblem(code="empty_file", message="This file is empty, so there is nothing to analyse.")
         )
     elif kind != FORTIGATE:
-        problems.append(
-            LiveProblem(code="unsupported_format", message=f"{FORMAT_LABEL[kind]}. {SUPPORT_NOTE}")
-        )
+        problems.append(LiveProblem(code="unsupported_format", message=_reject_reason(kind, sample)))
     records = []
     first_fields: dict[str, str] | None = None
     for line in sample.split(b"\n"):
@@ -522,7 +542,7 @@ def write_chunk(
             kind, _, _ = detect_format(data[:SAMPLE_BYTES])
             if kind != FORTIGATE:
                 shutil.rmtree(folder, ignore_errors=True)
-                raise RunError(415, "unsupported_format", f"{FORMAT_LABEL[kind]}. {SUPPORT_NOTE}")
+                raise RunError(415, "unsupported_format", _reject_reason(kind, data[:SAMPLE_BYTES]))
         with open(folder / "data.part", "r+b") as f:
             f.seek(index * CHUNK_BYTES)
             f.write(data)

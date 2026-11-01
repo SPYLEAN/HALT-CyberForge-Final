@@ -186,6 +186,18 @@ def test_cancel_flag_stops_a_run_and_resume_finishes_it(root: Path) -> None:
     assert Runner("fixture", workers=1).execute()["status"] == "completed"
 
 
+def test_stop_pressed_before_the_process_starts_is_honoured_and_resume_finishes(root: Path) -> None:
+    write_dataset(root, background(DAY, 50))
+    runner = Runner("fixture", workers=1)
+    runner.dir.mkdir(parents=True)
+    runner.update(status="queued", detail="Starting the run process")
+    assert jobs.cancel_run(runner.run_id)["status"] == "cancelling"
+    assert Runner("fixture", workers=1).execute()["status"] == "cancelled"
+    assert not (runner.dir / "benchmark_receipt.json").exists()
+    assert Runner("fixture", workers=1).execute()["status"] == "completed"
+    assert (runner.dir / "benchmark_receipt.json").is_file()
+
+
 def test_cancel_only_marks_an_active_run(finished: Runner) -> None:
     assert jobs.cancel_run(finished.run_id)["status"] == "completed"
     assert not (finished.dir / "cancel").exists()
